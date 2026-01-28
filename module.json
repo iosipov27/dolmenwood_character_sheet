@@ -1,0 +1,9 @@
+{
+  "id": "dolmenwood",
+  "title": "Dolmenwood Character Sheet (for OSE)",
+  "version": "0.1.0",
+  "compatibility": { "minimum": "13", "verified": "13" },
+  "authors": [{ "name": "You" }],
+  "esmodules": ["scripts/register.js"],
+  "styles": ["styles/dolmenwood.css"]
+}

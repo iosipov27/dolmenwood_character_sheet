@@ -1,0 +1,178 @@
+<form class="dolmenwood" autocomplete="off">
+    <header class="dw-header">
+        <div class="dw-row">
+            <div class="dw-field">
+                <label>Name</label>
+                <input name="name" value="{{actor.name}}" />
+            </div>
+
+            <div class="dw-field">
+                <label>Kindred & Class</label>
+                <input name="dw.meta.kindredClass" value="{{dw.meta.kindredClass}}" />
+            </div>
+
+            <div class="dw-field">
+                <label>HP</label>
+                <div style="display:grid; grid-template-columns: 1fr 12px 1fr; gap:6px; align-items:center;">
+                    {{#if dwHp.hasCurrent}}
+                        <input name="{{dwHp.nameCurrent}}" type="number" value="{{dwHp.current}}" />
+                    {{else}}
+                        <input type="number" value="{{dwHp.current}}" disabled title="HP current path not detected." />
+                    {{/if}}
+
+                    <div style="text-align:center; opacity:.7;">/</div>
+
+                    {{#if dwHp.hasMax}}
+                        <input name="{{dwHp.nameMax}}" type="number" value="{{dwHp.max}}" />
+                    {{else}}
+                        <input type="number" value="{{dwHp.max}}" disabled title="HP max path not detected." />
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="dw-grid-2">
+            <div class="dw-field">
+                <label>Background</label>
+                <input name="dw.meta.background" value="{{dw.meta.background}}" />
+            </div>
+            <div class="dw-field">
+                <label>Alignment</label>
+                <input name="dw.meta.alignment" value="{{dw.meta.alignment}}" />
+            </div>
+            <div class="dw-field">
+                <label>Affiliation</label>
+                <input name="dw.meta.affiliation" value="{{dw.meta.affiliation}}" />
+            </div>
+            <div class="dw-field">
+                <label>Moon Sign</label>
+                <input name="dw.meta.moonSign" value="{{dw.meta.moonSign}}" />
+            </div>
+        </div>
+    </header>
+
+    <section class="dw-block">
+        <div class="dw-block-head">
+            <h2>Abilities</h2>
+            <div class="dw-hint">Roll 1d20. Success if roll is &lt;= score.</div>
+        </div>
+
+        <div class="dw-abilities">
+            {{#each dwAbilities as |a|}}
+                <div class="dw-ability">
+                    <div class="dw-ability-top">
+                        <div class="dw-label">{{a.label}}</div>
+
+                        <button type="button"
+                                class="dw-ability-roll"
+                                data-action="dw-roll-ability"
+                                data-label="{{a.label}}"
+                                data-target="{{a.value}}">
+                            Roll
+                        </button>
+                    </div>
+
+                    {{#if a.hasPath}}
+                        <input class="dw-target"
+                               name="{{a.name}}"
+                               type="number"
+                               value="{{a.value}}" />
+                    {{else}}
+                        <input class="dw-target"
+                               type="text"
+                               value="{{a.value}}"
+                               disabled />
+                    {{/if}}
+
+                    <div class="dw-ability-mod" title="OSE modifier (display only)">
+                        {{#if a.hasMod}}{{a.modText}}{{/if}}
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+    </section>
+
+    <section class="dw-block">
+        <div class="dw-block-head">
+            <h2>Save Targets</h2>
+            <div class="dw-hint">Click Roll or double-click a number (except MAGIC/RESIST).</div>
+        </div>
+
+        <div class="dw-saves">
+            {{#each dwSavesList as |s|}}
+                <div class="dw-save">
+                    {{#if s.rollable}}
+                        <button type="button" class="dw-roll" data-action="dw-roll-save" data-key="{{s.key}}">
+                            Roll
+                        </button>
+                    {{else}}
+                        <div class="dw-roll-placeholder" title="Not rolled here."></div>
+                    {{/if}}
+
+                    <div class="dw-label" title="{{lookup ../dwUi.saveTooltips s.key}}">
+                        {{s.label}}
+                    </div>
+
+                    {{#if s.rollable}}
+                        <input class="dw-target"
+                               name="dw.saves.{{s.key}}"
+                               type="number"
+                               value="{{s.value}}"
+                               data-dw-dblroll="save"
+                               data-key="{{s.key}}"
+                               title="{{lookup ../dwUi.saveTooltips s.key}}" />
+                    {{else}}
+                        <input class="dw-target"
+                               name="dw.saves.{{s.key}}"
+                               type="number"
+                               value="{{s.value}}"
+                               title="{{lookup ../dwUi.saveTooltips s.key}}" />
+                    {{/if}}
+                </div>
+            {{/each}}
+        </div>
+    </section>
+
+    <section class="dw-block">
+        <div class="dw-block-head">
+            <h2>Skill Targets</h2>
+            <div class="dw-hint">Click Roll or double-click a number.</div>
+        </div>
+
+        <div class="dw-skills">
+            {{#each dw.skills as |val key|}}
+                <div class="dw-skill">
+                    <button type="button" class="dw-roll" data-action="dw-roll-skill" data-key="{{key}}">
+                        Roll
+                    </button>
+
+                    <div class="dw-label" title="{{lookup ../dwUi.skillTooltips key}}">
+                        {{../dwUi.prettyKey key}}
+                    </div>
+
+                    <input class="dw-target"
+                           name="dw.skills.{{key}}"
+                           type="number"
+                           value="{{val}}"
+                           data-dw-dblroll="skill"
+                           data-key="{{key}}"
+                           title="{{lookup ../dwUi.skillTooltips key}}" />
+                </div>
+            {{/each}}
+        </div>
+    </section>
+
+    <section class="dw-block">
+        <div class="dw-block-head">
+            <h2>Languages</h2>
+        </div>
+        <textarea name="dw.meta.languages" rows="3">{{dw.meta.languages}}</textarea>
+    </section>
+
+    <footer class="dw-footer">
+        <button type="submit" class="dw-save-btn">Save</button>
+    </footer>
+</form>
