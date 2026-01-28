@@ -1,5 +1,15 @@
 /* dolmenwood | Foundry VTT v13 */
 
+import { registerSaveRollListener } from "./listeners/registerSaveRollListener.js";
+import { registerSkillRollListener } from "./listeners/registerSkillRollListener.js";
+import { registerSaveDblRollListener } from "./listeners/registerSaveDblRollListener.js";
+import { registerSkillDblRollListener } from "./listeners/registerSkillDblRollListener.js";
+import { registerAbilityRollListener } from "./listeners/registerAbilityRollListener.js";
+import { registerAddSkillListener } from "./listeners/registerAddSkillListener.js";
+import { registerRemoveSkillListener } from "./listeners/registerRemoveSkillListener.js";
+import { registerExtraSkillRollListener } from "./listeners/registerExtraSkillRollListener.js";
+import { registerExtraSkillDblRollListener } from "./listeners/registerExtraSkillDblRollListener.js";
+
 const MODULE_ID = "dolmenwood";
 
 function getBaseOSECharacterSheetClass() {
@@ -21,13 +31,26 @@ function dwDefaults() {
             spell: 0,
             ray: 0,
             blast: 0,
-            // One combined value
             magic: 0
         },
         skills: { listen: 0, search: 0, survival: 0 },
-        meta: { kindredClass: "", background: "", alignment: "", affiliation: "", moonSign: "", languages: "" }
+        extraSkills: [],
+        movement: {
+            speed: 0,
+            exploring: 0,
+            overland: 0
+        },
+        meta: {
+            kindredClass: "",
+            background: "",
+            alignment: "",
+            affiliation: "",
+            moonSign: "",
+            languages: ""
+        }
     };
 }
+
 
 function prettyKey(key) {
     return String(key ?? "").toUpperCase();
@@ -254,6 +277,20 @@ class DolmenwoodSheet extends getBaseOSECharacterSheetClass() {
 
         data.dw = foundry.utils.mergeObject(dwDefaults(), dwFlag, { inplace: false });
 
+        const extras = Array.isArray(data.dw.extraSkills) ? data.dw.extraSkills : [];
+        data.dwSkillsList = [
+            { kind: "fixed", key: "listen", label: "LISTEN", value: data.dw.skills.listen },
+            { kind: "fixed", key: "search", label: "SEARCH", value: data.dw.skills.search },
+            { kind: "fixed", key: "survival", label: "SURVIVAL", value: data.dw.skills.survival },
+            ...extras.map((s, i) => ({
+                kind: "extra",
+                index: i,
+                name: s?.name ?? "",
+                target: Number(s?.target ?? 0)
+            }))
+        ];
+
+
         data.dwUi = {
             saveTooltips: SAVE_TOOLTIPS,
             skillTooltips: SKILL_TOOLTIPS,
@@ -281,43 +318,30 @@ class DolmenwoodSheet extends getBaseOSECharacterSheetClass() {
     activateListeners(html) {
         super.activateListeners(html);
 
-        html.find("[data-action='dw-roll-save']").on("click", async (ev) => {
-            ev.preventDefault();
-            const key = ev.currentTarget.dataset.key;
-            const dw = normalizeDwFlags(this.actor.getFlag(MODULE_ID, "dw") ?? {});
-            const target = Number(foundry.utils.getProperty(dw, `saves.${key}`) ?? 0);
-            await rollTargetCheck(this.actor, `Save: ${prettyKey(key)}`, target);
-        });
+        const getDwFlags = () => normalizeDwFlags(this.actor.getFlag(MODULE_ID, "dw") ?? {});
+        const setDwFlags = async (dw) => this.actor.setFlag(MODULE_ID, "dw", dw);
+        const renderSheet = () => this.render();
 
-        html.find("[data-action='dw-roll-skill']").on("click", async (ev) => {
-            ev.preventDefault();
-            const key = ev.currentTarget.dataset.key;
-            const dw = normalizeDwFlags(this.actor.getFlag(MODULE_ID, "dw") ?? {});
-            const target = Number(foundry.utils.getProperty(dw, `skills.${key}`) ?? 0);
-            await rollTargetCheck(this.actor, `Skill: ${prettyKey(key)}`, target);
+        registerSaveRollListener(html, {
+            actor: this.actor,
+            getDwFlags,
+            rollTargetCheck,
+            prettyKey
         });
+        registerSkillRollListener(html, {
+            actor: this.actor,
+            getDwFlags,
+            rollTargetCheck,
+            prettyKey
+        });
+        registerSaveDblRollListener(html, { actor: this.actor, rollTargetCheck, prettyKey });
+        registerSkillDblRollListener(html, { actor: this.actor, rollTargetCheck, prettyKey });
+        registerAbilityRollListener(html, { actor: this.actor, rollAbilityCheck });
+        registerAddSkillListener(html, { getDwFlags, setDwFlags, renderSheet });
+        registerRemoveSkillListener(html, { getDwFlags, setDwFlags, renderSheet });
+        registerExtraSkillRollListener(html, { actor: this.actor, getDwFlags, rollTargetCheck });
+        registerExtraSkillDblRollListener(html, { actor: this.actor, rollTargetCheck });
 
-        html.find("input[data-dw-dblroll='save']").on("dblclick", async (ev) => {
-            ev.preventDefault();
-            const key = ev.currentTarget.dataset.key;
-            const val = Number(ev.currentTarget.value ?? 0);
-            await rollTargetCheck(this.actor, `Save: ${prettyKey(key)}`, val);
-        });
-
-        html.find("input[data-dw-dblroll='skill']").on("dblclick", async (ev) => {
-            ev.preventDefault();
-            const key = ev.currentTarget.dataset.key;
-            const val = Number(ev.currentTarget.value ?? 0);
-            await rollTargetCheck(this.actor, `Skill: ${prettyKey(key)}`, val);
-        });
-
-        // Ability roll: 1d20 <= ability score (no modifier)
-        html.find("[data-action='dw-roll-ability']").on("click", async (ev) => {
-            ev.preventDefault();
-            const label = ev.currentTarget.dataset.label ?? "";
-            const target = Number(ev.currentTarget.dataset.target ?? 0);
-            await rollAbilityCheck(this.actor, label, target);
-        });
     }
 
     async _updateObject(event, formData) {
