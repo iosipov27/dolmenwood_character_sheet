@@ -15,6 +15,9 @@ export function dwDefaults() {
             exploring: 0,
             overland: 0
         },
+        combat: {
+            attack: 0
+        },
         meta: {
             kindredClass: "",
             background: "",

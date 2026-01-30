@@ -233,3 +233,50 @@
     padding: 0;
     font-size: 12px;
 }
+
+
+.dw-layout {
+    display: grid;
+    grid-template-columns: 1fr 56px;
+    gap: 10px;
+    align-items: start;
+}
+
+.dw-main {
+    min-width: 0;
+}
+
+.dw-tabs {
+    position: sticky;
+    top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.dw-tab {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    height: 120px;
+    width: 56px;
+    border-radius: 12px;
+    border: 1px solid var(--color-border-light-2);
+    font-weight: 600;
+    padding: 8px 6px;
+}
+
+.dw-tab.is-active {
+    box-shadow: 0 0 0 2px var(--color-border-highlight);
+}
+
+.dw-tab-panels {
+    display: none; /* пока панель пустая, можно скрыть контейнер */
+}
+
+.dw-tab-panel {
+    display: none;
+}
+
+.dw-tab-panel.is-active {
+    display: block;
+}

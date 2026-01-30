@@ -1,63 +1,40 @@
 <form class="dolmenwood" autocomplete="off">
     <header class="dw-header">
         <div class="dw-row">
+            {{> "modules/dolmenwood/templates/parts/player-data.hbs"}}
+        </div>
+
+        <div class="dw-grid-2">
             <div class="dw-field">
-                <label>Name</label>
-                <input name="name" value="{{actor.name}}" />
+                {{> "modules/dolmenwood/templates/parts/health-points.hbs"}}
+            </div>
+
+            <div class="dw-field">
+                <div class="dw-field">
+                    <label>AC</label>
+                    {{#if dwCombat.hasAc}}
+                        <input name="{{dwCombat.nameAc}}" type="number" value="{{dwCombat.ac}}" />
+                    {{else}}
+                        <input type="number" value="{{dwCombat.ac}}" disabled title="AC path not detected." />
+                    {{/if}}
+                </div>
+
+                <div class="dw-field">
+                    <label>Attack</label>
+                    <input
+                            name="dw.combat.attack"
+                            type="text"
+                            value="{{dw.combat.attack}}"
+                            placeholder="+1 melee / +2 missile"
+                    />
+                </div>
             </div>
 
             <div class="dw-avatar">
                 <img src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
             </div>
-
-            <div class="dw-field">
-                <label>Kindred & Class</label>
-                <input name="dw.meta.kindredClass" value="{{dw.meta.kindredClass}}" />
-            </div>
-
-            <div class="dw-field">
-                <label>HP</label>
-                <div style="display:grid; grid-template-columns: 1fr 12px 1fr; gap:6px; align-items:center;">
-                    {{#if dwHp.hasCurrent}}
-                        <input name="{{dwHp.nameCurrent}}" type="number" value="{{dwHp.current}}" />
-                    {{else}}
-                        <input type="number" value="{{dwHp.current}}" disabled title="HP current path not detected." />
-                    {{/if}}
-
-                    <div style="text-align:center; opacity:.7;">/</div>
-
-                    {{#if dwHp.hasMax}}
-                        <input name="{{dwHp.nameMax}}" type="number" value="{{dwHp.max}}" />
-                    {{else}}
-                        <input type="number" value="{{dwHp.max}}" disabled title="HP max path not detected." />
-                    {{/if}}
-                </div>
-            </div>
-        </div>
-
-
-
-
-        <div class="dw-grid-2">
-            <div class="dw-field">
-                <label>Background</label>
-                <input name="dw.meta.background" value="{{dw.meta.background}}" />
-            </div>
-            <div class="dw-field">
-                <label>Alignment</label>
-                <input name="dw.meta.alignment" value="{{dw.meta.alignment}}" />
-            </div>
-            <div class="dw-field">
-                <label>Affiliation</label>
-                <input name="dw.meta.affiliation" value="{{dw.meta.affiliation}}" />
-            </div>
-            <div class="dw-field">
-                <label>Moon Sign</label>
-                <input name="dw.meta.moonSign" value="{{dw.meta.moonSign}}" />
-            </div>
         </div>
     </header>
-
 
     <section class="dw-block">
         <div class="dw-block-head">
@@ -68,36 +45,20 @@
         <div class="dw-movement">
             <div class="dw-move">
                 <div class="dw-label">Speed</div>
-                <input
-                        class="dw-target"
-                        name="dw.movement.speed"
-                        type="number"
-                        value="{{dw.movement.speed}}"
-                />
+                <input class="dw-target" name="dw.movement.speed" type="number" value="{{dw.movement.speed}}" />
             </div>
 
             <div class="dw-move">
                 <div class="dw-label">Exploring</div>
-                <input
-                        class="dw-target"
-                        name="dw.movement.exploring"
-                        type="number"
-                        value="{{dw.movement.exploring}}"
-                />
+                <input class="dw-target" name="dw.movement.exploring" type="number" value="{{dw.movement.exploring}}" />
             </div>
 
             <div class="dw-move">
                 <div class="dw-label">Overland</div>
-                <input
-                        class="dw-target"
-                        name="dw.movement.overland"
-                        type="number"
-                        value="{{dw.movement.overland}}"
-                />
+                <input class="dw-target" name="dw.movement.overland" type="number" value="{{dw.movement.overland}}" />
             </div>
         </div>
     </section>
-
 
     <section class="dw-block">
         <div class="dw-block-head">
@@ -111,25 +72,21 @@
                     <div class="dw-ability-top">
                         <div class="dw-label">{{a.label}}</div>
 
-                        <button type="button"
+                        <button
+                                type="button"
                                 class="dw-ability-roll"
                                 data-action="dw-roll-ability"
                                 data-label="{{a.label}}"
-                                data-target="{{a.value}}">
+                                data-target="{{a.value}}"
+                        >
                             Roll
                         </button>
                     </div>
 
                     {{#if a.hasPath}}
-                        <input class="dw-target"
-                               name="{{a.name}}"
-                               type="number"
-                               value="{{a.value}}" />
+                        <input class="dw-target" name="{{a.name}}" type="number" value="{{a.value}}" />
                     {{else}}
-                        <input class="dw-target"
-                               type="text"
-                               value="{{a.value}}"
-                               disabled />
+                        <input class="dw-target" type="text" value="{{a.value}}" disabled />
                     {{/if}}
 
                     <div class="dw-ability-mod" title="OSE modifier (display only)">
@@ -150,9 +107,7 @@
             {{#each dwSavesList as |s|}}
                 <div class="dw-save">
                     {{#if s.rollable}}
-                        <button type="button" class="dw-roll" data-action="dw-roll-save" data-key="{{s.key}}">
-                            Roll
-                        </button>
+                        <button type="button" class="dw-roll" data-action="dw-roll-save" data-key="{{s.key}}">Roll</button>
                     {{else}}
                         <div class="dw-roll-placeholder" title="Not rolled here."></div>
                     {{/if}}
@@ -162,19 +117,23 @@
                     </div>
 
                     {{#if s.rollable}}
-                        <input class="dw-target"
-                               name="dw.saves.{{s.key}}"
-                               type="number"
-                               value="{{s.value}}"
-                               data-dw-dblroll="save"
-                               data-key="{{s.key}}"
-                               title="{{lookup ../dwUi.saveTooltips s.key}}" />
+                        <input
+                                class="dw-target"
+                                name="dw.saves.{{s.key}}"
+                                type="number"
+                                value="{{s.value}}"
+                                data-dw-dblroll="save"
+                                data-key="{{s.key}}"
+                                title="{{lookup ../dwUi.saveTooltips s.key}}"
+                        />
                     {{else}}
-                        <input class="dw-target"
-                               name="dw.saves.{{s.key}}"
-                               type="number"
-                               value="{{s.value}}"
-                               title="{{lookup ../dwUi.saveTooltips s.key}}" />
+                        <input
+                                class="dw-target"
+                                name="dw.saves.{{s.key}}"
+                                type="number"
+                                value="{{s.value}}"
+                                title="{{lookup ../dwUi.saveTooltips s.key}}"
+                        />
                     {{/if}}
                 </div>
             {{/each}}
@@ -194,54 +153,56 @@
             {{!-- fixed skills --}}
             {{#each dw.skills as |val key|}}
                 <div class="dw-skill">
-                    <button type="button" class="dw-roll" data-action="dw-roll-skill" data-key="{{key}}">
-                        Roll
-                    </button>
+                    <button type="button" class="dw-roll" data-action="dw-roll-skill" data-key="{{key}}">Roll</button>
 
                     <div class="dw-label" title="{{lookup ../dwUi.skillTooltips key}}">
                         {{../dwUi.prettyKey key}}
                     </div>
 
-                    <input class="dw-target"
-                           name="dw.skills.{{key}}"
-                           type="number"
-                           value="{{val}}"
-                           data-dw-dblroll="skill"
-                           data-key="{{key}}"
-                           title="{{lookup ../dwUi.skillTooltips key}}" />
+                    <input
+                            class="dw-target"
+                            name="dw.skills.{{key}}"
+                            type="number"
+                            value="{{val}}"
+                            data-dw-dblroll="skill"
+                            data-key="{{key}}"
+                            title="{{lookup ../dwUi.skillTooltips key}}"
+                    />
                 </div>
             {{/each}}
 
             {{!-- extra skills --}}
             {{#each dw.extraSkills as |s idx|}}
                 <div class="dw-skill dw-skill-extra">
-                    <button type="button"
+                    <button
+                            type="button"
                             class="dw-roll"
                             data-action="dw-roll-extra-skill"
                             data-index="{{idx}}"
-                            data-name="{{s.name}}">
+                            data-name="{{s.name}}"
+                    >
                         Roll
                     </button>
 
-                    <input class="dw-skill-name"
-                           name="dw.extraSkills.{{idx}}.name"
-                           type="text"
-                           value="{{s.name}}"
-                           placeholder="Skill name" />
+                    <input
+                            class="dw-skill-name"
+                            name="dw.extraSkills.{{idx}}.name"
+                            type="text"
+                            value="{{s.name}}"
+                            placeholder="Skill name"
+                    />
 
-                    <input class="dw-target"
-                           name="dw.extraSkills.{{idx}}.target"
-                           type="number"
-                           value="{{s.target}}"
-                           data-dw-dblroll="extra-skill"
-                           data-index="{{idx}}"
-                           data-name="{{s.name}}" />
-
-                    <button type="button"
-                            class="dw-x"
-                            data-action="dw-remove-skill"
+                    <input
+                            class="dw-target"
+                            name="dw.extraSkills.{{idx}}.target"
+                            type="number"
+                            value="{{s.target}}"
+                            data-dw-dblroll="extra-skill"
                             data-index="{{idx}}"
-                            title="Remove">
+                            data-name="{{s.name}}"
+                    />
+
+                    <button type="button" class="dw-x" data-action="dw-remove-skill" data-index="{{idx}}" title="Remove">
                         ✕
                     </button>
                 </div>
@@ -249,15 +210,10 @@
         </div>
     </section>
 
-
     <section class="dw-block">
         <div class="dw-block-head">
             <h2>Languages</h2>
         </div>
         <textarea name="dw.meta.languages" rows="3">{{dw.meta.languages}}</textarea>
     </section>
-
-    <footer class="dw-footer">
-        <button type="submit" class="dw-save-btn">Save</button>
-    </footer>
 </form>
