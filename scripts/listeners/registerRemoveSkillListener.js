@@ -1,6 +1,8 @@
+import { registerAction } from "../utils/registerAction.js";
+import { DW_REMOVE_SKILL } from "../constants/templateAttributes.js";
+
 export function registerRemoveSkillListener(html, { getDwFlags, setDwFlags, renderSheet }) {
-    html.find("[data-action='dw-remove-skill']").on("click", async (ev) => {
-        ev.preventDefault();
+    registerAction(html, DW_REMOVE_SKILL, async (ev) => {
         const index = Number(ev.currentTarget.dataset.index);
         if (!Number.isFinite(index)) return;
 

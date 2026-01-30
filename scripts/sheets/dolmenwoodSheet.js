@@ -36,7 +36,7 @@ export class DolmenwoodSheet extends getBaseOSECharacterSheetClass() {
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
             classes: ["dolmenwood", "sheet", "actor"],
-            template: `modules/${MODULE_ID}/templates/dolmenwood-sheet.hbs`,
+            template: `modules/${MODULE_ID}/templates/dolmenwood.hbs`,
             width: 860,
             height: 900,
             resizable: true
@@ -45,12 +45,22 @@ export class DolmenwoodSheet extends getBaseOSECharacterSheetClass() {
 
     getData(options) {
         const data = super.getData(options);
+        console.debug("DolmenwoodSheet.getData MODULE_ID=", MODULE_ID, "moduleActive=", game?.modules?.get(MODULE_ID)?.active);
 
         // OSE system data.
         data.system = this.actor.system;
 
-        // Dolmenwood flags (actor.flags.dolmenwood.dw).
-        const dwFlagRaw = this.actor.getFlag(MODULE_ID, "dw") ?? {};
+        // Dolmenwood flags (actor.flags.<module>.dw).
+        let dwFlagRaw = {};
+        try {
+            if (game?.modules?.get(MODULE_ID)?.active) {
+                dwFlagRaw = this.actor.getFlag(MODULE_ID, "dw") ?? {};
+            } else {
+                console.warn(`${MODULE_ID} flags are not available (module inactive): using defaults`);
+            }
+        } catch (err) {
+            console.warn(`Failed to read flags for scope ${MODULE_ID}:`, err);
+        }
         const dwFlag = normalizeDwFlags(dwFlagRaw);
 
         // Merge defaults with stored flags.
@@ -103,8 +113,27 @@ export class DolmenwoodSheet extends getBaseOSECharacterSheetClass() {
         super.activateListeners(html);
 
         // Small helpers for listeners.
-        const getDwFlags = () => normalizeDwFlags(this.actor.getFlag(MODULE_ID, "dw") ?? {});
-        const setDwFlags = async (dw) => this.actor.setFlag(MODULE_ID, "dw", dw);
+        const getDwFlags = () => {
+            try {
+                if (game?.modules?.get(MODULE_ID)?.active) {
+                    return normalizeDwFlags(this.actor.getFlag(MODULE_ID, "dw") ?? {});
+                }
+                return normalizeDwFlags({});
+            } catch (err) {
+                console.warn(`Failed to get flags for scope ${MODULE_ID}:`, err);
+                return normalizeDwFlags({});
+            }
+        };
+        const setDwFlags = async (dw) => {
+            try {
+                if (game?.modules?.get(MODULE_ID)?.active) {
+                    return this.actor.setFlag(MODULE_ID, "dw", dw);
+                }
+                console.warn(`Cannot set flags for scope ${MODULE_ID}: module inactive`);
+            } catch (err) {
+                console.warn(`Failed to set flags for scope ${MODULE_ID}:`, err);
+            }
+        };
         const renderSheet = () => this.render();
 
         registerSaveRollListener(html, {

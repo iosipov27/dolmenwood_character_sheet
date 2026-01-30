@@ -1,6 +1,8 @@
+import { registerAction } from "../utils/registerAction.js";
+import { DW_ROLL_EXTRA_SKILL } from "../constants/templateAttributes.js";
+
 export function registerExtraSkillRollListener(html, { actor, getDwFlags, rollTargetCheck }) {
-    html.find("[data-action='dw-roll-extra-skill']").on("click", async (ev) => {
-        ev.preventDefault();
+    registerAction(html, DW_ROLL_EXTRA_SKILL, async (ev) => {
         const index = Number(ev.currentTarget.dataset.index);
         const name = String(ev.currentTarget.dataset.name ?? "SKILL").trim() || "SKILL";
 
