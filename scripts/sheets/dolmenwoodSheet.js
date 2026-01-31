@@ -190,3 +190,4 @@ export class DolmenwoodSheet extends BaseSheet {
         return;
     }
 }
+//# sourceMappingURL=dolmenwoodSheet.js.map

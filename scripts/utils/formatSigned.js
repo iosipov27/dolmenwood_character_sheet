@@ -4,3 +4,4 @@ export function formatSigned(n) {
         return "0";
     return x >= 0 ? `+${x}` : `${x}`;
 }
+//# sourceMappingURL=formatSigned.js.map

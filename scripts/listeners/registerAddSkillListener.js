@@ -11,3 +11,4 @@ export function registerAddSkillListener(html, { getDwFlags, setDwFlags, renderS
         renderSheet();
     });
 }
+//# sourceMappingURL=registerAddSkillListener.js.map

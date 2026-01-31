@@ -26,3 +26,4 @@ export class RollChecks {
         return { roll, success, target };
     }
 }
+//# sourceMappingURL=rollChecks.js.map

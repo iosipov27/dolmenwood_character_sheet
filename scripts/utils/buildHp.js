@@ -43,3 +43,4 @@ export function buildHp(systemData) {
         hasMax: Boolean(maxPath)
     };
 }
+//# sourceMappingURL=buildHp.js.map

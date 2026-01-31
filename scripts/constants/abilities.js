@@ -6,3 +6,4 @@ export const ABILITIES = [
     { key: "wis", label: "WIS" },
     { key: "cha", label: "CHA" }
 ];
+//# sourceMappingURL=abilities.js.map

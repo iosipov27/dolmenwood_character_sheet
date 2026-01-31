@@ -5,3 +5,4 @@ export function registerAction(html, actionId, handler) {
         await handler(ev);
     });
 }
+//# sourceMappingURL=registerAction.js.map

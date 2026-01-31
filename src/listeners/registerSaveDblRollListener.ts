@@ -1,3 +1,4 @@
+import { getDataset } from "../utils/getDataset.js";
 import type { ActionEvent, HtmlRoot, JQueryWithOn, RollTargetCheck } from "../types.js";
 
 export function registerSaveDblRollListener(
@@ -11,7 +12,7 @@ export function registerSaveDblRollListener(
     const nodes = html.find("input[data-dw-dblroll='save']") as JQueryWithOn<HTMLInputElement>;
     nodes.on("dblclick", async (ev: ActionEvent<HTMLInputElement>) => {
         ev.preventDefault();
-        const key = ev.currentTarget.dataset.key;
+        const { key } = getDataset(ev);
         const val = Number(ev.currentTarget.value ?? 0);
         await rollTargetCheck(actor, `Save: ${prettyKey(key ?? "")}`, val);
     });

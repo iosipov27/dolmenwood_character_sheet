@@ -37,3 +37,4 @@ export function buildCombat(systemData) {
         hasAttack: Boolean(atkPath)
     };
 }
+//# sourceMappingURL=buildCombat.js.map

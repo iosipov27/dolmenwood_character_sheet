@@ -13,3 +13,4 @@ Hooks.once("init", async () => {
         label: "Dolmenwood Sheet"
     });
 });
+//# sourceMappingURL=main.js.map

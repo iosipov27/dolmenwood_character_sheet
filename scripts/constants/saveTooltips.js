@@ -6,3 +6,4 @@ export const SAVE_TOOLTIPS = {
     blast: "BLAST: target to resist blasts, bursts, breath, and area shocks.",
     magic: "MAGIC/RESIST: single value, not rolled here."
 };
+//# sourceMappingURL=saveTooltips.js.map

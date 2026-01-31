@@ -3,3 +3,4 @@ export const SKILL_TOOLTIPS = {
     search: "SEARCH: target to find hidden details, traps, and clues.",
     survival: "SURVIVAL: target to navigate, track, forage, and endure wilderness travel."
 };
+//# sourceMappingURL=skillTooltips.js.map

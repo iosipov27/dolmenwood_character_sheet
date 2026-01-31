@@ -9,3 +9,4 @@ export function getBaseOSECharacterSheetClass() {
     });
     return ose?.cls ?? ActorSheet;
 }
+//# sourceMappingURL=getBaseOSECharacterSheetClass.js.map

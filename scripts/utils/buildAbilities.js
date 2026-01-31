@@ -59,3 +59,4 @@ export function buildAbilities(systemData) {
     }
     return out;
 }
+//# sourceMappingURL=buildAbilities.js.map
