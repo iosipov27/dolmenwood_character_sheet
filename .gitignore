@@ -1,0 +1,8 @@
+node_modules/
+.idea/
+!.idea/prettier.xml
+!.idea/actions-on-save.xml
+!.idea/.gitignore
+*.iml
+.DS_Store
+Thumbs.db

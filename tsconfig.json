@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "types": ["fvtt-types"],
+    "lib": ["esnext", "dom"],
+    "rootDir": "src",
+    "outDir": "scripts",
+    "sourceMap": true,
+    "inlineSources": true
+  },
+  "include": ["src/**/*.ts"]
+}

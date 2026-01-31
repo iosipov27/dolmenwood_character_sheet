@@ -1,6 +1,8 @@
 export function registerAction(html, actionId, handler) {
-    html.find(`[data-action='${actionId}']`).on("click", async (ev) => {
-        ev.preventDefault();
-        await handler(ev);
-    });
+  const nodes = html.find(`[data-action='${actionId}']`);
+  nodes.on("click", async (ev) => {
+    ev.preventDefault();
+    await handler(ev);
+  });
 }
+//# sourceMappingURL=registerAction.js.map
