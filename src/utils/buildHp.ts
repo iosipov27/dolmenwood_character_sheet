@@ -1,5 +1,7 @@
-export function buildHp(systemData) {
-    const wrapper = { system: systemData };
+import type { DwHpView } from "../types.js";
+
+export function buildHp(systemData: Record<string, unknown>): DwHpView {
+    const wrapper: { system: Record<string, unknown> } = { system: systemData };
 
     // candidates for current HP
     const curCandidates = [
@@ -16,8 +18,8 @@ export function buildHp(systemData) {
         "system.hp.max"
     ];
 
-    let currentPath = null;
-    let maxPath = null;
+    let currentPath: string | null = null;
+    let maxPath: string | null = null;
 
     for (const p of curCandidates) {
         const v = foundry.utils.getProperty(wrapper, p);
@@ -36,8 +38,10 @@ export function buildHp(systemData) {
     }
 
     // read values (may be null if not found)
-    const current = currentPath ? foundry.utils.getProperty(wrapper, currentPath) : null;
-    const max = maxPath ? foundry.utils.getProperty(wrapper, maxPath) : null;
+    const current = currentPath
+        ? (foundry.utils.getProperty(wrapper, currentPath) as number)
+        : null;
+    const max = maxPath ? (foundry.utils.getProperty(wrapper, maxPath) as number) : null;
 
     return {
         current,

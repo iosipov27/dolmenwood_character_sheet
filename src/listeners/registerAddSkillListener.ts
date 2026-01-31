@@ -1,8 +1,22 @@
 import { registerAction } from "../utils/registerAction.js";
 import { DW_ADD_SKILL } from "../constants/templateAttributes.js";
+import type {
+    ActionEvent,
+    GetDwFlags,
+    HtmlRoot,
+    RenderSheet,
+    SetDwFlags
+} from "../types.js";
 
-export function registerAddSkillListener(html, { getDwFlags, setDwFlags, renderSheet }) {
-    registerAction(html, DW_ADD_SKILL, async (ev) => {
+export function registerAddSkillListener(
+    html: HtmlRoot,
+    {
+        getDwFlags,
+        setDwFlags,
+        renderSheet
+    }: { getDwFlags: GetDwFlags; setDwFlags: SetDwFlags; renderSheet: RenderSheet }
+): void {
+    registerAction(html, DW_ADD_SKILL, async (ev: ActionEvent) => {
         const dw = getDwFlags();
         dw.extraSkills = Array.isArray(dw.extraSkills) ? dw.extraSkills : [];
 

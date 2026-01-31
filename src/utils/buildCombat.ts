@@ -9,8 +9,10 @@
  * - detected values
  * - form field names (for editing where supported)
  */
-export function buildCombat(systemData) {
-    const wrapper = { system: systemData };
+import type { DwCombatView } from "../types.js";
+
+export function buildCombat(systemData: Record<string, unknown>): DwCombatView {
+    const wrapper: { system: Record<string, unknown> } = { system: systemData };
 
     const acCandidates = [
         "system.attributes.ac.value",
@@ -30,7 +32,7 @@ export function buildCombat(systemData) {
         "system.attack"
     ];
 
-    const detectNumberPath = (candidates) => {
+    const detectNumberPath = (candidates: string[]): string | null => {
         for (const p of candidates) {
             const v = foundry.utils.getProperty(wrapper, p);
             if (typeof v === "number") return p;
@@ -41,8 +43,8 @@ export function buildCombat(systemData) {
     const acPath = detectNumberPath(acCandidates);
     const atkPath = detectNumberPath(atkCandidates);
 
-    const ac = acPath ? foundry.utils.getProperty(wrapper, acPath) : null;
-    const attack = atkPath ? foundry.utils.getProperty(wrapper, atkPath) : null;
+    const ac = acPath ? (foundry.utils.getProperty(wrapper, acPath) as number) : null;
+    const attack = atkPath ? (foundry.utils.getProperty(wrapper, atkPath) as number) : null;
 
     return {
         ac,

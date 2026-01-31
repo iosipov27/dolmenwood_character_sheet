@@ -1,5 +1,6 @@
 export function getBaseOSECharacterSheetClass() {
-    const entries = Object.values(CONFIG?.Actor?.sheetClasses?.character ?? {});
+    const sheetClasses = CONFIG?.Actor?.sheetClasses;
+    const entries = Object.values(sheetClasses?.character ?? {});
     const ose = entries.find((s) => {
         const label = String(s?.label ?? "").toLowerCase();
         const clsName = String(s?.cls?.name ?? "").toLowerCase();

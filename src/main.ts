@@ -11,7 +11,7 @@ Hooks.once("init", async (): Promise<void> => {
 
     await loadTemplates(templatePaths);
 
-    Actors.registerSheet(MODULE_ID, DolmenwoodSheet, {
+    Actors.registerSheet(MODULE_ID, DolmenwoodSheet as unknown as Application.AnyConstructor, {
         types: ["character"],
         makeDefault: false,
         label: "Dolmenwood Sheet"

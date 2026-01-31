@@ -1,14 +1,3 @@
-/**
- * buildCombat()
- * -------------
- * Tries to detect common OSE-like paths for:
- * - Armor Class (AC)
- * - Attack bonus (Attack)
- *
- * Returns UI-friendly structure with:
- * - detected values
- * - form field names (for editing where supported)
- */
 export function buildCombat(systemData) {
     const wrapper = { system: systemData };
     const acCandidates = [

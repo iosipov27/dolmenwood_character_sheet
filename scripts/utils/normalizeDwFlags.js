@@ -1,14 +1,15 @@
 export function normalizeDwFlags(dw) {
     // If an old "resistance" existed, fold it into magic (prefer magic if set).
     const d = foundry.utils.duplicate(dw ?? {});
-    d.saves ??= {};
-    if (typeof d.saves.magic !== "number")
-        d.saves.magic = Number(d.saves.magic ?? 0);
-    if (d.saves.resistance != null) {
-        const res = Number(d.saves.resistance ?? 0);
-        if (!d.saves.magic || d.saves.magic === 0)
-            d.saves.magic = res;
-        delete d.saves.resistance;
+    const saves = (d.saves ?? {});
+    if (typeof saves.magic !== "number")
+        saves.magic = Number(saves.magic ?? 0);
+    if (saves.resistance != null) {
+        const res = Number(saves.resistance ?? 0);
+        if (!saves.magic || saves.magic === 0)
+            saves.magic = res;
+        delete saves.resistance;
     }
+    d.saves = saves;
     return d;
 }

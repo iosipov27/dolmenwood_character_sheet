@@ -1,8 +1,22 @@
 import { registerAction } from "../utils/registerAction.js";
 import { DW_REMOVE_SKILL } from "../constants/templateAttributes.js";
+import type {
+    ActionEvent,
+    GetDwFlags,
+    HtmlRoot,
+    RenderSheet,
+    SetDwFlags
+} from "../types.js";
 
-export function registerRemoveSkillListener(html, { getDwFlags, setDwFlags, renderSheet }) {
-    registerAction(html, DW_REMOVE_SKILL, async (ev) => {
+export function registerRemoveSkillListener(
+    html: HtmlRoot,
+    {
+        getDwFlags,
+        setDwFlags,
+        renderSheet
+    }: { getDwFlags: GetDwFlags; setDwFlags: SetDwFlags; renderSheet: RenderSheet }
+): void {
+    registerAction(html, DW_REMOVE_SKILL, async (ev: ActionEvent) => {
         const index = Number(ev.currentTarget.dataset.index);
         if (!Number.isFinite(index)) return;
 

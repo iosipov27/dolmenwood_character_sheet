@@ -1,5 +1,6 @@
 export function registerExtraSkillDblRollListener(html, { actor, rollTargetCheck }) {
-    html.find("input[data-dw-dblroll='extra-skill']").on("dblclick", async (ev) => {
+    const nodes = html.find("input[data-dw-dblroll='extra-skill']");
+    nodes.on("dblclick", async (ev) => {
         ev.preventDefault();
         const index = Number(ev.currentTarget.dataset.index);
         const name = String(ev.currentTarget.dataset.name ?? "SKILL").trim() || "SKILL";

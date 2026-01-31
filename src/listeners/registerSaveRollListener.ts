@@ -1,11 +1,25 @@
 import { registerAction } from "../utils/registerAction.js";
 import { DW_ROLL_SAVE } from "../constants/templateAttributes.js";
+import type { ActionEvent, GetDwFlags, HtmlRoot, RollTargetCheck } from "../types.js";
 
-export function registerSaveRollListener(html, { actor, getDwFlags, rollTargetCheck, prettyKey }) {
-    registerAction(html, DW_ROLL_SAVE, async (ev) => {
+export function registerSaveRollListener(
+    html: HtmlRoot,
+    {
+        actor,
+        getDwFlags,
+        rollTargetCheck,
+        prettyKey
+    }: {
+        actor: Actor;
+        getDwFlags: GetDwFlags;
+        rollTargetCheck: RollTargetCheck;
+        prettyKey: (key: string) => string;
+    }
+): void {
+    registerAction(html, DW_ROLL_SAVE, async (ev: ActionEvent) => {
         const key = ev.currentTarget.dataset.key;
         const target = Number(foundry.utils.getProperty(getDwFlags(), `saves.${key}`) ?? 0);
 
-        await rollTargetCheck(actor, `Save: ${prettyKey(key)}`, target);
+        await rollTargetCheck(actor, `Save: ${prettyKey(key ?? "")}`, target);
     });
 }

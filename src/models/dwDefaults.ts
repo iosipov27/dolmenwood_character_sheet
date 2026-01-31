@@ -1,4 +1,6 @@
-export function dwDefaults() {
+import type { DwFlags } from "../types.js";
+
+export function dwDefaults(): DwFlags {
     return {
         saves: {
             doom: 0,

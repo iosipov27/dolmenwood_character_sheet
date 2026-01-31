@@ -5,6 +5,6 @@ export function registerSkillRollListener(html, { actor, getDwFlags, rollTargetC
         const key = ev.currentTarget.dataset.key;
         const dw = getDwFlags();
         const target = Number(foundry.utils.getProperty(dw, `skills.${key}`) ?? 0);
-        await rollTargetCheck(actor, `Skill: ${prettyKey(key)}`, target);
+        await rollTargetCheck(actor, `Skill: ${prettyKey(key ?? "")}`, target);
     });
 }

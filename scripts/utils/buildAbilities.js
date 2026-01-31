@@ -23,7 +23,7 @@ export function buildAbilities(systemData) {
     const out = [];
     for (const a of ABILITIES) {
         let foundPath = null;
-        let value = "";
+        let value = 0;
         for (const mk of candidates) {
             const p = mk(a.key);
             const v = foundry.utils.getProperty(wrapper, p);

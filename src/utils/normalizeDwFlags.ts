@@ -1,15 +1,18 @@
-export function normalizeDwFlags(dw) {
+import type { DwFlags, DwFlagsInput, DwSaves } from "../types.js";
+
+export function normalizeDwFlags(dw: DwFlagsInput): DwFlags {
     // If an old "resistance" existed, fold it into magic (prefer magic if set).
-    const d = foundry.utils.duplicate(dw ?? {});
-    d.saves ??= {};
+    const d = foundry.utils.duplicate(dw ?? {}) as DwFlagsInput;
+    const saves = (d.saves ?? {}) as Partial<DwSaves> & { resistance?: number };
 
-    if (typeof d.saves.magic !== "number") d.saves.magic = Number(d.saves.magic ?? 0);
+    if (typeof saves.magic !== "number") saves.magic = Number(saves.magic ?? 0);
 
-    if (d.saves.resistance != null) {
-        const res = Number(d.saves.resistance ?? 0);
-        if (!d.saves.magic || d.saves.magic === 0) d.saves.magic = res;
-        delete d.saves.resistance;
+    if (saves.resistance != null) {
+        const res = Number(saves.resistance ?? 0);
+        if (!saves.magic || saves.magic === 0) saves.magic = res;
+        delete saves.resistance;
     }
 
-    return d;
+    d.saves = saves as DwSaves;
+    return d as DwFlags;
 }

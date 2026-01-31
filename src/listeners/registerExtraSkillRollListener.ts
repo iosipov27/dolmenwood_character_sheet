@@ -1,8 +1,16 @@
 import { registerAction } from "../utils/registerAction.js";
 import { DW_ROLL_EXTRA_SKILL } from "../constants/templateAttributes.js";
+import type { ActionEvent, GetDwFlags, HtmlRoot, RollTargetCheck } from "../types.js";
 
-export function registerExtraSkillRollListener(html, { actor, getDwFlags, rollTargetCheck }) {
-    registerAction(html, DW_ROLL_EXTRA_SKILL, async (ev) => {
+export function registerExtraSkillRollListener(
+    html: HtmlRoot,
+    {
+        actor,
+        getDwFlags,
+        rollTargetCheck
+    }: { actor: Actor; getDwFlags: GetDwFlags; rollTargetCheck: RollTargetCheck }
+): void {
+    registerAction(html, DW_ROLL_EXTRA_SKILL, async (ev: ActionEvent) => {
         const index = Number(ev.currentTarget.dataset.index);
         const name = String(ev.currentTarget.dataset.name ?? "SKILL").trim() || "SKILL";
 

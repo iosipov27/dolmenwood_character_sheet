@@ -1,7 +1,11 @@
 export class RollChecks {
-    static async rollTargetCheck(actor, label, target) {
+    static async rollTargetCheck(
+        actor: Actor,
+        label: string,
+        target: number
+    ): Promise<{ roll: Roll; success: boolean; target: number }> {
         const t = Number(target ?? 0);
-        const roll = await new Roll("1d20").roll({ async: true });
+        const roll = await new Roll("1d20").evaluate();
         const success = roll.total >= t;
 
         const flavor =
@@ -17,9 +21,13 @@ export class RollChecks {
         return { roll, success, target: t };
     }
 
-    static async rollAbilityCheck(actor, abilityLabel, abilityValue) {
+    static async rollAbilityCheck(
+        actor: Actor,
+        abilityLabel: string,
+        abilityValue: number
+    ): Promise<{ roll: Roll; success: boolean; target: number }> {
         const target = Number(abilityValue ?? 0);
-        const roll = await new Roll("1d20").roll({ async: true });
+        const roll = await new Roll("1d20").evaluate();
         const success = roll.total <= target;
 
         const flavor =

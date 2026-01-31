@@ -1,33 +1,34 @@
 import { ABILITIES } from "../constants/abilities.js";
 import { formatSigned } from "./formatSigned.js";
+import type { DwAbilityView } from "../types.js";
 
-export function buildAbilities(systemData) {
-    const candidates = [
-        (k) => `system.abilities.${k}.value`,
-        (k) => `system.abilities.${k}`,
-        (k) => `system.stats.${k}.value`,
-        (k) => `system.stats.${k}`,
-        (k) => `system.attributes.${k}.value`,
-        (k) => `system.attributes.${k}`,
-        (k) => `system.scores.${k}.value`,
-        (k) => `system.scores.${k}`,
-        (k) => `system.abilities.${k.toUpperCase()}.value`,
-        (k) => `system.stats.${k.toUpperCase()}.value`
+export function buildAbilities(systemData: Record<string, unknown>): DwAbilityView[] {
+    const candidates: Array<(k: string) => string> = [
+        (k: string) => `system.abilities.${k}.value`,
+        (k: string) => `system.abilities.${k}`,
+        (k: string) => `system.stats.${k}.value`,
+        (k: string) => `system.stats.${k}`,
+        (k: string) => `system.attributes.${k}.value`,
+        (k: string) => `system.attributes.${k}`,
+        (k: string) => `system.scores.${k}.value`,
+        (k: string) => `system.scores.${k}`,
+        (k: string) => `system.abilities.${k.toUpperCase()}.value`,
+        (k: string) => `system.stats.${k.toUpperCase()}.value`
     ];
 
-    const modCandidates = [
-        (base) => base.replace(/\.value$/, ".mod"),
-        (base) => base.replace(/\.value$/, ".modifier"),
-        (base) => base.replace(/\.value$/, ".bonus"),
-        (base) => base.replace(/\.value$/, ".bns")
+    const modCandidates: Array<(base: string) => string> = [
+        (base: string) => base.replace(/\.value$/, ".mod"),
+        (base: string) => base.replace(/\.value$/, ".modifier"),
+        (base: string) => base.replace(/\.value$/, ".bonus"),
+        (base: string) => base.replace(/\.value$/, ".bns")
     ];
 
-    const wrapper = { system: systemData };
-    const out = [];
+    const wrapper: { system: Record<string, unknown> } = { system: systemData };
+    const out: DwAbilityView[] = [];
 
     for (const a of ABILITIES) {
-        let foundPath = null;
-        let value = "";
+        let foundPath: string | null = null;
+        let value = 0;
 
         for (const mk of candidates) {
             const p = mk(a.key);

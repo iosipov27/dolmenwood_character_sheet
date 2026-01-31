@@ -30,7 +30,9 @@ export function buildHp(systemData) {
         }
     }
     // read values (may be null if not found)
-    const current = currentPath ? foundry.utils.getProperty(wrapper, currentPath) : null;
+    const current = currentPath
+        ? foundry.utils.getProperty(wrapper, currentPath)
+        : null;
     const max = maxPath ? foundry.utils.getProperty(wrapper, maxPath) : null;
     return {
         current,

@@ -23,8 +23,8 @@ import { buildHp } from "../utils/buildHp.js";
 import { getBaseOSECharacterSheetClass } from "../utils/getBaseOSECharacterSheetClass.js";
 // Roll logic.
 import { RollChecks } from "./rollChecks.js";
-// Main sheet class extends OSE character sheet.
-export class DolmenwoodSheet extends getBaseOSECharacterSheetClass() {
+const BaseSheet = getBaseOSECharacterSheetClass();
+export class DolmenwoodSheet extends BaseSheet {
     // Sheet configuration.
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
@@ -37,14 +37,17 @@ export class DolmenwoodSheet extends getBaseOSECharacterSheetClass() {
     }
     getData(options) {
         const data = super.getData(options);
-        console.debug("DolmenwoodSheet.getData MODULE_ID=", MODULE_ID, "moduleActive=", game?.modules?.get(MODULE_ID)?.active);
+        const moduleRegistry = game?.modules;
+        const moduleActive = moduleRegistry?.get(MODULE_ID)?.active;
+        console.debug("DolmenwoodSheet.getData MODULE_ID=", MODULE_ID, "moduleActive=", moduleActive);
+        const actor = this.actor;
         // OSE system data.
         data.system = this.actor.system;
         // Dolmenwood flags (actor.flags.<module>.dw).
         let dwFlagRaw = {};
         try {
-            if (game?.modules?.get(MODULE_ID)?.active) {
-                dwFlagRaw = this.actor.getFlag(MODULE_ID, "dw") ?? {};
+            if (moduleActive) {
+                dwFlagRaw = actor.getFlag(MODULE_ID, "dw") ?? {};
             }
             else {
                 console.warn(`${MODULE_ID} flags are not available (module inactive): using defaults`);
@@ -95,10 +98,13 @@ export class DolmenwoodSheet extends getBaseOSECharacterSheetClass() {
     activateListeners(html) {
         super.activateListeners(html);
         // Small helpers for listeners.
+        const moduleRegistry = game?.modules;
+        const moduleActive = moduleRegistry?.get(MODULE_ID)?.active;
+        const actor = this.actor;
         const getDwFlags = () => {
             try {
-                if (game?.modules?.get(MODULE_ID)?.active) {
-                    return normalizeDwFlags(this.actor.getFlag(MODULE_ID, "dw") ?? {});
+                if (moduleActive) {
+                    return normalizeDwFlags(actor.getFlag(MODULE_ID, "dw") ?? {});
                 }
                 return normalizeDwFlags({});
             }
@@ -109,8 +115,9 @@ export class DolmenwoodSheet extends getBaseOSECharacterSheetClass() {
         };
         const setDwFlags = async (dw) => {
             try {
-                if (game?.modules?.get(MODULE_ID)?.active) {
-                    return this.actor.setFlag(MODULE_ID, "dw", dw);
+                if (moduleActive) {
+                    await actor.setFlag(MODULE_ID, "dw", dw);
+                    return;
                 }
                 console.warn(`Cannot set flags for scope ${MODULE_ID}: module inactive`);
             }
@@ -118,7 +125,9 @@ export class DolmenwoodSheet extends getBaseOSECharacterSheetClass() {
                 console.warn(`Failed to set flags for scope ${MODULE_ID}:`, err);
             }
         };
-        const renderSheet = () => this.render();
+        const renderSheet = () => {
+            this.render();
+        };
         registerSaveRollListener(html, {
             actor: this.actor,
             getDwFlags,
@@ -158,7 +167,8 @@ export class DolmenwoodSheet extends getBaseOSECharacterSheetClass() {
         });
         // Minimal right-side tabs (vertical)
         const root = html.find("[data-dw-tabs]");
-        root.find(".dw-tab").on("click", (ev) => {
+        const tabs = root.find(".dw-tab");
+        tabs.on("click", (ev) => {
             ev.preventDefault();
             const tab = ev.currentTarget.dataset.tab;
             root.find(".dw-tab").removeClass("is-active");
@@ -169,12 +179,14 @@ export class DolmenwoodSheet extends getBaseOSECharacterSheetClass() {
     }
     async _updateObject(event, formData) {
         const expanded = foundry.utils.expandObject(formData);
-        if (expanded.dw) {
+        if ("dw" in expanded && expanded.dw) {
             const normalized = normalizeDwFlags(expanded.dw);
-            await this.actor.setFlag(MODULE_ID, "dw", normalized);
+            const actor = this.actor;
+            await actor.setFlag(MODULE_ID, "dw", normalized);
         }
         // Prevent dw.* from being written into actor.system.
         delete expanded.dw;
-        return super._updateObject(event, foundry.utils.flattenObject(expanded));
+        await super._updateObject(event, foundry.utils.flattenObject(expanded));
+        return;
     }
 }
