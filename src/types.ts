@@ -30,6 +30,7 @@ export interface DwCombat {
 
 export interface DwMeta {
   kindredClass: string;
+  kindredClassTraits: string;
   background: string;
   alignment: string;
   affiliation: string;

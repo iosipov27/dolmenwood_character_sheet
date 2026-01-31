@@ -22,6 +22,7 @@ export function dwDefaults(): DwFlags {
     },
     meta: {
       kindredClass: "",
+      kindredClassTraits: "",
       background: "",
       alignment: "",
       affiliation: "",
