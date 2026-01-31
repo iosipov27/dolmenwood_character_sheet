@@ -1,5 +1,6 @@
 export function buildHp(systemData) {
     const wrapper = { system: systemData };
+
     // candidates for current HP
     const curCandidates = [
         "system.attributes.hp.value",
@@ -8,13 +9,16 @@ export function buildHp(systemData) {
         "system.hp.current",
         "system.hp"
     ];
+
     // candidates for max HP
     const maxCandidates = [
         "system.attributes.hp.max",
         "system.hp.max"
     ];
+
     let currentPath = null;
     let maxPath = null;
+
     for (const p of curCandidates) {
         const v = foundry.utils.getProperty(wrapper, p);
         if (typeof v === "number") {
@@ -22,6 +26,7 @@ export function buildHp(systemData) {
             break;
         }
     }
+
     for (const p of maxCandidates) {
         const v = foundry.utils.getProperty(wrapper, p);
         if (typeof v === "number") {
@@ -29,9 +34,11 @@ export function buildHp(systemData) {
             break;
         }
     }
+
     // read values (may be null if not found)
     const current = currentPath ? foundry.utils.getProperty(wrapper, currentPath) : null;
     const max = maxPath ? foundry.utils.getProperty(wrapper, maxPath) : null;
+
     return {
         current,
         max,
