@@ -1,6 +1,8 @@
+import { registerAction } from "../utils/registerAction.js";
+import { DW_ADD_SKILL } from "../constants/templateAttributes.js";
+
 export function registerAddSkillListener(html, { getDwFlags, setDwFlags, renderSheet }) {
-    html.find("[data-action='dw-add-skill']").on("click", async (ev) => {
-        ev.preventDefault();
+    registerAction(html, DW_ADD_SKILL, async (ev) => {
         const dw = getDwFlags();
         dw.extraSkills = Array.isArray(dw.extraSkills) ? dw.extraSkills : [];
 
