@@ -1,20 +1,26 @@
 {
   "type": "module",
   "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "watch": "tsc -p tsconfig.json -w",
+    "build": "npm run css && tsc -p tsconfig.json",
+    "watch": "concurrently \"npm run css:watch\" \"npm run ts:watch\"",
+    "css": "sass src/styles/dolmenwood.scss styles/dolmenwood.css",
+    "css:watch": "sass src/styles/dolmenwood.scss styles/dolmenwood.css --watch",
+    "ts:watch": "tsc -p tsconfig.json -w",
     "format": "prettier --write .",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix --fix-type=directive,problem,suggestion,layout"
+    "lint:fix": "eslint . --fix --fix-type=directive,problem,suggestion,layout",
+    "dev": "node dev-server.js"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^8.54.0",
     "@typescript-eslint/parser": "^8.54.0",
+    "concurrently": "^8.2.2",
     "eslint": "^9.39.2",
     "express": "^4.22.1",
     "fvtt-types": "github:League-of-Foundry-Developers/foundry-vtt-types#main",
     "handlebars": "^4.7.8",
     "prettier": "^3.8.1",
+    "sass": "^1.97.3",
     "typescript": "^5.9.3"
   }
 }

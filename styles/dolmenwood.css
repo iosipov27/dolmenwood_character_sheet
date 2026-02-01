@@ -1,333 +1,103 @@
-.dolmenwood {
-  padding: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.dw-header {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.dw-row {
+.dw-grid-4 {
   display: grid;
-  grid-template-columns: 1fr 1fr 260px;
-  gap: 10px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10.5rem;
 }
 
 .dw-grid-2 {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
 }
 
+.dw-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
 .dw-field label {
-  display: block;
-  font-size: 12px;
-  opacity: 0.8;
-  margin-bottom: 4px;
+  font-size: 0.75rem;
+  color: var(--dw-primary-color);
+  font-weight: 600;
+  text-transform: uppercase;
 }
-
 .dw-field input {
-  width: 100%;
+  border: none;
+  border-bottom: 1px solid var(--color-light-5);
+  background: none;
+  padding: 0.5rem;
+}
+.dw-field input[type=number]::-webkit-inner-spin-button, .dw-field input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .dw-block {
-  border: 1px solid var(--color-border-light-2);
-  border-radius: 12px;
-  padding: 10px;
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
-
 .dw-block-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 8px;
+  margin-bottom: 0.75rem;
 }
-
-.dw-block h2 {
-  margin: 0;
-  font-size: 18px;
+.dw-block-head h2 {
+  margin: 0 0 0.25rem;
+  font-size: 1.25rem;
+  color: var(--dw-primary-color);
 }
 
 .dw-hint {
-  font-size: 12px;
-  opacity: 0.75;
+  font-size: 0.75rem;
+  color: var(--dw-border-color);
+  font-style: italic;
 }
 
-/* Saves / Skills */
-.dw-saves {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 8px;
-}
-
-.dw-skills {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
-}
-
-.dw-save,
-.dw-skill {
-  display: grid;
-  grid-template-columns: 56px 1fr 70px;
-  align-items: center;
-  gap: 8px;
-  padding: 6px;
-  border-radius: 10px;
-  border: 1px solid var(--color-border-light-2);
-}
-
-.dw-label {
-  font-size: 12px;
-  text-transform: uppercase;
-  user-select: none;
-}
-
-.dw-roll {
-  height: 24px;
-  line-height: 24px;
-  padding: 0 6px;
-  font-size: 12px;
-}
-
-.dw-roll-placeholder {
-  height: 24px;
-}
-
-.dw-target {
-  text-align: center;
-  font-weight: 600;
-}
-
-/* Abilities */
-.dw-abilities {
-  display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 8px;
-}
-
-.dw-ability {
-  display: grid;
-  grid-template-rows: auto auto auto;
-  gap: 6px;
-  padding: 8px;
-  border-radius: 10px;
-  border: 1px solid var(--color-border-light-2);
-}
-
-.dw-ability-top {
+.dw-avatar {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 6px;
-}
-
-.dw-ability-roll {
-  height: 18px;
-  line-height: 18px;
-  padding: 0 6px;
-  font-size: 11px;
-  min-width: 0;
-}
-
-.dw-ability-mod {
-  height: 14px;
-  font-size: 12px;
-  text-align: center;
-  opacity: 0.85;
-}
-
-.dw-footer {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.dw-save-btn {
-  min-width: 140px;
-}
-
-.dw-success {
-  font-weight: 700;
-}
-
-.dw-fail {
-  font-weight: 700;
-}
-
-.dw-roll-title {
-  font-weight: 700;
-}
-
-.dw-roll-formula {
-  font-weight: 700;
-}
-
-.dw-hp {
-  display: grid;
-  grid-template-columns: 1fr 14px 1fr;
-  gap: 6px;
+  justify-content: center;
   align-items: center;
 }
-
-.dw-hp-sep {
-  text-align: center;
-  opacity: 0.75;
+.dw-avatar img {
+  max-width: 25rem;
+  object-fit: cover;
+}
+.dw-avatar img:hover {
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
 }
 
 .dw-movement {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
 }
 
 .dw-move {
-  display: grid;
-  grid-template-rows: auto auto;
-  gap: 6px;
-  padding: 8px;
-  border-radius: 10px;
-  border: 1px solid var(--color-border-light-2);
-}
-
-.dw-move .dw-label {
-  font-size: 12px;
-  opacity: 0.85;
-}
-
-.dw-skill-actions {
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 8px;
-}
-
-.dw-plus {
-  width: 22px;
-  height: 22px;
-  line-height: 20px;
-  padding: 0;
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.dw-skill-extra {
-  grid-template-columns: 56px 1fr 70px 28px;
-}
-
-.dw-skill-name {
-  width: 100%;
-  font-weight: 600;
-}
-
-.dw-x {
-  width: 28px;
-  height: 24px;
-  line-height: 22px;
-  padding: 0;
-  font-size: 12px;
-}
-
-.dw-layout {
-  display: grid;
-  grid-template-columns: 1fr 56px;
-  gap: 10px;
-  align-items: start;
-}
-
-.dw-main {
-  min-width: 0;
-}
-
-.dw-tabs {
-  position: sticky;
-  top: 10px;
-  display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0.5rem;
 }
-
-.dw-tab {
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-  height: 120px;
-  width: 56px;
-  border-radius: 12px;
-  border: 1px solid var(--color-border-light-2);
+.dw-move .dw-label {
   font-weight: 600;
-  padding: 8px 6px;
+  font-size: 0.875rem;
+  color: var(--dw-primary-color);
 }
-
-.dw-tab.is-active {
-  box-shadow: 0 0 0 2px var(--color-border-highlight);
-}
-
-.dw-tab-panels {
-  display: none; /* пока панель пустая, можно скрыть контейнер */
-}
-
-.dw-tab-panel {
-  display: none;
-}
-
-.dw-tab-panel.is-active {
-  display: block;
-}
-/* Kindred & Class Traits */
-.dw-block-head h2 {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-}
-
-.dw-edit-btn {
-  flex-shrink: 0;
-  padding: 4px 12px;
-  font-size: 12px;
-  font-weight: normal;
-  background-color: var(--color-border-light-2);
-  border: 1px solid var(--color-border-light);
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.dw-edit-btn:hover {
-  background-color: var(--color-border-highlight);
-}
-
-.dw-kindred-traits-display {
-  padding: 10px;
-  border: 1px solid var(--color-border-light-2);
-  border-radius: 6px;
-  background-color: rgba(0, 0, 0, 0.05);
-  min-height: 100px;
-  overflow-y: auto;
-  word-wrap: break-word;
-  white-space: pre-wrap;
-}
-
-.dw-traits-content {
-  line-height: 1.5;
-  color: inherit;
-}
-
-.dw-kindred-traits-textarea {
+.dw-move input {
+  border: none;
+  border-bottom: 1px solid var(--color-light-5);
+  background: none;
   width: 100%;
-  padding: 8px;
-  border: 1px solid var(--color-border-light-2);
-  border-radius: 6px;
-  font-family: inherit;
-  font-size: inherit;
-  resize: vertical;
 }
 
-.dw-kindred-traits-textarea:focus {
-  outline: 0;
-  box-shadow: 0 0 0 2px var(--color-border-highlight);
-  border-color: var(--color-border-highlight);
+.dw-header {
+  padding: 1rem;
+  border-bottom: 2px solid var(--dw-border-color);
 }
+
+.dw-row {
+  margin-bottom: 1rem;
+}
+
+/*# sourceMappingURL=dolmenwood.css.map */
