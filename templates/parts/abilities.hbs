@@ -1,0 +1,31 @@
+<div class="dw-block-head">
+  <h2>Abilities</h2>
+  <div class="dw-hint">Roll 1d20. Success if roll is &lt;= score.</div>
+</div>
+
+<div class="dw-abilities">
+  {{#each ctx.dwAbilities as |a|}}
+    <div class="dw-ability">
+      <div class="dw-ability-top">
+        <div class="dw-label">{{a.label}}</div>
+        <button
+          type="button"
+          class="dw-ability-roll"
+          data-action="dw-roll-ability"
+          data-label="{{a.label}}"
+          data-target="{{a.value}}"
+        >
+          Roll
+        </button>
+      </div>
+      {{#if a.hasPath}}
+        <input class="dw-target" name="{{a.name}}" type="number" value="{{a.value}}" />
+      {{else}}
+        <input class="dw-target" type="text" value="{{a.value}}" disabled />
+      {{/if}}
+      <div class="dw-ability-mod" title="OSE modifier (display only)">
+        {{#if a.hasMod}}{{a.modText}}{{/if}}
+      </div>
+    </div>
+  {{/each}}
+</div>

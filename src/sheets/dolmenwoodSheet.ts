@@ -54,9 +54,12 @@ export class DolmenwoodSheet extends BaseSheet {
 
   private getDwFlags(): DwFlags {
     try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const actorWithFlags = this.actor as Actor & {
+        getFlag?(scope: string, key: string): unknown;
+      };
+
       return normalizeDwFlags(
-        ((this.actor as any).getFlag?.(MODULE_ID, "dw") as Partial<DwFlags>) ?? {}
+        (actorWithFlags.getFlag?.(MODULE_ID, "dw") as Partial<DwFlags>) ?? {}
       );
     } catch {
       return normalizeDwFlags({});
@@ -65,8 +68,11 @@ export class DolmenwoodSheet extends BaseSheet {
 
   private async setDwFlags(dw: DwFlags): Promise<void> {
     try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      await (this.actor as any).setFlag?.(MODULE_ID, "dw", dw);
+      const actorWithFlags = this.actor as Actor & {
+        setFlag?(scope: string, key: string, value: unknown): Promise<unknown>;
+      };
+
+      await actorWithFlags.setFlag?.(MODULE_ID, "dw", dw);
     } catch {
       // Silently ignore flag write errors
     }

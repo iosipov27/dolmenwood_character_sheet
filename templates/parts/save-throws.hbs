@@ -1,0 +1,40 @@
+<div class="dw-block-head">
+    <h2>Save Targets</h2>
+    <div class="dw-hint">Click Roll or double-click a number (except MAGIC/RESIST).</div>
+</div>
+
+<div class="dw-saves">
+            {{#each ctx.dwSavesList as |s|}}
+                <div class="dw-save">
+                    {{#if s.rollable}}
+                        <button type="button" class="dw-roll" data-action="dw-roll-save" data-key="{{s.key}}">Roll</button>
+                    {{else}}
+                        <div class="dw-roll-placeholder" title="Not rolled here."></div>
+                    {{/if}}
+
+                    <div class="dw-label" title="{{lookup ctx.dwUi.saveTooltips s.key}}">
+                        {{s.label}}
+                    </div>
+
+                    {{#if s.rollable}}
+                        <input
+                                class="dw-target"
+                                name="dw.saves.{{s.key}}"
+                                type="number"
+                                value="{{s.value}}"
+                                data-dw-dblroll="save"
+                                data-key="{{s.key}}"
+                                title="{{lookup ctx.dwUi.saveTooltips s.key}}"
+                        />
+                    {{else}}
+                        <input
+                                class="dw-target"
+                                name="dw.saves.{{s.key}}"
+                                type="number"
+                                value="{{s.value}}"
+                                title="{{lookup ctx.dwUi.saveTooltips s.key}}"
+                        />
+                    {{/if}}
+                </div>
+            {{/each}}
+        </div>
