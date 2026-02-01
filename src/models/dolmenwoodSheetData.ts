@@ -22,8 +22,12 @@ export class DolmenwoodSheetData {
 
     try {
       if (moduleActive) {
+        const actorWithFlags = actor as Actor & {
+          getFlag?(scope: string, key: string): unknown;
+        };
+
         dwFlagRaw =
-          ((actor as any).getFlag?.(MODULE_ID, "dw") as Partial<Record<string, unknown>>) ?? {};
+          (actorWithFlags.getFlag?.(MODULE_ID, "dw") as Partial<Record<string, unknown>>) ?? {};
       }
     } catch {
       // Silently ignore flag read errors
@@ -36,6 +40,10 @@ export class DolmenwoodSheetData {
 
     // Skills (fixed + extra).
     const extras = Array.isArray(data.dw.extraSkills) ? data.dw.extraSkills : [];
+
+    const prettyKeyMap = Object.fromEntries(
+      Object.keys(data.dw.skills).map((key) => [key, prettyKey(key)])
+    );
 
     data.dwSkillsList = [
       { kind: "fixed", key: "listen", label: "LISTEN", value: data.dw.skills.listen },
@@ -55,7 +63,7 @@ export class DolmenwoodSheetData {
     data.dwUi = {
       saveTooltips: SAVE_TOOLTIPS,
       skillTooltips: SKILL_TOOLTIPS,
-      prettyKey
+      prettyKey: prettyKeyMap
     };
 
     // Abilities from OSE system data.

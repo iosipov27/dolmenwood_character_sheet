@@ -138,7 +138,7 @@ export type DwSheetData = BaseSheetData & {
   dwUi: {
     saveTooltips: Record<string, string>;
     skillTooltips: Record<string, string>;
-    prettyKey: (key: string) => string;
+    prettyKey: Record<string, string>;
   };
   dwAbilities: DwAbilityView[];
   dwCombat: DwCombatView;

@@ -5,4 +5,12 @@
   {{else}}
     <input type="number" value="{{ctx.dwCombat.ac}}" disabled title="AC path not detected." />
   {{/if}}
+
+  <label>Attack</label>
+  <input
+    name="dw.combat.attack"
+    type="text"
+    value="{{dw.combat.attack}}"
+    placeholder="+1 melee / +2 missile"
+  />
 </div>

@@ -10,17 +10,7 @@
             </div>
 
             <div class="dw-field">
-                {{> armor-class ctx=this}}
-
-                <div class="dw-field">
-                    <label>Attack</label>
-                    <input
-                            name="dw.combat.attack"
-                            type="text"
-                            value="{{dw.combat.attack}}"
-                            placeholder="+1 melee / +2 missile"
-                    />
-                </div>
+                {{> ac-attack ctx=this}}
             </div>
 
             <div class="dw-avatar">
