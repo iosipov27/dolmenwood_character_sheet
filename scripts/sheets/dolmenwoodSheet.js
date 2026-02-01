@@ -13,18 +13,14 @@ import { registerKindredTraitsListener } from "../listeners/registerKindredTrait
 import { registerLanguagesListener } from "../listeners/registerLanguagesListener.js";
 // Constants/configuration.
 import { MODULE_ID } from "../constants/moduleId.js";
-import { SAVE_TOOLTIPS } from "../constants/saveTooltips.js";
-import { SKILL_TOOLTIPS } from "../constants/skillTooltips.js";
 // UI-agnostic models/utilities.
-import { dwDefaults } from "../models/dwDefaults.js";
 import { normalizeDwFlags } from "../utils/normalizeDwFlags.js";
 import { prettyKey } from "../utils/prettyKey.js";
-import { buildAbilities } from "../utils/buildAbilities.js";
-import { buildCombat } from "../utils/buildCombat.js";
-import { buildHp } from "../utils/buildHp.js";
 import { getBaseOSECharacterSheetClass } from "../utils/getBaseOSECharacterSheetClass.js";
+import { DolmenwoodSheetData } from "../models/dolmenwoodSheetData.js";
 // Roll logic.
 import { RollChecks } from "./rollChecks.js";
+// Main sheet class extends OSE character sheet.
 const BaseSheet = getBaseOSECharacterSheetClass();
 export class DolmenwoodSheet extends BaseSheet {
     // Sheet configuration.
@@ -39,132 +35,73 @@ export class DolmenwoodSheet extends BaseSheet {
     }
     getData(options) {
         const data = super.getData(options);
-        const moduleRegistry = game?.modules;
-        const moduleActive = moduleRegistry?.get(MODULE_ID)?.active;
-        console.debug("DolmenwoodSheet.getData MODULE_ID=", MODULE_ID, "moduleActive=", moduleActive);
         const actor = this.actor;
-        // OSE system data.
-        data.system = this.actor.system;
-        // Dolmenwood flags (actor.flags.<module>.dw).
-        let dwFlagRaw = {};
+        return DolmenwoodSheetData.populate(data, actor);
+    }
+    getDwFlags() {
         try {
-            if (moduleActive) {
-                dwFlagRaw = actor.getFlag(MODULE_ID, "dw") ?? {};
-            }
-            else {
-                console.warn(`${MODULE_ID} flags are not available (module inactive): using defaults`);
-            }
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            return normalizeDwFlags(this.actor.getFlag?.(MODULE_ID, "dw") ?? {});
         }
-        catch (err) {
-            console.warn(`Failed to read flags for scope ${MODULE_ID}:`, err);
+        catch {
+            return normalizeDwFlags({});
         }
-        const dwFlag = normalizeDwFlags(dwFlagRaw);
-        // Merge defaults with stored flags.
-        data.dw = foundry.utils.mergeObject(dwDefaults(), dwFlag, { inplace: false });
-        // Skills (fixed + extra).
-        const extras = Array.isArray(data.dw.extraSkills) ? data.dw.extraSkills : [];
-        data.dwSkillsList = [
-            { kind: "fixed", key: "listen", label: "LISTEN", value: data.dw.skills.listen },
-            { kind: "fixed", key: "search", label: "SEARCH", value: data.dw.skills.search },
-            { kind: "fixed", key: "survival", label: "SURVIVAL", value: data.dw.skills.survival },
-            ...extras.map((s, i) => ({
-                kind: "extra",
-                index: i,
-                name: s?.name ?? "",
-                target: Number(s?.target ?? 0)
-            }))
-        ];
-        // UI helpers for the template.
-        data.dwUi = {
-            saveTooltips: SAVE_TOOLTIPS,
-            skillTooltips: SKILL_TOOLTIPS,
-            prettyKey
-        };
-        // Abilities from OSE system data.
-        data.dwAbilities = buildAbilities(this.actor.system);
-        // AC and Attack (read from OSE system data)
-        data.dwCombat = buildCombat(this.actor.system);
-        // HP from OSE system data.
-        data.dwHp = buildHp(this.actor.system);
-        // Save targets list (labels, rollable, order).
-        data.dwSavesList = [
-            { key: "doom", label: "DOOM", rollable: true, value: data.dw.saves.doom },
-            { key: "hold", label: "HOLD", rollable: true, value: data.dw.saves.hold },
-            { key: "spell", label: "SPELL", rollable: true, value: data.dw.saves.spell },
-            { key: "ray", label: "RAY", rollable: true, value: data.dw.saves.ray },
-            { key: "blast", label: "BLAST", rollable: true, value: data.dw.saves.blast },
-            { key: "magic", label: "MAGIC/RESIST", rollable: false, value: data.dw.saves.magic }
-        ];
-        return data;
+    }
+    async setDwFlags(dw) {
+        try {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            await this.actor.setFlag?.(MODULE_ID, "dw", dw);
+        }
+        catch {
+            // Silently ignore flag write errors
+        }
     }
     activateListeners(html) {
         super.activateListeners(html);
-        // Small helpers for listeners.
-        const moduleRegistry = game?.modules;
-        const moduleActive = moduleRegistry?.get(MODULE_ID)?.active;
-        const actor = this.actor;
-        const getDwFlags = () => {
-            try {
-                if (moduleActive) {
-                    return normalizeDwFlags(actor.getFlag(MODULE_ID, "dw") ?? {});
-                }
-                return normalizeDwFlags({});
-            }
-            catch (err) {
-                console.warn(`Failed to get flags for scope ${MODULE_ID}:`, err);
-                return normalizeDwFlags({});
-            }
-        };
-        const setDwFlags = async (dw) => {
-            try {
-                if (moduleActive) {
-                    await actor.setFlag(MODULE_ID, "dw", dw);
-                    return;
-                }
-                console.warn(`Cannot set flags for scope ${MODULE_ID}: module inactive`);
-            }
-            catch (err) {
-                console.warn(`Failed to set flags for scope ${MODULE_ID}:`, err);
-            }
-        };
-        const renderSheet = () => {
-            this.render();
-        };
+        // Register listeners (minimal — helpers inlined in calls)
         registerSaveRollListener(html, {
-            actor,
-            getDwFlags,
+            actor: this.actor,
+            getDwFlags: () => this.getDwFlags(),
             rollTargetCheck: RollChecks.rollTargetCheck,
             prettyKey
         });
         registerSkillRollListener(html, {
-            actor,
-            getDwFlags,
+            actor: this.actor,
+            getDwFlags: () => this.getDwFlags(),
             rollTargetCheck: RollChecks.rollTargetCheck,
             prettyKey
         });
         registerSaveDblRollListener(html, {
-            actor,
+            actor: this.actor,
             rollTargetCheck: RollChecks.rollTargetCheck,
             prettyKey
         });
         registerSkillDblRollListener(html, {
-            actor,
+            actor: this.actor,
             rollTargetCheck: RollChecks.rollTargetCheck,
             prettyKey
         });
         registerAbilityRollListener(html, {
-            actor,
+            actor: this.actor,
             rollAbilityCheck: RollChecks.rollAbilityCheck
         });
-        registerAddSkillListener(html, { getDwFlags, setDwFlags, renderSheet });
-        registerRemoveSkillListener(html, { getDwFlags, setDwFlags, renderSheet });
+        registerAddSkillListener(html, {
+            getDwFlags: () => this.getDwFlags(),
+            setDwFlags: (dw) => this.setDwFlags(dw),
+            renderSheet: () => this.render()
+        });
+        registerRemoveSkillListener(html, {
+            getDwFlags: () => this.getDwFlags(),
+            setDwFlags: (dw) => this.setDwFlags(dw),
+            renderSheet: () => this.render()
+        });
         registerExtraSkillRollListener(html, {
-            actor,
-            getDwFlags,
+            actor: this.actor,
+            getDwFlags: () => this.getDwFlags(),
             rollTargetCheck: RollChecks.rollTargetCheck
         });
         registerExtraSkillDblRollListener(html, {
-            actor,
+            actor: this.actor,
             rollTargetCheck: RollChecks.rollTargetCheck
         });
         registerKindredTraitsListener(html);

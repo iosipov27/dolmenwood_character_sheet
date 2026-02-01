@@ -9,7 +9,7 @@ export function registerExtraSkillDblRollListener(
 
   nodes.on("dblclick", async (ev: ActionEvent<HTMLInputElement>) => {
     ev.preventDefault();
-    const { index, name } = getDataset(ev);
+    const { name } = getDataset(ev);
     const skillName = String(name ?? "SKILL").trim() || "SKILL";
     const target = Number(ev.currentTarget.value ?? 0);
 

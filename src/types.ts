@@ -117,3 +117,31 @@ export type RollAbilityCheck = (
 export type GetDwFlags = () => DwFlags;
 export type SetDwFlags = (dw: DwFlags) => Promise<void> | void;
 export type RenderSheet = () => void;
+
+export type DwSkillEntry =
+  | { kind: "fixed"; key: string; label: string; value: number }
+  | { kind: "extra"; index: number; name: string; target: number };
+
+export interface DwSaveEntry {
+  key: string;
+  label: string;
+  rollable: boolean;
+  value: number;
+}
+
+export type BaseSheetData = ReturnType<ActorSheet["getData"]>;
+
+export type DwSheetData = BaseSheetData & {
+  system: Record<string, unknown>;
+  dw: DwFlags;
+  dwSkillsList: DwSkillEntry[];
+  dwUi: {
+    saveTooltips: Record<string, string>;
+    skillTooltips: Record<string, string>;
+    prettyKey: (key: string) => string;
+  };
+  dwAbilities: DwAbilityView[];
+  dwCombat: DwCombatView;
+  dwHp: DwHpView;
+  dwSavesList: DwSaveEntry[];
+};
