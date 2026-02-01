@@ -36,6 +36,10 @@ export interface DwMeta {
   affiliation: string;
   moonSign: string;
   languages: string;
+  xp: number;
+  level: number;
+  nextLevel: number;
+  modifier: number;
 }
 
 export interface DwFlags {

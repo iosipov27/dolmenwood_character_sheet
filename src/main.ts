@@ -16,7 +16,9 @@ Hooks.once("init", async (): Promise<void> => {
     abilities: "modules/dolmenwood/templates/parts/abilities.hbs",
     "skill-targets": "modules/dolmenwood/templates/parts/skill-targets.hbs",
     "kindred-class-traits": "modules/dolmenwood/templates/parts/kindred-class-traits.hbs",
-    languages: "modules/dolmenwood/templates/parts/languages.hbs"
+    languages: "modules/dolmenwood/templates/parts/languages.hbs",
+    "xp-section": "modules/dolmenwood/templates/parts/xp-section.hbs",
+    avatar: "modules/dolmenwood/templates/parts/avatar.hbs"
   };
 
   await foundry.applications.handlebars.loadTemplates(templatePaths);

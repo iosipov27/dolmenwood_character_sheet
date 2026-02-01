@@ -13,11 +13,12 @@
                 {{> ac-attack ctx=this}}
             </div>
 
-            <div class="dw-avatar">
-                <img src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
-            </div>
+            {{> avatar ctx=this}}
         </div>
     </header>
+
+
+
 
     <section class="dw-block">
         {{> movement ctx=this}}
@@ -42,4 +43,10 @@
     <section class="dw-block">
         {{> languages ctx=this}}
     </section>
+
+    <section class="dw-block dw-xp-section">
+        {{> xp-section ctx=this}}
+    </section>
+
+
 </form>

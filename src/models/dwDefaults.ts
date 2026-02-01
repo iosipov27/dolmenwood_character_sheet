@@ -27,7 +27,11 @@ export function dwDefaults(): DwFlags {
       alignment: "",
       affiliation: "",
       moonSign: "",
-      languages: ""
+      languages: "",
+      xp: 0,
+      level: 1,
+      nextLevel: 0,
+      modifier: 0
     }
   };
 }
