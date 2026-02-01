@@ -1,12 +1,12 @@
 <form class="dolmenwood" autocomplete="off">
     <header class="dw-header">
         <div class="dw-row">
-            {{> player-data}}
+            {{> player-data ctx=this}}
         </div>
 
         <div class="dw-grid-2">
             <div class="dw-field">
-                {{> health-points}}
+                {{> health-points ctx=this}}
             </div>
 
             <div class="dw-field">
@@ -103,41 +103,7 @@
             <div class="dw-hint">Click Roll or double-click a number (except MAGIC/RESIST).</div>
         </div>
 
-        <div class="dw-saves">
-            {{#each dwSavesList as |s|}}
-                <div class="dw-save">
-                    {{#if s.rollable}}
-                        <button type="button" class="dw-roll" data-action="dw-roll-save" data-key="{{s.key}}">Roll</button>
-                    {{else}}
-                        <div class="dw-roll-placeholder" title="Not rolled here."></div>
-                    {{/if}}
-
-                    <div class="dw-label" title="{{lookup ../dwUi.saveTooltips s.key}}">
-                        {{s.label}}
-                    </div>
-
-                    {{#if s.rollable}}
-                        <input
-                                class="dw-target"
-                                name="dw.saves.{{s.key}}"
-                                type="number"
-                                value="{{s.value}}"
-                                data-dw-dblroll="save"
-                                data-key="{{s.key}}"
-                                title="{{lookup ../dwUi.saveTooltips s.key}}"
-                        />
-                    {{else}}
-                        <input
-                                class="dw-target"
-                                name="dw.saves.{{s.key}}"
-                                type="number"
-                                value="{{s.value}}"
-                                title="{{lookup ../dwUi.saveTooltips s.key}}"
-                        />
-                    {{/if}}
-                </div>
-            {{/each}}
-        </div>
+        {{> save-throws ctx=this}}
     </section>
 
     <section class="dw-block">
