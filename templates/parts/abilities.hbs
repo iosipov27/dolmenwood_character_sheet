@@ -1,31 +1,43 @@
 <div class="dw-block-head">
-  <h2>Abilities</h2>
-  <div class="dw-hint">Roll 1d20. Success if roll is &lt;= score.</div>
+  <h2>Ability Scores</h2>
+  {{! <div class="dw-hint">Roll 1d20. Success if roll is &lt;= score.</div> }}
 </div>
 
 <div class="dw-abilities">
   {{#each ctx.dwAbilities as |a|}}
-    <div class="dw-ability">
-      <div class="dw-ability-top">
-        <div class="dw-label">{{a.label}}</div>
+    <div class="dw-abilities__item">
+      <div class="dw-abilities__header">
         <button
           type="button"
-          class="dw-ability-roll"
+          class="dw-abilities__roll-button"
           data-action="dw-roll-ability"
           data-label="{{a.label}}"
           data-target="{{a.value}}"
         >
-          Roll
+          {{a.label}}
         </button>
       </div>
-      {{#if a.hasPath}}
-        <input class="dw-target" name="{{a.name}}" type="number" value="{{a.value}}" />
-      {{else}}
-        <input class="dw-target" type="text" value="{{a.value}}" disabled />
-      {{/if}}
-      <div class="dw-ability-mod" title="OSE modifier (display only)">
-        {{#if a.hasMod}}{{a.modText}}{{/if}}
+
+      <div class="dw-abilities__body">
+        <div class="dw-abilities__score">
+          <div class="dw-abilities__label">SCORE</div>
+          <div class="dw-abilities__value">
+            {{#if a.hasPath}}
+              <input class="dw-abilities__input" name="{{a.name}}" type="number" value="{{a.value}}" />
+            {{else}}
+              <input class="dw-abilities__input dw-abilities__input--disabled" type="text" value="{{a.value}}" disabled />
+            {{/if}}
+          </div>
+        </div>
+
+        <div class="dw-abilities__modifier" title="{{a.title}}">
+          <div class="dw-abilities__label">MOD</div>
+          <div class="dw-abilities__value">
+            {{#if a.hasMod}}{{a.modText}}{{/if}}
+          </div>
+        </div>
       </div>
+
     </div>
   {{/each}}
 </div>

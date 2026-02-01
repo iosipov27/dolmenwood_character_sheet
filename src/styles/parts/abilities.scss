@@ -1,0 +1,65 @@
+@use "../variables" as *;
+
+.dw-abilities {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.1rem;
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5rem;
+    border: 1px solid $color-border-light-highlight;
+    border-radius: 4px;
+  }
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding-bottom: 0.2rem;
+  }
+
+  &__roll-button {
+    // Button-specific styles if needed
+  }
+
+  &__body {
+    font-size: 1.5rem;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+  }
+
+  &__label {
+    font-weight: 300;
+    font-size: 0.75rem;
+    text-align: center;
+    padding-bottom: 0.5rem;
+  }
+
+  &__score {
+    // Score section styles
+  }
+
+  &__modifier {
+    // Modifier section styles
+  }
+
+  &__value {
+    // Value styles
+  }
+
+  &__input {
+    background: none;
+    border: none;
+    text-align: center;
+
+    &--disabled {
+      cursor: default;
+    }
+  }
+}

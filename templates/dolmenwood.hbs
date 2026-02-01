@@ -16,6 +16,10 @@
         </div>
     </header>
 
+    <section class="dw-block">
+        {{> abilities ctx=this}}
+    </section>
+
 
     {{> ac-attack ctx=this}}
 
@@ -23,9 +27,7 @@
         {{> movement ctx=this}}
     </section>
 
-    <section class="dw-block">
-        {{> abilities ctx=this}}
-    </section>
+
 
     <section class="dw-block">
         {{> save-throws ctx=this}}

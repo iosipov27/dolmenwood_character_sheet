@@ -62,6 +62,7 @@ export interface DwAbilityView {
   mod: number;
   hasMod: boolean;
   modText: string;
+  title: string;
 }
 
 export interface DwCombatView {

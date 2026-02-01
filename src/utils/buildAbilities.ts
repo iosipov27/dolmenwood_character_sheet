@@ -60,6 +60,7 @@ export function buildAbilities(systemData: Record<string, unknown>): DwAbilityVi
     out.push({
       key: a.key,
       label: a.label,
+      title: a.title,
       value,
       name: foundPath ?? "",
       hasPath: Boolean(foundPath),
