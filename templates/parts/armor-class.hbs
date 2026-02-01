@@ -1,0 +1,8 @@
+<div class="dw-field">
+  <label>AC</label>
+  {{#if ctx.dwCombat.hasAc}}
+    <input name="{{ctx.dwCombat.nameAc}}" type="number" value="{{ctx.dwCombat.ac}}" />
+  {{else}}
+    <input type="number" value="{{ctx.dwCombat.ac}}" disabled title="AC path not detected." />
+  {{/if}}
+</div>

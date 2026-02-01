@@ -7,12 +7,14 @@ Hooks.once("init", async (): Promise<void> => {
   const templatePaths: Record<string, string> = {
     "player-data": "modules/dolmenwood/templates/parts/player-data.hbs",
     "health-points": "modules/dolmenwood/templates/parts/health-points.hbs",
-    "save-throws": "modules/dolmenwood/templates/parts/save-throws.hbs"
+    "save-throws": "modules/dolmenwood/templates/parts/save-throws.hbs",
+    "armor-class": "modules/dolmenwood/templates/parts/armor-class.hbs",
+    "movement": "modules/dolmenwood/templates/parts/movement.hbs"
   };
 
-  await loadTemplates(templatePaths);
+  await foundry.applications.handlebars.loadTemplates(templatePaths);
 
-  Actors.registerSheet(MODULE_ID, DolmenwoodSheet as unknown as Application.AnyConstructor, {
+  foundry.documents.collections.Actors.registerSheet(MODULE_ID, DolmenwoodSheet, {
     types: ["character"],
     makeDefault: false,
     label: "Dolmenwood Sheet"

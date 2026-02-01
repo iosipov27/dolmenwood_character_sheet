@@ -10,14 +10,7 @@
             </div>
 
             <div class="dw-field">
-                <div class="dw-field">
-                    <label>AC</label>
-                    {{#if dwCombat.hasAc}}
-                        <input name="{{dwCombat.nameAc}}" type="number" value="{{dwCombat.ac}}" />
-                    {{else}}
-                        <input type="number" value="{{dwCombat.ac}}" disabled title="AC path not detected." />
-                    {{/if}}
-                </div>
+                {{> armor-class ctx=this}}
 
                 <div class="dw-field">
                     <label>Attack</label>
@@ -42,22 +35,7 @@
             <div class="dw-hint">Movement rates (OSE / Dolmenwood).</div>
         </div>
 
-        <div class="dw-movement">
-            <div class="dw-move">
-                <div class="dw-label">Speed</div>
-                <input class="dw-target" name="dw.movement.speed" type="number" value="{{dw.movement.speed}}" />
-            </div>
-
-            <div class="dw-move">
-                <div class="dw-label">Exploring</div>
-                <input class="dw-target" name="dw.movement.exploring" type="number" value="{{dw.movement.exploring}}" />
-            </div>
-
-            <div class="dw-move">
-                <div class="dw-label">Overland</div>
-                <input class="dw-target" name="dw.movement.overland" type="number" value="{{dw.movement.overland}}" />
-            </div>
-        </div>
+        {{> movement ctx=this}}
     </section>
 
     <section class="dw-block">
