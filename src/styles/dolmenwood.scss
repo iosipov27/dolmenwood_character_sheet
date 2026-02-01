@@ -1,63 +1,4 @@
-// Foundry VTT color variables
-$color-warm-1: var(--color-warm-1);
-$color-warm-2: var(--color-warm-2);
-$color-warm-3: var(--color-warm-3);
-$color-cool-3: var(--color-cool-3);
-$color-cool-4: var(--color-cool-4);
-$color-cool-5: var(--color-cool-5);
-$color-cool-5-25: var(--color-cool-5-25);
-$color-cool-5-50: var(--color-cool-5-50);
-$color-cool-5-75: var(--color-cool-5-75);
-$color-cool-5-90: var(--color-cool-5-90);
-$color-light-1: var(--color-light-1);
-$color-light-2: var(--color-light-2);
-$color-light-3: var(--color-light-3);
-$color-light-4: var(--color-light-4);
-$color-light-5: var(--color-light-5);
-$color-light-6: var(--color-light-6);
-$color-dark-1: var(--color-dark-1);
-$color-dark-2: var(--color-dark-2);
-$color-dark-3: var(--color-dark-3);
-$color-dark-4: var(--color-dark-4);
-$color-dark-5: var(--color-dark-5);
-$color-dark-6: var(--color-dark-6);
-$color-level-error: var(--color-level-error);
-$color-level-error-bg: var(--color-level-error-bg);
-$color-level-error-border: var(--color-level-error-border);
-$color-level-info: var(--color-level-info);
-$color-level-info-bg: var(--color-level-info-bg);
-$color-level-info-border: var(--color-level-info-border);
-$color-level-success: var(--color-level-success);
-$color-level-success-bg: var(--color-level-success-bg);
-$color-level-success-border: var(--color-level-success-border);
-$color-level-warning: var(--color-level-warning);
-$color-level-warning-bg: var(--color-level-warning-bg);
-$color-level-warning-border: var(--color-level-warning-border);
-$color-scrollbar: var(--color-scrollbar);
-$color-scrollbar-track: var(--color-scrollbar-track);
-$color-text-emphatic: var(--color-text-emphatic);
-$color-text-primary: var(--color-text-primary);
-$color-text-secondary: var(--color-text-secondary);
-$color-text-subtle: var(--color-text-subtle);
-$color-text-accent: var(--color-text-accent);
-$color-text-selection: var(--color-text-selection);
-$color-text-selection-bg: var(--color-text-selection-bg);
-$color-shadow-dark: var(--color-shadow-dark);
-$color-shadow-primary: var(--color-shadow-primary);
-$color-shadow-highlight: var(--color-shadow-highlight);
-
-// Common mixins
-@mixin flex-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-@mixin input-base {
-  border: none;
-  border-bottom: 1px solid $color-light-5;
-  background: none;
-}
+@use "variables" as *;
 
 .dw-grid-4 {
   display: grid;
@@ -74,18 +15,18 @@ $color-shadow-highlight: var(--color-shadow-highlight);
 .dw-field {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.1rem;
 
   label {
     font-size: 0.75rem;
-    color: var(--dw-primary-color);
-    font-weight: 600;
+    color: $color-text-primary;
+    font-weight: 500;
     text-transform: uppercase;
   }
 
   input {
     @include input-base;
-    padding: 0.5rem;
+    padding: 0.1rem;
 
     &[type="number"] {
       &::-webkit-inner-spin-button,
@@ -95,6 +36,10 @@ $color-shadow-highlight: var(--color-shadow-highlight);
       }
     }
   }
+}
+
+.dw-header {
+  padding: 1rem;
 }
 
 .dw-block {
@@ -153,11 +98,6 @@ $color-shadow-highlight: var(--color-shadow-highlight);
     @include input-base;
     width: 100%;
   }
-}
-
-.dw-header {
-  padding: 1rem;
-  border-bottom: 2px solid var(--dw-border-color);
 }
 
 .dw-row {

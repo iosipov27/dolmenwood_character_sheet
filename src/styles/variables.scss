@@ -1,0 +1,143 @@
+// Foundry VTT color variables
+$color-warm-1: var(--color-warm-1);
+$color-warm-2: var(--color-warm-2);
+$color-warm-3: var(--color-warm-3);
+$color-cool-3: var(--color-cool-3);
+$color-cool-4: var(--color-cool-4);
+$color-cool-5: var(--color-cool-5);
+$color-cool-5-25: var(--color-cool-5-25);
+$color-cool-5-50: var(--color-cool-5-50);
+$color-cool-5-75: var(--color-cool-5-75);
+$color-cool-5-90: var(--color-cool-5-90);
+$color-light-1: var(--color-light-1);
+$color-light-2: var(--color-light-2);
+$color-light-3: var(--color-light-3);
+$color-light-4: var(--color-light-4);
+$color-light-5: var(--color-light-5);
+$color-light-6: var(--color-light-6);
+$color-dark-1: var(--color-dark-1);
+$color-dark-2: var(--color-dark-2);
+$color-dark-3: var(--color-dark-3);
+$color-dark-4: var(--color-dark-4);
+$color-dark-5: var(--color-dark-5);
+$color-dark-6: var(--color-dark-6);
+$color-level-error: var(--color-level-error);
+$color-level-error-bg: var(--color-level-error-bg);
+$color-level-error-border: var(--color-level-error-border);
+$color-level-info: var(--color-level-info);
+$color-level-info-bg: var(--color-level-info-bg);
+$color-level-info-border: var(--color-level-info-border);
+$color-level-success: var(--color-level-success);
+$color-level-success-bg: var(--color-level-success-bg);
+$color-level-success-border: var(--color-level-success-border);
+$color-level-warning: var(--color-level-warning);
+$color-level-warning-bg: var(--color-level-warning-bg);
+$color-level-warning-border: var(--color-level-warning-border);
+$color-scrollbar: var(--color-scrollbar);
+$color-scrollbar-track: var(--color-scrollbar-track);
+$color-text-emphatic: var(--color-text-emphatic);
+$color-text-primary: var(--color-text-primary);
+$color-text-secondary: var(--color-text-secondary);
+$color-text-subtle: var(--color-text-subtle);
+$color-text-accent: var(--color-text-accent);
+$color-text-selection: var(--color-text-selection);
+$color-text-selection-bg: var(--color-text-selection-bg);
+$color-shadow-dark: var(--color-shadow-dark);
+$color-shadow-primary: var(--color-shadow-primary);
+$color-shadow-highlight: var(--color-shadow-highlight);
+
+// Text colors
+$color-text-light-highlight: var(--color-text-light-highlight);
+$color-text-light-heading: var(--color-text-light-heading);
+$color-text-light-primary: var(--color-text-light-primary);
+$color-text-dark-primary: var(--color-text-dark-primary);
+$color-text-dark-secondary: var(--color-text-dark-secondary);
+$color-text-dark-header: var(--color-text-dark-header);
+$color-text-dark-inactive: var(--color-text-dark-inactive);
+$color-text-hyperlink: var(--color-text-hyperlink);
+$color-text-light-0: var(--color-text-light-0);
+$color-text-light-1: var(--color-text-light-1);
+$color-text-light-2: var(--color-text-light-2);
+$color-text-light-3: var(--color-text-light-3);
+$color-text-light-4: var(--color-text-light-4);
+$color-text-light-5: var(--color-text-light-5);
+$color-text-light-6: var(--color-text-light-6);
+$color-text-light-7: var(--color-text-light-7);
+$color-text-dark-1: var(--color-text-dark-1);
+$color-text-dark-2: var(--color-text-dark-2);
+$color-text-dark-3: var(--color-text-dark-3);
+$color-text-dark-4: var(--color-text-dark-4);
+$color-text-dark-5: var(--color-text-dark-5);
+$color-text-dark-6: var(--color-text-dark-6);
+
+// Border colors
+$color-border-light-1: var(--color-border-light-1);
+$color-border-light-2: var(--color-border-light-2);
+$color-border-dark-1: var(--color-border-dark-1);
+$color-border-dark-2: var(--color-border-dark-2);
+$color-border-dark-3: var(--color-border-dark-3);
+$color-border-dark-4: var(--color-border-dark-4);
+$color-border-dark-5: var(--color-border-dark-5);
+$color-border-light-highlight: var(--color-border-light-highlight);
+$color-border-light-primary: var(--color-border-light-primary);
+$color-border-light-secondary: var(--color-border-light-secondary);
+$color-border-light-tertiary: var(--color-border-light-tertiary);
+$color-border-dark: var(--color-border-dark);
+$color-border-dark-primary: var(--color-border-dark-primary);
+$color-border-dark-secondary: var(--color-border-dark-secondary);
+$color-border-dark-tertiary: var(--color-border-dark-tertiary);
+$color-border-highlight: var(--color-border-highlight);
+$color-border-highlight-alt: var(--color-border-highlight-alt);
+
+// Underline colors
+$color-underline-inactive: var(--color-underline-inactive);
+$color-underline-active: var(--color-underline-active);
+$color-underline-header: var(--color-underline-header);
+
+// Background colors
+$color-bg-btn-minor-inactive: var(--color-bg-btn-minor-inactive);
+$color-bg-btn-minor-active: var(--color-bg-btn-minor-active);
+$color-select-option-bg: var(--color-select-option-bg);
+
+// UI colors
+$color-checkbox-checked: var(--color-checkbox-checked);
+$color-ownership-none: var(--color-ownership-none);
+$color-ownership-observer: var(--color-ownership-observer);
+$color-ownership-owner: var(--color-ownership-owner);
+$color-blind-bg: var(--color-blind-bg);
+$color-blind-border: var(--color-blind-border);
+$color-emote-bg: var(--color-emote-bg);
+$color-emote-border: var(--color-emote-border);
+$color-whisper-bg: var(--color-whisper-bg);
+$color-whisper-border: var(--color-whisper-border);
+
+// Layout dimensions
+$sidebar-width: var(--sidebar-width);
+$sidebar-header-height: var(--sidebar-header-height);
+$sidebar-item-height: var(--sidebar-item-height);
+$hotbar-width: var(--hotbar-width);
+$macro-size: var(--macro-size);
+$form-field-height: var(--form-field-height);
+
+// Typography
+$font-primary: var(--font-primary);
+$line-height-12: var(--line-height-12);
+$line-height-16: var(--line-height-16);
+$line-height-20: var(--line-height-20);
+$line-height-30: var(--line-height-30);
+
+// Backgrounds
+$background-parchment: var(--background-parchment);
+
+// Common mixins
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin input-base {
+  border: none;
+  border-bottom: 1px solid $color-text-dark-inactive;
+  background: none;
+}
