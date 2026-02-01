@@ -30,157 +30,26 @@
     </header>
 
     <section class="dw-block">
-        <div class="dw-block-head">
-            <h2>Movement</h2>
-            <div class="dw-hint">Movement rates (OSE / Dolmenwood).</div>
-        </div>
-
         {{> movement ctx=this}}
     </section>
 
     <section class="dw-block">
-        <div class="dw-block-head">
-            <h2>Abilities</h2>
-            <div class="dw-hint">Roll 1d20. Success if roll is &lt;= score.</div>
-        </div>
-
-        <div class="dw-abilities">
-            {{#each dwAbilities as |a|}}
-                <div class="dw-ability">
-                    <div class="dw-ability-top">
-                        <div class="dw-label">{{a.label}}</div>
-
-                        <button
-                                type="button"
-                                class="dw-ability-roll"
-                                data-action="dw-roll-ability"
-                                data-label="{{a.label}}"
-                                data-target="{{a.value}}"
-                        >
-                            Roll
-                        </button>
-                    </div>
-
-                    {{#if a.hasPath}}
-                        <input class="dw-target" name="{{a.name}}" type="number" value="{{a.value}}" />
-                    {{else}}
-                        <input class="dw-target" type="text" value="{{a.value}}" disabled />
-                    {{/if}}
-
-                    <div class="dw-ability-mod" title="OSE modifier (display only)">
-                        {{#if a.hasMod}}{{a.modText}}{{/if}}
-                    </div>
-                </div>
-            {{/each}}
-        </div>
+        {{> abilities ctx=this}}
     </section>
 
     <section class="dw-block">
-        <div class="dw-block-head">
-            <h2>Save Targets</h2>
-            <div class="dw-hint">Click Roll or double-click a number (except MAGIC/RESIST).</div>
-        </div>
-
         {{> save-throws ctx=this}}
     </section>
 
     <section class="dw-block">
-        <div class="dw-block-head">
-            <h2>Skill Targets</h2>
-            <div class="dw-skill-actions">
-                <div class="dw-hint">Click Roll or double-click a number.</div>
-                <button type="button" class="dw-plus" data-action="dw-add-skill" title="Add skill (max 10)">+</button>
-            </div>
-        </div>
-
-        <div class="dw-skills">
-            {{!-- fixed skills --}}
-            {{#each dw.skills as |val key|}}
-                <div class="dw-skill">
-                    <button type="button" class="dw-roll" data-action="dw-roll-skill" data-key="{{key}}">Roll</button>
-
-                    <div class="dw-label" title="{{lookup ../dwUi.skillTooltips key}}">
-                        {{../dwUi.prettyKey key}}
-                    </div>
-
-                    <input
-                            class="dw-target"
-                            name="dw.skills.{{key}}"
-                            type="number"
-                            value="{{val}}"
-                            data-dw-dblroll="skill"
-                            data-key="{{key}}"
-                            title="{{lookup ../dwUi.skillTooltips key}}"
-                    />
-                </div>
-            {{/each}}
-
-            {{!-- extra skills --}}
-            {{#each dw.extraSkills as |s idx|}}
-                <div class="dw-skill dw-skill-extra">
-                    <button
-                            type="button"
-                            class="dw-roll"
-                            data-action="dw-roll-extra-skill"
-                            data-index="{{idx}}"
-                            data-name="{{s.name}}"
-                    >
-                        Roll
-                    </button>
-
-                    <input
-                            class="dw-skill-name"
-                            name="dw.extraSkills.{{idx}}.name"
-                            type="text"
-                            value="{{s.name}}"
-                            placeholder="Skill name"
-                    />
-
-                    <input
-                            class="dw-target"
-                            name="dw.extraSkills.{{idx}}.target"
-                            type="number"
-                            value="{{s.target}}"
-                            data-dw-dblroll="extra-skill"
-                            data-index="{{idx}}"
-                            data-name="{{s.name}}"
-                    />
-
-                    <button type="button" class="dw-x" data-action="dw-remove-skill" data-index="{{idx}}" title="Remove">
-                        ✕
-                    </button>
-                </div>
-            {{/each}}
-        </div>
+        {{> skill-targets ctx=this}}
     </section>
 
     <section class="dw-block">
-        <div class="dw-block-head">
-            <h2>
-                Kindred & Class Traits
-                <button type="button" class="dw-edit-btn" data-action="dw-toggle-kindred-traits" title="Edit traits">
-                    Edit
-                </button>
-            </h2>
-        </div>
-        <div class="dw-languages-display">
-            <div class="dw-languages-content">{{dw.meta.kindredClassTraits}}</div>
-        </div>
-        <textarea name="dw.meta.kindredClassTraits" class="dw-kindred-traits-textarea" rows="3" style="display: none;">{{dw.meta.kindredClassTraits}}</textarea>
+        {{> kindred-class-traits ctx=this}}
     </section>
 
     <section class="dw-block">
-        <div class="dw-block-head">
-            <h2>
-                Languages
-                <button type="button" class="dw-edit-btn" data-action="dw-toggle-languages" title="Edit languages">
-                    Edit
-                </button>
-            </h2>
-        </div>
-        <div class="dw-languages-display">
-            <div class="dw-languages-content">{{dw.meta.languages}}</div>
-        </div>
-        <textarea name="dw.meta.languages" rows="3" class="dw-languages-textarea" style="display: none;">{{dw.meta.languages}}</textarea>
+        {{> languages ctx=this}}
     </section>
 </form>

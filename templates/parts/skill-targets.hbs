@@ -1,0 +1,83 @@
+<div class="dw-block-head">
+  <h2>Skill Targets</h2>
+  <div class="dw-skill-actions">
+    <div class="dw-hint">Click Roll or double-click a number.</div>
+    <button
+      type="button"
+      class="dw-plus"
+      data-action="dw-add-skill"
+      title="Add skill (max 10)"
+    >+</button>
+  </div>
+</div>
+
+<div class="dw-skills">
+  {{! fixed skills }}
+  {{#each ctx.dw.skills as |val key|}}
+    <div class="dw-skill">
+      <button
+        type="button"
+        class="dw-roll"
+        data-action="dw-roll-skill"
+        data-key="{{key}}"
+      >Roll</button>
+
+      <div class="dw-label" title="{{lookup ctx.dwUi.skillTooltips key}}">
+        {{ctx.dwUi.prettyKey key}}
+      </div>
+
+      <input
+        class="dw-target"
+        name="dw.skills.{{key}}"
+        type="number"
+        value="{{val}}"
+        data-dw-dblroll="skill"
+        data-key="{{key}}"
+        title="{{lookup ctx.dwUi.skillTooltips key}}"
+      />
+    </div>
+  {{/each}}
+
+  {{! extra skills }}
+  {{#each ctx.dw.extraSkills as |s idx|}}
+    <div class="dw-skill dw-skill-extra">
+      <button
+        type="button"
+        class="dw-roll"
+        data-action="dw-roll-extra-skill"
+        data-index="{{idx}}"
+        data-name="{{s.name}}"
+      >
+        Roll
+      </button>
+
+      <input
+        class="dw-skill-name"
+        name="dw.extraSkills.{{idx}}.name"
+        type="text"
+        value="{{s.name}}"
+        placeholder="Skill name"
+      />
+
+      <input
+        class="dw-target"
+        name="dw.extraSkills.{{idx}}.target"
+        type="number"
+        value="{{s.target}}"
+        data-dw-dblroll="extra-skill"
+        data-index="{{idx}}"
+        data-name="{{s.name}}"
+      />
+
+      <button
+        type="button"
+        class="dw-x"
+        data-action="dw-remove-skill"
+        data-index="{{idx}}"
+        title="Remove"
+      >
+        ✕
+      </button>
+    </div>
+  {{/each}}
+</div>

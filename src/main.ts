@@ -9,7 +9,11 @@ Hooks.once("init", async (): Promise<void> => {
     "health-points": "modules/dolmenwood/templates/parts/health-points.hbs",
     "save-throws": "modules/dolmenwood/templates/parts/save-throws.hbs",
     "armor-class": "modules/dolmenwood/templates/parts/armor-class.hbs",
-    "movement": "modules/dolmenwood/templates/parts/movement.hbs"
+    movement: "modules/dolmenwood/templates/parts/movement.hbs",
+    abilities: "modules/dolmenwood/templates/parts/abilities.hbs",
+    "skill-targets": "modules/dolmenwood/templates/parts/skill-targets.hbs",
+    "kindred-class-traits": "modules/dolmenwood/templates/parts/kindred-class-traits.hbs",
+    languages: "modules/dolmenwood/templates/parts/languages.hbs"
   };
 
   await foundry.applications.handlebars.loadTemplates(templatePaths);
