@@ -10,6 +10,8 @@ import { registerAddSkillListener } from "../listeners/registerAddSkillListener.
 import { registerRemoveSkillListener } from "../listeners/registerRemoveSkillListener.js";
 import { registerExtraSkillRollListener } from "../listeners/registerExtraSkillRollListener.js";
 import { registerExtraSkillDblRollListener } from "../listeners/registerExtraSkillDblRollListener.js";
+import { registerKindredTraitsListener } from "../listeners/registerKindredTraitsListener.js";
+import { registerLanguagesListener } from "../listeners/registerLanguagesListener.js";
 
 // Constants/configuration.
 import { MODULE_ID } from "../constants/moduleId.js";
@@ -196,33 +198,33 @@ export class DolmenwoodSheet extends BaseSheet {
     };
 
     registerSaveRollListener(html, {
-      actor: this.actor,
+      actor,
       getDwFlags,
       rollTargetCheck: RollChecks.rollTargetCheck,
       prettyKey
     });
 
     registerSkillRollListener(html, {
-      actor: this.actor,
+      actor,
       getDwFlags,
       rollTargetCheck: RollChecks.rollTargetCheck,
       prettyKey
     });
 
     registerSaveDblRollListener(html, {
-      actor: this.actor,
+      actor,
       rollTargetCheck: RollChecks.rollTargetCheck,
       prettyKey
     });
 
     registerSkillDblRollListener(html, {
-      actor: this.actor,
+      actor,
       rollTargetCheck: RollChecks.rollTargetCheck,
       prettyKey
     });
 
     registerAbilityRollListener(html, {
-      actor: this.actor,
+      actor,
       rollAbilityCheck: RollChecks.rollAbilityCheck
     });
 
@@ -230,30 +232,18 @@ export class DolmenwoodSheet extends BaseSheet {
     registerRemoveSkillListener(html, { getDwFlags, setDwFlags, renderSheet });
 
     registerExtraSkillRollListener(html, {
-      actor: this.actor,
+      actor,
       getDwFlags,
       rollTargetCheck: RollChecks.rollTargetCheck
     });
 
     registerExtraSkillDblRollListener(html, {
-      actor: this.actor,
+      actor,
       rollTargetCheck: RollChecks.rollTargetCheck
     });
 
-    // Minimal right-side tabs (vertical)
-    const root = html.find("[data-dw-tabs]");
-    const tabs = root.find(".dw-tab") as JQueryWithOn<HTMLElement>;
-
-    tabs.on("click", (ev: Event) => {
-      ev.preventDefault();
-      const tab = (ev.currentTarget as HTMLElement).dataset.tab;
-
-      root.find(".dw-tab").removeClass("is-active");
-      root.find(`.dw-tab[data-tab="${tab}"]`).addClass("is-active");
-
-      root.find(".dw-tab-panel").removeClass("is-active");
-      root.find(`.dw-tab-panel[data-panel="${tab}"]`).addClass("is-active");
-    });
+    registerKindredTraitsListener(html);
+    registerLanguagesListener(html);
   }
 
   async _updateObject(event: Event, formData: Record<string, unknown>): Promise<void> {

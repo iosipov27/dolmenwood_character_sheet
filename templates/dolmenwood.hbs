@@ -212,15 +212,31 @@
 
     <section class="dw-block">
         <div class="dw-block-head">
-            <h2>Kindred & Class Traits</h2>
+            <h2>
+                Kindred & Class Traits
+                <button type="button" class="dw-edit-btn" data-action="dw-toggle-kindred-traits" title="Edit traits">
+                    Edit
+                </button>
+            </h2>
         </div>
-        <textarea name="dw.meta.kindredClassTraits" rows="4">{{dw.meta.kindredClassTraits}}</textarea>
+        <div class="dw-kindred-traits-display">
+            <div class="dw-traits-content">{{dw.meta.kindredClassTraits}}</div>
+        </div>
+        <textarea name="dw.meta.kindredClassTraits" class="dw-kindred-traits-textarea" rows="4" style="display: none;">{{dw.meta.kindredClassTraits}}</textarea>
     </section>
 
     <section class="dw-block">
         <div class="dw-block-head">
-            <h2>Languages</h2>
+            <h2>
+                Languages
+                <button type="button" class="dw-edit-btn" data-action="dw-toggle-languages" title="Edit languages">
+                    Edit
+                </button>
+            </h2>
         </div>
-        <textarea name="dw.meta.languages" rows="3">{{dw.meta.languages}}</textarea>
+        <div class="dw-languages-display">
+            <div class="dw-languages-content">{{dw.meta.languages}}</div>
+        </div>
+        <textarea name="dw.meta.languages" rows="3" class="dw-languages-textarea" style="display: none;">{{dw.meta.languages}}</textarea>
     </section>
 </form>

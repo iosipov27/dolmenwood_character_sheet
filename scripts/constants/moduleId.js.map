@@ -1,1 +1,1 @@
-{"version":3,"file":"moduleId.js","sourceRoot":"","sources":["../../src/constants/moduleId.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,MAAM,SAAS,GAAG,YAAY,CAAC","sourcesContent":["export const MODULE_ID = \"dolmenwood\";\n"]}
+{"version":3,"file":"moduleId.js","sourceRoot":"","sources":["../../src/constants/moduleId.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,MAAM,SAAS,GAAG,YAAY,CAAC","sourcesContent":["export const MODULE_ID = \"dolmenwood\";\r\n"]}

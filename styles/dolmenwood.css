@@ -276,3 +276,58 @@
 .dw-tab-panel.is-active {
   display: block;
 }
+/* Kindred & Class Traits */
+.dw-block-head h2 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.dw-edit-btn {
+  flex-shrink: 0;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: normal;
+  background-color: var(--color-border-light-2);
+  border: 1px solid var(--color-border-light);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.dw-edit-btn:hover {
+  background-color: var(--color-border-highlight);
+}
+
+.dw-kindred-traits-display {
+  padding: 10px;
+  border: 1px solid var(--color-border-light-2);
+  border-radius: 6px;
+  background-color: rgba(0, 0, 0, 0.05);
+  min-height: 100px;
+  overflow-y: auto;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+.dw-traits-content {
+  line-height: 1.5;
+  color: inherit;
+}
+
+.dw-kindred-traits-textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--color-border-light-2);
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: inherit;
+  resize: vertical;
+}
+
+.dw-kindred-traits-textarea:focus {
+  outline: 0;
+  box-shadow: 0 0 0 2px var(--color-border-highlight);
+  border-color: var(--color-border-highlight);
+}
