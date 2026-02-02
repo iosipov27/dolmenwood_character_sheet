@@ -36,8 +36,8 @@ export class DolmenwoodSheet extends BaseSheet {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["dolmenwood", "sheet", "actor"],
       template: `modules/${MODULE_ID}/templates/dolmenwood.hbs`,
-      width: 860,
-      height: 900,
+      width: 640,
+      height: 650,
       resizable: true
     });
   }

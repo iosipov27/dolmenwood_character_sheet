@@ -1,13 +1,18 @@
+import { DW_TOGGLE_KINDRED_TRAITS } from "../constants/templateAttributes.js";
 import type { HtmlRoot, JQueryWithOn } from "../types.js";
+import { registerAction } from "../utils/registerAction.js";
 
 export function registerKindredTraitsListener(html: HtmlRoot): void {
   // Kindred & Class Traits - Toggle edit mode
   const traitsDisplay = html.find(".dw-kindred-traits-display");
-  const traitsTextarea = html.find(".dw-kindred-traits-textarea") as JQueryWithOn<HTMLTextAreaElement>;
-  const editBtn = html.find('button[data-action="dw-toggle-kindred-traits"]') as JQueryWithOn<HTMLElement>;
+  const traitsTextarea = html.find(
+    ".dw-kindred-traits-textarea"
+  ) as JQueryWithOn<HTMLTextAreaElement>;
+  const editBtn = html.find(
+    'button[data-action="dw-toggle-kindred-traits"]'
+  ) as JQueryWithOn<HTMLElement>;
 
-  editBtn.on("click", (ev: Event) => {
-    ev.preventDefault();
+  registerAction(html, DW_TOGGLE_KINDRED_TRAITS, async (ev: Event) => {
     const isHidden = traitsTextarea.is(":hidden");
 
     if (isHidden) {

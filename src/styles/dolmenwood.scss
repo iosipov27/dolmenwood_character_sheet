@@ -1,6 +1,10 @@
 @use "variables" as *;
 @use "parts/abilities" as *;
 
+.dolmenwood {
+  max-width: 45rem;
+}
+
 .dw-grid-4 {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -59,7 +63,7 @@
   @include flex-center;
 
   img {
-    max-width: 25rem;
+    max-width: 15rem;
     object-fit: cover;
 
     &:hover {

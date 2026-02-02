@@ -1,18 +1,14 @@
 <form class="dolmenwood" autocomplete="off">
     <header class="dw-header">
-
         <div class="dw-grid-2">
             <div class="dw-field">
                 {{> player-data ctx=this}}
-
                 {{> health-points ctx=this}}
             </div>
 
             <div class="dw-field">
                 {{> avatar ctx=this}}
-                
             </div>
-            
         </div>
     </header>
 
@@ -20,14 +16,11 @@
         {{> abilities ctx=this}}
     </section>
 
-
     {{> ac-attack ctx=this}}
 
     <section class="dw-block">
         {{> movement ctx=this}}
     </section>
-
-
 
     <section class="dw-block">
         {{> save-throws ctx=this}}
@@ -48,6 +41,4 @@
     <section class="dw-block dw-xp-section">
         {{> xp-section ctx=this}}
     </section>
-
-
 </form>
