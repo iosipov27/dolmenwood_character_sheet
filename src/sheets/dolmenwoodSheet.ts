@@ -12,6 +12,7 @@ import { registerExtraSkillRollListener } from "../listeners/registerExtraSkillR
 import { registerExtraSkillDblRollListener } from "../listeners/registerExtraSkillDblRollListener.js";
 import { registerKindredTraitsListener } from "../listeners/registerKindredTraitsListener.js";
 import { registerLanguagesListener } from "../listeners/registerLanguagesListener.js";
+import { registerInputUpdateListeners } from "../listeners/registerInputUpdateListeners.js";
 
 // Constants/configuration.
 import { MODULE_ID } from "../constants/moduleId.js";
@@ -139,6 +140,8 @@ export class DolmenwoodSheet extends BaseSheet {
 
     registerKindredTraitsListener(html);
     registerLanguagesListener(html);
+
+    registerInputUpdateListeners(html, this);
   }
 
   async _updateObject(event: Event, formData: Record<string, unknown>): Promise<void> {
