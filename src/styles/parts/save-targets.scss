@@ -1,0 +1,21 @@
+.dw-saves {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.1rem;
+
+  .dw-save {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    input {
+      border: none;
+      text-align: center;
+    }
+  }
+
+  &__info {
+    font-size: 0.75rem;
+    word-wrap: break-word;
+    margin-bottom: 1.2rem;
+  }
+}

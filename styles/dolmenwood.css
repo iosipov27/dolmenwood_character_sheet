@@ -40,10 +40,119 @@
   cursor: default;
 }
 
+.dw-saves {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.1rem;
+}
+.dw-saves .dw-save {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.dw-saves .dw-save input {
+  border: none;
+  text-align: center;
+}
+.dw-saves__info {
+  font-size: 0.75rem;
+  word-wrap: break-word;
+  margin-bottom: 1.2rem;
+}
+
+.dw-hp {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.5rem;
+  border: 1px solid var(--color-border-light-1);
+}
+.dw-hp__current {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: 1.5rem;
+  text-align: center;
+}
+.dw-hp__current input {
+  border: none;
+  text-align: center;
+  font-size: 2rem;
+  padding: 0.3rem;
+  height: 2rem;
+}
+.dw-hp__max {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: 0.75rem;
+  text-align: center;
+}
+.dw-hp__max input {
+  border: none;
+  text-align: center;
+  font-size: 0.75rem;
+  height: 1.2rem;
+}
+
+.dw-ac-attack {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.5rem;
+  border: 1px solid var(--color-border-light-1);
+}
+.dw-ac-attack__armor {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: 1.5rem;
+  text-align: center;
+}
+.dw-ac-attack__armor input {
+  border: none;
+  text-align: center;
+  font-size: 2rem;
+  padding: 0.3rem;
+  height: 2rem;
+}
+.dw-ac-attack__attack {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: 0.75rem;
+  text-align: center;
+}
+.dw-ac-attack__attack input {
+  border: none;
+  text-align: center;
+  font-size: 0.75rem;
+  height: 1.2rem;
+  width: 1.5rem;
+}
+
+.dolmenwood {
+  max-width: 45rem;
+}
+
 .dw-grid-4 {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 10.5rem;
+  gap: 1.5rem;
+}
+
+.dw-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 65% 1fr;
+  gap: 1rem;
 }
 
 .dw-grid-2 {
@@ -96,7 +205,7 @@
   align-items: center;
 }
 .dw-avatar img {
-  max-width: 25rem;
+  max-width: 15rem;
   object-fit: cover;
 }
 .dw-avatar img:hover {

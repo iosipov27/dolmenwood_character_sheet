@@ -3,7 +3,7 @@
         <div class="dw-grid-2">
             <div class="dw-field">
                 {{> player-data ctx=this}}
-                {{> health-points ctx=this}}
+                
             </div>
 
             <div class="dw-field">
@@ -16,14 +16,20 @@
         {{> abilities ctx=this}}
     </section>
 
-    {{> ac-attack ctx=this}}
+    <section class="dw-block">
+        <div class="dw-grid-3">
+            <div>{{> health-points ctx=this}}</div>
+            <div>{{> save-throws ctx=this}}</div>
+            <div>{{> ac-attack ctx=this}}</div>
+        </div>
+    </section>
 
     <section class="dw-block">
         {{> movement ctx=this}}
     </section>
 
     <section class="dw-block">
-        {{> save-throws ctx=this}}
+        
     </section>
 
     <section class="dw-block">

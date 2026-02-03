@@ -82,7 +82,7 @@ export class DolmenwoodSheetData {
       { key: "spell", label: "SPELL", rollable: true, value: data.dw.saves.spell },
       { key: "ray", label: "RAY", rollable: true, value: data.dw.saves.ray },
       { key: "blast", label: "BLAST", rollable: true, value: data.dw.saves.blast },
-      { key: "magic", label: "MAGIC/RESIST", rollable: false, value: data.dw.saves.magic }
+      { key: "magic", label: "M/R", rollable: false, value: data.dw.saves.magic }
     ];
 
     return data;

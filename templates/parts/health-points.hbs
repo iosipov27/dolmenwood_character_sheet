@@ -1,16 +1,24 @@
-<label>HP</label>
-<div style="display:grid; grid-template-columns: 1fr 12px 1fr; gap:6px; align-items:center;">
-  {{#if ctx.dwHp.hasCurrent}}
-    <input name="{{ctx.dwHp.nameCurrent}}" type="number" value="{{ctx.dwHp.current}}" />
-  {{else}}
-    <input type="number" value="{{ctx.dwHp.current}}" disabled title="HP current path not detected." />
-  {{/if}}
+<div class="dw-hp">
+  <div class="dw-hp__current">
+    <label>HP</label>
+    {{#if ctx.dwHp.hasCurrent}}
+      <input name="{{ctx.dwHp.nameCurrent}}" type="number" value="{{ctx.dwHp.current}}" />
+    {{else}}
+      <input
+        type="number"
+        value="{{ctx.dwHp.current}}"
+        disabled
+        title="HP current path not detected."
+      />
+    {{/if}}
+  </div>
 
-  <div style="text-align:center; opacity:.7;">/</div>
-
-  {{#if ctx.dwHp.hasMax}}
-    <input name="{{ctx.dwHp.nameMax}}" type="number" value="{{ctx.dwHp.max}}" />
-  {{else}}
-    <input type="number" value="{{ctx.dwHp.max}}" disabled title="HP max path not detected." />
-  {{/if}}
+  <div class="dw-hp__max">
+    <label>Max HP</label>
+    {{#if ctx.dwHp.hasMax}}
+      <input name="{{ctx.dwHp.nameMax}}" type="number" value="{{ctx.dwHp.max}}" />
+    {{else}}
+      <input type="number" value="{{ctx.dwHp.max}}" disabled title="HP max path not detected." />
+    {{/if}}
+  </div>
 </div>
