@@ -4,8 +4,9 @@
   @include flex-center;
   flex-direction: column;
   gap: 0.3rem;
-  padding: 0.5rem;
-  border: 1px solid $color-border-light-1;
+  padding: 0.1rem;
+  border: none;
+  border-right: 1px solid $color-border-soft;
 
   &__current {
     @include flex-center;

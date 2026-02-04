@@ -1,0 +1,12 @@
+.player-data {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  &__name {
+    .editable-field,
+    .edit-input {
+      font-size: 1.75rem;
+      font-weight: 600;
+    }
+  }
+}

@@ -1,21 +1,34 @@
-.dw-saves {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 0.1rem;
+@use "../variables" as *;
 
-  .dw-save {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    input {
-      border: none;
-      text-align: center;
-    }
+.dw-save-throws {
+  .dw-block-head {
+    text-align: center;
   }
+  .dw-saves {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    border: 1px solid $color-border-soft;
+    padding-bottom: 0.5rem;
 
-  &__info {
-    font-size: 0.75rem;
-    word-wrap: break-word;
-    margin-bottom: 1.2rem;
+    .dw-save {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      input {
+        border: none;
+        text-align: center;
+      }
+      button {
+        font-size: 0.75rem;
+        padding: 0;
+        line-height: $line-height-20;
+      }
+    }
+
+    &__info {
+      font-size: 0.75rem;
+      word-wrap: break-word;
+      margin-bottom: 0.6rem;
+    }
   }
 }

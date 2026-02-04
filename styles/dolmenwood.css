@@ -40,24 +40,33 @@
   cursor: default;
 }
 
-.dw-saves {
+.dw-save-throws .dw-block-head {
+  text-align: center;
+}
+.dw-save-throws .dw-saves {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 0.1rem;
+  border: 1px solid #c9c5ba;
+  padding-bottom: 0.5rem;
 }
-.dw-saves .dw-save {
+.dw-save-throws .dw-saves .dw-save {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.dw-saves .dw-save input {
+.dw-save-throws .dw-saves .dw-save input {
   border: none;
   text-align: center;
 }
-.dw-saves__info {
+.dw-save-throws .dw-saves .dw-save button {
+  font-size: 0.75rem;
+  padding: 0;
+  line-height: var(--line-height-20);
+}
+.dw-save-throws .dw-saves__info {
   font-size: 0.75rem;
   word-wrap: break-word;
-  margin-bottom: 1.2rem;
+  margin-bottom: 0.6rem;
 }
 
 .dw-hp {
@@ -66,8 +75,9 @@
   align-items: center;
   flex-direction: column;
   gap: 0.3rem;
-  padding: 0.5rem;
-  border: 1px solid var(--color-border-light-1);
+  padding: 0.1rem;
+  border: none;
+  border-right: 1px solid #c9c5ba;
 }
 .dw-hp__current {
   display: flex;
@@ -105,8 +115,9 @@
   align-items: center;
   flex-direction: column;
   gap: 0.3rem;
-  padding: 0.5rem;
-  border: 1px solid var(--color-border-light-1);
+  padding: 0.1rem;
+  border: none;
+  border-left: 1px solid #c9c5ba;
 }
 .dw-ac-attack__armor {
   display: flex;
@@ -127,7 +138,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+  align-items: center;
+  flex-direction: row;
   font-size: 0.75rem;
   text-align: center;
 }
@@ -137,6 +149,17 @@
   font-size: 0.75rem;
   height: 1.2rem;
   width: 1.5rem;
+}
+
+.player-data {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+.player-data__name .editable-field,
+.player-data__name .edit-input {
+  font-size: 1.75rem;
+  font-weight: 600;
 }
 
 .dolmenwood {
@@ -188,9 +211,13 @@
 }
 
 .dw-block {
-  margin: 1rem 0;
   padding: 1rem;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+.dw-block--flat {
+  padding: 0.2rem 0;
+}
+.dw-block--bordered {
+  border: 1px solid #c9c5ba;
 }
 
 .dw-hint {

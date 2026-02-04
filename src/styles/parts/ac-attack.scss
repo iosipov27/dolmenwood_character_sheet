@@ -4,8 +4,9 @@
   @include flex-center;
   flex-direction: column;
   gap: 0.3rem;
-  padding: 0.5rem;
-  border: 1px solid $color-border-light-1;
+  padding: 0.1rem;
+  border: none;
+  border-left: 1px solid $color-border-soft;
 
   &__armor {
     @include flex-center;
@@ -23,7 +24,8 @@
   }
   &__attack {
     @include flex-center;
-    flex-direction: column;
+    align-items: center;
+    flex-direction: row;
     font-size: 0.75rem;
     text-align: center;
     input {
