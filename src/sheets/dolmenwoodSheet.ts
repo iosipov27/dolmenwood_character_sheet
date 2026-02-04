@@ -29,7 +29,7 @@ import { RollChecks } from "./rollChecks.js";
 
 // Main sheet class extends OSE character sheet.
 
-const BaseSheet = getBaseOSECharacterSheetClass() as typeof ActorSheet;
+const BaseSheet = getBaseOSECharacterSheetClass() as typeof foundry.appv1.sheets.ActorSheet;
 
 export class DolmenwoodSheet extends BaseSheet {
   // Sheet configuration.

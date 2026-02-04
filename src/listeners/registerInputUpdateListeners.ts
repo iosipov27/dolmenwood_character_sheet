@@ -1,7 +1,13 @@
 import type { HtmlRoot } from "../types.js";
 
-export function registerInputUpdateListeners(html: HtmlRoot, sheet: any) {
-  html.find(".editable-field").on("click", function (e) {
+export function registerInputUpdateListeners(
+  html: HtmlRoot,
+  sheet: foundry.appv1.sheets.ActorSheet
+): void {
+  const editableFields = html.find(".editable-field");
+  const editInputs = html.find("input.edit-input");
+
+  editableFields.on("click", function (e) {
     const span = $(this);
     const input = span.siblings("input.edit-input");
     if (!input.length) return;
@@ -19,27 +25,21 @@ export function registerInputUpdateListeners(html: HtmlRoot, sheet: any) {
     // Prepare form data for update
     const field = input.attr("name");
     if (!field) return;
-    // Build formData for _onSubmit
     const formData: Record<string, unknown> = {};
     formData[field] = value;
-    // Submit update
-    sheet._onSubmit(
-      {
-        preventDefault: () => {},
-        currentTarget: html[0],
-        target: html[0]
-      } as unknown as Event,
-      formData
-    );
+    // Use the public actor.update method
+    if (sheet.actor) {
+      sheet.actor.update(formData);
+    }
   }
 
-  html.find("input.edit-input").on("blur", function (e) {
+  editInputs.on("blur", function (e) {
     const input = $(this);
     const span = input.siblings(".editable-field");
     saveField(input, span);
   });
 
-  html.find("input.edit-input").on("keydown", function (e) {
+  editInputs.on("keydown", function (e) {
     if (e.key === "Enter") {
       const input = $(this);
       const span = input.siblings(".editable-field");
