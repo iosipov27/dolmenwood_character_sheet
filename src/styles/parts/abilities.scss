@@ -3,14 +3,14 @@
 .dw-abilities {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 0.1rem;
+  gap: 0.3rem;
 
   &__item {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 0.5rem;
-    border: 1px solid $color-border-light-highlight;
+    padding: 0 0 0.5rem 0;
+    border: 1px solid $color-border-soft;
     border-radius: 4px;
   }
 
@@ -29,28 +29,24 @@
   &__body {
     font-size: 1.5rem;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     width: 100%;
     justify-content: space-around;
+    align-items: center;
   }
 
   &__label {
     font-weight: 300;
     font-size: 0.75rem;
     text-align: center;
-    padding-bottom: 0.5rem;
   }
 
   &__score {
     // Score section styles
   }
 
-  &__modifier {
-    // Modifier section styles
-  }
-
   &__value {
-    // Value styles
+    font-size: 1.5rem;
   }
 
   &__input {
@@ -60,6 +56,19 @@
 
     &--disabled {
       cursor: default;
+    }
+  }
+
+  &__modifier {
+    margin-top: 0.3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    &__label {
+      font-size: 0.75rem;
+    }
+    &__value {
+      font-size: 0.75rem;
     }
   }
 }

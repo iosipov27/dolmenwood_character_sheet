@@ -9,6 +9,11 @@
   max-width: 45rem;
 }
 
+hr {
+  border: none;
+  border-top: 1px solid $color-border-soft;
+}
+
 .dw-grid-4 {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -58,7 +63,7 @@
 }
 
 .dw-block {
-  padding: 1rem;
+  padding: 0.2rem 1rem;
   &--flat {
     padding: 0.2rem 0;
   }

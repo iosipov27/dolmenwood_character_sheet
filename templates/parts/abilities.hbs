@@ -20,19 +20,28 @@
 
       <div class="dw-abilities__body">
         <div class="dw-abilities__score">
-          <div class="dw-abilities__label">SCORE</div>
           <div class="dw-abilities__value">
             {{#if a.hasPath}}
-              <input class="dw-abilities__input" name="{{a.name}}" type="number" value="{{a.value}}" />
+              <input
+                class="dw-abilities__input"
+                name="{{a.name}}"
+                type="number"
+                value="{{a.value}}"
+              />
             {{else}}
-              <input class="dw-abilities__input dw-abilities__input--disabled" type="text" value="{{a.value}}" disabled />
+              <input
+                class="dw-abilities__input dw-abilities__input--disabled"
+                type="text"
+                value="{{a.value}}"
+                disabled
+              />
             {{/if}}
           </div>
         </div>
 
         <div class="dw-abilities__modifier" title="{{a.title}}">
-          <div class="dw-abilities__label">MOD</div>
-          <div class="dw-abilities__value">
+          <div class="dw-abilities__modifier__label">MOD</div>
+          <div class="dw-abilities__modifier__value">
             {{#if a.hasMod}}{{a.modText}}{{/if}}
           </div>
         </div>
