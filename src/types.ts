@@ -150,3 +150,10 @@ export type DwSheetData = BaseSheetData & {
   dwHp: DwHpView;
   dwSavesList: DwSaveEntry[];
 };
+
+declare global {
+  interface SettingConfig {
+    "dolmenwood.enableDebugLogs": boolean;
+    "dolmenwood.enableErrorNotifications": boolean;
+  }
+}

@@ -12,6 +12,20 @@
       "problemMatcher": []
     },
     {
+      "label": "npm: watch",
+      "type": "shell",
+      "command": "npm run watch",
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "npm: dev",
+      "type": "shell",
+      "command": "npm run dev",
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
       "label": "npm: lint",
       "type": "shell",
       "command": "npm run lint",
@@ -21,6 +35,12 @@
       "label": "npm: lint:fix",
       "type": "shell",
       "command": "npm run lint:fix",
+      "problemMatcher": []
+    },
+    {
+      "label": "npm: format",
+      "type": "shell",
+      "command": "npm run format",
       "problemMatcher": []
     }
   ]

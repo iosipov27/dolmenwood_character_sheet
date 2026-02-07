@@ -215,9 +215,9 @@ hr {
 }
 .dw-field label {
   font-size: 0.75rem;
-  color: var(--color-text-primary);
-  font-weight: 500;
+  color: var(--color-text-light-6);
   text-transform: uppercase;
+  padding-top: 0.2rem;
 }
 .dw-field input {
   border: none;
