@@ -37,6 +37,8 @@
       "Roll": "Roll",
       "SkillName": "Skill name",
       "Remove": "Remove",
+      "RemoveSkillTitle": "Remove Skill",
+      "RemoveSkillConfirm": "Do you want to delete the skill?",
       "XP": "XP",
       "Level": "Level",
       "NextLevel": "Next Level",

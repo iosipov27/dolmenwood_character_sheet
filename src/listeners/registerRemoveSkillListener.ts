@@ -27,9 +27,23 @@ export function registerRemoveSkillListener(
     dw.extraSkills = readExtraSkillsFromForm(html, dw.extraSkills);
 
     if (skillIndex < 0 || skillIndex >= dw.extraSkills.length) return;
+    const confirmed = await confirmRemoveSkill();
+    if (!confirmed) return;
 
     dw.extraSkills.splice(skillIndex, 1);
     await setDwFlags(dw);
+  });
+}
+
+async function confirmRemoveSkill(): Promise<boolean> {
+  const localize = (key: string): string => game.i18n?.localize(key) ?? key;
+
+  return Dialog.confirm({
+    title: localize("DOLMENWOOD.UI.RemoveSkillTitle"),
+    content: `<p>${localize("DOLMENWOOD.UI.RemoveSkillConfirm")}</p>`,
+    yes: () => true,
+    no: () => false,
+    defaultYes: false
   });
 }
 
