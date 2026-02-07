@@ -35,5 +35,23 @@
       height: 1.2rem;
       width: 1.5rem;
     }
+
+    button {
+      @include flex-center;
+      border: none;
+      padding: 0.5rem 0.5rem;
+      background:
+        linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.08) 0%,
+          rgba(255, 255, 255, 0) 45%,
+          rgba(0, 0, 0, 0.12) 100%
+        ),
+        $color-text-dark-2;
+      i {
+        font-size: 0.75rem;
+        color: $color-text-light-1;
+      }
+    }
   }
 }

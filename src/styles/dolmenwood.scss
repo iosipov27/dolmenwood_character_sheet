@@ -10,6 +10,11 @@
   max-width: 45rem;
 }
 
+button {
+  border: none;
+  border-radius: 0;
+}
+
 hr {
   border: none;
   border-top: 1px solid $color-border-soft;

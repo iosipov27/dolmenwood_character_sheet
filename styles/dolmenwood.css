@@ -243,11 +243,13 @@
   grid-template-columns: repeat(6, 1fr);
   border: 1px solid #c9c5ba;
   padding-bottom: 0.5rem;
+  gap: 0.2rem;
 }
 .dw-save-throws .dw-saves .dw-save {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 0.2rem;
 }
 .dw-save-throws .dw-saves .dw-save input {
   border: none;
@@ -257,6 +259,7 @@
   font-size: 0.75rem;
   padding: 0;
   line-height: var(--line-height-20);
+  border: 1px solid var(--color-border-light-2);
 }
 .dw-save-throws .dw-saves__info {
   font-size: 0.75rem;
@@ -345,15 +348,47 @@
   height: 1.2rem;
   width: 1.5rem;
 }
+.dw-ac-attack__attack button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  padding: 0.5rem 0.5rem;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 45%, rgba(0, 0, 0, 0.12) 100%), var(--color-text-dark-2);
+}
+.dw-ac-attack__attack button i {
+  font-size: 0.75rem;
+  color: var(--color-text-light-1);
+}
 
 .player-data {
   display: flex;
   flex-direction: column;
   align-items: start;
+  margin-top: -1.2rem;
 }
 .player-data .dw-field {
+  position: relative;
   border-bottom: 1px solid #a7a294;
   width: 100%;
+  --player-field-padding-top: 0.9rem;
+  --player-field-padding-bottom: 0.1rem;
+  --player-field-line-height: 1.2;
+}
+.player-data .dw-field .edit-input {
+  width: 100%;
+  padding-top: var(--player-field-padding-top);
+  padding-bottom: var(--player-field-padding-bottom);
+  line-height: var(--player-field-line-height);
+  min-height: calc(1em * var(--player-field-line-height) + var(--player-field-padding-top) + var(--player-field-padding-bottom));
+}
+.player-data .dw-field .editable-field {
+  display: block;
+  width: 100%;
+  padding-top: var(--player-field-padding-top);
+  padding-bottom: var(--player-field-padding-bottom);
+  line-height: var(--player-field-line-height);
+  min-height: calc(1em * var(--player-field-line-height) + var(--player-field-padding-top) + var(--player-field-padding-bottom));
 }
 .player-data__name .editable-field,
 .player-data__name .edit-input {
@@ -400,6 +435,11 @@
 
 .dolmenwood {
   max-width: 45rem;
+}
+
+button {
+  border: none;
+  border-radius: 0;
 }
 
 hr {
