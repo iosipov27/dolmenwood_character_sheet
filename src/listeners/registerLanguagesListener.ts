@@ -1,13 +1,16 @@
+import { DW_TOGGLE_LANGUAGES } from "../constants/templateAttributes.js";
 import type { HtmlRoot, JQueryWithOn } from "../types.js";
+import { registerAction } from "../utils/registerAction.js";
 
 export function registerLanguagesListener(html: HtmlRoot): void {
   // Languages - Toggle edit mode
   const languagesDisplay = html.find(".dw-languages-display");
   const languagesTextarea = html.find(".dw-languages-textarea") as JQueryWithOn<HTMLTextAreaElement>;
-  const langEditBtn = html.find('button[data-action="dw-toggle-languages"]') as JQueryWithOn<HTMLElement>;
+  const langEditBtn = html.find(
+    `button[data-action="${DW_TOGGLE_LANGUAGES}"]`
+  ) as JQueryWithOn<HTMLElement>;
 
-  langEditBtn.on("click", (ev: Event) => {
-    ev.preventDefault();
+  registerAction(html, DW_TOGGLE_LANGUAGES, () => {
     const isHidden = languagesTextarea.is(":hidden");
 
     if (isHidden) {

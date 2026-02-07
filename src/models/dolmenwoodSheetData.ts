@@ -7,6 +7,7 @@ import { prettyKey } from "../utils/prettyKey.js";
 import { buildAbilities } from "../utils/buildAbilities.js";
 import { buildCombat } from "../utils/buildCombat.js";
 import { buildHp } from "../utils/buildHp.js";
+import { reportError } from "../utils/reportError.js";
 import type { DwSheetData, DwExtraSkill, DwSkillEntry } from "../types.js";
 
 export class DolmenwoodSheetData {
@@ -29,8 +30,8 @@ export class DolmenwoodSheetData {
         dwFlagRaw =
           (actorWithFlags.getFlag?.(MODULE_ID, "dw") as Partial<Record<string, unknown>>) ?? {};
       }
-    } catch {
-      // Silently ignore flag read errors
+    } catch (error) {
+      reportError("Failed to read dolmenwood flags while building sheet data.", error);
     }
 
     const dwFlag = normalizeDwFlags(dwFlagRaw);

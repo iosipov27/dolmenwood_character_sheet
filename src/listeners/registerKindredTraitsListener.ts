@@ -9,10 +9,10 @@ export function registerKindredTraitsListener(html: HtmlRoot): void {
     ".dw-kindred-traits-textarea"
   ) as JQueryWithOn<HTMLTextAreaElement>;
   const editBtn = html.find(
-    'button[data-action="dw-toggle-kindred-traits"]'
+    `button[data-action="${DW_TOGGLE_KINDRED_TRAITS}"]`
   ) as JQueryWithOn<HTMLElement>;
 
-  registerAction(html, DW_TOGGLE_KINDRED_TRAITS, async (ev: Event) => {
+  registerAction(html, DW_TOGGLE_KINDRED_TRAITS, () => {
     const isHidden = traitsTextarea.is(":hidden");
 
     if (isHidden) {

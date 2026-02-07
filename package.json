@@ -9,7 +9,7 @@
     "format": "prettier --write .",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix --fix-type=directive,problem,suggestion,layout",
-    "dev": "node dev-server.js"
+    "dev": "npm run watch"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^8.54.0",

@@ -8,6 +8,7 @@ import { registerHandlebarsHelpers } from "./utils/handlebars-helpers.js";
 
 Hooks.once("init", async (): Promise<void> => {
   const settings = game.settings;
+
   if (!settings) return;
 
   settings.register(MODULE_ID, ENABLE_DEBUG_LOGS_SETTING, {

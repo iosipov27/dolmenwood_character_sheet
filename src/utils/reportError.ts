@@ -10,6 +10,7 @@ type ModuleSettingKey =
 
 function getBooleanSetting(key: ModuleSettingKey, fallback: boolean): boolean {
   const settings = game.settings;
+
   if (!settings) return fallback;
 
   try {
