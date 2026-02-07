@@ -259,12 +259,13 @@
   font-size: 0.75rem;
   padding: 0;
   line-height: var(--line-height-20);
-  border: 1px solid var(--color-border-light-2);
+  border: 1px solid #a7a294;
 }
 .dw-save-throws .dw-saves__info {
   font-size: 0.75rem;
   word-wrap: break-word;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.3rem;
+  padding-top: 0.2rem;
 }
 
 .dw-hp {
@@ -441,6 +442,17 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+}
+.dw-skills .dw-skill input {
+  border: none;
+  height: 1.5rem;
+}
+.dw-skills .dw-skill button {
+  display: flex;
+  padding: 0rem 0.5rem;
+  font-size: 0.75rem;
+  height: 1.5rem;
+  border: 1px solid #a7a294;
 }
 
 .dolmenwood {

@@ -24,14 +24,15 @@
         font-size: 0.75rem;
         padding: 0;
         line-height: $line-height-20;
-        border: 1px solid $color-border-light-2;
+        border: 1px solid $color-border-main;
       }
     }
 
     &__info {
       font-size: 0.75rem;
       word-wrap: break-word;
-      margin-bottom: 0.6rem;
+      margin-bottom: 0.3rem;
+      padding-top: 0.2rem;
     }
   }
 }

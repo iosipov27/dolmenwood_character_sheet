@@ -14,7 +14,7 @@ export class DolmenwoodSheet extends BaseSheet {
       classes: ["dolmenwood", "sheet", "actor"],
       template: `modules/${MODULE_ID}/templates/dolmenwood.hbs`,
       width: 640,
-      height: 670,
+      height: 730,
       resizable: true
     });
   }
