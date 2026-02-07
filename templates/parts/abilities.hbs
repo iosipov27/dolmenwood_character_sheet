@@ -1,5 +1,5 @@
 <div class="dw-block-head">
-  <h2>Ability Scores</h2>
+  <h2>{{localize "DOLMENWOOD.UI.AbilityScores"}}</h2>
   {{! <div class="dw-hint">Roll 1d20. Success if roll is &lt;= score.</div> }}
 </div>
 
@@ -40,7 +40,7 @@
         </div>
 
         <div class="dw-abilities__modifier" title="{{a.title}}">
-          <div class="dw-abilities__modifier__label">MOD</div>
+          <div class="dw-abilities__modifier__label">{{localize "DOLMENWOOD.UI.ModShort"}}</div>
           <div class="dw-abilities__modifier__value">
             {{#if a.hasMod}}{{a.modText}}{{/if}}
           </div>

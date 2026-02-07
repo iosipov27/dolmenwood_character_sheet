@@ -3,6 +3,8 @@ import type { HtmlRoot, JQueryWithOn } from "../types.js";
 import { registerAction } from "../utils/registerAction.js";
 
 export function registerLanguagesListener(html: HtmlRoot): void {
+  const localize = (key: string): string => game.i18n?.localize(key) ?? key;
+
   // Languages - Toggle edit mode
   const languagesDisplay = html.find(".dw-languages-display");
   const languagesTextarea = html.find(".dw-languages-textarea") as JQueryWithOn<HTMLTextAreaElement>;
@@ -17,13 +19,13 @@ export function registerLanguagesListener(html: HtmlRoot): void {
       // Show textarea, hide display
       languagesDisplay.hide();
       languagesTextarea.show().focus();
-      langEditBtn.text("Done");
+      langEditBtn.text(localize("DOLMENWOOD.UI.Done"));
     } else {
       // Hide textarea, show display
       languagesDisplay.find(".dw-languages-content").text(languagesTextarea.val() as string);
       languagesTextarea.hide();
       languagesDisplay.show();
-      langEditBtn.text("Edit");
+      langEditBtn.text(localize("DOLMENWOOD.UI.Edit"));
     }
   });
 }

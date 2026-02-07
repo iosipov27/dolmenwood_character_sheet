@@ -5,7 +5,7 @@
       id="dw-name"
       class="edit-input"
       name="name"
-      placeholder="Name"
+      placeholder="{{localize "DOLMENWOOD.UI.Name"}}"
       value="{{ctx.actor.name}}"
       {{#if ctx.actor.name}}style="display:none;"{{/if}}
     />
@@ -19,7 +19,7 @@
     >{{ctx.dw.meta.kindredClass}}</span>
     <input
       id="dw-kindred-class"
-      placeholder="Kindred & Class"
+      placeholder="{{localize "DOLMENWOOD.UI.KindredClass"}}"
       class="edit-input"
       name="dw.meta.kindredClass"
       value="{{ctx.dw.meta.kindredClass}}"
@@ -31,7 +31,7 @@
     <span class="editable-field" data-field="dw.meta.background" {{#unless ctx.dw.meta.background}}style="display:none;"{{/unless}}>{{ctx.dw.meta.background}}</span>
     <input
       id="dw-background"
-      placeholder="Background"
+      placeholder="{{localize "DOLMENWOOD.UI.Background"}}"
       class="edit-input"
       name="dw.meta.background"
       value="{{ctx.dw.meta.background}}"
@@ -42,7 +42,7 @@
     <span class="editable-field" data-field="dw.meta.alignment" {{#unless ctx.dw.meta.alignment}}style="display:none;"{{/unless}}>{{ctx.dw.meta.alignment}}</span>
     <input
       id="dw-alignment"
-      placeholder="Alignment"
+      placeholder="{{localize "DOLMENWOOD.UI.Alignment"}}"
       class="edit-input"
       name="dw.meta.alignment"
       value="{{ctx.dw.meta.alignment}}"
@@ -54,7 +54,7 @@
     <span class="editable-field" data-field="dw.meta.affiliation" {{#unless ctx.dw.meta.affiliation}}style="display:none;"{{/unless}}>{{ctx.dw.meta.affiliation}}</span>
     <input
       id="dw-affiliation"
-      placeholder="Affiliation"
+      placeholder="{{localize "DOLMENWOOD.UI.Affiliation"}}"
       class="edit-input"
       name="dw.meta.affiliation"
       value="{{ctx.dw.meta.affiliation}}"
@@ -65,7 +65,7 @@
     <span class="editable-field" data-field="dw.meta.moonSign" {{#unless ctx.dw.meta.moonSign}}style="display:none;"{{/unless}}>{{ctx.dw.meta.moonSign}}</span>
     <input
       id="dw-moon-sign"
-      placeholder="Moon Sign"
+      placeholder="{{localize "DOLMENWOOD.UI.MoonSign"}}"
       class="edit-input"
       name="dw.meta.moonSign"
       value="{{ctx.dw.meta.moonSign}}"

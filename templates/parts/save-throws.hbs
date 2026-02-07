@@ -1,6 +1,6 @@
 <div class="dw-save-throws">
   <div class="dw-block-head">
-    <h2>Save Targets</h2>
+    <h2>{{localize "DOLMENWOOD.UI.SaveTargets"}}</h2>
   </div>
 
   <div class="dw-saves">
@@ -15,7 +15,7 @@
             title="{{lookup ctx.dwUi.saveTooltips s.key}}"
           >{{s.label}}</button>
         {{else}}
-          <div class="dw-roll-placeholder dw-saves__info" title="Not rolled here.">{{s.label}}</div>
+          <div class="dw-roll-placeholder dw-saves__info" title="{{localize "DOLMENWOOD.UI.NotRolledHere"}}">{{s.label}}</div>
         {{/if}}
 
         {{#if s.rollable}}

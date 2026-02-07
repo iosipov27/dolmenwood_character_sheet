@@ -1,0 +1,91 @@
+{
+  "DOLMENWOOD": {
+    "UI": {
+      "AbilityScores": "Ability Scores",
+      "ModShort": "MOD",
+      "ArmorClass": "AC",
+      "PathNotDetected": {
+        "AC": "AC path not detected.",
+        "HPCurrent": "HP current path not detected.",
+        "HPMax": "HP max path not detected."
+      },
+      "MeleeAttack": "Melee Attack",
+      "RangedAttack": "Ranged Attack",
+      "HP": "HP",
+      "MaxHP": "Max HP",
+      "KindredClassTraits": "Kindred & Class Traits",
+      "Languages": "Languages",
+      "Edit": "Edit",
+      "Done": "Done",
+      "EditTraits": "Edit traits",
+      "EditLanguages": "Edit languages",
+      "Movement": "Movement",
+      "Speed": "Speed",
+      "Exploring": "Exploring",
+      "Overland": "Overland",
+      "Name": "Name",
+      "KindredClass": "Kindred & Class",
+      "Background": "Background",
+      "Alignment": "Alignment",
+      "Affiliation": "Affiliation",
+      "MoonSign": "Moon Sign",
+      "SaveTargets": "Save Targets",
+      "NotRolledHere": "Not rolled here.",
+      "SkillTargets": "Skill Targets",
+      "SkillHintClickRoll": "Click Roll or double-click a number.",
+      "AddSkillMax10": "Add skill (max 10)",
+      "Roll": "Roll",
+      "SkillName": "Skill name",
+      "Remove": "Remove",
+      "XP": "XP",
+      "Level": "Level",
+      "NextLevel": "Next Level",
+      "Modifier": "Modifier"
+    },
+    "Ability": {
+      "Strength": "Strength",
+      "Dexterity": "Dexterity"
+    },
+    "Skills": {
+      "Listen": "LISTEN",
+      "Search": "SEARCH",
+      "Survival": "SURVIVAL"
+    },
+    "Saves": {
+      "Doom": "DOOM",
+      "Hold": "HOLD",
+      "Spell": "SPELL",
+      "Ray": "RAY",
+      "Blast": "BLAST",
+      "MagicResist": "M/R"
+    },
+    "Roll": {
+      "AbilityPrefix": "Ability",
+      "SavePrefix": "Save",
+      "TargetWord": "target",
+      "Success": "SUCCESS",
+      "Fail": "FAIL"
+    },
+    "Settings": {
+      "EnableDebugLogsName": "Enable debug logging",
+      "EnableDebugLogsHint": "When enabled, module errors are written to the browser console.",
+      "EnableErrorNotificationsName": "Enable error notifications",
+      "EnableErrorNotificationsHint": "When enabled, module errors are shown as UI notifications."
+    },
+    "Tooltips": {
+      "Save": {
+        "Doom": "DOOM: target to resist fate, dread, and ill fortune.",
+        "Hold": "HOLD: target to resist being held, paralyzed, trapped, or restrained.",
+        "Spell": "SPELL: target to resist hostile spells and enchantments.",
+        "Ray": "RAY: target to resist rays, beams, and aimed magical effects.",
+        "Blast": "BLAST: target to resist blasts, bursts, breath, and area shocks.",
+        "MagicResist": "MAGIC/RESIST: single value, not rolled here."
+      },
+      "Skill": {
+        "Listen": "LISTEN: target to hear faint sounds and notice subtle noises.",
+        "Search": "SEARCH: target to find hidden details, traps, and clues.",
+        "Survival": "SURVIVAL: target to navigate, track, forage, and endure wilderness travel."
+      }
+    }
+  }
+}

@@ -17,10 +17,12 @@ export function registerSaveRollListener(
     prettyKey: (key: string) => string;
   }
 ): void {
+  const localize = (key: string): string => game.i18n?.localize(key) ?? key;
+
   registerAction(html, DW_ROLL_SAVE, async (ev: ActionEvent) => {
     const { key } = getDataset(ev);
     const target = Number(foundry.utils.getProperty(getDwFlags(), `saves.${key}`) ?? 0);
 
-    await rollTargetCheck(actor, `Save: ${prettyKey(key ?? "")}`, target);
+    await rollTargetCheck(actor, `${localize("DOLMENWOOD.Roll.SavePrefix")}: ${prettyKey(key ?? "")}`, target);
   });
 }

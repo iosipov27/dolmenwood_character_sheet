@@ -10,8 +10,8 @@ export function registerSettings(): void {
   if (!settings) return;
 
   settings.register(MODULE_ID, ENABLE_DEBUG_LOGS_SETTING, {
-    name: "Enable debug logging",
-    hint: "When enabled, module errors are written to the browser console.",
+    name: "DOLMENWOOD.Settings.EnableDebugLogsName",
+    hint: "DOLMENWOOD.Settings.EnableDebugLogsHint",
     scope: "client",
     config: true,
     type: Boolean,
@@ -19,8 +19,8 @@ export function registerSettings(): void {
   });
 
   settings.register(MODULE_ID, ENABLE_ERROR_NOTIFICATIONS_SETTING, {
-    name: "Enable error notifications",
-    hint: "When enabled, module errors are shown as UI notifications.",
+    name: "DOLMENWOOD.Settings.EnableErrorNotificationsName",
+    hint: "DOLMENWOOD.Settings.EnableErrorNotificationsHint",
     scope: "client",
     config: true,
     type: Boolean,

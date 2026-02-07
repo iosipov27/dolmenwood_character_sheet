@@ -3,6 +3,8 @@ import type { HtmlRoot, JQueryWithOn } from "../types.js";
 import { registerAction } from "../utils/registerAction.js";
 
 export function registerKindredTraitsListener(html: HtmlRoot): void {
+  const localize = (key: string): string => game.i18n?.localize(key) ?? key;
+
   // Kindred & Class Traits - Toggle edit mode
   const traitsDisplay = html.find(".dw-kindred-traits-display");
   const traitsTextarea = html.find(
@@ -19,13 +21,13 @@ export function registerKindredTraitsListener(html: HtmlRoot): void {
       // Show textarea, hide display
       traitsDisplay.hide();
       traitsTextarea.show().focus();
-      editBtn.text("Done");
+      editBtn.text(localize("DOLMENWOOD.UI.Done"));
     } else {
       // Hide textarea, show display
       traitsDisplay.find(".dw-traits-content").text(traitsTextarea.val() as string);
       traitsTextarea.hide();
       traitsDisplay.show();
-      editBtn.text("Edit");
+      editBtn.text(localize("DOLMENWOOD.UI.Edit"));
     }
   });
 }

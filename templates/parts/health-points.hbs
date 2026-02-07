@@ -1,6 +1,6 @@
 <div class="dw-hp">
   <div class="dw-hp__current">
-    <label>HP</label>
+    <label>{{localize "DOLMENWOOD.UI.HP"}}</label>
     {{#if ctx.dwHp.hasCurrent}}
       <input name="{{ctx.dwHp.nameCurrent}}" type="number" value="{{ctx.dwHp.current}}" />
     {{else}}
@@ -8,17 +8,17 @@
         type="number"
         value="{{ctx.dwHp.current}}"
         disabled
-        title="HP current path not detected."
+        title="{{localize "DOLMENWOOD.UI.PathNotDetected.HPCurrent"}}"
       />
     {{/if}}
   </div>
 
   <div class="dw-hp__max">
-    <label>Max HP</label>
+    <label>{{localize "DOLMENWOOD.UI.MaxHP"}}</label>
     {{#if ctx.dwHp.hasMax}}
       <input name="{{ctx.dwHp.nameMax}}" type="number" value="{{ctx.dwHp.max}}" />
     {{else}}
-      <input type="number" value="{{ctx.dwHp.max}}" disabled title="HP max path not detected." />
+      <input type="number" value="{{ctx.dwHp.max}}" disabled title="{{localize "DOLMENWOOD.UI.PathNotDetected.HPMax"}}" />
     {{/if}}
   </div>
 </div>

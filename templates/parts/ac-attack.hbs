@@ -1,20 +1,20 @@
 <div class="dw-ac-attack">
 
   <div class="dw-ac-attack__armor">
-    <label>AC</label>
+    <label>{{localize "DOLMENWOOD.UI.ArmorClass"}}</label>
     {{#if ctx.dwCombat.hasAc}}
       <input name="{{ctx.dwCombat.nameAc}}" type="number" value="{{ctx.dwCombat.ac}}" />
     {{else}}
-      <input type="number" value="{{ctx.dwCombat.ac}}" disabled title="AC path not detected." />
+      <input type="number" value="{{ctx.dwCombat.ac}}" disabled title="{{localize "DOLMENWOOD.UI.PathNotDetected.AC"}}" />
     {{/if}}
   </div>
 
   <div class="dw-ac-attack__attack">
-    <button type="button" class="attack-btn" data-action="dw-roll-attack" data-attack="melee" title="Melee Attack">
+    <button type="button" class="attack-btn" data-action="dw-roll-attack" data-attack="melee" title="{{localize "DOLMENWOOD.UI.MeleeAttack"}}">
       <i class="fas fa-sword"></i>
     </button>
 
-    <button type="button" class="attack-btn" data-action="dw-roll-attack" data-attack="ranged" title="Ranged Attack">
+    <button type="button" class="attack-btn" data-action="dw-roll-attack" data-attack="ranged" title="{{localize "DOLMENWOOD.UI.RangedAttack"}}">
       <i class="fas fa-bow-arrow"></i>
     </button>
   </div>

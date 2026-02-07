@@ -9,17 +9,19 @@ const ATTACK_TO_ABILITY: Record<string, "str" | "dex"> = {
   ranged: "dex"
 };
 
-const ATTACK_LABELS: Record<string, string> = {
-  melee: "Melee Attack",
-  ranged: "Ranged Attack"
-};
-
-const ABILITY_LABELS: Record<"str" | "dex", string> = {
-  str: "Strength",
-  dex: "Dexterity"
-};
-
 export function registerAttackRollListener(html: HtmlRoot, { actor }: { actor: Actor }): void {
+  const localize = (key: string): string => game.i18n?.localize(key) ?? key;
+
+  const attackLabels: Record<string, string> = {
+    melee: localize("DOLMENWOOD.UI.MeleeAttack"),
+    ranged: localize("DOLMENWOOD.UI.RangedAttack")
+  };
+
+  const abilityLabels: Record<"str" | "dex", string> = {
+    str: localize("DOLMENWOOD.Ability.Strength"),
+    dex: localize("DOLMENWOOD.Ability.Dexterity")
+  };
+
   registerAction(html, DW_ROLL_ATTACK, async (ev: ActionEvent) => {
     const { attack } = getDataset(ev);
     const attackType = String(attack ?? "").trim().toLowerCase();
@@ -34,8 +36,8 @@ export function registerAttackRollListener(html: HtmlRoot, { actor }: { actor: A
     const sign = mod >= 0 ? "+" : "-";
 
     const flavor =
-      `<span class="dw-roll-title">${ATTACK_LABELS[attackType]}</span>` +
-      ` - 1d20 ${sign} <b>${Math.abs(mod)}</b> (${ABILITY_LABELS[abilityKey]})`;
+      `<span class="dw-roll-title">${attackLabels[attackType]}</span>` +
+      ` - 1d20 ${sign} <b>${Math.abs(mod)}</b> (${abilityLabels[abilityKey]})`;
 
     await roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor }),

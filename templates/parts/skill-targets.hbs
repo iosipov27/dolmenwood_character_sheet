@@ -1,12 +1,12 @@
 <div class="dw-block-head">
-  <h2>Skill Targets</h2>
+  <h2>{{localize "DOLMENWOOD.UI.SkillTargets"}}</h2>
   <div class="dw-skill-actions">
-    <div class="dw-hint">Click Roll or double-click a number.</div>
+    <div class="dw-hint">{{localize "DOLMENWOOD.UI.SkillHintClickRoll"}}</div>
     <button
       type="button"
       class="dw-plus"
       data-action="dw-add-skill"
-      title="Add skill (max 10)"
+      title="{{localize "DOLMENWOOD.UI.AddSkillMax10"}}"
     >+</button>
   </div>
 </div>
@@ -20,7 +20,7 @@
         class="dw-roll"
         data-action="dw-roll-skill"
         data-key="{{key}}"
-      >Roll</button>
+      >{{localize "DOLMENWOOD.UI.Roll"}}</button>
 
       <div class="dw-label" title="{{lookup ctx.dwUi.skillTooltips key}}">
         {{uppercase key}}
@@ -48,7 +48,7 @@
         data-index="{{idx}}"
         data-name="{{s.name}}"
       >
-        Roll
+        {{localize "DOLMENWOOD.UI.Roll"}}
       </button>
 
       <input
@@ -56,7 +56,7 @@
         name="dw.extraSkills.{{idx}}.name"
         type="text"
         value="{{s.name}}"
-        placeholder="Skill name"
+        placeholder="{{localize "DOLMENWOOD.UI.SkillName"}}"
       />
 
       <input
@@ -74,9 +74,9 @@
         class="dw-x"
         data-action="dw-remove-skill"
         data-index="{{idx}}"
-        title="Remove"
+        title="{{localize "DOLMENWOOD.UI.Remove"}}"
       >
-        ✕
+        &times;
       </button>
     </div>
   {{/each}}
