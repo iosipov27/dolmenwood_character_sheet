@@ -1,33 +1,34 @@
-<div class="dw-block-head">
-  <h2>Movement</h2>
-  <div class="dw-hint">Movement rates (OSE / Dolmenwood).</div>
-</div>
-
 <div class="dw-movement">
-  <div class="dw-move">
-    <div class="dw-label">Speed</div>
+
+  <div class="dw-movement__item">
+    <h2>Movement</h2>
+  </div>
+
+  <div class="dw-movement__item">
+
+    <div class="dw-movement__label">Speed</div>
     <input
-      class="dw-target"
+      class="dw-movement__input"
       name="dw.movement.speed"
       type="number"
       value="{{ctx.dw.movement.speed}}"
     />
   </div>
 
-  <div class="dw-move">
-    <div class="dw-label">Exploring</div>
+  <div class="dw-movement__item">
+    <div class="dw-movement__label">Exploring</div>
     <input
-      class="dw-target"
+      class="dw-movement__input"
       name="dw.movement.exploring"
       type="number"
       value="{{ctx.dw.movement.exploring}}"
     />
   </div>
 
-  <div class="dw-move">
-    <div class="dw-label">Overland</div>
+  <div class="dw-movement__item">
+    <div class="dw-movement__label">Overland</div>
     <input
-      class="dw-target"
+      class="dw-movement__input"
       name="dw.movement.overland"
       type="number"
       value="{{ctx.dw.movement.overland}}"
