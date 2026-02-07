@@ -1,0 +1,10 @@
+.dw-skills {
+  display: flex;
+  gap: 0.5rem;
+
+  .dw-skill {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+}

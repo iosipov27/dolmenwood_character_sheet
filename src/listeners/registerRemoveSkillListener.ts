@@ -1,15 +1,20 @@
 import { registerAction } from "../utils/registerAction.js";
 import { DW_REMOVE_SKILL } from "../constants/templateAttributes.js";
 import { getDataset } from "../utils/getDataset.js";
-import type { ActionEvent, GetDwFlags, HtmlRoot, RenderSheet, SetDwFlags } from "../types.js";
+import type {
+  ActionEvent,
+  DwExtraSkill,
+  GetDwFlags,
+  HtmlRoot,
+  SetDwFlags
+} from "../types.js";
 
 export function registerRemoveSkillListener(
   html: HtmlRoot,
   {
     getDwFlags,
-    setDwFlags,
-    renderSheet
-  }: { getDwFlags: GetDwFlags; setDwFlags: SetDwFlags; renderSheet: RenderSheet }
+    setDwFlags
+  }: { getDwFlags: GetDwFlags; setDwFlags: SetDwFlags }
 ): void {
   registerAction(html, DW_REMOVE_SKILL, async (ev: ActionEvent) => {
     const { index } = getDataset(ev);
@@ -19,12 +24,37 @@ export function registerRemoveSkillListener(
 
     const dw = getDwFlags();
 
-    dw.extraSkills = Array.isArray(dw.extraSkills) ? dw.extraSkills : [];
+    dw.extraSkills = readExtraSkillsFromForm(html, dw.extraSkills);
 
     if (skillIndex < 0 || skillIndex >= dw.extraSkills.length) return;
 
     dw.extraSkills.splice(skillIndex, 1);
     await setDwFlags(dw);
-    renderSheet();
   });
+}
+
+function readExtraSkillsFromForm(html: HtmlRoot, fallback: DwExtraSkill[]): DwExtraSkill[] {
+  const fields = html.find("input[name^='dw.extraSkills.']");
+  if (!fields.length) return Array.isArray(fallback) ? fallback : [];
+
+  const byIndex = new Map<number, DwExtraSkill>();
+
+  fields.each((_, element) => {
+    const input = element as HTMLInputElement;
+    const match = input.name.match(/^dw\.extraSkills\.(\d+)\.(name|target)$/);
+    if (!match) return;
+
+    const index = Number(match[1]);
+    const key = match[2];
+    if (!Number.isFinite(index)) return;
+
+    const current = byIndex.get(index) ?? { name: "", target: 0 };
+    if (key === "name") current.name = input.value ?? "";
+    if (key === "target") current.target = Number(input.value ?? 0) || 0;
+    byIndex.set(index, current);
+  });
+
+  return Array.from(byIndex.entries())
+    .sort((a, b) => a[0] - b[0])
+    .map(([, skill]) => skill);
 }

@@ -433,6 +433,16 @@
   width: 100%;
 }
 
+.dw-skills {
+  display: flex;
+  gap: 0.5rem;
+}
+.dw-skills .dw-skill {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 .dolmenwood {
   max-width: 45rem;
 }

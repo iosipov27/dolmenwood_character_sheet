@@ -1,13 +1,11 @@
 import { registerSaveRollListener } from "./registerSaveRollListener.js";
 import { registerSkillRollListener } from "./registerSkillRollListener.js";
 import { registerSaveDblRollListener } from "./registerSaveDblRollListener.js";
-import { registerSkillDblRollListener } from "./registerSkillDblRollListener.js";
 import { registerAbilityRollListener } from "./registerAbilityRollListener.js";
 import { registerAttackRollListener } from "./registerAttackRollListener.js";
 import { registerAddSkillListener } from "./registerAddSkillListener.js";
 import { registerRemoveSkillListener } from "./registerRemoveSkillListener.js";
 import { registerExtraSkillRollListener } from "./registerExtraSkillRollListener.js";
-import { registerExtraSkillDblRollListener } from "./registerExtraSkillDblRollListener.js";
 import { registerKindredTraitsListener } from "./registerKindredTraitsListener.js";
 import { registerLanguagesListener } from "./registerLanguagesListener.js";
 import { registerInputUpdateListeners } from "./registerInputUpdateListeners.js";
@@ -51,12 +49,6 @@ export function registerSheetListeners(
     prettyKey
   });
 
-  registerSkillDblRollListener(html, {
-    actor,
-    rollTargetCheck: RollChecks.rollTargetCheck,
-    prettyKey
-  });
-
   registerAbilityRollListener(html, {
     actor,
     rollAbilityCheck: RollChecks.rollAbilityCheck
@@ -66,23 +58,15 @@ export function registerSheetListeners(
 
   registerAddSkillListener(html, {
     getDwFlags,
-    setDwFlags: (dw: DwFlags) => setDwFlags(dw),
-    renderSheet
+    setDwFlags: (dw: DwFlags) => setDwFlags(dw)
   });
 
   registerRemoveSkillListener(html, {
     getDwFlags,
-    setDwFlags: (dw: DwFlags) => setDwFlags(dw),
-    renderSheet
+    setDwFlags: (dw: DwFlags) => setDwFlags(dw)
   });
 
   registerExtraSkillRollListener(html, {
-    actor,
-    getDwFlags,
-    rollTargetCheck: RollChecks.rollTargetCheck
-  });
-
-  registerExtraSkillDblRollListener(html, {
     actor,
     rollTargetCheck: RollChecks.rollTargetCheck
   });

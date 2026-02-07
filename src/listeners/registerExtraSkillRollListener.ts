@@ -1,24 +1,30 @@
-import { registerAction } from "../utils/registerAction.js";
 import { DW_ROLL_EXTRA_SKILL } from "../constants/templateAttributes.js";
 import { getDataset } from "../utils/getDataset.js";
-import type { ActionEvent, GetDwFlags, HtmlRoot, RollTargetCheck } from "../types.js";
+import type {
+  ActionEvent,
+  HtmlRoot,
+  JQueryWithOn,
+  RollTargetCheck
+} from "../types.js";
 
 export function registerExtraSkillRollListener(
   html: HtmlRoot,
   {
     actor,
-    getDwFlags,
     rollTargetCheck
-  }: { actor: Actor; getDwFlags: GetDwFlags; rollTargetCheck: RollTargetCheck }
+  }: { actor: Actor; rollTargetCheck: RollTargetCheck }
 ): void {
-  registerAction(html, DW_ROLL_EXTRA_SKILL, async (ev: ActionEvent) => {
-    const { index, name } = getDataset(ev);
-    const skillIndex = Number(index);
-    const skillName = String(name ?? "SKILL").trim() || "SKILL";
+  const nodes = html.find(`[data-action='${DW_ROLL_EXTRA_SKILL}']`) as JQueryWithOn<HTMLButtonElement>;
 
-    const dw = getDwFlags();
-    const arr = Array.isArray(dw.extraSkills) ? dw.extraSkills : [];
-    const target = Number(arr[skillIndex]?.target ?? 0);
+  nodes.on("mousedown", async (ev: ActionEvent<HTMLButtonElement>) => {
+    ev.preventDefault();
+
+    const { name } = getDataset(ev);
+    const row = $(ev.currentTarget).closest(".dw-skill-extra");
+    const nameInput = row.find("input.dw-skill-name").get(0) as HTMLInputElement | undefined;
+    const targetInput = row.find("input.dw-target").get(0) as HTMLInputElement | undefined;
+    const skillName = String(nameInput?.value ?? name ?? "SKILL").trim() || "SKILL";
+    const target = Number(targetInput?.value ?? 0) || 0;
 
     await rollTargetCheck(actor, `Skill: ${skillName.toUpperCase()}`, target);
   });
