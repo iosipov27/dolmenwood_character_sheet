@@ -1,0 +1,36 @@
+<header class="dw-header">
+    <div class="dw-grid-2">
+        <div class="dw-field">
+            {{> player-data ctx=ctx}}
+        </div>
+        <div class="dw-field">
+            {{> avatar ctx=ctx}}
+        </div>
+    </div>
+</header>
+
+<section class="dw-block">
+    {{> abilities ctx=ctx}}
+</section>
+
+<hr />
+
+<section class="dw-block dw-block--flat dw-block--bordered" style="margin-top: 1rem">
+    <div class="dw-grid-3">
+        <div>{{> health-points ctx=ctx}}</div>
+        <div>{{> save-throws ctx=ctx}}</div>
+        <div>{{> ac-attack ctx=ctx}}</div>
+    </div>
+</section>
+
+<hr class="mt2" />
+
+<section class="dw-block">
+    {{> movement ctx=ctx}}
+</section>
+
+<hr class="mt1" />
+
+<section class="dw-block">
+    {{> skill-targets ctx=ctx}}
+</section>

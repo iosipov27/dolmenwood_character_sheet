@@ -1,4 +1,6 @@
 const TEMPLATE_PATHS: Record<string, string> = {
+  "dolmenwood-main-tab": "modules/dolmenwood/templates/dolmenwood-main-tab.hbs",
+  "dolmenwood-second-tab": "modules/dolmenwood/templates/dolmenwood-second-tab.hbs",
   "player-data": "modules/dolmenwood/templates/parts/player-data.hbs",
   "health-points": "modules/dolmenwood/templates/parts/health-points.hbs",
   "save-throws": "modules/dolmenwood/templates/parts/save-throws.hbs",

@@ -7,8 +7,81 @@
 @use "parts/movement.scss" as *;
 @use "parts/skills.scss" as *;
 
-.dolmenwood {
+.dolmenwood-sheet {
   max-width: 45rem;
+  display: flex;
+  position: relative;
+
+  &__layout {
+    width: 100%;
+    position: relative;
+  }
+
+  &__content {
+    min-width: 0;
+  }
+
+  &__tab-panel {
+    display: none;
+  }
+
+  &__tab-panel.is-active {
+    display: block;
+  }
+
+  &__tabs {
+    position: absolute;
+    top: 0.75rem;
+    right: -6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+    background: transparent;
+    z-index: 2;
+  }
+
+  &__tab {
+    display: block;
+    max-height: 35px;
+    padding: 1px 10px 0;
+    margin-left: -5px;
+    text-indent: 4px;
+    line-height: 16px;
+    background: url(/ui/parchment.jpg);
+    border-top-right-radius: 4px;
+    border-top-left-radius: 80px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.9);
+    font-size: var(--font-size-12);
+    color: $color-text-dark-primary;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    white-space: nowrap;
+    transform: rotate(90deg);
+    transform-origin: left top;
+  }
+
+  &__tab.is-active {
+    filter: brightness(0.94);
+  }
+}
+
+.dolmenwood.sheet.actor .window-content {
+  overflow: visible;
+}
+
+@media (max-width: 780px) {
+  .dolmenwood-sheet {
+    &__tabs {
+      position: static;
+      flex-direction: row;
+    }
+
+    &__tab {
+      margin-left: 0;
+    }
+  }
 }
 
 button {

@@ -58,6 +58,7 @@ export class DolmenwoodSheet extends BaseSheet {
 
   activateListeners(html: HtmlRoot): void {
     super.activateListeners(html);
+    this.activateTabNavigation(html);
 
     registerSheetListeners(html, {
       actor: this.actor,
@@ -65,6 +66,27 @@ export class DolmenwoodSheet extends BaseSheet {
       setDwFlags: (dw: DwFlags) => this.setDwFlags(dw),
       renderSheet: () => this.render(),
       sheet: this
+    });
+  }
+
+  private activateTabNavigation(html: HtmlRoot): void {
+    const tabs = html.find("[data-tab-target]");
+    const panels = html.find("[data-tab-panel]");
+
+    tabs.on("click", (ev: Event) => {
+      ev.preventDefault();
+      ev.stopPropagation();
+
+      const target = (ev.currentTarget as HTMLElement | null)?.dataset?.tabTarget;
+      if (!target) return;
+
+      tabs.removeClass("is-active");
+      $(ev.currentTarget as HTMLElement).addClass("is-active");
+
+      panels.removeClass("is-active");
+      html.find(`[data-tab-panel='${target}']`).addClass("is-active");
+
+      return false;
     });
   }
 

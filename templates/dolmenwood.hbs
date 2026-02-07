@@ -1,52 +1,18 @@
-<form class="dolmenwood" autocomplete="off">
-    <header class="dw-header">
-        <div class="dw-grid-2">
-            <div class="dw-field">
-                {{> player-data ctx=this}}
+<form class="dolmenwood-sheet" autocomplete="off">
+    <div class="dolmenwood-sheet__layout">
+        <div class="dolmenwood-sheet__content">
+            <div class="dolmenwood-sheet__tab-panel dolmenwood-sheet__main-tab is-active" data-tab-panel="main">
+                {{> dolmenwood-main-tab ctx=this}}
             </div>
-            <div class="dw-field">
-                {{> avatar ctx=this}}
+
+            <div class="dolmenwood-sheet__tab-panel dolmenwood-sheet__second-tab" data-tab-panel="second">
+                {{> dolmenwood-second-tab ctx=this}}
             </div>
         </div>
-    </header>
 
-    <section class="dw-block">
-        {{> abilities ctx=this}}
-    </section>
-
-    <hr />
-
-    <section class="dw-block dw-block--flat dw-block--bordered" style="margin-top: 1rem">
-        <div class="dw-grid-3">
-            <div>{{> health-points ctx=this}}</div>
-            <div>{{> save-throws ctx=this}}</div>
-            <div>{{> ac-attack ctx=this}}</div>
+        <div class="dolmenwood-sheet__tabs">
+            <a href="#" class="dolmenwood-sheet__tab is-active" data-tab-target="main">Main</a>
+            <a href="#" class="dolmenwood-sheet__tab" data-tab-target="second">Details</a>
         </div>
-    </section>
-
-    <hr class="mt2" />
-
-    <section class="dw-block">
-        {{> movement ctx=this}}
-    </section>
-
-    <hr class="mt1" />
-
-    <section class="dw-block">
-        {{> skill-targets ctx=this}}
-    </section>
-
-    <hr class="mt2" />
-
-    <section class="dw-block">
-        {{> kindred-class-traits ctx=this}}
-    </section>
-
-    <section class="dw-block">
-        {{> languages ctx=this}}
-    </section>
-
-    <section class="dw-block dw-xp-section">
-        {{> xp-section ctx=this}}
-    </section>
+    </div>
 </form>
