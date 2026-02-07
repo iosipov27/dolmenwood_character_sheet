@@ -1,65 +1,75 @@
 <div class="player-data">
   <div class="dw-field player-data__name">
-    <span class="editable-field" data-field="name">{{ctx.actor.name}}</span>
-    <input class="edit-input" name="name" value="{{ctx.actor.name}}" style="display:none;" />
+    <span class="editable-field" data-field="name" {{#unless ctx.actor.name}}style="display:none;"{{/unless}}>{{ctx.actor.name}}</span>
+    <input
+      id="dw-name"
+      class="edit-input"
+      name="name"
+      placeholder="Name"
+      value="{{ctx.actor.name}}"
+      {{#if ctx.actor.name}}style="display:none;"{{/if}}
+    />
   </div>
 
   <div class="dw-field">
-    <label>Kindred & Class</label>
     <span
       class="editable-field"
       data-field="dw.meta.kindredClass"
+      {{#unless ctx.dw.meta.kindredClass}}style="display:none;"{{/unless}}
     >{{ctx.dw.meta.kindredClass}}</span>
     <input
+      id="dw-kindred-class"
       placeholder="Kindred & Class"
       class="edit-input"
       name="dw.meta.kindredClass"
       value="{{ctx.dw.meta.kindredClass}}"
-      style="display:none;"
+      {{#if ctx.dw.meta.kindredClass}}style="display:none;"{{/if}}
     />
   </div>
 
   <div class="dw-field">
-    <label>Background</label>
-    <span class="editable-field" data-field="dw.meta.background">{{ctx.dw.meta.background}}</span>
+    <span class="editable-field" data-field="dw.meta.background" {{#unless ctx.dw.meta.background}}style="display:none;"{{/unless}}>{{ctx.dw.meta.background}}</span>
     <input
+      id="dw-background"
       placeholder="Background"
       class="edit-input"
       name="dw.meta.background"
       value="{{ctx.dw.meta.background}}"
-      style="display:none;"
+      {{#if ctx.dw.meta.background}}style="display:none;"{{/if}}
     />
   </div>
   <div class="dw-field">
-    <label>Alignment</label>
-    <span class="editable-field" data-field="dw.meta.alignment">{{ctx.dw.meta.alignment}}</span>
+    <span class="editable-field" data-field="dw.meta.alignment" {{#unless ctx.dw.meta.alignment}}style="display:none;"{{/unless}}>{{ctx.dw.meta.alignment}}</span>
     <input
+      id="dw-alignment"
       placeholder="Alignment"
       class="edit-input"
       name="dw.meta.alignment"
       value="{{ctx.dw.meta.alignment}}"
-      style="display:none;"
+      {{#if ctx.dw.meta.alignment}}style="display:none;"{{/if}}
     />
+
   </div>
   <div class="dw-field">
-    <label>Affiliation</label>
-    <span class="editable-field" data-field="dw.meta.affiliation">{{ctx.dw.meta.affiliation}}</span>
+    <span class="editable-field" data-field="dw.meta.affiliation" {{#unless ctx.dw.meta.affiliation}}style="display:none;"{{/unless}}>{{ctx.dw.meta.affiliation}}</span>
     <input
+      id="dw-affiliation"
       placeholder="Affiliation"
       class="edit-input"
       name="dw.meta.affiliation"
       value="{{ctx.dw.meta.affiliation}}"
-      style="display:none;"
+      {{#if ctx.dw.meta.affiliation}}style="display:none;"{{/if}}
     />
   </div>
   <div class="dw-field">
-    <span class="editable-field" data-field="dw.meta.moonSign">{{ctx.dw.meta.moonSign}}</span>
+    <span class="editable-field" data-field="dw.meta.moonSign" {{#unless ctx.dw.meta.moonSign}}style="display:none;"{{/unless}}>{{ctx.dw.meta.moonSign}}</span>
     <input
+      id="dw-moon-sign"
       placeholder="Moon Sign"
       class="edit-input"
       name="dw.meta.moonSign"
       value="{{ctx.dw.meta.moonSign}}"
-      style="display:none;"
+      {{#if ctx.dw.meta.moonSign}}style="display:none;"{{/if}}
     />
   </div>
 </div>

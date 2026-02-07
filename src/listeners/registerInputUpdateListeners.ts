@@ -18,14 +18,26 @@ export function registerInputUpdateListeners(
     span.hide();
     input.val(span.text());
     input.show().focus();
+
+    const inputElement = input.get(0) as HTMLInputElement | undefined;
+    if (inputElement && typeof inputElement.setSelectionRange === "function") {
+      const caretPosition = inputElement.value.length;
+      inputElement.setSelectionRange(caretPosition, caretPosition);
+    }
   });
 
   function saveField(input: JQuery<HTMLElement>, span: JQuery<HTMLElement>) {
     const value = input.val() as string;
+    const hasValue = value.trim().length > 0;
 
     span.text(value);
-    input.hide();
-    span.show();
+    if (hasValue) {
+      input.hide();
+      span.show();
+    } else {
+      span.hide();
+      input.show();
+    }
 
     // Prepare form data for update
     const field = input.attr("name");
@@ -54,10 +66,8 @@ export function registerInputUpdateListeners(
 
   editInputs.on("keydown", function (e) {
     if (e.key === "Enter") {
-      const input = $(this);
-      const span = input.siblings(".editable-field");
-
-      saveField(input, span);
+      e.preventDefault();
+      $(this).trigger("blur");
     }
   });
 }
