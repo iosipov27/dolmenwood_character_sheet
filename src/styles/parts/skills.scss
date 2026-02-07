@@ -1,13 +1,32 @@
 @use "../common" as *;
 
 .dw-skills {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: 0.5rem;
+  align-items: start;
+
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    min-width: 0;
+  }
 
   .dw-skill {
     display: flex;
     flex-direction: row;
     align-items: center;
+
+    &__name {
+      min-width: 4.6rem;
+    }
+
+    &__extra {
+      &__name {
+        max-width: 4.6rem;
+      }
+    }
 
     input {
       border: none;
@@ -21,5 +40,15 @@
       height: 1.5rem;
       border: 1px solid $color-border-main;
     }
+  }
+
+  .dw-plus {
+    align-self: start;
+    width: 1.1rem;
+    min-width: 1.1rem;
+    height: 1.1rem;
+    padding: 0;
+    line-height: 1;
+    justify-content: center;
   }
 }

@@ -3,71 +3,79 @@
 </div>
 
 <div class="dw-skills">
-  {{! fixed skills }}
-  {{#each ctx.dw.skills as |val key|}}
-    <div class="dw-skill">
-      <button
-        type="button"
-        class="dw-roll"
-        title="{{lookup ctx.dwUi.skillTooltips key}}"
-        data-action="dw-roll-skill"
-        data-key="{{key}}"
-      >{{uppercase key}}</button>
+  <div class="dw-skills__list">
+    {{! fixed skills }}
+    {{#each ctx.dw.skills as |val key|}}
+      <div class="dw-skill">
+        <button
+          type="button"
+          class="dw-roll"
+          title="{{lookup ctx.dwUi.skillTooltips key}}"
+          data-action="dw-roll-skill"
+          data-key="{{key}}"
+        >{{uppercase key}}</button>
 
-      <input
-        class="dw-target"
-        name="dw.skills.{{key}}"
-        type="number"
-        value="{{val}}"
-        data-dw-dblroll="skill"
-        data-key="{{key}}"
-        title="{{lookup ctx.dwUi.skillTooltips key}}"
-      />
-    </div>
-  {{/each}}
+        <input
+          class="dw-target"
+          name="dw.skills.{{key}}"
+          type="number"
+          value="{{val}}"
+          data-dw-dblroll="skill"
+          data-key="{{key}}"
+          title="{{lookup ctx.dwUi.skillTooltips key}}"
+        />
+      </div>
+    {{/each}}
 
-  {{! extra skills }}
-  {{#each ctx.dw.extraSkills as |s idx|}}
-    <div class="dw-skill dw-skill-extra">
-      <button
-        type="button"
-        class="dw-roll"
-        data-action="dw-roll-extra-skill"
-        data-index="{{idx}}"
-        data-name="{{s.name}}"
-      >
-        {{localize "DOLMENWOOD.UI.Roll"}}
-      </button>
+    {{! extra skills }}
+    {{#each ctx.dw.extraSkills as |s idx|}}
+      <div class="dw-skill dw-skill__extra">
+        {{#if s.name}}
+          <button
+            type="button"
+            class="dw-roll"
+            data-action="dw-roll-extra-skill"
+            data-index="{{idx}}"
+            data-name="{{s.name}}"
+          >
+            {{uppercase s.name}}
+          </button>
+        {{/if}}
 
-      <input
-        class="dw-skill-name"
-        name="dw.extraSkills.{{idx}}.name"
-        type="text"
-        value="{{s.name}}"
-        placeholder="{{localize 'DOLMENWOOD.UI.SkillName'}}"
-      />
+        {{#if s.name}}
+          <input name="dw.extraSkills.{{idx}}.name" type="hidden" value="{{s.name}}" />
+        {{else}}
+          <input
+            class="dw-skill__extra__name"
+            name="dw.extraSkills.{{idx}}.name"
+            type="text"
+            value="{{s.name}}"
+            placeholder="{{localize 'DOLMENWOOD.UI.SkillName'}}"
+          />
+        {{/if}}
 
-      <input
-        class="dw-target"
-        name="dw.extraSkills.{{idx}}.target"
-        type="number"
-        value="{{s.target}}"
-        data-dw-dblroll="extra-skill"
-        data-index="{{idx}}"
-        data-name="{{s.name}}"
-      />
+        <input
+          class="dw-target"
+          name="dw.extraSkills.{{idx}}.target"
+          type="number"
+          value="{{s.target}}"
+          data-dw-dblroll="extra-skill"
+          data-index="{{idx}}"
+          data-name="{{s.name}}"
+        />
 
-      <button
-        type="button"
-        class="dw-x"
-        data-action="dw-remove-skill"
-        data-index="{{idx}}"
-        title="{{localize 'DOLMENWOOD.UI.Remove'}}"
-      >
-        &times;
-      </button>
-    </div>
-  {{/each}}
+        <button
+          type="button"
+          class="dw-x"
+          data-action="dw-remove-skill"
+          data-index="{{idx}}"
+          title="{{localize 'DOLMENWOOD.UI.Remove'}}"
+        >
+          &times;
+        </button>
+      </div>
+    {{/each}}
+  </div>
 
   <button
     type="button"

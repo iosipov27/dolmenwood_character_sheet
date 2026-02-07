@@ -435,13 +435,27 @@
 }
 
 .dw-skills {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: 0.5rem;
+  align-items: start;
+}
+.dw-skills__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  min-width: 0;
 }
 .dw-skills .dw-skill {
   display: flex;
   flex-direction: row;
   align-items: center;
+}
+.dw-skills .dw-skill__name {
+  min-width: 4.6rem;
+}
+.dw-skills .dw-skill__extra__name {
+  max-width: 4.6rem;
 }
 .dw-skills .dw-skill input {
   border: none;
@@ -453,6 +467,15 @@
   font-size: 0.75rem;
   height: 1.5rem;
   border: 1px solid #a7a294;
+}
+.dw-skills .dw-plus {
+  align-self: start;
+  width: 1.1rem;
+  min-width: 1.1rem;
+  height: 1.1rem;
+  padding: 0;
+  line-height: 1;
+  justify-content: center;
 }
 
 .dolmenwood-sheet {
@@ -524,6 +547,11 @@
 button {
   border: none;
   border-radius: 0;
+}
+
+.dw-x {
+  width: 1rem;
+  height: 1rem;
 }
 
 hr {
