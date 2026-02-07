@@ -5,3 +5,5 @@ export const DW_ROLL_EXTRA_SKILL = "dw-roll-extra-skill";
 export const DW_ADD_SKILL = "dw-add-skill";
 export const DW_REMOVE_SKILL = "dw-remove-skill";
 export const DW_TOGGLE_KINDRED_TRAITS = "dw-toggle-kindred-traits";
+export const DW_TOGGLE_LANGUAGES = "dw-toggle-languages";
+export const DW_ROLL_ATTACK = "dw-roll-attack";

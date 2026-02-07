@@ -13,6 +13,7 @@ import { registerExtraSkillDblRollListener } from "../listeners/registerExtraSki
 import { registerKindredTraitsListener } from "../listeners/registerKindredTraitsListener.js";
 import { registerLanguagesListener } from "../listeners/registerLanguagesListener.js";
 import { registerInputUpdateListeners } from "../listeners/registerInputUpdateListeners.js";
+import { registerAttackRollListener } from "../listeners/registerAttackRollListener.js";
 
 // Constants/configuration.
 import { MODULE_ID } from "../constants/moduleId.js";
@@ -21,6 +22,7 @@ import { MODULE_ID } from "../constants/moduleId.js";
 import { normalizeDwFlags } from "../utils/normalizeDwFlags.js";
 import { prettyKey } from "../utils/prettyKey.js";
 import { getBaseOSECharacterSheetClass } from "../utils/getBaseOSECharacterSheetClass.js";
+import { reportError } from "../utils/reportError.js";
 import type { DwFlags, HtmlRoot, DwSheetData } from "../types.js";
 import { DolmenwoodSheetData } from "../models/dolmenwoodSheetData.js";
 
@@ -62,7 +64,8 @@ export class DolmenwoodSheet extends BaseSheet {
       return normalizeDwFlags(
         (actorWithFlags.getFlag?.(MODULE_ID, "dw") as Partial<DwFlags>) ?? {}
       );
-    } catch {
+    } catch (error) {
+      reportError("Failed to read dolmenwood flags from actor.", error);
       return normalizeDwFlags({});
     }
   }
@@ -74,8 +77,8 @@ export class DolmenwoodSheet extends BaseSheet {
       };
 
       await actorWithFlags.setFlag?.(MODULE_ID, "dw", dw);
-    } catch {
-      // Silently ignore flag write errors
+    } catch (error) {
+      reportError("Failed to write dolmenwood flags to actor.", error);
     }
   }
 
@@ -113,6 +116,10 @@ export class DolmenwoodSheet extends BaseSheet {
     registerAbilityRollListener(html, {
       actor: this.actor,
       rollAbilityCheck: RollChecks.rollAbilityCheck
+    });
+
+    registerAttackRollListener(html, {
+      actor: this.actor
     });
 
     registerAddSkillListener(html, {
