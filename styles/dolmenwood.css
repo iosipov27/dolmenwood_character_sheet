@@ -684,7 +684,6 @@ hr {
   background: url(/ui/parchment.jpg);
   border-top-right-radius: 4px;
   border-top-left-radius: 80px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
   font-size: var(--font-size-12);
   color: var(--color-text-dark-primary);
   text-transform: uppercase;
@@ -692,10 +691,11 @@ hr {
   cursor: pointer;
   white-space: nowrap;
   transform: rotate(90deg);
+  filter: brightness(0.85);
   transform-origin: left top;
 }
 .dolmenwood-sheet__tab.is-active {
-  filter: brightness(0.94);
+  filter: brightness(1);
 }
 
 .dolmenwood.sheet.actor .window-content {

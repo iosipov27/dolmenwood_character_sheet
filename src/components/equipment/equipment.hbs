@@ -3,14 +3,14 @@
   <div class="dw-equipment__wrapper">
     <div class="dw-equipment__left">
       <div class="dw-equipment__block dw-equipment__block--top dw-equipment__block--small">
-        <h3>Tiny Items</h3>
+        <h3>{{localize "DOLMENWOOD.UI.TinyItems"}}</h3>
         <div class="dw-equipment__tiny-display">
           <div class="dw-equipment__tiny-content">{{{nl2br ctx.dw.meta.equipment.tinyItems}}}</div>
         </div>
         <textarea class="dw-equipment__textarea" rows="3" name="dw.meta.equipment.tinyItems" style="display: none;">{{ctx.dw.meta.equipment.tinyItems}}</textarea>
       </div>
       <div class="dw-equipment__block dw-equipment__block--bottom">
-        <h3>Equipped Items</h3>
+        <h3>{{localize "DOLMENWOOD.UI.EquippedItems"}}</h3>
         <div class="dw-equipment__fields dw-equipment__fields--bottom">
           {{#each ctx.dwUi.equipment.equippedFields as |field|}}
             <div class="dw-field">
@@ -29,7 +29,7 @@
       </div>
     </div>
     <div class="dw-equipment__block dw-equipment__block--right">
-      <h3>Stowed Items</h3>
+      <h3>{{localize "DOLMENWOOD.UI.StowedItems"}}</h3>
       <div class="dw-equipment__fields dw-equipment__fields--right">
         {{#each ctx.dwUi.equipment.stowedFields as |field|}}
           <div class="dw-field">
