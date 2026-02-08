@@ -5,6 +5,7 @@ export function registerHandlebarsHelpers(): void {
 
   Handlebars.registerHelper("concat", function (...args: unknown[]) {
     const values = args.slice(0, -1);
+
     return values.map((value) => String(value ?? "")).join("");
   });
 
@@ -30,6 +31,7 @@ export function registerHandlebarsHelpers(): void {
 
   Handlebars.registerHelper("nl2br", function (text: string) {
     const sanitized = String(text ?? "");
+
     return new Handlebars.SafeString(sanitized.replace(/\n/g, "<br>"));
   });
 }

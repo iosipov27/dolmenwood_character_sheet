@@ -74,6 +74,7 @@ describe("registerEquipmentListener", () => {
     registerEquipmentListener(html, { getDwFlags, setDwFlags });
 
     const input = html.find('input[name="dw.meta.equipment.equipped1"]');
+
     input.val("Sword");
     input.trigger("blur");
     await flushPromises();
@@ -106,6 +107,7 @@ describe("registerEquipmentListener", () => {
     registerEquipmentListener(html, { getDwFlags, setDwFlags });
 
     const input = html.find('input[name="dw.meta.equipment.stowed1"]');
+
     input.val("Rations");
     input.trigger("change");
     await flushPromises();
@@ -238,6 +240,7 @@ describe("registerEquipmentListener", () => {
     textarea.val("New items");
 
     const enterEvent = $.Event("keydown", { key: "Enter", shiftKey: false });
+
     textarea.trigger(enterEvent);
     await flushPromises();
 
@@ -267,6 +270,7 @@ describe("registerEquipmentListener", () => {
     textarea.val("New items");
 
     const shiftEnterEvent = $.Event("keydown", { key: "Enter", shiftKey: true });
+
     textarea.trigger(shiftEnterEvent);
     await flushPromises();
 
@@ -285,6 +289,7 @@ describe("registerEquipmentListener", () => {
 
     const html = $(document.body);
     const customFlags = buildDwFlags();
+
     customFlags.meta.equipment.tinyItems = "Value from flags";
     const getDwFlags = vi.fn(() => customFlags);
     const setDwFlags = vi.fn(async () => {});

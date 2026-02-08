@@ -20,8 +20,10 @@ export function registerInputUpdateListeners(
     input.show().focus();
 
     const inputElement = input.get(0) as HTMLInputElement | undefined;
+
     if (inputElement && typeof inputElement.setSelectionRange === "function") {
       const caretPosition = inputElement.value.length;
+
       inputElement.setSelectionRange(caretPosition, caretPosition);
     }
   });

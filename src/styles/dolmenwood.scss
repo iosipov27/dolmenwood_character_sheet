@@ -61,10 +61,10 @@
     transform: rotate(90deg);
     filter: brightness(0.85);
     transform-origin: left top;
-  }
 
-  &__tab.is-active {
-    filter: brightness(1);
+    &.is-active {
+      filter: brightness(1);
+    }
   }
 }
 

@@ -17,6 +17,7 @@ export function registerKindredTraitsListener(
     traitsTextarea.show().focus();
 
     const textareaElement = traitsTextarea.get(0);
+
     if (textareaElement) {
       textareaElement.selectionStart = textareaElement.value.length;
       textareaElement.selectionEnd = textareaElement.value.length;
@@ -26,6 +27,7 @@ export function registerKindredTraitsListener(
   async function saveTraits(): Promise<void> {
     const value = String(traitsTextarea.val() ?? "");
     const dw = foundry.utils.duplicate(getDwFlags()) as DwFlags;
+
     dw.meta.kindredClassTraits = value;
 
     traitsContent.text(value);

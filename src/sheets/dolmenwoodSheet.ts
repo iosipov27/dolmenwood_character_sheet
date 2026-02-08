@@ -2,6 +2,7 @@ import { MODULE_ID } from "../constants/moduleId.js";
 import { DolmenwoodSheetData } from "../models/dolmenwoodSheetData.js";
 import type { DwFlags, HtmlRoot, DwSheetData } from "../types.js";
 import { registerSheetListeners } from "../listeners/registerSheetListeners.js";
+import { registerTabNavigationListener } from "../listeners/registerTabNavigationListener.js";
 import { normalizeDwFlags } from "../utils/normalizeDwFlags.js";
 import { getBaseOSECharacterSheetClass } from "../utils/getBaseOSECharacterSheetClass.js";
 import { reportError } from "../utils/reportError.js";
@@ -42,6 +43,7 @@ export class DolmenwoodSheet extends BaseSheet {
       );
     } catch (error) {
       reportError("Failed to read dolmenwood flags from actor.", error);
+
       return normalizeDwFlags({});
     }
   }
@@ -60,7 +62,13 @@ export class DolmenwoodSheet extends BaseSheet {
 
   activateListeners(html: HtmlRoot): void {
     super.activateListeners(html);
-    this.activateTabNavigation(html);
+
+    registerTabNavigationListener(html, {
+      getActiveTab: () => this.activeTab,
+      setActiveTab: (tab: string) => {
+        this.activeTab = tab;
+      }
+    });
 
     registerSheetListeners(html, {
       actor: this.actor,
@@ -68,38 +76,6 @@ export class DolmenwoodSheet extends BaseSheet {
       setDwFlags: (dw: DwFlags) => this.setDwFlags(dw),
       renderSheet: () => this.render(),
       sheet: this
-    });
-  }
-
-  private activateTabNavigation(html: HtmlRoot): void {
-    const tabs = html.find("[data-tab-target]");
-    const panels = html.find("[data-tab-panel]");
-    const hasActivePanel = panels.filter(`[data-tab-panel='${this.activeTab}']`).length > 0;
-
-    if (!hasActivePanel) {
-      this.activeTab = (tabs.first().data("tabTarget") as string | undefined) ?? "main";
-    }
-
-    tabs.removeClass("is-active");
-    panels.removeClass("is-active");
-    tabs.filter(`[data-tab-target='${this.activeTab}']`).addClass("is-active");
-    panels.filter(`[data-tab-panel='${this.activeTab}']`).addClass("is-active");
-
-    tabs.on("click", (ev: Event) => {
-      ev.preventDefault();
-      ev.stopPropagation();
-
-      const target = (ev.currentTarget as HTMLElement | null)?.dataset?.tabTarget;
-      if (!target) return;
-      this.activeTab = target;
-
-      tabs.removeClass("is-active");
-      $(ev.currentTarget as HTMLElement).addClass("is-active");
-
-      panels.removeClass("is-active");
-      html.find(`[data-tab-panel='${target}']`).addClass("is-active");
-
-      return false;
     });
   }
 

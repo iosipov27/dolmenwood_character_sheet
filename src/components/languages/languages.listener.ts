@@ -19,6 +19,7 @@ export function registerLanguagesListener(
     languagesTextarea.show().focus();
 
     const textareaElement = languagesTextarea.get(0);
+
     if (textareaElement) {
       textareaElement.selectionStart = textareaElement.value.length;
       textareaElement.selectionEnd = textareaElement.value.length;
@@ -28,6 +29,7 @@ export function registerLanguagesListener(
   async function saveLanguages(): Promise<void> {
     const value = String(languagesTextarea.val() ?? "");
     const dw = foundry.utils.duplicate(getDwFlags()) as DwFlags;
+
     dw.meta.languages = value;
 
     languagesContent.text(value);

@@ -22,7 +22,7 @@ export function registerSheetListeners(
     actor,
     getDwFlags,
     setDwFlags,
-    renderSheet,
+    renderSheet: _renderSheet,
     sheet
   }: {
     actor: Actor;

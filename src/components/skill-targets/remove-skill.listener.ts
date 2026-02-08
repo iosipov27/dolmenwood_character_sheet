@@ -19,6 +19,7 @@ export function registerRemoveSkillListener(
 
     if (skillIndex < 0 || skillIndex >= dw.extraSkills.length) return;
     const confirmed = await confirmRemoveSkill();
+
     if (!confirmed) return;
 
     dw.extraSkills.splice(skillIndex, 1);
@@ -42,6 +43,7 @@ async function confirmRemoveSkill(): Promise<boolean> {
 
 function readExtraSkillsFromForm(html: HtmlRoot, fallback: DwExtraSkill[]): DwExtraSkill[] {
   const fields = html.find("input[name^='dw.extraSkills.']");
+
   if (!fields.length) return Array.isArray(fallback) ? fallback : [];
 
   const byIndex = new Map<number, DwExtraSkill>();
@@ -49,14 +51,18 @@ function readExtraSkillsFromForm(html: HtmlRoot, fallback: DwExtraSkill[]): DwEx
   fields.each((_, element) => {
     const input = element as HTMLInputElement;
     const match = input.name.match(/^dw\.extraSkills\.(\d+)\.(name|target)$/);
+
     if (!match) return;
 
     const index = Number(match[1]);
     const key = match[2];
+
     if (!Number.isFinite(index)) return;
 
     const current = byIndex.get(index) ?? { name: "", target: 0 };
+
     if (key === "name") current.name = input.value ?? "";
+
     if (key === "target") current.target = Number(input.value ?? 0) || 0;
     byIndex.set(index, current);
   });
