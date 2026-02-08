@@ -1,5 +1,6 @@
 export { registerAbilityRollListener } from "./abilities/ability-roll.listener.js";
 export { registerAttackRollListener } from "./ac-attack/attack-roll.listener.js";
+export { registerEquipmentListener } from "./equipment/equipment.listener.js";
 export { registerKindredTraitsListener } from "./kindred-class-traits/kindred-traits.listener.js";
 export { registerLanguagesListener } from "./languages/languages.listener.js";
 export { registerInputUpdateListeners } from "./player-data/input-update.listener.js";

@@ -36,6 +36,35 @@ export interface DwMeta {
   affiliation: string;
   moonSign: string;
   languages: string;
+  equipment: {
+    tinyItems: string;
+    equipped1: string;
+    equipped2: string;
+    equipped3: string;
+    equipped4: string;
+    equipped5: string;
+    equipped6: string;
+    equipped7: string;
+    equipped8: string;
+    equipped9: string;
+    equipped10: string;
+    stowed1: string;
+    stowed2: string;
+    stowed3: string;
+    stowed4: string;
+    stowed5: string;
+    stowed6: string;
+    stowed7: string;
+    stowed8: string;
+    stowed9: string;
+    stowed10: string;
+    stowed11: string;
+    stowed12: string;
+    stowed13: string;
+    stowed14: string;
+    stowed15: string;
+    stowed16: string;
+  };
   xp: number;
   level: number;
   nextLevel: number;
@@ -134,6 +163,13 @@ export interface DwSaveEntry {
   value: number;
 }
 
+export interface DwEquipmentFieldEntry {
+  id: string;
+  name: string;
+  value: string;
+  placeholder: string;
+}
+
 export type BaseSheetData = ReturnType<ActorSheet["getData"]>;
 
 export type DwSheetData = BaseSheetData & {
@@ -144,6 +180,10 @@ export type DwSheetData = BaseSheetData & {
     saveTooltips: Record<string, string>;
     skillTooltips: Record<string, string>;
     prettyKey: Record<string, string>;
+    equipment: {
+      equippedFields: DwEquipmentFieldEntry[];
+      stowedFields: DwEquipmentFieldEntry[];
+    };
   };
   dwAbilities: DwAbilityView[];
   dwCombat: DwCombatView;

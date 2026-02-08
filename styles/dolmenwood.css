@@ -230,8 +230,7 @@ hr {
 .dw-field input {
   padding: 0.1rem;
 }
-.dw-field input[type="number"]::-webkit-inner-spin-button,
-.dw-field input[type="number"]::-webkit-outer-spin-button {
+.dw-field input[type=number]::-webkit-inner-spin-button, .dw-field input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
@@ -468,14 +467,7 @@ hr {
   align-items: center;
   border: none;
   padding: 0.5rem 0.5rem;
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.08) 0%,
-      rgba(255, 255, 255, 0) 45%,
-      rgba(0, 0, 0, 0.12) 100%
-    ),
-    var(--color-text-dark-2);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 45%, rgba(0, 0, 0, 0.12) 100%), var(--color-text-dark-2);
 }
 .dw-ac-attack__attack button i {
   font-size: 0.75rem;
@@ -501,10 +493,7 @@ hr {
   padding-top: var(--player-field-padding-top);
   padding-bottom: var(--player-field-padding-bottom);
   line-height: var(--player-field-line-height);
-  min-height: calc(
-    1em * var(--player-field-line-height) + var(--player-field-padding-top) +
-      var(--player-field-padding-bottom)
-  );
+  min-height: calc(1em * var(--player-field-line-height) + var(--player-field-padding-top) + var(--player-field-padding-bottom));
 }
 .player-data .dw-field .editable-field {
   display: block;
@@ -512,10 +501,7 @@ hr {
   padding-top: var(--player-field-padding-top);
   padding-bottom: var(--player-field-padding-bottom);
   line-height: var(--player-field-line-height);
-  min-height: calc(
-    1em * var(--player-field-line-height) + var(--player-field-padding-top) +
-      var(--player-field-padding-bottom)
-  );
+  min-height: calc(1em * var(--player-field-line-height) + var(--player-field-padding-top) + var(--player-field-padding-bottom));
 }
 .player-data__name .editable-field,
 .player-data__name .edit-input {
@@ -603,6 +589,63 @@ hr {
   justify-content: center;
 }
 
+.dw-equipment {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.dw-equipment .edit-input,
+.dw-equipment .editable-field {
+  width: 100%;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+  min-height: 1.6rem;
+}
+.dw-equipment__wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+.dw-equipment__left {
+  display: grid;
+  grid-template-rows: 1fr 2fr;
+  gap: 0.75rem;
+}
+.dw-equipment__block {
+  min-height: 8rem;
+  border: 1px solid var(--dwc-palette-gold-dark);
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.04);
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.dw-equipment__block--small {
+  height: 10rem;
+}
+.dw-equipment__block--top {
+  border-bottom: none;
+}
+.dw-equipment__block--right {
+  height: 100%;
+}
+.dw-equipment__textarea {
+  resize: vertical;
+}
+.dw-equipment__tiny-display {
+  min-height: 6rem;
+  padding: 0 0.2rem;
+}
+.dw-equipment__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.dw-equipment__fields .dw-field {
+  border-bottom: 1px solid #a7a294;
+}
+
 .dolmenwood-sheet {
   max-width: 45rem;
   display: flex;
@@ -624,10 +667,10 @@ hr {
 .dolmenwood-sheet__tabs {
   position: absolute;
   top: 0.75rem;
-  right: -6rem;
+  right: -7rem;
   display: flex;
   flex-direction: column;
-  gap: 4rem;
+  gap: 5rem;
   background: transparent;
   z-index: 2;
 }
@@ -642,7 +685,6 @@ hr {
   border-top-right-radius: 4px;
   border-top-left-radius: 80px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.15);
-  box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.9);
   font-size: var(--font-size-12);
   color: var(--color-text-dark-primary);
   text-transform: uppercase;

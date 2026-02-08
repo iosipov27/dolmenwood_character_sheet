@@ -1,0 +1,69 @@
+@use "../../styles/common" as *;
+
+.dw-equipment {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  .edit-input,
+  .editable-field {
+    width: 100%;
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+    min-height: 1.6rem;
+  }
+
+  &__wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  &__left {
+    display: grid;
+    grid-template-rows: 1fr 2fr;
+    gap: 0.75rem;
+  }
+
+  &__block {
+    min-height: 8rem;
+    border: 1px solid var(--dwc-palette-gold-dark);
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.04);
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    &--small {
+      height: 10rem;
+    }
+
+    &--top {
+      border-bottom: none;
+    }
+
+    &--right {
+      height: 100%;
+    }
+  }
+
+  &__textarea {
+    resize: vertical;
+  }
+
+  &__tiny-display {
+    min-height: 6rem;
+    padding: 0 0.2rem;
+  }
+
+  &__fields {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+
+    .dw-field {
+      border-bottom: 1px solid $color-border-main;
+    }
+  }
+}

@@ -30,12 +30,17 @@ export function registerInputUpdateListeners(
     const value = input.val() as string;
     const hasValue = value.trim().length > 0;
 
-    span.text(value);
-    if (hasValue) {
-      input.hide();
-      span.show();
+    if (span.length) {
+      span.text(value);
+
+      if (hasValue) {
+        input.hide();
+        span.show();
+      } else {
+        span.hide();
+        input.show();
+      }
     } else {
-      span.hide();
       input.show();
     }
 

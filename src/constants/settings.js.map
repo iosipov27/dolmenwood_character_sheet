@@ -1,0 +1,1 @@
+{"version":3,"file":"settings.js","sourceRoot":"","sources":["settings.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,MAAM,yBAAyB,GAAG,iBAAiB,CAAC;AAC3D,MAAM,CAAC,MAAM,kCAAkC,GAAG,0BAA0B,CAAC","sourcesContent":["export const ENABLE_DEBUG_LOGS_SETTING = \"enableDebugLogs\";\nexport const ENABLE_ERROR_NOTIFICATIONS_SETTING = \"enableErrorNotifications\";\n"]}

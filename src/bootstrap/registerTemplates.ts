@@ -7,6 +7,7 @@ const componentTemplate = (name: string): string => `${COMPONENTS_ROOT}/${name}/
 const TEMPLATE_PATHS: Record<string, string> = {
   "dolmenwood-main-tab": `${TEMPLATES_ROOT}/dolmenwood-main-tab.hbs`,
   "dolmenwood-second-tab": `${TEMPLATES_ROOT}/dolmenwood-second-tab.hbs`,
+  "dolmenwood-third-tab": `${TEMPLATES_ROOT}/dolmenwood-third-tab.hbs`,
   "player-data": componentTemplate("player-data"),
   "health-points": componentTemplate("health-points"),
   "save-throws": componentTemplate("save-throws"),
@@ -16,6 +17,7 @@ const TEMPLATE_PATHS: Record<string, string> = {
   "skill-targets": componentTemplate("skill-targets"),
   "kindred-class-traits": componentTemplate("kindred-class-traits"),
   languages: componentTemplate("languages"),
+  equipment: componentTemplate("equipment"),
   "xp-section": componentTemplate("xp-section"),
   avatar: componentTemplate("avatar")
 };

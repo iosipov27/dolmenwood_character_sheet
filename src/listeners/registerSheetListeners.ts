@@ -2,6 +2,7 @@ import {
   registerAbilityRollListener,
   registerAddSkillListener,
   registerAttackRollListener,
+  registerEquipmentListener,
   registerExtraSkillRollListener,
   registerInputUpdateListeners,
   registerKindredTraitsListener,
@@ -78,6 +79,10 @@ export function registerSheetListeners(
     setDwFlags: (dw: DwFlags) => setDwFlags(dw)
   });
   registerLanguagesListener(html, {
+    getDwFlags,
+    setDwFlags: (dw: DwFlags) => setDwFlags(dw)
+  });
+  registerEquipmentListener(html, {
     getDwFlags,
     setDwFlags: (dw: DwFlags) => setDwFlags(dw)
   });

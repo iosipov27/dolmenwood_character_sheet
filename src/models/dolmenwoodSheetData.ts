@@ -8,7 +8,7 @@ import { buildAbilities } from "../utils/buildAbilities.js";
 import { buildCombat } from "../utils/buildCombat.js";
 import { buildHp } from "../utils/buildHp.js";
 import { reportError } from "../utils/reportError.js";
-import type { DwSheetData, DwExtraSkill, DwSkillEntry } from "../types.js";
+import type { DwEquipmentFieldEntry, DwSheetData, DwExtraSkill, DwSkillEntry } from "../types.js";
 
 export class DolmenwoodSheetData {
   static populate(data: DwSheetData, actor: Actor): DwSheetData {
@@ -48,6 +48,23 @@ export class DolmenwoodSheetData {
     const prettyKeyMap = Object.fromEntries(
       Object.keys(data.dw.skills).map((key) => [key, prettyKey(key)])
     );
+    const equipment = data.dw.meta.equipment;
+    const buildEquipmentField = (
+      prefix: "equipped" | "stowed",
+      index: number
+    ): DwEquipmentFieldEntry => {
+      const key = `${prefix}${index}` as keyof typeof equipment;
+      const value = String(equipment[key] ?? "");
+
+      return {
+        id: `dw-${prefix}-${index}`,
+        name: `dw.meta.equipment.${prefix}${index}`,
+        value,
+        placeholder: `Item ${index}`
+      };
+    };
+    const equippedFields = Array.from({ length: 10 }, (_, i) => buildEquipmentField("equipped", i + 1));
+    const stowedFields = Array.from({ length: 16 }, (_, i) => buildEquipmentField("stowed", i + 1));
 
     data.dwSkillsList = [
       {
@@ -82,7 +99,11 @@ export class DolmenwoodSheetData {
     data.dwUi = {
       saveTooltips: localizeMap(SAVE_TOOLTIPS),
       skillTooltips: localizeMap(SKILL_TOOLTIPS),
-      prettyKey: prettyKeyMap
+      prettyKey: prettyKeyMap,
+      equipment: {
+        equippedFields,
+        stowedFields
+      }
     };
 
     // Abilities from OSE system data.
