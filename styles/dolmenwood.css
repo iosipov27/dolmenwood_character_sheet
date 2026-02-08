@@ -178,6 +178,118 @@
   margin: 2.5rem;
 }
 
+button {
+  border: none;
+  border-radius: 0;
+}
+
+input {
+  border: none;
+  background: none;
+}
+
+.dw-x {
+  width: 1rem;
+  height: 1rem;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #c9c5ba;
+}
+
+.dw-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.dw-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 65% 1fr;
+  gap: 1rem;
+}
+
+.dw-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.dw-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+.dw-field label {
+  font-size: 0.75rem;
+  color: var(--color-text-dark-2);
+  text-transform: uppercase;
+  padding-top: 0.2rem;
+}
+.dw-field input {
+  padding: 0.1rem;
+}
+.dw-field input[type=number]::-webkit-inner-spin-button, .dw-field input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.dw-field input.input--md {
+  width: 3rem;
+}
+.dw-field input.input--lg {
+  width: 4rem;
+}
+.dw-field input.input--xlg {
+  width: 5rem;
+}
+.dw-field--inline {
+  flex-direction: row;
+  align-items: center;
+}
+.dw-field--inline label {
+  padding-right: 0.5rem;
+  padding-top: 0;
+}
+
+.dw-header {
+  padding: 1rem;
+}
+
+.dw-block {
+  padding: 0.2rem 1rem;
+}
+.dw-block--flat {
+  padding: 0.2rem 0;
+}
+.dw-block--bordered {
+  border: 1px solid #c9c5ba;
+}
+
+.dw-hint {
+  font-size: 0.75rem;
+  color: var(--dw-border-color);
+  font-style: italic;
+}
+
+.dw-avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.dw-avatar img {
+  max-width: 13rem;
+  object-fit: cover;
+}
+.dw-avatar img:hover {
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+
+.dw-row {
+  margin-bottom: 1rem;
+}
+
 .dw-abilities {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
@@ -428,7 +540,6 @@
 }
 .dw-movement__input {
   border: none;
-  border-bottom: 1px solid var(--color-text-dark-inactive);
   background: none;
   border: none;
   width: 100%;
@@ -543,98 +654,6 @@
   .dolmenwood-sheet__tab {
     margin-left: 0;
   }
-}
-button {
-  border: none;
-  border-radius: 0;
-}
-
-.dw-x {
-  width: 1rem;
-  height: 1rem;
-}
-
-hr {
-  border: none;
-  border-top: 1px solid #c9c5ba;
-}
-
-.dw-grid-4 {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
-}
-
-.dw-grid-3 {
-  display: grid;
-  grid-template-columns: 1fr 65% 1fr;
-  gap: 1rem;
-}
-
-.dw-grid-2 {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-}
-
-.dw-field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
-}
-.dw-field label {
-  font-size: 0.75rem;
-  color: var(--color-text-light-6);
-  text-transform: uppercase;
-  padding-top: 0.2rem;
-}
-.dw-field input {
-  border: none;
-  border-bottom: 1px solid var(--color-text-dark-inactive);
-  background: none;
-  padding: 0.1rem;
-}
-.dw-field input[type=number]::-webkit-inner-spin-button, .dw-field input[type=number]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-.dw-header {
-  padding: 1rem;
-}
-
-.dw-block {
-  padding: 0.2rem 1rem;
-}
-.dw-block--flat {
-  padding: 0.2rem 0;
-}
-.dw-block--bordered {
-  border: 1px solid #c9c5ba;
-}
-
-.dw-hint {
-  font-size: 0.75rem;
-  color: var(--dw-border-color);
-  font-style: italic;
-}
-
-.dw-avatar {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.dw-avatar img {
-  max-width: 15rem;
-  object-fit: cover;
-}
-.dw-avatar img:hover {
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
-  cursor: pointer;
-}
-
-.dw-row {
-  margin-bottom: 1rem;
 }
 
 /*# sourceMappingURL=dolmenwood.css.map */

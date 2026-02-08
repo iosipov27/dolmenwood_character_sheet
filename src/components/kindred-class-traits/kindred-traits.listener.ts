@@ -1,34 +1,56 @@
-﻿import { DW_TOGGLE_KINDRED_TRAITS } from "../../constants/templateAttributes.js";
-import type { HtmlRoot, JQueryWithOn } from "../../types.js";
-import { registerAction } from "../../utils/registerAction.js";
+import type { DwFlags, GetDwFlags, HtmlRoot, JQueryWithOn, SetDwFlags } from "../../types.js";
+import { reportError } from "../../utils/reportError.js";
 
-export function registerKindredTraitsListener(html: HtmlRoot): void {
-  const localize = (key: string): string => game.i18n?.localize(key) ?? key;
-
-  // Kindred & Class Traits - Toggle edit mode
+export function registerKindredTraitsListener(
+  html: HtmlRoot,
+  { getDwFlags, setDwFlags }: { getDwFlags: GetDwFlags; setDwFlags: SetDwFlags }
+): void {
   const traitsDisplay = html.find(".dw-kindred-traits-display");
+  const traitsContent = traitsDisplay.find(".dw-traits-content") as JQueryWithOn<HTMLElement>;
   const traitsTextarea = html.find(
     ".dw-kindred-traits-textarea"
   ) as JQueryWithOn<HTMLTextAreaElement>;
-  const editBtn = html.find(
-    `button[data-action="${DW_TOGGLE_KINDRED_TRAITS}"]`
-  ) as JQueryWithOn<HTMLElement>;
 
-  registerAction(html, DW_TOGGLE_KINDRED_TRAITS, () => {
-    const isHidden = traitsTextarea.is(":hidden");
+  function openEditor() {
+    traitsTextarea.val(traitsContent.text());
+    traitsDisplay.hide();
+    traitsTextarea.show().focus();
 
-    if (isHidden) {
-      // Show textarea, hide display
-      traitsDisplay.hide();
-      traitsTextarea.show().focus();
-      editBtn.text(localize("DOLMENWOOD.UI.Done"));
-    } else {
-      // Hide textarea, show display
-      traitsDisplay.find(".dw-traits-content").text(traitsTextarea.val() as string);
-      traitsTextarea.hide();
-      traitsDisplay.show();
-      editBtn.text(localize("DOLMENWOOD.UI.Edit"));
+    const textareaElement = traitsTextarea.get(0);
+    if (textareaElement) {
+      textareaElement.selectionStart = textareaElement.value.length;
+      textareaElement.selectionEnd = textareaElement.value.length;
     }
+  }
+
+  async function saveTraits(): Promise<void> {
+    const value = String(traitsTextarea.val() ?? "");
+    const dw = foundry.utils.duplicate(getDwFlags()) as DwFlags;
+    dw.meta.kindredClassTraits = value;
+
+    traitsContent.text(value);
+    traitsTextarea.hide();
+    traitsDisplay.show();
+
+    try {
+      await setDwFlags(dw);
+    } catch (error) {
+      reportError("Failed to update kindred class traits.", error);
+    }
+  }
+
+  traitsContent.on("click", () => {
+    if (!traitsTextarea.is(":hidden")) return;
+    openEditor();
+  });
+
+  traitsTextarea.on("blur", () => {
+    void saveTraits();
+  });
+
+  traitsTextarea.on("keydown", (event) => {
+    if (event.key !== "Enter" || event.shiftKey) return;
+    event.preventDefault();
+    traitsTextarea.trigger("blur");
   });
 }
-

@@ -9,6 +9,8 @@ import { reportError } from "../utils/reportError.js";
 const BaseSheet = getBaseOSECharacterSheetClass() as typeof foundry.appv1.sheets.ActorSheet;
 
 export class DolmenwoodSheet extends BaseSheet {
+  private activeTab = "main";
+
   static get defaultOptions(): ActorSheet.Options {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["dolmenwood", "sheet", "actor"],
@@ -72,6 +74,16 @@ export class DolmenwoodSheet extends BaseSheet {
   private activateTabNavigation(html: HtmlRoot): void {
     const tabs = html.find("[data-tab-target]");
     const panels = html.find("[data-tab-panel]");
+    const hasActivePanel = panels.filter(`[data-tab-panel='${this.activeTab}']`).length > 0;
+
+    if (!hasActivePanel) {
+      this.activeTab = (tabs.first().data("tabTarget") as string | undefined) ?? "main";
+    }
+
+    tabs.removeClass("is-active");
+    panels.removeClass("is-active");
+    tabs.filter(`[data-tab-target='${this.activeTab}']`).addClass("is-active");
+    panels.filter(`[data-tab-panel='${this.activeTab}']`).addClass("is-active");
 
     tabs.on("click", (ev: Event) => {
       ev.preventDefault();
@@ -79,6 +91,7 @@ export class DolmenwoodSheet extends BaseSheet {
 
       const target = (ev.currentTarget as HTMLElement | null)?.dataset?.tabTarget;
       if (!target) return;
+      this.activeTab = target;
 
       tabs.removeClass("is-active");
       $(ev.currentTarget as HTMLElement).addClass("is-active");

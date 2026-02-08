@@ -1,0 +1,125 @@
+@use "common" as *;
+
+button {
+  border: none;
+  border-radius: 0;
+}
+
+input {
+  @include input-base;
+}
+
+.dw-x {
+  width: 1rem;
+  height: 1rem;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid $color-border-soft;
+}
+
+.dw-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.dw-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 65% 1fr;
+  gap: 1rem;
+}
+
+.dw-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.dw-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+
+  label {
+    font-size: 0.75rem;
+    color: $color-text-dark-2;
+    text-transform: uppercase;
+    padding-top: 0.2rem;
+  }
+
+  input {
+    padding: 0.1rem;
+
+    &[type="number"] {
+      &::-webkit-inner-spin-button,
+      &::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+    }
+
+    &.input {
+      &--md {
+        width: 3rem;
+      }
+      &--lg {
+        width: 4rem;
+      }
+      &--xlg {
+        width: 5rem;
+      }
+    }
+  }
+
+  &--inline {
+    flex-direction: row;
+    align-items: center;
+
+    label {
+      padding-right: 0.5rem;
+      padding-top: 0;
+    }
+  }
+}
+
+.dw-header {
+  padding: 1rem;
+}
+
+.dw-block {
+  padding: 0.2rem 1rem;
+
+  &--flat {
+    padding: 0.2rem 0;
+  }
+
+  &--bordered {
+    border: 1px solid $color-border-soft;
+  }
+}
+
+.dw-hint {
+  font-size: 0.75rem;
+  color: var(--dw-border-color);
+  font-style: italic;
+}
+
+.dw-avatar {
+  @include flex-center;
+
+  img {
+    max-width: 13rem;
+    object-fit: cover;
+
+    &:hover {
+      box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+    }
+  }
+}
+
+.dw-row {
+  margin-bottom: 1rem;
+}

@@ -73,7 +73,13 @@ export function registerSheetListeners(
     rollTargetCheck: RollChecks.rollTargetCheck
   });
 
-  registerKindredTraitsListener(html);
-  registerLanguagesListener(html);
+  registerKindredTraitsListener(html, {
+    getDwFlags,
+    setDwFlags: (dw: DwFlags) => setDwFlags(dw)
+  });
+  registerLanguagesListener(html, {
+    getDwFlags,
+    setDwFlags: (dw: DwFlags) => setDwFlags(dw)
+  });
   registerInputUpdateListeners(html, sheet);
 }
