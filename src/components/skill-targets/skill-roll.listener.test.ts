@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
+import { flushPromises } from "../../test/flushPromises.js";
 import { registerSkillRollListener } from "./skill-roll.listener.js";
 
 describe("registerSkillRollListener", () => {
@@ -13,10 +14,12 @@ describe("registerSkillRollListener", () => {
     registerSkillRollListener(html, { actor, getDwFlags, rollTargetCheck, prettyKey });
 
     html.find("[data-action='dw-roll-skill']").trigger("click");
-    await Promise.resolve();
-    await Promise.resolve();
+    await flushPromises();
 
     expect(prettyKey).toHaveBeenCalledWith("listen");
     expect(rollTargetCheck).toHaveBeenCalledWith(actor, "Skill: LISTEN", 7);
   });
 });
+
+
+

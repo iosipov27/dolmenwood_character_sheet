@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { flushPromises } from "../../test/flushPromises.js";
 import { registerRemoveSkillListener } from "./remove-skill.listener.js";
 
 describe("registerRemoveSkillListener", () => {
@@ -29,9 +30,7 @@ describe("registerRemoveSkillListener", () => {
     registerRemoveSkillListener(html, { getDwFlags, setDwFlags });
 
     html.find("[data-action='dw-remove-skill']").trigger("click");
-    await Promise.resolve();
-    await Promise.resolve();
-    await Promise.resolve();
+    await flushPromises(3);
 
     expect(setDwFlags).toHaveBeenCalledTimes(1);
     expect(setDwFlags).toHaveBeenCalledWith(
@@ -41,3 +40,6 @@ describe("registerRemoveSkillListener", () => {
     );
   });
 });
+
+
+

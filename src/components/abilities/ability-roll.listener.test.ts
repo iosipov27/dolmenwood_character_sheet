@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
+import { flushPromises } from "../../test/flushPromises.js";
 import { registerAbilityRollListener } from "./ability-roll.listener.js";
 
 describe("registerAbilityRollListener", () => {
@@ -11,10 +12,12 @@ describe("registerAbilityRollListener", () => {
     registerAbilityRollListener(html, { actor, rollAbilityCheck });
 
     html.find("[data-action='dw-roll-ability']").trigger("click");
-    await Promise.resolve();
-    await Promise.resolve();
+    await flushPromises();
 
     expect(rollAbilityCheck).toHaveBeenCalledTimes(1);
     expect(rollAbilityCheck).toHaveBeenCalledWith(actor, "Strength", 14);
   });
 });
+
+
+

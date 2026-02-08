@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { flushPromises } from "../../test/flushPromises.js";
 import { registerAttackRollListener } from "./attack-roll.listener.js";
 
 describe("registerAttackRollListener", () => {
@@ -50,8 +51,7 @@ describe("registerAttackRollListener", () => {
     registerAttackRollListener(html, { actor });
 
     html.find("[data-action='dw-roll-attack']").trigger("click");
-    await Promise.resolve();
-    await Promise.resolve();
+    await flushPromises();
 
     expect(builtRolls).toEqual([{ formula: "1d20 + @mod", mod: 2 }]);
     expect(getSpeaker).toHaveBeenCalledWith({ actor });
@@ -65,3 +65,6 @@ describe("registerAttackRollListener", () => {
     expect((postedMessage.mock.calls[0][0] as { flavor: string }).flavor).toContain("(Strength)");
   });
 });
+
+
+

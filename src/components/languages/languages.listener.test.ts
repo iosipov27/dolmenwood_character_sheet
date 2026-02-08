@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
+import { flushPromises } from "../../test/flushPromises.js";
 import { registerLanguagesListener } from "./languages.listener.js";
 import type { DwFlags } from "../../types.js";
 
@@ -45,8 +46,7 @@ describe("registerLanguagesListener", () => {
     content.trigger("click");
     textarea.val("Elvish, Woldish");
     textarea.trigger("blur");
-    await Promise.resolve();
-    await Promise.resolve();
+    await flushPromises();
 
     expect(setDwFlags).toHaveBeenCalledTimes(1);
     expect(setDwFlags).toHaveBeenCalledWith(
@@ -57,3 +57,6 @@ describe("registerLanguagesListener", () => {
     expect(content.text()).toBe("Elvish, Woldish");
   });
 });
+
+
+

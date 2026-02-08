@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { flushPromises } from "../../test/flushPromises.js";
 import { registerSaveRollListener } from "./save-roll.listener.js";
 
 describe("registerSaveRollListener", () => {
@@ -24,11 +25,13 @@ describe("registerSaveRollListener", () => {
     registerSaveRollListener(html, { actor, getDwFlags, rollTargetCheck, prettyKey });
 
     html.find("[data-action='dw-roll-save']").trigger("click");
-    await Promise.resolve();
-    await Promise.resolve();
+    await flushPromises();
 
     expect(prettyKey).toHaveBeenCalledWith("doom");
     expect(rollTargetCheck).toHaveBeenCalledTimes(1);
     expect(rollTargetCheck).toHaveBeenCalledWith(actor, "Save: DOOM", 11);
   });
 });
+
+
+

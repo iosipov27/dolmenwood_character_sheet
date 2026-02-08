@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
+import { flushPromises } from "../../test/flushPromises.js";
 import { registerExtraSkillRollListener } from "./extra-skill-roll.listener.js";
 
 describe("registerExtraSkillRollListener", () => {
@@ -17,10 +18,12 @@ describe("registerExtraSkillRollListener", () => {
     registerExtraSkillRollListener(html, { actor, rollTargetCheck });
 
     html.find("[data-action='dw-roll-extra-skill']").trigger("mousedown");
-    await Promise.resolve();
-    await Promise.resolve();
+    await flushPromises();
 
     expect(rollTargetCheck).toHaveBeenCalledTimes(1);
     expect(rollTargetCheck).toHaveBeenCalledWith(actor, "Skill: STEALTH", 8);
   });
 });
+
+
+

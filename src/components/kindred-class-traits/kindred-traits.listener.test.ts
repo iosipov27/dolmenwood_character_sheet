@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
+import { flushPromises } from "../../test/flushPromises.js";
 import { registerKindredTraitsListener } from "./kindred-traits.listener.js";
 import type { DwFlags } from "../../types.js";
 
@@ -45,8 +46,7 @@ describe("registerKindredTraitsListener", () => {
     content.trigger("click");
     textarea.val("Updated traits");
     textarea.trigger($.Event("keydown", { key: "Enter", shiftKey: false }));
-    await Promise.resolve();
-    await Promise.resolve();
+    await flushPromises();
 
     expect(setDwFlags).toHaveBeenCalledTimes(1);
     expect(setDwFlags).toHaveBeenCalledWith(
@@ -57,3 +57,6 @@ describe("registerKindredTraitsListener", () => {
     expect(content.text()).toBe("Updated traits");
   });
 });
+
+
+

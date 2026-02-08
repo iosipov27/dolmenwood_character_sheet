@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
+import { flushPromises } from "../../test/flushPromises.js";
 import { registerSkillDblRollListener } from "./skill-dbl-roll.listener.js";
 
 describe("registerSkillDblRollListener", () => {
@@ -12,10 +13,12 @@ describe("registerSkillDblRollListener", () => {
     registerSkillDblRollListener(html, { actor, rollTargetCheck, prettyKey });
 
     html.find("input[data-dw-dblroll='skill']").trigger("dblclick");
-    await Promise.resolve();
-    await Promise.resolve();
+    await flushPromises();
 
     expect(prettyKey).toHaveBeenCalledWith("search");
     expect(rollTargetCheck).toHaveBeenCalledWith(actor, "Skill: SEARCH", 13);
   });
 });
+
+
+

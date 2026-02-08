@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
+import { flushPromises } from "../../test/flushPromises.js";
 import { registerExtraSkillDblRollListener } from "./extra-skill-dbl-roll.listener.js";
 
 describe("registerExtraSkillDblRollListener", () => {
@@ -11,10 +12,12 @@ describe("registerExtraSkillDblRollListener", () => {
     registerExtraSkillDblRollListener(html, { actor, rollTargetCheck });
 
     html.find("input[data-dw-dblroll='extra-skill']").trigger("dblclick");
-    await Promise.resolve();
-    await Promise.resolve();
+    await flushPromises();
 
     expect(rollTargetCheck).toHaveBeenCalledTimes(1);
     expect(rollTargetCheck).toHaveBeenCalledWith(actor, "Skill: CAMPING", 10);
   });
 });
+
+
+

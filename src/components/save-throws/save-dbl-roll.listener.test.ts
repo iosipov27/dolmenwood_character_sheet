@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
+import { flushPromises } from "../../test/flushPromises.js";
 import { registerSaveDblRollListener } from "./save-dbl-roll.listener.js";
 
 describe("registerSaveDblRollListener", () => {
@@ -12,11 +13,13 @@ describe("registerSaveDblRollListener", () => {
     registerSaveDblRollListener(html, { actor, rollTargetCheck, prettyKey });
 
     html.find("input[data-dw-dblroll='save']").trigger("dblclick");
-    await Promise.resolve();
-    await Promise.resolve();
+    await flushPromises();
 
     expect(prettyKey).toHaveBeenCalledWith("ray");
     expect(rollTargetCheck).toHaveBeenCalledTimes(1);
     expect(rollTargetCheck).toHaveBeenCalledWith(actor, "Save: RAY", 9);
   });
 });
+
+
+

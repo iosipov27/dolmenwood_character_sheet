@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
+import { flushPromises } from "../../test/flushPromises.js";
 import { MODULE_ID } from "../../constants/moduleId.js";
 import { registerInputUpdateListeners } from "./input-update.listener.js";
 
@@ -23,7 +24,7 @@ describe("registerInputUpdateListeners", () => {
     span.trigger("click");
     input.val("New value");
     input.trigger("blur");
-    await Promise.resolve();
+    await flushPromises(1);
 
     expect(update).toHaveBeenCalledTimes(1);
     expect(update).toHaveBeenCalledWith({ "system.details.background": "New value" });
@@ -57,8 +58,7 @@ describe("registerInputUpdateListeners", () => {
     span.trigger("click");
     input.val("Elvish");
     input.trigger("blur");
-    await Promise.resolve();
-    await Promise.resolve();
+    await flushPromises();
 
     expect(getFlag).toHaveBeenCalledWith(MODULE_ID, "dw");
     expect(setFlag).toHaveBeenCalledTimes(1);
@@ -71,3 +71,6 @@ describe("registerInputUpdateListeners", () => {
     );
   });
 });
+
+
+

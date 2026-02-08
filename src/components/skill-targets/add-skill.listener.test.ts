@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
+import { flushPromises } from "../../test/flushPromises.js";
 import { registerAddSkillListener } from "./add-skill.listener.js";
 
 describe("registerAddSkillListener", () => {
@@ -17,8 +18,7 @@ describe("registerAddSkillListener", () => {
     registerAddSkillListener(html, { getDwFlags, setDwFlags });
 
     html.find("[data-action='dw-add-skill']").trigger("click");
-    await Promise.resolve();
-    await Promise.resolve();
+    await flushPromises();
 
     expect(setDwFlags).toHaveBeenCalledTimes(1);
     expect(setDwFlags).toHaveBeenCalledWith(
@@ -32,3 +32,6 @@ describe("registerAddSkillListener", () => {
     );
   });
 });
+
+
+
