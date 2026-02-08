@@ -24,7 +24,9 @@ export function registerAttackRollListener(html: HtmlRoot, { actor }: { actor: A
 
   registerAction(html, DW_ROLL_ATTACK, async (ev: ActionEvent) => {
     const { attack } = getDataset(ev);
-    const attackType = String(attack ?? "").trim().toLowerCase();
+    const attackType = String(attack ?? "")
+      .trim()
+      .toLowerCase();
     const abilityKey = ATTACK_TO_ABILITY[attackType];
 
     if (!abilityKey) return;
@@ -45,4 +47,3 @@ export function registerAttackRollListener(html: HtmlRoot, { actor }: { actor: A
     });
   });
 }
-

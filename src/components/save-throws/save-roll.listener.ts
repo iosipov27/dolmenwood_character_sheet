@@ -23,7 +23,10 @@ export function registerSaveRollListener(
     const { key } = getDataset(ev);
     const target = Number(foundry.utils.getProperty(getDwFlags(), `saves.${key}`) ?? 0);
 
-    await rollTargetCheck(actor, `${localize("DOLMENWOOD.Roll.SavePrefix")}: ${prettyKey(key ?? "")}`, target);
+    await rollTargetCheck(
+      actor,
+      `${localize("DOLMENWOOD.Roll.SavePrefix")}: ${prettyKey(key ?? "")}`,
+      target
+    );
   });
 }
-

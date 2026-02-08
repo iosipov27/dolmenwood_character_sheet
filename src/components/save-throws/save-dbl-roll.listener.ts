@@ -19,4 +19,3 @@ export function registerSaveDblRollListener(
     await rollTargetCheck(actor, `Save: ${prettyKey(key ?? "")}`, val);
   });
 }
-

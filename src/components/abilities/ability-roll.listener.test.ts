@@ -18,6 +18,3 @@ describe("registerAbilityRollListener", () => {
     expect(rollAbilityCheck).toHaveBeenCalledWith(actor, "Strength", 14);
   });
 });
-
-
-

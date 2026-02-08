@@ -57,6 +57,3 @@ describe("registerLanguagesListener", () => {
     expect(content.text()).toBe("Elvish, Woldish");
   });
 });
-
-
-

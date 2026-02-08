@@ -96,11 +96,36 @@ export class DolmenwoodSheetData {
 
     // Save targets list (labels, rollable, order).
     data.dwSavesList = [
-      { key: "doom", label: localize("DOLMENWOOD.Saves.Doom"), rollable: true, value: data.dw.saves.doom },
-      { key: "hold", label: localize("DOLMENWOOD.Saves.Hold"), rollable: true, value: data.dw.saves.hold },
-      { key: "spell", label: localize("DOLMENWOOD.Saves.Spell"), rollable: true, value: data.dw.saves.spell },
-      { key: "ray", label: localize("DOLMENWOOD.Saves.Ray"), rollable: true, value: data.dw.saves.ray },
-      { key: "blast", label: localize("DOLMENWOOD.Saves.Blast"), rollable: true, value: data.dw.saves.blast },
+      {
+        key: "doom",
+        label: localize("DOLMENWOOD.Saves.Doom"),
+        rollable: true,
+        value: data.dw.saves.doom
+      },
+      {
+        key: "hold",
+        label: localize("DOLMENWOOD.Saves.Hold"),
+        rollable: true,
+        value: data.dw.saves.hold
+      },
+      {
+        key: "spell",
+        label: localize("DOLMENWOOD.Saves.Spell"),
+        rollable: true,
+        value: data.dw.saves.spell
+      },
+      {
+        key: "ray",
+        label: localize("DOLMENWOOD.Saves.Ray"),
+        rollable: true,
+        value: data.dw.saves.ray
+      },
+      {
+        key: "blast",
+        label: localize("DOLMENWOOD.Saves.Blast"),
+        rollable: true,
+        value: data.dw.saves.blast
+      },
       {
         key: "magic",
         label: localize("DOLMENWOOD.Saves.MagicResist"),

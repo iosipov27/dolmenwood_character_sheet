@@ -1,20 +1,11 @@
 ﻿import { registerAction } from "../../utils/registerAction.js";
 import { DW_REMOVE_SKILL } from "../../constants/templateAttributes.js";
 import { getDataset } from "../../utils/getDataset.js";
-import type {
-  ActionEvent,
-  DwExtraSkill,
-  GetDwFlags,
-  HtmlRoot,
-  SetDwFlags
-} from "../../types.js";
+import type { ActionEvent, DwExtraSkill, GetDwFlags, HtmlRoot, SetDwFlags } from "../../types.js";
 
 export function registerRemoveSkillListener(
   html: HtmlRoot,
-  {
-    getDwFlags,
-    setDwFlags
-  }: { getDwFlags: GetDwFlags; setDwFlags: SetDwFlags }
+  { getDwFlags, setDwFlags }: { getDwFlags: GetDwFlags; setDwFlags: SetDwFlags }
 ): void {
   registerAction(html, DW_REMOVE_SKILL, async (ev: ActionEvent) => {
     const { index } = getDataset(ev);
@@ -74,4 +65,3 @@ function readExtraSkillsFromForm(html: HtmlRoot, fallback: DwExtraSkill[]): DwEx
     .sort((a, b) => a[0] - b[0])
     .map(([, skill]) => skill);
 }
-

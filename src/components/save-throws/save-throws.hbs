@@ -15,7 +15,10 @@
             title="{{lookup ctx.dwUi.saveTooltips s.key}}"
           >{{s.label}}</button>
         {{else}}
-          <div class="dw-roll-placeholder dw-saves__info" title="{{localize "DOLMENWOOD.UI.NotRolledHere"}}">{{s.label}}</div>
+          <div
+            class="dw-roll-placeholder dw-saves__info"
+            title="{{localize 'DOLMENWOOD.UI.NotRolledHere'}}"
+          >{{s.label}}</div>
         {{/if}}
 
         {{#if s.rollable}}

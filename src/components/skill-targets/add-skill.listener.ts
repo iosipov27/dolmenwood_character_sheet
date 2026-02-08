@@ -4,10 +4,7 @@ import type { DwExtraSkill, GetDwFlags, HtmlRoot, SetDwFlags } from "../../types
 
 export function registerAddSkillListener(
   html: HtmlRoot,
-  {
-    getDwFlags,
-    setDwFlags
-  }: { getDwFlags: GetDwFlags; setDwFlags: SetDwFlags }
+  { getDwFlags, setDwFlags }: { getDwFlags: GetDwFlags; setDwFlags: SetDwFlags }
 ): void {
   registerAction(html, DW_ADD_SKILL, async () => {
     const dw = getDwFlags();
@@ -46,4 +43,3 @@ function readExtraSkillsFromForm(html: HtmlRoot, fallback: DwExtraSkill[]): DwEx
     .sort((a, b) => a[0] - b[0])
     .map(([, skill]) => skill);
 }
-

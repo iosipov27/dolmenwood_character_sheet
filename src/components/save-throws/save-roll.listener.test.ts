@@ -32,6 +32,3 @@ describe("registerSaveRollListener", () => {
     expect(rollTargetCheck).toHaveBeenCalledWith(actor, "Save: DOOM", 11);
   });
 });
-
-
-

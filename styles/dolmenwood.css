@@ -230,7 +230,8 @@ hr {
 .dw-field input {
   padding: 0.1rem;
 }
-.dw-field input[type=number]::-webkit-inner-spin-button, .dw-field input[type=number]::-webkit-outer-spin-button {
+.dw-field input[type="number"]::-webkit-inner-spin-button,
+.dw-field input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
@@ -467,7 +468,14 @@ hr {
   align-items: center;
   border: none;
   padding: 0.5rem 0.5rem;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 45%, rgba(0, 0, 0, 0.12) 100%), var(--color-text-dark-2);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.08) 0%,
+      rgba(255, 255, 255, 0) 45%,
+      rgba(0, 0, 0, 0.12) 100%
+    ),
+    var(--color-text-dark-2);
 }
 .dw-ac-attack__attack button i {
   font-size: 0.75rem;
@@ -493,7 +501,10 @@ hr {
   padding-top: var(--player-field-padding-top);
   padding-bottom: var(--player-field-padding-bottom);
   line-height: var(--player-field-line-height);
-  min-height: calc(1em * var(--player-field-line-height) + var(--player-field-padding-top) + var(--player-field-padding-bottom));
+  min-height: calc(
+    1em * var(--player-field-line-height) + var(--player-field-padding-top) +
+      var(--player-field-padding-bottom)
+  );
 }
 .player-data .dw-field .editable-field {
   display: block;
@@ -501,7 +512,10 @@ hr {
   padding-top: var(--player-field-padding-top);
   padding-bottom: var(--player-field-padding-bottom);
   line-height: var(--player-field-line-height);
-  min-height: calc(1em * var(--player-field-line-height) + var(--player-field-padding-top) + var(--player-field-padding-bottom));
+  min-height: calc(
+    1em * var(--player-field-line-height) + var(--player-field-padding-top) +
+      var(--player-field-padding-bottom)
+  );
 }
 .player-data__name .editable-field,
 .player-data__name .edit-input {

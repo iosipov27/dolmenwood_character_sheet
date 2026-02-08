@@ -85,4 +85,3 @@ async function persistDwField(actor: Actor, field: string, value: string): Promi
   foundry.utils.setProperty(next, fieldPath, value);
   await actorWithFlags.setFlag?.(MODULE_ID, "dw", normalizeDwFlags(next as DwFlagsInput));
 }
-

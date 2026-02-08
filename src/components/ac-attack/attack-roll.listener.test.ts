@@ -65,6 +65,3 @@ describe("registerAttackRollListener", () => {
     expect((postedMessage.mock.calls[0][0] as { flavor: string }).flavor).toContain("(Strength)");
   });
 });
-
-
-

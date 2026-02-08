@@ -6,8 +6,12 @@ export function registerLanguagesListener(
   { getDwFlags, setDwFlags }: { getDwFlags: GetDwFlags; setDwFlags: SetDwFlags }
 ): void {
   const languagesDisplay = html.find(".dw-languages-display");
-  const languagesContent = languagesDisplay.find(".dw-languages-content") as JQueryWithOn<HTMLElement>;
-  const languagesTextarea = html.find(".dw-languages-textarea") as JQueryWithOn<HTMLTextAreaElement>;
+  const languagesContent = languagesDisplay.find(
+    ".dw-languages-content"
+  ) as JQueryWithOn<HTMLElement>;
+  const languagesTextarea = html.find(
+    ".dw-languages-textarea"
+  ) as JQueryWithOn<HTMLTextAreaElement>;
 
   function openEditor() {
     languagesTextarea.val(languagesContent.text());

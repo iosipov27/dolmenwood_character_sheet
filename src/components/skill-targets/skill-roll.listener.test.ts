@@ -20,6 +20,3 @@ describe("registerSkillRollListener", () => {
     expect(rollTargetCheck).toHaveBeenCalledWith(actor, "Skill: LISTEN", 7);
   });
 });
-
-
-

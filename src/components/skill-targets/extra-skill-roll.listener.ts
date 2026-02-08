@@ -23,4 +23,3 @@ export function registerExtraSkillRollListener(
     await rollTargetCheck(actor, `Skill: ${skillName.toUpperCase()}`, target);
   });
 }
-

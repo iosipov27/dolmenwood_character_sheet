@@ -19,6 +19,3 @@ describe("registerSkillDblRollListener", () => {
     expect(rollTargetCheck).toHaveBeenCalledWith(actor, "Skill: SEARCH", 13);
   });
 });
-
-
-

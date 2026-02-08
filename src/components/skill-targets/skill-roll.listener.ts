@@ -25,4 +25,3 @@ export function registerSkillRollListener(
     await rollTargetCheck(actor, `Skill: ${prettyKey(key ?? "")}`, target);
   });
 }
-

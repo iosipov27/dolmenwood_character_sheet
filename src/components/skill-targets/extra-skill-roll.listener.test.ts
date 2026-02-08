@@ -24,6 +24,3 @@ describe("registerExtraSkillRollListener", () => {
     expect(rollTargetCheck).toHaveBeenCalledWith(actor, "Skill: STEALTH", 8);
   });
 });
-
-
-

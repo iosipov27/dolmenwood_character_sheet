@@ -15,4 +15,3 @@ export function registerAbilityRollListener(
     await rollAbilityCheck(actor, labelText, targetValue);
   });
 }
-

@@ -57,6 +57,3 @@ describe("registerKindredTraitsListener", () => {
     expect(content.text()).toBe("Updated traits");
   });
 });
-
-
-

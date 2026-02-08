@@ -18,6 +18,3 @@ describe("registerExtraSkillDblRollListener", () => {
     expect(rollTargetCheck).toHaveBeenCalledWith(actor, "Skill: CAMPING", 10);
   });
 });
-
-
-
