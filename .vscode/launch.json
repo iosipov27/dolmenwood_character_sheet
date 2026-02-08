@@ -39,6 +39,20 @@
     {
       "type": "node-terminal",
       "request": "launch",
+      "name": "npm: test",
+      "command": "npm run test",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "node-terminal",
+      "request": "launch",
+      "name": "npm: test:watch",
+      "command": "npm run test:watch",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "node-terminal",
+      "request": "launch",
       "name": "npm: format",
       "command": "npm run format",
       "cwd": "${workspaceFolder}"

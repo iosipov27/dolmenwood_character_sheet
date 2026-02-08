@@ -9,7 +9,9 @@
     "format": "prettier --write .",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix --fix-type=directive,problem,suggestion,layout",
-    "dev": "npm run watch"
+    "dev": "npm run watch",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^8.54.0",
@@ -19,8 +21,11 @@
     "express": "^4.22.1",
     "fvtt-types": "github:League-of-Foundry-Developers/foundry-vtt-types#main",
     "handlebars": "^4.7.8",
+    "jquery": "^4.0.0",
+    "jsdom": "^28.0.0",
     "prettier": "^3.8.1",
     "sass": "^1.97.3",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
   }
 }
