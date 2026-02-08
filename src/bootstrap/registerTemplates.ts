@@ -4,22 +4,26 @@ const TEMPLATES_ROOT = `${MODULE_ROOT}/templates`;
 
 const componentTemplate = (name: string): string => `${COMPONENTS_ROOT}/${name}/${name}.hbs`;
 
+const TAB_TEMPLATES = ["dolmenwood-main-tab", "dolmenwood-second-tab", "dolmenwood-third-tab"];
+
+const COMPONENT_TEMPLATES = [
+  "player-data",
+  "health-points",
+  "save-throws",
+  "ac-attack",
+  "movement",
+  "abilities",
+  "skill-targets",
+  "kindred-class-traits",
+  "languages",
+  "equipment",
+  "xp-section",
+  "avatar"
+];
+
 const TEMPLATE_PATHS: Record<string, string> = {
-  "dolmenwood-main-tab": `${TEMPLATES_ROOT}/dolmenwood-main-tab.hbs`,
-  "dolmenwood-second-tab": `${TEMPLATES_ROOT}/dolmenwood-second-tab.hbs`,
-  "dolmenwood-third-tab": `${TEMPLATES_ROOT}/dolmenwood-third-tab.hbs`,
-  "player-data": componentTemplate("player-data"),
-  "health-points": componentTemplate("health-points"),
-  "save-throws": componentTemplate("save-throws"),
-  "ac-attack": componentTemplate("ac-attack"),
-  movement: componentTemplate("movement"),
-  abilities: componentTemplate("abilities"),
-  "skill-targets": componentTemplate("skill-targets"),
-  "kindred-class-traits": componentTemplate("kindred-class-traits"),
-  languages: componentTemplate("languages"),
-  equipment: componentTemplate("equipment"),
-  "xp-section": componentTemplate("xp-section"),
-  avatar: componentTemplate("avatar")
+  ...Object.fromEntries(TAB_TEMPLATES.map((name) => [name, `${TEMPLATES_ROOT}/${name}.hbs`])),
+  ...Object.fromEntries(COMPONENT_TEMPLATES.map((name) => [name, componentTemplate(name)]))
 };
 
 export async function registerTemplates(): Promise<void> {

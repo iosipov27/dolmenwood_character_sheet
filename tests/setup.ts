@@ -40,12 +40,67 @@ function setProperty(object: unknown, path: string, value: unknown): unknown {
   return object;
 }
 
+function expandObject(obj: Record<string, unknown>): Record<string, unknown> {
+  const result: Record<string, unknown> = {};
+
+  for (const [key, value] of Object.entries(obj)) {
+    setProperty(result, key, value);
+  }
+
+  // Convert objects with numeric keys to arrays
+  function convertToArrays(obj: unknown): unknown {
+    if (obj == null || typeof obj !== "object") return obj;
+
+    if (Array.isArray(obj)) {
+      return obj.map(convertToArrays);
+    }
+
+    const record = obj as Record<string, unknown>;
+    const keys = Object.keys(record);
+    const isArrayLike = keys.every((key) => /^\d+$/.test(key));
+
+    if (isArrayLike && keys.length > 0) {
+      const arr: unknown[] = [];
+      for (const key of keys) {
+        arr[parseInt(key, 10)] = convertToArrays(record[key]);
+      }
+      return arr;
+    }
+
+    const result: Record<string, unknown> = {};
+    for (const [key, value] of Object.entries(record)) {
+      result[key] = convertToArrays(value);
+    }
+    return result;
+  }
+
+  return convertToArrays(result) as Record<string, unknown>;
+}
+
+function flattenObject(obj: Record<string, unknown>, prefix = ""): Record<string, unknown> {
+  const result: Record<string, unknown> = {};
+
+  for (const [key, value] of Object.entries(obj)) {
+    const newKey = prefix ? `${prefix}.${key}` : key;
+
+    if (value != null && typeof value === "object" && !Array.isArray(value)) {
+      Object.assign(result, flattenObject(value as Record<string, unknown>, newKey));
+    } else {
+      result[newKey] = value;
+    }
+  }
+
+  return result;
+}
+
 Object.assign(globalThis, {
   foundry: {
     utils: {
       duplicate: <T>(value: T): T => structuredClone(value),
       getProperty,
-      setProperty
+      setProperty,
+      expandObject,
+      flattenObject
     }
   }
 });
