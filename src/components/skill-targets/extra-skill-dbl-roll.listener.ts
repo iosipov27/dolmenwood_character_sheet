@@ -1,5 +1,5 @@
-import { getDataset } from "../utils/getDataset.js";
-import type { ActionEvent, HtmlRoot, JQueryWithOn, RollTargetCheck } from "../types.js";
+﻿import { getDataset } from "../../utils/getDataset.js";
+import type { ActionEvent, HtmlRoot, JQueryWithOn, RollTargetCheck } from "../../types.js";
 
 export function registerExtraSkillDblRollListener(
   html: HtmlRoot,
@@ -16,3 +16,4 @@ export function registerExtraSkillDblRollListener(
     await rollTargetCheck(actor, `Skill: ${skillName.toUpperCase()}`, target);
   });
 }
+

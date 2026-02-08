@@ -1,6 +1,6 @@
-import { DW_TOGGLE_KINDRED_TRAITS } from "../constants/templateAttributes.js";
-import type { HtmlRoot, JQueryWithOn } from "../types.js";
-import { registerAction } from "../utils/registerAction.js";
+﻿import { DW_TOGGLE_KINDRED_TRAITS } from "../../constants/templateAttributes.js";
+import type { HtmlRoot, JQueryWithOn } from "../../types.js";
+import { registerAction } from "../../utils/registerAction.js";
 
 export function registerKindredTraitsListener(html: HtmlRoot): void {
   const localize = (key: string): string => game.i18n?.localize(key) ?? key;
@@ -31,3 +31,4 @@ export function registerKindredTraitsListener(html: HtmlRoot): void {
     }
   });
 }
+

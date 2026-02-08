@@ -1,14 +1,16 @@
-import { registerSaveRollListener } from "./registerSaveRollListener.js";
-import { registerSkillRollListener } from "./registerSkillRollListener.js";
-import { registerSaveDblRollListener } from "./registerSaveDblRollListener.js";
-import { registerAbilityRollListener } from "./registerAbilityRollListener.js";
-import { registerAttackRollListener } from "./registerAttackRollListener.js";
-import { registerAddSkillListener } from "./registerAddSkillListener.js";
-import { registerRemoveSkillListener } from "./registerRemoveSkillListener.js";
-import { registerExtraSkillRollListener } from "./registerExtraSkillRollListener.js";
-import { registerKindredTraitsListener } from "./registerKindredTraitsListener.js";
-import { registerLanguagesListener } from "./registerLanguagesListener.js";
-import { registerInputUpdateListeners } from "./registerInputUpdateListeners.js";
+import {
+  registerAbilityRollListener,
+  registerAddSkillListener,
+  registerAttackRollListener,
+  registerExtraSkillRollListener,
+  registerInputUpdateListeners,
+  registerKindredTraitsListener,
+  registerLanguagesListener,
+  registerRemoveSkillListener,
+  registerSaveDblRollListener,
+  registerSaveRollListener,
+  registerSkillRollListener
+} from "../components/index.js";
 import { prettyKey } from "../utils/prettyKey.js";
 import { RollChecks } from "../sheets/rollChecks.js";
 import type { DwFlags, GetDwFlags, HtmlRoot, SetDwFlags } from "../types.js";

@@ -1,13 +1,13 @@
-import { registerAction } from "../utils/registerAction.js";
-import { DW_REMOVE_SKILL } from "../constants/templateAttributes.js";
-import { getDataset } from "../utils/getDataset.js";
+﻿import { registerAction } from "../../utils/registerAction.js";
+import { DW_REMOVE_SKILL } from "../../constants/templateAttributes.js";
+import { getDataset } from "../../utils/getDataset.js";
 import type {
   ActionEvent,
   DwExtraSkill,
   GetDwFlags,
   HtmlRoot,
   SetDwFlags
-} from "../types.js";
+} from "../../types.js";
 
 export function registerRemoveSkillListener(
   html: HtmlRoot,
@@ -38,13 +38,15 @@ export function registerRemoveSkillListener(
 async function confirmRemoveSkill(): Promise<boolean> {
   const localize = (key: string): string => game.i18n?.localize(key) ?? key;
 
-  return Dialog.confirm({
+  const confirmed = await Dialog.confirm({
     title: localize("DOLMENWOOD.UI.RemoveSkillTitle"),
     content: `<p>${localize("DOLMENWOOD.UI.RemoveSkillConfirm")}</p>`,
     yes: () => true,
     no: () => false,
     defaultYes: false
   });
+
+  return Boolean(confirmed);
 }
 
 function readExtraSkillsFromForm(html: HtmlRoot, fallback: DwExtraSkill[]): DwExtraSkill[] {
@@ -72,3 +74,4 @@ function readExtraSkillsFromForm(html: HtmlRoot, fallback: DwExtraSkill[]): DwEx
     .sort((a, b) => a[0] - b[0])
     .map(([, skill]) => skill);
 }
+

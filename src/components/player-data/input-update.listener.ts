@@ -1,7 +1,7 @@
-import { MODULE_ID } from "../constants/moduleId.js";
-import type { DwFlagsInput, HtmlRoot } from "../types.js";
-import { normalizeDwFlags } from "../utils/normalizeDwFlags.js";
-import { reportError } from "../utils/reportError.js";
+﻿import { MODULE_ID } from "../../constants/moduleId.js";
+import type { DwFlagsInput, HtmlRoot } from "../../types.js";
+import { normalizeDwFlags } from "../../utils/normalizeDwFlags.js";
+import { reportError } from "../../utils/reportError.js";
 
 export function registerInputUpdateListeners(
   html: HtmlRoot,
@@ -85,3 +85,4 @@ async function persistDwField(actor: Actor, field: string, value: string): Promi
   foundry.utils.setProperty(next, fieldPath, value);
   await actorWithFlags.setFlag?.(MODULE_ID, "dw", normalizeDwFlags(next as DwFlagsInput));
 }
+

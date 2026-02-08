@@ -1,4 +1,4 @@
-@use "../common" as *;
+﻿@use "../../styles/common" as *;
 
 .dw-skills {
   display: grid;
@@ -52,3 +52,4 @@
     justify-content: center;
   }
 }
+

@@ -1,4 +1,4 @@
-@use "../common" as *;
+﻿@use "../../styles/common" as *;
 
 .dw-ac-attack {
   @include flex-center;
@@ -55,3 +55,4 @@
     }
   }
 }
+

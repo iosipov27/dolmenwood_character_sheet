@@ -1,4 +1,4 @@
-@use "../common" as *;
+﻿@use "../../styles/common" as *;
 
 .player-data {
   display: flex;
@@ -47,3 +47,4 @@
     }
   }
 }
+

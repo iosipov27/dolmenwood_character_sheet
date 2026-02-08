@@ -1,4 +1,4 @@
-@use "../common" as *;
+﻿@use "../../styles/common" as *;
 
 .dw-movement {
   display: grid;
@@ -38,3 +38,4 @@
     width: 100%;
   }
 }
+

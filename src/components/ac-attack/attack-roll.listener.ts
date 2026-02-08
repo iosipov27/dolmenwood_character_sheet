@@ -1,8 +1,8 @@
-import { DW_ROLL_ATTACK } from "../constants/templateAttributes.js";
-import type { ActionEvent, HtmlRoot } from "../types.js";
-import { getDataset } from "../utils/getDataset.js";
-import { registerAction } from "../utils/registerAction.js";
-import { buildAbilities } from "../utils/buildAbilities.js";
+﻿import { DW_ROLL_ATTACK } from "../../constants/templateAttributes.js";
+import type { ActionEvent, HtmlRoot } from "../../types.js";
+import { getDataset } from "../../utils/getDataset.js";
+import { registerAction } from "../../utils/registerAction.js";
+import { buildAbilities } from "../../utils/buildAbilities.js";
 
 const ATTACK_TO_ABILITY: Record<string, "str" | "dex"> = {
   melee: "str",
@@ -45,3 +45,4 @@ export function registerAttackRollListener(html: HtmlRoot, { actor }: { actor: A
     });
   });
 }
+

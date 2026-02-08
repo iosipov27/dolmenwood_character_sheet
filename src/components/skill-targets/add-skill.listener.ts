@@ -1,6 +1,6 @@
-import { registerAction } from "../utils/registerAction.js";
-import { DW_ADD_SKILL } from "../constants/templateAttributes.js";
-import type { DwExtraSkill, GetDwFlags, HtmlRoot, SetDwFlags } from "../types.js";
+﻿import { registerAction } from "../../utils/registerAction.js";
+import { DW_ADD_SKILL } from "../../constants/templateAttributes.js";
+import type { DwExtraSkill, GetDwFlags, HtmlRoot, SetDwFlags } from "../../types.js";
 
 export function registerAddSkillListener(
   html: HtmlRoot,
@@ -46,3 +46,4 @@ function readExtraSkillsFromForm(html: HtmlRoot, fallback: DwExtraSkill[]): DwEx
     .sort((a, b) => a[0] - b[0])
     .map(([, skill]) => skill);
 }
+

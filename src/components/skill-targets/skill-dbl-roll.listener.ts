@@ -1,5 +1,5 @@
-import { getDataset } from "../utils/getDataset.js";
-import type { ActionEvent, HtmlRoot, JQueryWithOn, RollTargetCheck } from "../types.js";
+﻿import { getDataset } from "../../utils/getDataset.js";
+import type { ActionEvent, HtmlRoot, JQueryWithOn, RollTargetCheck } from "../../types.js";
 
 export function registerSkillDblRollListener(
   html: HtmlRoot,
@@ -19,3 +19,4 @@ export function registerSkillDblRollListener(
     await rollTargetCheck(actor, `Skill: ${prettyKey(key ?? "")}`, val);
   });
 }
+

@@ -1,6 +1,6 @@
-import { DW_ROLL_EXTRA_SKILL } from "../constants/templateAttributes.js";
-import { getDataset } from "../utils/getDataset.js";
-import type { ActionEvent, HtmlRoot, JQueryWithOn, RollTargetCheck } from "../types.js";
+﻿import { DW_ROLL_EXTRA_SKILL } from "../../constants/templateAttributes.js";
+import { getDataset } from "../../utils/getDataset.js";
+import type { ActionEvent, HtmlRoot, JQueryWithOn, RollTargetCheck } from "../../types.js";
 
 export function registerExtraSkillRollListener(
   html: HtmlRoot,
@@ -23,3 +23,4 @@ export function registerExtraSkillRollListener(
     await rollTargetCheck(actor, `Skill: ${skillName.toUpperCase()}`, target);
   });
 }
+

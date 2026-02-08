@@ -1,7 +1,7 @@
-import { registerAction } from "../utils/registerAction.js";
-import { DW_ROLL_SAVE } from "../constants/templateAttributes.js";
-import { getDataset } from "../utils/getDataset.js";
-import type { ActionEvent, GetDwFlags, HtmlRoot, RollTargetCheck } from "../types.js";
+﻿import { registerAction } from "../../utils/registerAction.js";
+import { DW_ROLL_SAVE } from "../../constants/templateAttributes.js";
+import { getDataset } from "../../utils/getDataset.js";
+import type { ActionEvent, GetDwFlags, HtmlRoot, RollTargetCheck } from "../../types.js";
 
 export function registerSaveRollListener(
   html: HtmlRoot,
@@ -26,3 +26,4 @@ export function registerSaveRollListener(
     await rollTargetCheck(actor, `${localize("DOLMENWOOD.Roll.SavePrefix")}: ${prettyKey(key ?? "")}`, target);
   });
 }
+

@@ -1,11 +1,11 @@
 @use "common" as *;
-@use "parts/abilities" as *;
-@use "parts/save-targets.scss" as *;
-@use "parts/hit-points.scss" as *;
-@use "parts/ac-attack.scss" as *;
-@use "parts/player-data.scss" as *;
-@use "parts/movement.scss" as *;
-@use "parts/skills.scss" as *;
+@use "../components/abilities/abilities.scss" as *;
+@use "../components/save-throws/save-throws.scss" as *;
+@use "../components/health-points/health-points.scss" as *;
+@use "../components/ac-attack/ac-attack.scss" as *;
+@use "../components/player-data/player-data.scss" as *;
+@use "../components/movement/movement.scss" as *;
+@use "../components/skill-targets/skill-targets.scss" as *;
 
 .dolmenwood-sheet {
   max-width: 45rem;
