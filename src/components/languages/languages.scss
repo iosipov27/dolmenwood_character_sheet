@@ -3,27 +3,5 @@
 .dw-languages-editable {
   min-height: 4rem;
   padding: 0.5rem;
-  border: 1px solid var(--dw-border-color);
   border-radius: 4px;
-  background: var(--dw-input-bg, #fff);
-  color: var(--dw-text-color, #000);
-  font-size: 0.875rem;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  cursor: text;
-
-  &:hover {
-    border-color: var(--dw-focus-color, #4a90e2);
-  }
-
-  &:focus {
-    outline: none;
-    border-color: var(--dw-focus-color, #4a90e2);
-  }
-
-  &:empty::before {
-    content: attr(data-placeholder);
-    color: #999;
-    font-style: italic;
-  }
 }

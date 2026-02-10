@@ -127,4 +127,19 @@ hr {
 [contenteditable] {
   white-space: pre-wrap;
   word-break: break-word;
+  background-color: #e7deca;
+  background-image: url("/ui/parchment.jpg");
+  background-repeat: repeat;
+  border: 1px solid $color-border-soft;
+
+  &:hover {
+    border-color: $color-border-light-secondary;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $color-border-dark-secondary;
+  }
+
+  cursor: text;
 }

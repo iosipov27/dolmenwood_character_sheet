@@ -30,10 +30,6 @@ export class EditableTextarea {
     const element = this.contentElement.get(0);
     if (!element) return;
 
-    console.log("innerText:", JSON.stringify(element.innerText));
-    console.log("textContent:", JSON.stringify(element.textContent));
-    console.log("innerHTML:", element.innerHTML);
-
     const plain = element.innerText
       .replace(/\u00A0/g, " ")
       .replace(/\r\n/g, "\n")
