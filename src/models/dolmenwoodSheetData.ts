@@ -70,6 +70,14 @@ export class DolmenwoodSheetData {
     };
     const equippedFields = Array.from({ length: 10 }, (_, i) => buildEquipmentField("equipped", i + 1));
     const stowedFields = Array.from({ length: 16 }, (_, i) => buildEquipmentField("stowed", i + 1));
+    const allWeightFields = [...equippedFields, ...stowedFields];
+    const totalWeight = allWeightFields
+      .map((field) => Number.parseFloat(field.weightValue))
+      .filter((weight) => Number.isFinite(weight))
+      .reduce((sum, weight) => sum + weight, 0);
+    const formattedTotalWeight = Number.isInteger(totalWeight)
+      ? String(totalWeight)
+      : String(Number(totalWeight.toFixed(2)));
 
     data.dwSkillsList = [
       {
@@ -107,7 +115,8 @@ export class DolmenwoodSheetData {
       prettyKey: prettyKeyMap,
       equipment: {
         equippedFields,
-        stowedFields
+        stowedFields,
+        totalWeight: formattedTotalWeight
       }
     };
 

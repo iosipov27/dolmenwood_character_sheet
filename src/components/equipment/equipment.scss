@@ -111,4 +111,35 @@
       margin: 0;
     }
   }
+
+  &__total-weight {
+    margin-top: 0.45rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.4rem;
+
+    label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      padding-top: 0;
+    }
+  }
+
+  &__total-weight-value {
+    min-height: 2rem;
+    font-size: 1rem;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  &__total-weight-value {
+    width: 5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid $color-border-main;
+    background: rgba(255, 255, 255, 0.35);
+    border-radius: 4px;
+  }
 }

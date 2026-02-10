@@ -172,6 +172,34 @@ describe("registerEquipmentListener", () => {
     );
   });
 
+  it("updates total weight block when a weight field changes", async () => {
+    document.body.innerHTML = `
+      <div class="dw-equipment">
+        <input class="edit-input" name="dw.meta.equipment.equippedWeight1" value="10" />
+        <input class="edit-input" name="dw.meta.equipment.stowedWeight1" value="5" />
+        <div data-total-weight>0</div>
+        <div class="dw-equipment__tiny-editable contenteditable" contenteditable="plaintext-only"></div>
+      </div>
+    `;
+
+    const html = $(document.body);
+    const getDwFlags = vi.fn(buildDwFlags);
+    const setDwFlags = vi.fn(async () => {});
+
+    registerEquipmentListener(html, { getDwFlags, setDwFlags });
+
+    const total = html.find("[data-total-weight]");
+    const input = html.find('input[name="dw.meta.equipment.stowedWeight1"]');
+
+    expect(total.text()).toBe("15");
+
+    input.val("8");
+    input.trigger("change");
+    await flushPromises();
+
+    expect(total.text()).toBe("18");
+  });
+
   it("saves tiny items from contenteditable on blur", async () => {
     document.body.innerHTML = `
       <div class="dw-equipment">

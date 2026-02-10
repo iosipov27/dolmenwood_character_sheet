@@ -7,7 +7,29 @@ export function registerEquipmentListener(
   { getDwFlags, setDwFlags }: { getDwFlags: GetDwFlags; setDwFlags: SetDwFlags }
 ): void {
   const equipmentFields = html.find(".dw-equipment input.edit-input[name^='dw.meta.equipment.']");
+  const equipmentWeightFields = html.find(
+    ".dw-equipment input.edit-input[name^='dw.meta.equipment.'][name*='Weight']"
+  );
+  const totalWeightValue = html.find(".dw-equipment [data-total-weight]");
   const tinyEditable = html.find(".dw-equipment__tiny-editable") as JQueryWithOn<HTMLElement>;
+  const parseWeight = (value: string): number => {
+    const parsed = Number.parseFloat(value);
+
+    return Number.isFinite(parsed) ? parsed : 0;
+  };
+  const formatTotalWeight = (value: number): string =>
+    Number.isInteger(value) ? String(value) : String(Number(value.toFixed(2)));
+
+  const refreshTotalWeight = (): void => {
+    if (!totalWeightValue.length) return;
+
+    const total = equipmentWeightFields
+      .toArray()
+      .map((field) => parseWeight(String($(field).val() ?? "")))
+      .reduce((sum, weight) => sum + weight, 0);
+
+    totalWeightValue.text(formatTotalWeight(total));
+  };
 
   async function persistField(element: JQuery<HTMLElement>): Promise<void> {
     const field = String(element.attr("name") ?? "");
@@ -27,12 +49,16 @@ export function registerEquipmentListener(
   }
 
   equipmentFields.on("change", function () {
+    refreshTotalWeight();
     void persistField($(this));
   });
 
   equipmentFields.on("blur", function () {
+    refreshTotalWeight();
     void persistField($(this));
   });
+
+  refreshTotalWeight();
 
   new EditableTextarea({
     contentElement: tinyEditable,

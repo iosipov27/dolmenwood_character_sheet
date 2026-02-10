@@ -213,6 +213,7 @@ export type DwSheetData = BaseSheetData & {
     equipment: {
       equippedFields: DwEquipmentFieldEntry[];
       stowedFields: DwEquipmentFieldEntry[];
+      totalWeight: string;
     };
   };
   dwAbilities: DwAbilityView[];
