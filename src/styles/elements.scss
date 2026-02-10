@@ -123,3 +123,8 @@ hr {
 .dw-row {
   margin-bottom: 1rem;
 }
+
+[contenteditable] {
+  white-space: pre-wrap;
+  word-break: break-word;
+}

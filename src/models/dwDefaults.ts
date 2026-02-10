@@ -60,7 +60,8 @@ export function dwDefaults(): DwFlags {
       xp: 0,
       level: 1,
       nextLevel: 0,
-      modifier: 0
+      modifier: 0,
+      otherNotes: ""
     }
   };
 }

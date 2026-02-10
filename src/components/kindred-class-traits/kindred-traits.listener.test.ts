@@ -27,12 +27,13 @@ function buildDwFlags(): DwFlags {
 }
 
 describe("registerKindredTraitsListener", () => {
-  it("opens textarea on content click and saves by Enter", async () => {
+  it("saves contenteditable value on blur", async () => {
     document.body.innerHTML = `
-      <div class="dw-kindred-traits-display">
-        <div class="dw-traits-content">Old traits</div>
-      </div>
-      <textarea class="dw-kindred-traits-textarea" style="display:none;"></textarea>
+      <div
+        class="dw-kindred-traits-editable contenteditable"
+        contenteditable="plaintext-only"
+        data-field="kindredClassTraits"
+      >Old traits</div>
     `;
     const html = $(document.body);
     const getDwFlags = vi.fn(buildDwFlags);
@@ -40,12 +41,10 @@ describe("registerKindredTraitsListener", () => {
 
     registerKindredTraitsListener(html, { getDwFlags, setDwFlags });
 
-    const content = html.find(".dw-traits-content");
-    const textarea = html.find(".dw-kindred-traits-textarea");
+    const editable = html.find(".dw-kindred-traits-editable").get(0) as HTMLElement;
 
-    content.trigger("click");
-    textarea.val("Updated traits");
-    textarea.trigger($.Event("keydown", { key: "Enter", shiftKey: false }));
+    editable.innerText = "Updated traits";
+    $(editable).trigger("blur");
     await flushPromises();
 
     expect(setDwFlags).toHaveBeenCalledTimes(1);
@@ -54,6 +53,6 @@ describe("registerKindredTraitsListener", () => {
         meta: expect.objectContaining({ kindredClassTraits: "Updated traits" })
       })
     );
-    expect(content.text()).toBe("Updated traits");
+    expect(editable.textContent).toBe("Updated traits");
   });
 });

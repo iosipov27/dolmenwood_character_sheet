@@ -1,4 +1,4 @@
-import type { DwFlags, DwFlagsInput, DwSaves } from "../types.js";
+import type { DwFlags, DwFlagsInput, DwMeta, DwSaves } from "../types.js";
 
 export function normalizeDwFlags(dw: DwFlagsInput): DwFlags {
   // If an old "resistance" existed, fold it into magic (prefer magic if set).
@@ -15,6 +15,16 @@ export function normalizeDwFlags(dw: DwFlagsInput): DwFlags {
   }
 
   d.saves = saves as DwSaves;
+
+  const meta = (d.meta ?? {}) as Partial<DwMeta> & Record<string, unknown>;
+  const legacyOtherNotes = (d as Record<string, unknown>).otherNotes;
+
+  if (typeof legacyOtherNotes === "string" && !meta.otherNotes) {
+    meta.otherNotes = legacyOtherNotes;
+  }
+
+  delete (d as Record<string, unknown>).otherNotes;
+  d.meta = meta as DwMeta;
 
   return d as DwFlags;
 }

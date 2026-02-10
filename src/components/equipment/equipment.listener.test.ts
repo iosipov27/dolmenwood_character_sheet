@@ -60,11 +60,8 @@ describe("registerEquipmentListener", () => {
     document.body.innerHTML = `
       <div class="dw-equipment">
         <input class="edit-input" name="dw.meta.equipment.equipped1" value="" />
+        <div class="dw-equipment__tiny-editable contenteditable" contenteditable="plaintext-only"></div>
       </div>
-      <div class="dw-equipment__tiny-display">
-        <div class="dw-equipment__tiny-content"></div>
-      </div>
-      <textarea class="dw-equipment__textarea" name="dw.meta.equipment.tinyItems"></textarea>
     `;
 
     const html = $(document.body);
@@ -93,11 +90,8 @@ describe("registerEquipmentListener", () => {
     document.body.innerHTML = `
       <div class="dw-equipment">
         <input class="edit-input" name="dw.meta.equipment.stowed1" value="" />
+        <div class="dw-equipment__tiny-editable contenteditable" contenteditable="plaintext-only"></div>
       </div>
-      <div class="dw-equipment__tiny-display">
-        <div class="dw-equipment__tiny-content"></div>
-      </div>
-      <textarea class="dw-equipment__textarea" name="dw.meta.equipment.tinyItems"></textarea>
     `;
 
     const html = $(document.body);
@@ -122,13 +116,15 @@ describe("registerEquipmentListener", () => {
     );
   });
 
-  it("opens tiny items textarea on display click", () => {
+  it("saves tiny items from contenteditable on blur", async () => {
     document.body.innerHTML = `
-      <div class="dw-equipment"></div>
-      <div class="dw-equipment__tiny-display" style="display:block;">
-        <div class="dw-equipment__tiny-content">Rope, Torch</div>
+      <div class="dw-equipment">
+        <div
+          class="dw-equipment__tiny-editable contenteditable"
+          contenteditable="plaintext-only"
+          data-field="tinyItems"
+        >Rope, Torch</div>
       </div>
-      <textarea class="dw-equipment__textarea" name="dw.meta.equipment.tinyItems" style="display:none;"></textarea>
     `;
 
     const html = $(document.body);
@@ -137,38 +133,10 @@ describe("registerEquipmentListener", () => {
 
     registerEquipmentListener(html, { getDwFlags, setDwFlags });
 
-    const display = html.find(".dw-equipment__tiny-display");
-    const textarea = html.find(".dw-equipment__textarea");
+    const editable = html.find(".dw-equipment__tiny-editable").get(0) as HTMLElement;
 
-    display.trigger("click");
-
-    expect(textarea.val()).toBe("Rope, Torch");
-    expect(textarea.css("display")).not.toBe("none");
-    expect(display.css("display")).toBe("none");
-  });
-
-  it("saves tiny items on textarea blur", async () => {
-    document.body.innerHTML = `
-      <div class="dw-equipment"></div>
-      <div class="dw-equipment__tiny-display">
-        <div class="dw-equipment__tiny-content">Rope, Torch</div>
-      </div>
-      <textarea class="dw-equipment__textarea" name="dw.meta.equipment.tinyItems" style="display:none;"></textarea>
-    `;
-
-    const html = $(document.body);
-    const getDwFlags = vi.fn(buildDwFlags);
-    const setDwFlags = vi.fn(async () => {});
-
-    registerEquipmentListener(html, { getDwFlags, setDwFlags });
-
-    const display = html.find(".dw-equipment__tiny-display");
-    const content = html.find(".dw-equipment__tiny-content");
-    const textarea = html.find(".dw-equipment__textarea");
-
-    display.trigger("click");
-    textarea.val("Lamp, Oil");
-    textarea.trigger("blur");
+    editable.innerText = "Lamp, Oil";
+    $(editable).trigger("blur");
     await flushPromises();
 
     expect(setDwFlags).toHaveBeenCalledTimes(1);
@@ -179,18 +147,18 @@ describe("registerEquipmentListener", () => {
         })
       })
     );
-    expect(content.html()).toBe("Lamp, Oil");
-    expect(textarea.css("display")).toBe("none");
-    expect(display.css("display")).not.toBe("none");
+    expect(editable.textContent).toBe("Lamp, Oil");
   });
 
-  it("converts newlines to <br> tags when saving tiny items", async () => {
+  it("keeps multiline tiny items as plain text", async () => {
     document.body.innerHTML = `
-      <div class="dw-equipment"></div>
-      <div class="dw-equipment__tiny-display">
-        <div class="dw-equipment__tiny-content"></div>
+      <div class="dw-equipment">
+        <div
+          class="dw-equipment__tiny-editable contenteditable"
+          contenteditable="plaintext-only"
+          data-field="tinyItems"
+        ></div>
       </div>
-      <textarea class="dw-equipment__textarea" name="dw.meta.equipment.tinyItems" style="display:none;"></textarea>
     `;
 
     const html = $(document.body);
@@ -199,16 +167,13 @@ describe("registerEquipmentListener", () => {
 
     registerEquipmentListener(html, { getDwFlags, setDwFlags });
 
-    const display = html.find(".dw-equipment__tiny-display");
-    const content = html.find(".dw-equipment__tiny-content");
-    const textarea = html.find(".dw-equipment__textarea");
+    const editable = html.find(".dw-equipment__tiny-editable").get(0) as HTMLElement;
 
-    display.trigger("click");
-    textarea.val("Line 1\nLine 2\nLine 3");
-    textarea.trigger("blur");
+    editable.innerText = "Line 1\nLine 2\nLine 3";
+    $(editable).trigger("blur");
     await flushPromises();
 
-    expect(content.html()).toBe("Line 1<br>Line 2<br>Line 3");
+    expect(editable.textContent).toBe("Line 1\nLine 2\nLine 3");
     expect(setDwFlags).toHaveBeenCalledWith(
       expect.objectContaining({
         meta: expect.objectContaining({
@@ -218,13 +183,15 @@ describe("registerEquipmentListener", () => {
     );
   });
 
-  it("closes tiny items textarea on Enter key", async () => {
+  it("normalizes leading/trailing whitespace for tiny items", async () => {
     document.body.innerHTML = `
-      <div class="dw-equipment"></div>
-      <div class="dw-equipment__tiny-display">
-        <div class="dw-equipment__tiny-content"></div>
+      <div class="dw-equipment">
+        <div
+          class="dw-equipment__tiny-editable contenteditable"
+          contenteditable="plaintext-only"
+          data-field="tinyItems"
+        ></div>
       </div>
-      <textarea class="dw-equipment__textarea" name="dw.meta.equipment.tinyItems" style="display:none;"></textarea>
     `;
 
     const html = $(document.body);
@@ -233,28 +200,31 @@ describe("registerEquipmentListener", () => {
 
     registerEquipmentListener(html, { getDwFlags, setDwFlags });
 
-    const display = html.find(".dw-equipment__tiny-display");
-    const textarea = html.find(".dw-equipment__textarea");
-
-    display.trigger("click");
-    textarea.val("New items");
-
-    const enterEvent = $.Event("keydown", { key: "Enter", shiftKey: false });
-
-    textarea.trigger(enterEvent);
+    const editable = html.find(".dw-equipment__tiny-editable").get(0) as HTMLElement;
+    editable.innerText = "\n\nItem 1\nItem 2   ";
+    $(editable).trigger("blur");
     await flushPromises();
 
-    expect(enterEvent.isDefaultPrevented()).toBe(true);
     expect(setDwFlags).toHaveBeenCalledTimes(1);
+    expect(setDwFlags).toHaveBeenCalledWith(
+      expect.objectContaining({
+        meta: expect.objectContaining({
+          equipment: expect.objectContaining({ tinyItems: "Item 1\nItem 2" })
+        })
+      })
+    );
+    expect(editable.textContent).toBe("Item 1\nItem 2");
   });
 
-  it("does not close tiny items textarea on Shift+Enter", async () => {
+  it("normalizes non-breaking spaces for tiny items", async () => {
     document.body.innerHTML = `
-      <div class="dw-equipment"></div>
-      <div class="dw-equipment__tiny-display">
-        <div class="dw-equipment__tiny-content"></div>
+      <div class="dw-equipment">
+        <div
+          class="dw-equipment__tiny-editable contenteditable"
+          contenteditable="plaintext-only"
+          data-field="tinyItems"
+        ></div>
       </div>
-      <textarea class="dw-equipment__textarea" name="dw.meta.equipment.tinyItems" style="display:none;"></textarea>
     `;
 
     const html = $(document.body);
@@ -263,45 +233,19 @@ describe("registerEquipmentListener", () => {
 
     registerEquipmentListener(html, { getDwFlags, setDwFlags });
 
-    const display = html.find(".dw-equipment__tiny-display");
-    const textarea = html.find(".dw-equipment__textarea");
-
-    display.trigger("click");
-    textarea.val("New items");
-
-    const shiftEnterEvent = $.Event("keydown", { key: "Enter", shiftKey: true });
-
-    textarea.trigger(shiftEnterEvent);
+    const editable = html.find(".dw-equipment__tiny-editable").get(0) as HTMLElement;
+    editable.innerText = "Rope\u00A0and\u00A0Torch";
+    $(editable).trigger("blur");
     await flushPromises();
 
-    expect(shiftEnterEvent.isDefaultPrevented()).toBe(false);
-    expect(setDwFlags).not.toHaveBeenCalled();
-  });
-
-  it("gets value from flags when opening textarea", () => {
-    document.body.innerHTML = `
-      <div class="dw-equipment"></div>
-      <div class="dw-equipment__tiny-display" style="display:block;">
-        <div class="dw-equipment__tiny-content">Old content</div>
-      </div>
-      <textarea class="dw-equipment__textarea" name="dw.meta.equipment.tinyItems" style="display:none;"></textarea>
-    `;
-
-    const html = $(document.body);
-    const customFlags = buildDwFlags();
-
-    customFlags.meta.equipment.tinyItems = "Value from flags";
-    const getDwFlags = vi.fn(() => customFlags);
-    const setDwFlags = vi.fn(async () => {});
-
-    registerEquipmentListener(html, { getDwFlags, setDwFlags });
-
-    const display = html.find(".dw-equipment__tiny-display");
-    const textarea = html.find(".dw-equipment__textarea");
-
-    display.trigger("click");
-
-    expect(textarea.val()).toBe("Value from flags");
-    expect(getDwFlags).toHaveBeenCalled();
+    expect(setDwFlags).toHaveBeenCalledTimes(1);
+    expect(setDwFlags).toHaveBeenCalledWith(
+      expect.objectContaining({
+        meta: expect.objectContaining({
+          equipment: expect.objectContaining({ tinyItems: "Rope and Torch" })
+        })
+      })
+    );
+    expect(editable.textContent).toBe("Rope and Torch");
   });
 });

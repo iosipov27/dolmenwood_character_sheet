@@ -27,12 +27,13 @@ function buildDwFlags(): DwFlags {
 }
 
 describe("registerLanguagesListener", () => {
-  it("opens textarea on content click and saves by blur", async () => {
+  it("saves contenteditable value on blur", async () => {
     document.body.innerHTML = `
-      <div class="dw-languages-display">
-        <div class="dw-languages-content">Old language</div>
-      </div>
-      <textarea class="dw-languages-textarea" style="display:none;"></textarea>
+      <div
+        class="dw-languages-editable contenteditable"
+        contenteditable="plaintext-only"
+        data-field="languages"
+      >Old language</div>
     `;
     const html = $(document.body);
     const getDwFlags = vi.fn(buildDwFlags);
@@ -40,12 +41,10 @@ describe("registerLanguagesListener", () => {
 
     registerLanguagesListener(html, { getDwFlags, setDwFlags });
 
-    const content = html.find(".dw-languages-content");
-    const textarea = html.find(".dw-languages-textarea");
+    const editable = html.find(".dw-languages-editable").get(0) as HTMLElement;
 
-    content.trigger("click");
-    textarea.val("Elvish, Woldish");
-    textarea.trigger("blur");
+    editable.innerText = "Elvish, Woldish";
+    $(editable).trigger("blur");
     await flushPromises();
 
     expect(setDwFlags).toHaveBeenCalledTimes(1);
@@ -54,6 +53,6 @@ describe("registerLanguagesListener", () => {
         meta: expect.objectContaining({ languages: "Elvish, Woldish" })
       })
     );
-    expect(content.text()).toBe("Elvish, Woldish");
+    expect(editable.textContent).toBe("Elvish, Woldish");
   });
 });

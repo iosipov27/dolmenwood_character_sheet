@@ -290,6 +290,11 @@ hr {
   margin-bottom: 1rem;
 }
 
+[contenteditable] {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
 .dw-abilities {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
@@ -630,12 +635,24 @@ hr {
 .dw-equipment__block--right {
   height: 100%;
 }
-.dw-equipment__textarea {
-  resize: vertical;
-}
-.dw-equipment__tiny-display {
+.dw-equipment__tiny-editable {
   min-height: 6rem;
-  padding: 0 0.2rem;
+  padding: 0.5rem;
+  border: 1px solid var(--dw-border-color);
+  border-radius: 4px;
+  background: var(--dw-input-bg, #fff);
+  color: var(--dw-text-color, #000);
+  font-size: 0.875rem;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  cursor: text;
+}
+.dw-equipment__tiny-editable:hover {
+  border-color: var(--dw-focus-color, #4a90e2);
+}
+.dw-equipment__tiny-editable:focus {
+  outline: none;
+  border-color: var(--dw-focus-color, #4a90e2);
 }
 .dw-equipment__fields {
   display: flex;
@@ -644,6 +661,92 @@ hr {
 }
 .dw-equipment__fields .dw-field {
   border-bottom: 1px solid #a7a294;
+}
+
+.dw-other-notes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.dw-other-notes__header h2 {
+  margin: 0;
+  border: none;
+}
+.dw-other-notes__content {
+  display: flex;
+  flex-direction: column;
+}
+.dw-other-notes-editable {
+  min-height: 100px;
+  padding: 0.5rem;
+  border: 1px solid var(--dw-border-color);
+  border-radius: 4px;
+  background: var(--dw-input-bg, #fff);
+  color: var(--dw-text-color, #000);
+  font-size: 0.875rem;
+  cursor: text;
+}
+.dw-other-notes-editable:hover {
+  border-color: var(--dw-focus-color, #4a90e2);
+}
+.dw-other-notes-editable:focus {
+  outline: none;
+  border-color: var(--dw-focus-color, #4a90e2);
+}
+.dw-other-notes-editable:empty::before {
+  content: attr(data-placeholder);
+  color: #999;
+  font-style: italic;
+}
+
+.dw-languages-editable {
+  min-height: 4rem;
+  padding: 0.5rem;
+  border: 1px solid var(--dw-border-color);
+  border-radius: 4px;
+  background: var(--dw-input-bg, #fff);
+  color: var(--dw-text-color, #000);
+  font-size: 0.875rem;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  cursor: text;
+}
+.dw-languages-editable:hover {
+  border-color: var(--dw-focus-color, #4a90e2);
+}
+.dw-languages-editable:focus {
+  outline: none;
+  border-color: var(--dw-focus-color, #4a90e2);
+}
+.dw-languages-editable:empty::before {
+  content: attr(data-placeholder);
+  color: #999;
+  font-style: italic;
+}
+
+.dw-kindred-traits-editable {
+  min-height: 4rem;
+  padding: 0.5rem;
+  border: 1px solid var(--dw-border-color);
+  border-radius: 4px;
+  background: var(--dw-input-bg, #fff);
+  color: var(--dw-text-color, #000);
+  font-size: 0.875rem;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  cursor: text;
+}
+.dw-kindred-traits-editable:hover {
+  border-color: var(--dw-focus-color, #4a90e2);
+}
+.dw-kindred-traits-editable:focus {
+  outline: none;
+  border-color: var(--dw-focus-color, #4a90e2);
+}
+.dw-kindred-traits-editable:empty::before {
+  content: attr(data-placeholder);
+  color: #999;
+  font-style: italic;
 }
 
 .dolmenwood-sheet {

@@ -18,7 +18,8 @@ const COMPONENT_TEMPLATES = [
   "languages",
   "equipment",
   "xp-section",
-  "avatar"
+  "avatar",
+  "other-notes"
 ];
 
 const TEMPLATE_PATHS: Record<string, string> = {

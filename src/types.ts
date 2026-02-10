@@ -69,6 +69,7 @@ export interface DwMeta {
   level: number;
   nextLevel: number;
   modifier: number;
+  otherNotes: string;
 }
 
 export interface DwFlags {

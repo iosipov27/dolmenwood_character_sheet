@@ -8,6 +8,9 @@
 @use "../components/movement/movement.scss" as *;
 @use "../components/skill-targets/skill-targets.scss" as *;
 @use "../components/equipment/equipment.scss" as *;
+@use "../components/other-notes/other-notes.scss" as *;
+@use "../components/languages/languages.scss" as *;
+@use "../components/kindred-class-traits/kindred-class-traits.scss" as *;
 
 .dolmenwood-sheet {
   max-width: 45rem;

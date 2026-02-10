@@ -1,0 +1,45 @@
+@use "../../styles/common" as *;
+
+.dw-other-notes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  &__header {
+    h2 {
+      margin: 0;
+      border: none;
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &-editable {
+    min-height: 100px;
+    padding: 0.5rem;
+    border: 1px solid var(--dw-border-color);
+    border-radius: 4px;
+    background: var(--dw-input-bg, #fff);
+    color: var(--dw-text-color, #000);
+    font-size: 0.875rem;
+    cursor: text;
+
+    &:hover {
+      border-color: var(--dw-focus-color, #4a90e2);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: var(--dw-focus-color, #4a90e2);
+    }
+
+    &:empty::before {
+      content: attr(data-placeholder);
+      color: #999;
+      font-style: italic;
+    }
+  }
+}
