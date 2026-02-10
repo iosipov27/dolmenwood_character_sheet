@@ -48,6 +48,16 @@ export interface DwMeta {
     equipped8: string;
     equipped9: string;
     equipped10: string;
+    equippedWeight1: string;
+    equippedWeight2: string;
+    equippedWeight3: string;
+    equippedWeight4: string;
+    equippedWeight5: string;
+    equippedWeight6: string;
+    equippedWeight7: string;
+    equippedWeight8: string;
+    equippedWeight9: string;
+    equippedWeight10: string;
     stowed1: string;
     stowed2: string;
     stowed3: string;
@@ -64,6 +74,22 @@ export interface DwMeta {
     stowed14: string;
     stowed15: string;
     stowed16: string;
+    stowedWeight1: string;
+    stowedWeight2: string;
+    stowedWeight3: string;
+    stowedWeight4: string;
+    stowedWeight5: string;
+    stowedWeight6: string;
+    stowedWeight7: string;
+    stowedWeight8: string;
+    stowedWeight9: string;
+    stowedWeight10: string;
+    stowedWeight11: string;
+    stowedWeight12: string;
+    stowedWeight13: string;
+    stowedWeight14: string;
+    stowedWeight15: string;
+    stowedWeight16: string;
   };
   xp: number;
   level: number;
@@ -169,6 +195,9 @@ export interface DwEquipmentFieldEntry {
   name: string;
   value: string;
   placeholder: string;
+  weightId: string;
+  weightName: string;
+  weightValue: string;
 }
 
 export type BaseSheetData = ReturnType<ActorSheet["getData"]>;

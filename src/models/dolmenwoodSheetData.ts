@@ -54,13 +54,18 @@ export class DolmenwoodSheetData {
       index: number
     ): DwEquipmentFieldEntry => {
       const key = `${prefix}${index}` as keyof typeof equipment;
+      const weightKey = `${prefix}Weight${index}` as keyof typeof equipment;
       const value = String(equipment[key] ?? "");
+      const weightValue = String(equipment[weightKey] ?? "");
 
       return {
         id: `dw-${prefix}-${index}`,
         name: `dw.meta.equipment.${prefix}${index}`,
         value,
-        placeholder: `Item ${index}`
+        placeholder: `Item ${index}`,
+        weightId: `dw-${prefix}-weight-${index}`,
+        weightName: `dw.meta.equipment.${prefix}Weight${index}`,
+        weightValue
       };
     };
     const equippedFields = Array.from({ length: 10 }, (_, i) => buildEquipmentField("equipped", i + 1));

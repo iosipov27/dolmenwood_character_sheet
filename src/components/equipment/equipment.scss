@@ -57,9 +57,58 @@
     display: flex;
     flex-direction: column;
     gap: 0.15rem;
+  }
 
-    .dw-field {
-      border-bottom: 1px solid $color-border-main;
+  &__row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.35rem;
+    border-bottom: 1px solid $color-border-main;
+
+    &--header {
+      border-bottom: none;
+      margin-bottom: 0.1rem;
+    }
+  }
+
+  &__entry {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+
+    .edit-input,
+    .editable-field {
+      min-width: 0;
+    }
+
+    &--weight {
+      width: 3.2rem;
+      justify-content: flex-end;
+    }
+  }
+
+  &__weight-input,
+  &__weight-value {
+    width: 3.2rem;
+    text-align: center;
+  }
+
+  &__weight-label {
+    display: block;
+    min-width: 3.2rem;
+    text-align: center;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+  }
+
+  &__weight-input {
+    -moz-appearance: textfield;
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
     }
   }
 }

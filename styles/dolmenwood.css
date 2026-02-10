@@ -658,8 +658,47 @@ hr {
   flex-direction: column;
   gap: 0.15rem;
 }
-.dw-equipment__fields .dw-field {
+.dw-equipment__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.35rem;
   border-bottom: 1px solid #a7a294;
+}
+.dw-equipment__row--header {
+  border-bottom: none;
+  margin-bottom: 0.1rem;
+}
+.dw-equipment__entry {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+}
+.dw-equipment__entry .edit-input,
+.dw-equipment__entry .editable-field {
+  min-width: 0;
+}
+.dw-equipment__entry--weight {
+  width: 3.2rem;
+  justify-content: flex-end;
+}
+.dw-equipment__weight-input, .dw-equipment__weight-value {
+  width: 3.2rem;
+  text-align: center;
+}
+.dw-equipment__weight-label {
+  display: block;
+  min-width: 3.2rem;
+  text-align: center;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+}
+.dw-equipment__weight-input {
+  -moz-appearance: textfield;
+}
+.dw-equipment__weight-input::-webkit-inner-spin-button, .dw-equipment__weight-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .dw-other-notes {

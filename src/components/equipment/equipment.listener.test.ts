@@ -30,6 +30,16 @@ function buildDwFlags(): DwFlags {
         equipped8: "",
         equipped9: "",
         equipped10: "",
+        equippedWeight1: "",
+        equippedWeight2: "",
+        equippedWeight3: "",
+        equippedWeight4: "",
+        equippedWeight5: "",
+        equippedWeight6: "",
+        equippedWeight7: "",
+        equippedWeight8: "",
+        equippedWeight9: "",
+        equippedWeight10: "",
         stowed1: "",
         stowed2: "",
         stowed3: "",
@@ -45,7 +55,23 @@ function buildDwFlags(): DwFlags {
         stowed13: "",
         stowed14: "",
         stowed15: "",
-        stowed16: ""
+        stowed16: "",
+        stowedWeight1: "",
+        stowedWeight2: "",
+        stowedWeight3: "",
+        stowedWeight4: "",
+        stowedWeight5: "",
+        stowedWeight6: "",
+        stowedWeight7: "",
+        stowedWeight8: "",
+        stowedWeight9: "",
+        stowedWeight10: "",
+        stowedWeight11: "",
+        stowedWeight12: "",
+        stowedWeight13: "",
+        stowedWeight14: "",
+        stowedWeight15: "",
+        stowedWeight16: ""
       },
       xp: 0,
       level: 1,
@@ -111,6 +137,36 @@ describe("registerEquipmentListener", () => {
       expect.objectContaining({
         meta: expect.objectContaining({
           equipment: expect.objectContaining({ stowed1: "Rations" })
+        })
+      })
+    );
+  });
+
+  it("updates equipment weight field on blur", async () => {
+    document.body.innerHTML = `
+      <div class="dw-equipment">
+        <input class="edit-input" name="dw.meta.equipment.equippedWeight1" value="" />
+        <div class="dw-equipment__tiny-editable contenteditable" contenteditable="plaintext-only"></div>
+      </div>
+    `;
+
+    const html = $(document.body);
+    const getDwFlags = vi.fn(buildDwFlags);
+    const setDwFlags = vi.fn(async () => {});
+
+    registerEquipmentListener(html, { getDwFlags, setDwFlags });
+
+    const input = html.find('input[name="dw.meta.equipment.equippedWeight1"]');
+
+    input.val("40");
+    input.trigger("blur");
+    await flushPromises();
+
+    expect(setDwFlags).toHaveBeenCalledTimes(1);
+    expect(setDwFlags).toHaveBeenCalledWith(
+      expect.objectContaining({
+        meta: expect.objectContaining({
+          equipment: expect.objectContaining({ equippedWeight1: "40" })
         })
       })
     );
@@ -202,6 +258,7 @@ describe("registerEquipmentListener", () => {
 
     const editable = html.find(".dw-equipment__tiny-editable").get(0) as HTMLElement;
     editable.innerText = "\n\nItem 1\nItem 2   ";
+
     $(editable).trigger("blur");
     await flushPromises();
 
@@ -235,6 +292,7 @@ describe("registerEquipmentListener", () => {
 
     const editable = html.find(".dw-equipment__tiny-editable").get(0) as HTMLElement;
     editable.innerText = "Rope\u00A0and\u00A0Torch";
+
     $(editable).trigger("blur");
     await flushPromises();
 
