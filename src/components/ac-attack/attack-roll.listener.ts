@@ -1,5 +1,5 @@
 ﻿import { DW_ROLL_ATTACK } from "../../constants/templateAttributes.js";
-import type { ActionEvent, HtmlRoot } from "../../types.js";
+import type { ActionEvent, HtmlRoot, RollAttackCheck } from "../../types.js";
 import { getDataset } from "../../utils/getDataset.js";
 import { registerAction } from "../../utils/registerAction.js";
 import { buildAbilities } from "../../utils/buildAbilities.js";
@@ -9,7 +9,10 @@ const ATTACK_TO_ABILITY: Record<string, "str" | "dex"> = {
   ranged: "dex"
 };
 
-export function registerAttackRollListener(html: HtmlRoot, { actor }: { actor: Actor }): void {
+export function registerAttackRollListener(
+  html: HtmlRoot,
+  { actor, rollAttackCheck }: { actor: Actor; rollAttackCheck: RollAttackCheck }
+): void {
   const localize = (key: string): string => game.i18n?.localize(key) ?? key;
 
   const attackLabels: Record<string, string> = {
@@ -34,16 +37,6 @@ export function registerAttackRollListener(html: HtmlRoot, { actor }: { actor: A
     const abilities = buildAbilities(actor.system as Record<string, unknown>);
     const ability = abilities.find((entry) => entry.key === abilityKey);
     const mod = Number(ability?.mod ?? 0);
-    const roll = await new Roll("1d20 + @mod", { mod }).evaluate();
-    const sign = mod >= 0 ? "+" : "-";
-
-    const flavor =
-      `<span class="dw-roll-title">${attackLabels[attackType]}</span>` +
-      ` - 1d20 ${sign} <b>${Math.abs(mod)}</b> (${abilityLabels[abilityKey]})`;
-
-    await roll.toMessage({
-      speaker: ChatMessage.getSpeaker({ actor }),
-      flavor
-    });
+    await rollAttackCheck(actor, attackLabels[attackType], abilityLabels[abilityKey], mod);
   });
 }

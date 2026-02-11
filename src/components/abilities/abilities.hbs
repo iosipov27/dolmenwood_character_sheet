@@ -1,6 +1,6 @@
 <div class="dw-block-head">
   <h2>{{localize "DOLMENWOOD.UI.AbilityScores"}}</h2>
-  {{! <div class="dw-hint">Roll 1d20. Success if roll is &lt;= score.</div> }}
+  {{! <div class="dw-hint">Roll 1d6 +/- mod. Success if final result is >= 4.</div> }}
 </div>
 
 <div class="dw-abilities">
@@ -12,7 +12,7 @@
           class="dw-abilities__roll-button"
           data-action="dw-roll-ability"
           data-label="{{a.label}}"
-          data-target="{{a.value}}"
+          data-mod="{{a.mod}}"
         >
           {{a.label}}
         </button>

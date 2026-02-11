@@ -58,7 +58,10 @@ export function registerSheetListeners(
     rollAbilityCheck: RollChecks.rollAbilityCheck
   });
 
-  registerAttackRollListener(html, { actor });
+  registerAttackRollListener(html, {
+    actor,
+    rollAttackCheck: RollChecks.rollAttackCheck
+  });
 
   registerAddSkillListener(html, {
     getDwFlags,

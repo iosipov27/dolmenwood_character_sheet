@@ -8,10 +8,10 @@ export function registerAbilityRollListener(
   { actor, rollAbilityCheck }: { actor: Actor; rollAbilityCheck: RollAbilityCheck }
 ): void {
   registerAction(html, DW_ROLL_ABILITY, async (ev: ActionEvent) => {
-    const { label, target } = getDataset(ev);
+    const { label, mod } = getDataset(ev);
     const labelText = label ?? "";
-    const targetValue = Number(target ?? 0);
+    const abilityMod = Number(mod ?? 0);
 
-    await rollAbilityCheck(actor, labelText, targetValue);
+    await rollAbilityCheck(actor, labelText, abilityMod);
   });
 }

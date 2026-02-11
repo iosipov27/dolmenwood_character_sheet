@@ -172,8 +172,15 @@ export type RollTargetCheck = (
 export type RollAbilityCheck = (
   actor: Actor,
   abilityLabel: string,
-  abilityValue: number
+  abilityMod: number
 ) => Promise<{ roll: Roll; success: boolean; target: number }>;
+
+export type RollAttackCheck = (
+  actor: Actor,
+  attackLabel: string,
+  abilityLabel: string,
+  abilityMod: number
+) => Promise<{ roll: Roll; mod: number }>;
 
 export type GetDwFlags = () => DwFlags;
 export type SetDwFlags = (dw: DwFlags) => Promise<void> | void;
