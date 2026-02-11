@@ -14,6 +14,10 @@ A custom character sheet module for Foundry VTT, designed for Dolmenwood and bui
 - Stores Dolmenwood-specific fields in `actor.flags.dolmenwood.dw`
 - Clickable rolls directly from the sheet to chat
 
+## Screenshot
+
+![Dolmenwood Fighter Sheet](docs/fighter.png)
+
 ## Core Features
 
 - Ability checks: `1d6 +/- modifier`, success on `>= 4`, natural `1/6` are auto-fail/auto-success
@@ -43,6 +47,10 @@ Select it manually in the actor sheet configuration.
 
 - `Enable debug logging`
 - `Enable error notifications`
+
+## Roadmap
+
+- Planned: move away from inheriting the OSE sheet module and make this character sheet fully independent.
 
 ## Development
 
