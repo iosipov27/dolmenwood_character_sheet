@@ -70,4 +70,27 @@ describe("registerInputUpdateListeners", () => {
       })
     );
   });
+
+  it("updates a visible edit-input without editable span (e.g. AC field)", async () => {
+    document.body.innerHTML = `
+      <div>
+        <input class="edit-input" name="system.attributes.ac.value" type="number" value="13" />
+      </div>
+    `;
+
+    const html = $(document.body);
+    const update = vi.fn(async () => {});
+    const sheet = { actor: { update } } as unknown as foundry.appv1.sheets.ActorSheet;
+
+    registerInputUpdateListeners(html, sheet);
+
+    const input = html.find("input.edit-input");
+
+    input.val("15");
+    input.trigger("blur");
+    await flushPromises(1);
+
+    expect(update).toHaveBeenCalledTimes(1);
+    expect(update).toHaveBeenCalledWith({ "system.attributes.ac.value": 15 });
+  });
 });

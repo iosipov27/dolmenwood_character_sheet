@@ -10,6 +10,7 @@ describe("FormDataHandler", () => {
     get: Mock;
     set: Mock;
   };
+  let mockActor: Actor;
   let normalizeDwFlagsMock: Mock;
   let handler: FormDataHandler;
 
@@ -20,11 +21,17 @@ describe("FormDataHandler", () => {
       get: vi.fn(),
       set: vi.fn().mockResolvedValue(undefined)
     };
+    mockActor = {
+      system: {
+        ac: { value: 9, mod: 0 },
+        aac: { value: 10, mod: 0 }
+      }
+    } as unknown as Actor;
 
     normalizeDwFlagsMock = vi.mocked(normalizeDwFlagsModule.normalizeDwFlags);
     normalizeDwFlagsMock.mockImplementation((flags) => flags as DwFlags);
 
-    handler = new FormDataHandler(mockRepository as never);
+    handler = new FormDataHandler(mockRepository as never, mockActor);
   });
 
   describe("handleFormData", () => {
@@ -204,6 +211,36 @@ describe("FormDataHandler", () => {
       expect(normalizeDwFlagsMock).toHaveBeenCalled();
       expect(mockRepository.set).toHaveBeenCalledWith(normalizedFlags);
       expect(result).toEqual({});
+    });
+
+    it("should remap descending AC value edits to AC mod", async () => {
+      const formData = {
+        "system.ac.value": "7"
+      };
+
+      const result = await handler.handleFormData(formData);
+
+      expect(result).not.toHaveProperty("system.ac.value");
+      expect(result).toHaveProperty("system.ac.mod", 2);
+    });
+
+    it("should remap ascending AC value edits to AAC mod", async () => {
+      mockActor = {
+        system: {
+          ac: { value: 9, mod: 0 },
+          aac: { value: 13, mod: 1 }
+        }
+      } as unknown as Actor;
+      handler = new FormDataHandler(mockRepository as never, mockActor);
+
+      const formData = {
+        "system.aac.value": "15"
+      };
+
+      const result = await handler.handleFormData(formData);
+
+      expect(result).not.toHaveProperty("system.aac.value");
+      expect(result).toHaveProperty("system.aac.mod", 3);
     });
   });
 });

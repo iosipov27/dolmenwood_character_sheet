@@ -2,16 +2,7 @@
 
   <div class="dw-ac-attack__armor">
     <label>{{localize "DOLMENWOOD.UI.ArmorClass"}}</label>
-    {{#if ctx.dwCombat.hasAc}}
-      <input name="{{ctx.dwCombat.nameAc}}" type="number" value="{{ctx.dwCombat.ac}}" />
-    {{else}}
-      <input
-        type="number"
-        value="{{ctx.dwCombat.ac}}"
-        disabled
-        title="{{localize 'DOLMENWOOD.UI.PathNotDetected.AC'}}"
-      />
-    {{/if}}
+    <input name="{{ctx.dwCombat.nameAc}}" type="number" value="{{ctx.dwCombat.ac}}" />
   </div>
 
   <div class="dw-ac-attack__attack">

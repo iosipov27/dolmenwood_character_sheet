@@ -19,7 +19,7 @@ export class DolmenwoodSheet extends BaseSheet {
     super(...args);
     this.tabController = new TabController();
     this.flagsRepository = new DwFlagsRepository(this.actor);
-    this.formDataHandler = new FormDataHandler(this.flagsRepository);
+    this.formDataHandler = new FormDataHandler(this.flagsRepository, this.actor);
   }
 
   static get defaultOptions(): ActorSheet.Options {

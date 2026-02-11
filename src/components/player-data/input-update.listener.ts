@@ -29,11 +29,11 @@ export function registerInputUpdateListeners(
   });
 
   function saveField(input: JQuery<HTMLElement>, span: JQuery<HTMLElement>) {
-    const value = input.val() as string;
-    const hasValue = value.trim().length > 0;
+    const rawValue = String(input.val() ?? "");
+    const hasValue = rawValue.trim().length > 0;
 
     if (span.length) {
-      span.text(value);
+      span.text(rawValue);
 
       if (hasValue) {
         input.hide();
@@ -54,9 +54,10 @@ export function registerInputUpdateListeners(
     const actor = sheet.actor;
 
     if (!actor) return;
+    const value = coerceFieldValue(input, rawValue);
 
     const persistPromise = field.startsWith("dw.")
-      ? persistDwField(actor, field, value)
+      ? persistDwField(actor, field, rawValue)
       : actor.update({ [field]: value });
 
     void persistPromise.catch((error) => {
@@ -77,6 +78,16 @@ export function registerInputUpdateListeners(
       $(this).trigger("blur");
     }
   });
+}
+
+function coerceFieldValue(input: JQuery<HTMLElement>, rawValue: string): string | number {
+  const inputType = String(input.attr("type") ?? "").toLowerCase();
+
+  if (inputType !== "number") return rawValue;
+
+  const parsed = Number(rawValue);
+
+  return Number.isFinite(parsed) ? parsed : 0;
 }
 
 async function persistDwField(actor: Actor, field: string, value: string): Promise<void> {
