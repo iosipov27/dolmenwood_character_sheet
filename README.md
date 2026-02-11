@@ -59,3 +59,33 @@ npm install
 npm run build
 npm test
 ```
+
+## Publishing
+
+1. Bump `version` in `module.json`.
+2. Build and package release assets:
+
+```bash
+npm run release:local
+```
+
+This creates:
+
+- `dist/module.json`
+- `dist/dolmenwood.zip`
+- `dist/dolmenwood-v<version>.zip`
+
+3. Create a GitHub release/tag (for example `v0.1.0`).
+4. Upload `dist/module.json` and `dist/dolmenwood.zip` as release assets.
+
+Foundry manifest URL:
+
+`https://github.com/iosipov27/dolmenwood_character_sheet/releases/latest/download/module.json`
+
+### Optional: automated GitHub release
+
+A workflow is included at `.github/workflows/release.yml`.
+If you push a tag like `v0.1.0`, GitHub Actions will build the module and publish:
+
+- `dist/module.json`
+- `dist/dolmenwood.zip`

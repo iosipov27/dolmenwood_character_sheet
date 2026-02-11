@@ -3,8 +3,21 @@
   "title": "Dolmenwood Character Sheet (for OSE)",
   "version": "0.1.0",
   "compatibility": { "minimum": "13", "verified": "13" },
+  "relationships": {
+    "systems": [
+      {
+        "id": "ose",
+        "type": "system",
+        "manifest": "https://github.com/NecroticGnome/ose-foundry-core/releases/latest/download/system.json",
+        "compatibility": { "minimum": "2.1.0", "verified": "2.1.13" }
+      }
+    ]
+  },
   "authors": [{ "name": "You" }],
   "languages": [{ "lang": "en", "name": "English", "path": "lang/en.json" }],
   "esmodules": ["scripts/main.js"],
-  "styles": ["styles/dolmenwood.css"]
+  "styles": ["styles/dolmenwood.css"],
+  "url": "https://github.com/iosipov27/dolmenwood_character_sheet",
+  "manifest": "https://github.com/iosipov27/dolmenwood_character_sheet/releases/latest/download/module.json",
+  "download": "https://github.com/iosipov27/dolmenwood_character_sheet/releases/latest/download/dolmenwood.zip"
 }
