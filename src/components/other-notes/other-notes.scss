@@ -32,15 +32,13 @@
   }
 
   &__coins {
-    width: 7.25rem;
-    flex: 0 0 7.25rem;
+    flex: 0 0 10rem;
     display: flex;
     flex-direction: column;
     gap: 0.35rem;
-    border: 1px solid var(--dwc-palette-gold-dark);
     border-radius: 6px;
     background: rgba(0, 0, 0, 0.03);
-    padding: 0.35rem 0.35rem 0.45rem;
+    padding: 0.5rem;
   }
 
   &__coins-title {
@@ -57,18 +55,18 @@
 
   &__coin {
     display: flex;
-    flex-direction: column;
-    gap: 0.12rem;
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: center;
   }
 
   &__coin-input {
-    width: 100%;
+    min-width: 3.5rem;
     text-align: center;
     min-height: 1.9rem;
-    font-size: 1.05rem;
+    font-size: 1rem;
     font-weight: 600;
     padding: 0.1rem 0.2rem;
-    -moz-appearance: textfield;
 
     &::-webkit-inner-spin-button,
     &::-webkit-outer-spin-button {

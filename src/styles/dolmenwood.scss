@@ -12,6 +12,28 @@
 @use "../components/languages/languages.scss" as *;
 @use "../components/kindred-class-traits/kindred-class-traits.scss" as *;
 
+.dolmenwood.sheet.actor .window-content {
+  overflow: visible;
+}
+
+.dolmenwood.sheet.actor.app.window-app {
+  max-width: 45.5rem;
+  min-width: 33rem;
+}
+
+@media (max-width: 780px) {
+  .dolmenwood-sheet {
+    &__tabs {
+      position: static;
+      flex-direction: row;
+    }
+
+    &__tab {
+      margin-left: 0;
+    }
+  }
+}
+
 .dolmenwood-sheet {
   max-width: 45rem;
   display: flex;
@@ -67,23 +89,6 @@
 
     &.is-active {
       filter: brightness(1);
-    }
-  }
-}
-
-.dolmenwood.sheet.actor .window-content {
-  overflow: visible;
-}
-
-@media (max-width: 780px) {
-  .dolmenwood-sheet {
-    &__tabs {
-      position: static;
-      flex-direction: row;
-    }
-
-    &__tab {
-      margin-left: 0;
     }
   }
 }

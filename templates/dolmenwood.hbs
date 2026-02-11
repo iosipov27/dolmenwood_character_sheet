@@ -5,19 +5,20 @@
                 {{~> dolmenwood-main-tab ctx=this~}}
             </div>
 
-            <div class="dolmenwood-sheet__tab-panel dolmenwood-sheet__second-tab" data-tab-panel="second">
-                {{~> dolmenwood-second-tab ctx=this~}}
+            <div class="dolmenwood-sheet__tab-panel dolmenwood-sheet__equipment-tab" data-tab-panel="equipment">
+                {{~> dolmenwood-equipment-tab ctx=this~}}
             </div>
 
-            <div class="dolmenwood-sheet__tab-panel dolmenwood-sheet__third-tab" data-tab-panel="third">
-                {{~> dolmenwood-third-tab ctx=this~}}
+            <div class="dolmenwood-sheet__tab-panel dolmenwood-sheet__details-tab" data-tab-panel="details">
+                {{~> dolmenwood-details-tab ctx=this~}}
             </div>
+
         </div>
 
         <div class="dolmenwood-sheet__tabs">
-            <a href="#" class="dolmenwood-sheet__tab is-active" data-tab-target="main">Main</a>
-            <a href="#" class="dolmenwood-sheet__tab" data-tab-target="second">Details</a>
-            <a href="#" class="dolmenwood-sheet__tab" data-tab-target="third">Equipment</a>
+            <a href="#" class="dolmenwood-sheet__tab is-active" data-tab-target="main">{{localize "DOLMENWOOD.UI.Main"}}</a>
+            <a href="#" class="dolmenwood-sheet__tab" data-tab-target="equipment">{{localize "DOLMENWOOD.UI.Equipment"}}</a>
+            <a href="#" class="dolmenwood-sheet__tab" data-tab-target="details">{{localize "DOLMENWOOD.UI.Details"}}</a>
         </div>
     </div>
 </form>

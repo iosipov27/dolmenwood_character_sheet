@@ -4,7 +4,7 @@ const TEMPLATES_ROOT = `${MODULE_ROOT}/templates`;
 
 const componentTemplate = (name: string): string => `${COMPONENTS_ROOT}/${name}/${name}.hbs`;
 
-const TAB_TEMPLATES = ["dolmenwood-main-tab", "dolmenwood-second-tab", "dolmenwood-third-tab"];
+const TAB_TEMPLATES = ["dolmenwood-main-tab", "dolmenwood-details-tab", "dolmenwood-equipment-tab"];
 
 const COMPONENT_TEMPLATES = [
   "player-data",
