@@ -95,6 +95,12 @@ export interface DwMeta {
   level: number;
   nextLevel: number;
   modifier: number;
+  coins: {
+    copper: number;
+    silver: number;
+    gold: number;
+    pellucidium: number;
+  };
   otherNotes: string;
 }
 

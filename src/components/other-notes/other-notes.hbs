@@ -5,6 +5,64 @@
   </div>
 
   <div class="dw-other-notes__content">
-    <div class="dw-other-notes-editable contenteditable" contenteditable="plaintext-only" data-field="otherNotes">{{~ctx.dw.meta.otherNotes~}}</div>
+    <div
+      class="dw-other-notes-editable contenteditable"
+      contenteditable="plaintext-only"
+      data-field="otherNotes"
+    >{{~ctx.dw.meta.otherNotes~}}</div>
+
+    <aside class="dw-other-notes__coins">
+      <h3 class="dw-other-notes__coins-title">{{localize "DOLMENWOOD.UI.Coins"}}</h3>
+
+      <div class="dw-other-notes__coins-list">
+        <label class="dw-other-notes__coin">
+          <input
+            type="number"
+            min="0"
+            step="1"
+            name="dw.meta.coins.copper"
+            value="{{ctx.dw.meta.coins.copper}}"
+            class="dw-other-notes__coin-input"
+          />
+          <span class="dw-other-notes__coin-label">{{localize "DOLMENWOOD.UI.Copper"}}</span>
+        </label>
+
+        <label class="dw-other-notes__coin">
+          <input
+            type="number"
+            min="0"
+            step="1"
+            name="dw.meta.coins.silver"
+            value="{{ctx.dw.meta.coins.silver}}"
+            class="dw-other-notes__coin-input"
+          />
+          <span class="dw-other-notes__coin-label">{{localize "DOLMENWOOD.UI.Silver"}}</span>
+        </label>
+
+        <label class="dw-other-notes__coin">
+          <input
+            type="number"
+            min="0"
+            step="1"
+            name="dw.meta.coins.gold"
+            value="{{ctx.dw.meta.coins.gold}}"
+            class="dw-other-notes__coin-input"
+          />
+          <span class="dw-other-notes__coin-label">{{localize "DOLMENWOOD.UI.Gold"}}</span>
+        </label>
+
+        <label class="dw-other-notes__coin">
+          <input
+            type="number"
+            min="0"
+            step="1"
+            name="dw.meta.coins.pellucidium"
+            value="{{ctx.dw.meta.coins.pellucidium}}"
+            class="dw-other-notes__coin-input"
+          />
+          <span class="dw-other-notes__coin-label">{{localize "DOLMENWOOD.UI.Pellucidium"}}</span>
+        </label>
+      </div>
+    </aside>
   </div>
 </div>

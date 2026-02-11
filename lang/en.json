@@ -49,7 +49,12 @@
       "XP": "XP",
       "Level": "Level",
       "NextLevel": "Next Level",
-      "Modifier": "Modifier"
+      "Modifier": "Modifier",
+      "Coins": "Coins",
+      "Copper": "Copper",
+      "Silver": "Silver",
+      "Gold": "Gold",
+      "Pellucidium": "Pellucidium"
     },
     "Ability": {
       "Strength": "Strength",

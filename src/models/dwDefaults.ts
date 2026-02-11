@@ -87,6 +87,12 @@ export function dwDefaults(): DwFlags {
       level: 1,
       nextLevel: 0,
       modifier: 0,
+      coins: {
+        copper: 0,
+        silver: 0,
+        gold: 0,
+        pellucidium: 0
+      },
       otherNotes: ""
     }
   };
