@@ -62,6 +62,42 @@ export class RollChecks {
     return { roll: roll as unknown as Roll, success, target };
   }
 
+  static async rollSkillCheck(
+    actor: Actor,
+    label: string,
+    skillValue: number
+  ): Promise<{ roll: Roll; success: boolean; target: number }> {
+    const localize = (key: string): string => game.i18n?.localize(key) ?? key;
+    const targetRaw = Number(skillValue ?? 6);
+    const target = Number.isFinite(targetRaw) && targetRaw > 0 ? targetRaw : 6;
+    const roll = await new Roll("1d6").evaluate();
+    const total = Number(roll.total ?? 0);
+    const dieRoll = RollChecks.getFirstDieResult(roll);
+    const autoFail = dieRoll === 1;
+    const autoSuccess = dieRoll === 6;
+    const success = autoFail ? false : autoSuccess ? true : total >= target;
+    const resultLabel = success
+      ? localize("DOLMENWOOD.Roll.Success")
+      : localize("DOLMENWOOD.Roll.Fail");
+    const checkText = autoFail
+      ? "d6 <b>1</b> => auto fail"
+      : autoSuccess
+        ? "d6 <b>6</b> => auto success"
+        : `<b>${total}</b> >= <b>${target}</b>`;
+
+    const flavor =
+      `<span class="dw-roll-title">${label}</span>` +
+      ` - 1d6 = <b>${total}</b> - ${checkText} - ` +
+      `<span class="dw-${success ? "success" : "fail"}">${resultLabel}</span>`;
+
+    await roll.toMessage({
+      speaker: ChatMessage.getSpeaker({ actor }),
+      flavor
+    });
+
+    return { roll: roll as unknown as Roll, success, target };
+  }
+
   private static getFirstDieResult(roll: unknown): number | null {
     const firstResult = (
       roll as {

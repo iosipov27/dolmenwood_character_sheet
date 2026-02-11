@@ -26,7 +26,7 @@ describe("registerAddSkillListener", () => {
         extraSkills: [
           { name: "Forage", target: 6 },
           { name: "Tracking", target: 9 },
-          { name: "", target: 0 }
+          { name: "", target: 6 }
         ]
       })
     );

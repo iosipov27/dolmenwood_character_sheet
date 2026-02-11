@@ -136,6 +136,128 @@ describe("RollChecks.rollAbilityCheck", () => {
   });
 });
 
+describe("RollChecks.rollSkillCheck", () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+    vi.unstubAllGlobals();
+  });
+
+  it("uses 1d6 and succeeds when roll is equal or higher than skill value", async () => {
+    vi.stubGlobal("game", {
+      i18n: { localize: (key: string) => key }
+    });
+
+    const postedMessage = vi.fn(async () => {});
+    const getSpeaker = vi.fn(() => ({ alias: "Actor" }));
+
+    class MockRoll {
+      total = 5;
+      dice = [{ results: [{ result: 5 }] }];
+
+      constructor(formula: string) {
+        expect(formula).toBe("1d6");
+      }
+
+      async evaluate(): Promise<this> {
+        return this;
+      }
+
+      async toMessage(payload: unknown): Promise<void> {
+        await postedMessage(payload);
+      }
+    }
+
+    vi.stubGlobal("Roll", MockRoll);
+    vi.stubGlobal("ChatMessage", { getSpeaker });
+
+    const result = await RollChecks.rollSkillCheck({} as Actor, "Skill: LISTEN", 5);
+
+    expect(result.success).toBe(true);
+    expect(result.target).toBe(5);
+    expect(postedMessage).toHaveBeenCalledWith(
+      expect.objectContaining({
+        flavor: expect.stringContaining("1d6 = <b>5</b> - <b>5</b> >= <b>5</b>")
+      })
+    );
+  });
+
+  it("always fails on natural 1", async () => {
+    vi.stubGlobal("game", {
+      i18n: { localize: (key: string) => key }
+    });
+
+    class MockRoll {
+      total = 6;
+      dice = [{ results: [{ result: 1 }] }];
+
+      constructor(_formula: string) {}
+
+      async evaluate(): Promise<this> {
+        return this;
+      }
+
+      async toMessage(_payload: unknown): Promise<void> {}
+    }
+
+    vi.stubGlobal("Roll", MockRoll);
+    vi.stubGlobal("ChatMessage", { getSpeaker: () => ({}) });
+
+    const result = await RollChecks.rollSkillCheck({} as Actor, "Skill: SEARCH", 2);
+    expect(result.success).toBe(false);
+  });
+
+  it("always succeeds on natural 6", async () => {
+    vi.stubGlobal("game", {
+      i18n: { localize: (key: string) => key }
+    });
+
+    class MockRoll {
+      total = 1;
+      dice = [{ results: [{ result: 6 }] }];
+
+      constructor(_formula: string) {}
+
+      async evaluate(): Promise<this> {
+        return this;
+      }
+
+      async toMessage(_payload: unknown): Promise<void> {}
+    }
+
+    vi.stubGlobal("Roll", MockRoll);
+    vi.stubGlobal("ChatMessage", { getSpeaker: () => ({}) });
+
+    const result = await RollChecks.rollSkillCheck({} as Actor, "Skill: SURVIVAL", 6);
+    expect(result.success).toBe(true);
+  });
+
+  it("uses default skill target 6 when provided value is invalid", async () => {
+    vi.stubGlobal("game", {
+      i18n: { localize: (key: string) => key }
+    });
+
+    class MockRoll {
+      total = 5;
+      dice = [{ results: [{ result: 5 }] }];
+
+      constructor(_formula: string) {}
+
+      async evaluate(): Promise<this> {
+        return this;
+      }
+
+      async toMessage(_payload: unknown): Promise<void> {}
+    }
+
+    vi.stubGlobal("Roll", MockRoll);
+    vi.stubGlobal("ChatMessage", { getSpeaker: () => ({}) });
+
+    const result = await RollChecks.rollSkillCheck({} as Actor, "Skill: TRACKING", 0);
+    expect(result.target).toBe(6);
+    expect(result.success).toBe(false);
+  });
+});
+
 describe("RollChecks.rollAttackCheck", () => {
   afterEach(() => {
     vi.restoreAllMocks();

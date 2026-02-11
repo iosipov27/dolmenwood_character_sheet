@@ -1,21 +1,22 @@
-﻿import { getDataset } from "../../utils/getDataset.js";
-import type { ActionEvent, HtmlRoot, JQueryWithOn, RollTargetCheck } from "../../types.js";
+import { getDataset } from "../../utils/getDataset.js";
+import type { ActionEvent, HtmlRoot, JQueryWithOn, RollSkillCheck } from "../../types.js";
 
 export function registerSkillDblRollListener(
   html: HtmlRoot,
   {
     actor,
-    rollTargetCheck,
+    rollSkillCheck,
     prettyKey
-  }: { actor: Actor; rollTargetCheck: RollTargetCheck; prettyKey: (key: string) => string }
+  }: { actor: Actor; rollSkillCheck: RollSkillCheck; prettyKey: (key: string) => string }
 ): void {
   const nodes = html.find("input[data-dw-dblroll='skill']") as JQueryWithOn<HTMLInputElement>;
 
   nodes.on("dblclick", async (ev: ActionEvent<HTMLInputElement>) => {
     ev.preventDefault();
     const { key } = getDataset(ev);
-    const val = Number(ev.currentTarget.value ?? 0);
+    const targetRaw = Number(ev.currentTarget.value ?? 6);
+    const target = Number.isFinite(targetRaw) && targetRaw > 0 ? targetRaw : 6;
 
-    await rollTargetCheck(actor, `Skill: ${prettyKey(key ?? "")}`, val);
+    await rollSkillCheck(actor, `Skill: ${prettyKey(key ?? "")}`, target);
   });
 }

@@ -59,11 +59,14 @@ function readExtraSkillsFromForm(html: HtmlRoot, fallback: DwExtraSkill[]): DwEx
 
     if (!Number.isFinite(index)) return;
 
-    const current = byIndex.get(index) ?? { name: "", target: 0 };
+    const current = byIndex.get(index) ?? { name: "", target: 6 };
 
     if (key === "name") current.name = input.value ?? "";
 
-    if (key === "target") current.target = Number(input.value ?? 0) || 0;
+    if (key === "target") {
+      const targetRaw = Number(input.value ?? 6);
+      current.target = Number.isFinite(targetRaw) && targetRaw > 0 ? targetRaw : 6;
+    }
     byIndex.set(index, current);
   });
 

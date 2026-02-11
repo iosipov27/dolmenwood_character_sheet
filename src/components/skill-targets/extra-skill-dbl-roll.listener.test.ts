@@ -7,14 +7,14 @@ describe("registerExtraSkillDblRollListener", () => {
     document.body.innerHTML = `<input data-dw-dblroll="extra-skill" data-name="camping" value="10" />`;
     const html = $(document.body);
     const actor = {} as Actor;
-    const rollTargetCheck = vi.fn(async () => ({ roll: {} as Roll, success: true, target: 10 }));
+    const rollSkillCheck = vi.fn(async () => ({ roll: {} as Roll, success: true, target: 10 }));
 
-    registerExtraSkillDblRollListener(html, { actor, rollTargetCheck });
+    registerExtraSkillDblRollListener(html, { actor, rollSkillCheck });
 
     html.find("input[data-dw-dblroll='extra-skill']").trigger("dblclick");
     await flushPromises();
 
-    expect(rollTargetCheck).toHaveBeenCalledTimes(1);
-    expect(rollTargetCheck).toHaveBeenCalledWith(actor, "Skill: CAMPING", 10);
+    expect(rollSkillCheck).toHaveBeenCalledTimes(1);
+    expect(rollSkillCheck).toHaveBeenCalledWith(actor, "Skill: CAMPING", 10);
   });
 });

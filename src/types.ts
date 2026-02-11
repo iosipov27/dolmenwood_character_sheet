@@ -175,6 +175,12 @@ export type RollAbilityCheck = (
   abilityMod: number
 ) => Promise<{ roll: Roll; success: boolean; target: number }>;
 
+export type RollSkillCheck = (
+  actor: Actor,
+  label: string,
+  skillValue: number
+) => Promise<{ roll: Roll; success: boolean; target: number }>;
+
 export type RollAttackCheck = (
   actor: Actor,
   attackLabel: string,

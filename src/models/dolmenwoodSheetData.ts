@@ -103,7 +103,7 @@ export class DolmenwoodSheetData {
           kind: "extra",
           index: i,
           name: s?.name ?? "",
-          target: Number(s?.target ?? 0)
+          target: Number(s?.target ?? 6)
         })
       )
     ];

@@ -13,14 +13,14 @@ describe("registerExtraSkillRollListener", () => {
     `;
     const html = $(document.body);
     const actor = {} as Actor;
-    const rollTargetCheck = vi.fn(async () => ({ roll: {} as Roll, success: true, target: 8 }));
+    const rollSkillCheck = vi.fn(async () => ({ roll: {} as Roll, success: true, target: 8 }));
 
-    registerExtraSkillRollListener(html, { actor, rollTargetCheck });
+    registerExtraSkillRollListener(html, { actor, rollSkillCheck });
 
     html.find("[data-action='dw-roll-extra-skill']").trigger("mousedown");
     await flushPromises();
 
-    expect(rollTargetCheck).toHaveBeenCalledTimes(1);
-    expect(rollTargetCheck).toHaveBeenCalledWith(actor, "Skill: STEALTH", 8);
+    expect(rollSkillCheck).toHaveBeenCalledTimes(1);
+    expect(rollSkillCheck).toHaveBeenCalledWith(actor, "Skill: STEALTH", 8);
   });
 });

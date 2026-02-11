@@ -10,7 +10,7 @@ export function dwDefaults(): DwFlags {
       blast: 0,
       magic: 0
     },
-    skills: { listen: 0, search: 0, survival: 0 },
+    skills: { listen: 6, search: 6, survival: 6 },
     extraSkills: [],
     movement: {
       speed: 0,

@@ -1,10 +1,10 @@
-﻿import { DW_ROLL_EXTRA_SKILL } from "../../constants/templateAttributes.js";
+import { DW_ROLL_EXTRA_SKILL } from "../../constants/templateAttributes.js";
 import { getDataset } from "../../utils/getDataset.js";
-import type { ActionEvent, HtmlRoot, JQueryWithOn, RollTargetCheck } from "../../types.js";
+import type { ActionEvent, HtmlRoot, JQueryWithOn, RollSkillCheck } from "../../types.js";
 
 export function registerExtraSkillRollListener(
   html: HtmlRoot,
-  { actor, rollTargetCheck }: { actor: Actor; rollTargetCheck: RollTargetCheck }
+  { actor, rollSkillCheck }: { actor: Actor; rollSkillCheck: RollSkillCheck }
 ): void {
   const nodes = html.find(
     `[data-action='${DW_ROLL_EXTRA_SKILL}']`
@@ -18,8 +18,9 @@ export function registerExtraSkillRollListener(
     const nameInput = row.find("input.dw-skill__name").get(0) as HTMLInputElement | undefined;
     const targetInput = row.find("input.dw-target").get(0) as HTMLInputElement | undefined;
     const skillName = String(nameInput?.value ?? name ?? "SKILL").trim() || "SKILL";
-    const target = Number(targetInput?.value ?? 0) || 0;
+    const targetRaw = Number(targetInput?.value ?? 6);
+    const target = Number.isFinite(targetRaw) && targetRaw > 0 ? targetRaw : 6;
 
-    await rollTargetCheck(actor, `Skill: ${skillName.toUpperCase()}`, target);
+    await rollSkillCheck(actor, `Skill: ${skillName.toUpperCase()}`, target);
   });
 }

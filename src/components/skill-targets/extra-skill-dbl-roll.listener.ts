@@ -1,9 +1,9 @@
-﻿import { getDataset } from "../../utils/getDataset.js";
-import type { ActionEvent, HtmlRoot, JQueryWithOn, RollTargetCheck } from "../../types.js";
+import { getDataset } from "../../utils/getDataset.js";
+import type { ActionEvent, HtmlRoot, JQueryWithOn, RollSkillCheck } from "../../types.js";
 
 export function registerExtraSkillDblRollListener(
   html: HtmlRoot,
-  { actor, rollTargetCheck }: { actor: Actor; rollTargetCheck: RollTargetCheck }
+  { actor, rollSkillCheck }: { actor: Actor; rollSkillCheck: RollSkillCheck }
 ): void {
   const nodes = html.find("input[data-dw-dblroll='extra-skill']") as JQueryWithOn<HTMLInputElement>;
 
@@ -11,8 +11,9 @@ export function registerExtraSkillDblRollListener(
     ev.preventDefault();
     const { name } = getDataset(ev);
     const skillName = String(name ?? "SKILL").trim() || "SKILL";
-    const target = Number(ev.currentTarget.value ?? 0);
+    const targetRaw = Number(ev.currentTarget.value ?? 6);
+    const target = Number.isFinite(targetRaw) && targetRaw > 0 ? targetRaw : 6;
 
-    await rollTargetCheck(actor, `Skill: ${skillName.toUpperCase()}`, target);
+    await rollSkillCheck(actor, `Skill: ${skillName.toUpperCase()}`, target);
   });
 }

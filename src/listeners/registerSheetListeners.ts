@@ -43,7 +43,7 @@ export function registerSheetListeners(
   registerSkillRollListener(html, {
     actor,
     getDwFlags,
-    rollTargetCheck: RollChecks.rollTargetCheck,
+    rollSkillCheck: RollChecks.rollSkillCheck,
     prettyKey
   });
 
@@ -75,7 +75,7 @@ export function registerSheetListeners(
 
   registerExtraSkillRollListener(html, {
     actor,
-    rollTargetCheck: RollChecks.rollTargetCheck
+    rollSkillCheck: RollChecks.rollSkillCheck
   });
 
   registerKindredTraitsListener(html, {
