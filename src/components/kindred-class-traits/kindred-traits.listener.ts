@@ -11,6 +11,7 @@ export function registerKindredTraitsListener(
     contentElement: traitsEditable,
     setValue: async (value: string) => {
       const dw = foundry.utils.duplicate(getDwFlags()) as DwFlags;
+
       dw.meta.kindredClassTraits = value;
       await setDwFlags(dw);
     },

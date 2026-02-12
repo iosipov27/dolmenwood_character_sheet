@@ -37,6 +37,7 @@ export function registerAttackRollListener(
     const abilities = buildAbilities(actor.system as Record<string, unknown>);
     const ability = abilities.find((entry) => entry.key === abilityKey);
     const mod = Number(ability?.mod ?? 0);
+
     await rollAttackCheck(actor, attackLabels[attackType], abilityLabels[abilityKey], mod);
   });
 }

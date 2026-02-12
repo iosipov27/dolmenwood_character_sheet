@@ -41,6 +41,7 @@ export function registerOtherNotesListener(
     contentElement: notesEditable,
     setValue: async (value: string) => {
       const dw = foundry.utils.duplicate(getDwFlags()) as DwFlags;
+
       dw.meta.otherNotes = value;
       await setDwFlags(dw);
     },

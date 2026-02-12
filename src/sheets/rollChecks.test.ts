@@ -203,6 +203,7 @@ describe("RollChecks.rollSkillCheck", () => {
     vi.stubGlobal("ChatMessage", { getSpeaker: () => ({}) });
 
     const result = await RollChecks.rollSkillCheck({} as Actor, "Skill: SEARCH", 2);
+
     expect(result.success).toBe(false);
   });
 
@@ -228,6 +229,7 @@ describe("RollChecks.rollSkillCheck", () => {
     vi.stubGlobal("ChatMessage", { getSpeaker: () => ({}) });
 
     const result = await RollChecks.rollSkillCheck({} as Actor, "Skill: SURVIVAL", 6);
+
     expect(result.success).toBe(true);
   });
 
@@ -253,6 +255,7 @@ describe("RollChecks.rollSkillCheck", () => {
     vi.stubGlobal("ChatMessage", { getSpeaker: () => ({}) });
 
     const result = await RollChecks.rollSkillCheck({} as Actor, "Skill: TRACKING", 0);
+
     expect(result.target).toBe(6);
     expect(result.success).toBe(false);
   });

@@ -285,6 +285,7 @@ describe("registerEquipmentListener", () => {
     registerEquipmentListener(html, { getDwFlags, setDwFlags });
 
     const editable = html.find(".dw-equipment__tiny-editable").get(0) as HTMLElement;
+
     editable.innerText = "\n\nItem 1\nItem 2   ";
 
     $(editable).trigger("blur");
@@ -319,6 +320,7 @@ describe("registerEquipmentListener", () => {
     registerEquipmentListener(html, { getDwFlags, setDwFlags });
 
     const editable = html.find(".dw-equipment__tiny-editable").get(0) as HTMLElement;
+
     editable.innerText = "Rope\u00A0and\u00A0Torch";
 
     $(editable).trigger("blur");

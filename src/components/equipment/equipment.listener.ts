@@ -64,6 +64,7 @@ export function registerEquipmentListener(
     contentElement: tinyEditable,
     setValue: async (value: string) => {
       const dw = foundry.utils.duplicate(getDwFlags()) as DwFlags;
+
       foundry.utils.setProperty(dw, "meta.equipment.tinyItems", value);
       await setDwFlags(dw);
     },

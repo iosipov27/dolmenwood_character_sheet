@@ -28,6 +28,7 @@ export class EditableTextarea {
 
   private async save(): Promise<void> {
     const element = this.contentElement.get(0);
+
     if (!element) return;
 
     const plain = element.innerText
@@ -35,6 +36,7 @@ export class EditableTextarea {
       .replace(/\r\n/g, "\n")
       .replace(/^\n+/, "")
       .trimEnd();
+
     element.textContent = plain;
 
     try {

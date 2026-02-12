@@ -11,6 +11,7 @@ export function registerLanguagesListener(
     contentElement: languagesEditable,
     setValue: async (value: string) => {
       const dw = foundry.utils.duplicate(getDwFlags()) as DwFlags;
+
       dw.meta.languages = value;
       await setDwFlags(dw);
     },

@@ -65,6 +65,7 @@ function readExtraSkillsFromForm(html: HtmlRoot, fallback: DwExtraSkill[]): DwEx
 
     if (key === "target") {
       const targetRaw = Number(input.value ?? 6);
+
       current.target = Number.isFinite(targetRaw) && targetRaw > 0 ? targetRaw : 6;
     }
     byIndex.set(index, current);
