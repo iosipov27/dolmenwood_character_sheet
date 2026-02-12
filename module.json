@@ -1,7 +1,7 @@
 {
   "id": "yakov-dolmenwood-sheet",
   "title": "Dolmenwood Character Sheet (for OSE)",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "compatibility": { "minimum": "13", "verified": "13" },
   "relationships": {
     "systems": [
