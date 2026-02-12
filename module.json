@@ -1,7 +1,7 @@
 {
-  "id": "dolmenwood",
+  "id": "yakov-dolmenwood-sheet",
   "title": "Dolmenwood Character Sheet (for OSE)",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "compatibility": { "minimum": "13", "verified": "13" },
   "relationships": {
     "systems": [
@@ -13,7 +13,12 @@
       }
     ]
   },
-  "authors": [{ "name": "You" }],
+  "authors": [
+    {
+      "name": "Ilia Osipov",
+      "url": "https://github.com/iosipov27"
+    }
+  ],
   "languages": [{ "lang": "en", "name": "English", "path": "lang/en.json" }],
   "esmodules": ["scripts/main.js"],
   "styles": ["styles/dolmenwood.css"],
