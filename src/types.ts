@@ -243,7 +243,7 @@ export type DwSheetData = BaseSheetData & {
 
 declare global {
   interface SettingConfig {
-    "dolmenwood.enableDebugLogs": boolean;
-    "dolmenwood.enableErrorNotifications": boolean;
+    "yakov-dolmenwood-sheet.enableDebugLogs": boolean;
+    "yakov-dolmenwood-sheet.enableErrorNotifications": boolean;
   }
 }

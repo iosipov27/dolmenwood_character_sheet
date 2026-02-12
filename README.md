@@ -11,7 +11,7 @@ A custom character sheet module for Foundry VTT, designed for Dolmenwood and bui
 
 - Three-tab sheet layout: `Main`, `Equipment`, `Details`
 - Uses OSE actor system data (HP, AC, attack, movement, abilities, etc.)
-- Stores Dolmenwood-specific fields in `actor.flags.dolmenwood.dw`
+- Stores Dolmenwood-specific fields in `actor.flags["yakov-dolmenwood-sheet"].dw`
 - Clickable rolls directly from the sheet to chat
 
 ## Screenshot

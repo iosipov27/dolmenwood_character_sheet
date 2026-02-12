@@ -1,4 +1,6 @@
-const MODULE_ROOT = "modules/dolmenwood";
+import { MODULE_ID } from "../constants/moduleId.js";
+
+const MODULE_ROOT = `modules/${MODULE_ID}`;
 const COMPONENTS_ROOT = `${MODULE_ROOT}/src/components`;
 const TEMPLATES_ROOT = `${MODULE_ROOT}/templates`;
 

@@ -3,6 +3,7 @@ import { DwFlagsRepository } from "./dwFlagsRepository.js";
 import type { DwFlags } from "../types.js";
 import * as normalizeDwFlagsModule from "../utils/normalizeDwFlags.js";
 import * as reportErrorModule from "../utils/reportError.js";
+import { MODULE_ID } from "../constants/moduleId.js";
 
 vi.mock("../utils/normalizeDwFlags.js");
 vi.mock("../utils/reportError.js");
@@ -39,7 +40,7 @@ describe("DwFlagsRepository", () => {
       const repository = new DwFlagsRepository(mockActor as never);
       const result = repository.get();
 
-      expect(mockActor.getFlag).toHaveBeenCalledWith("dolmenwood", "dw");
+      expect(mockActor.getFlag).toHaveBeenCalledWith(MODULE_ID, "dw");
       expect(normalizeDwFlagsMock).toHaveBeenCalledWith(expectedFlags);
       expect(result).toBe(expectedFlags);
     });
@@ -54,7 +55,7 @@ describe("DwFlagsRepository", () => {
       const repository = new DwFlagsRepository(mockActor as never);
       const result = repository.get();
 
-      expect(mockActor.getFlag).toHaveBeenCalledWith("dolmenwood", "dw");
+      expect(mockActor.getFlag).toHaveBeenCalledWith(MODULE_ID, "dw");
       expect(normalizeDwFlagsMock).toHaveBeenCalledWith({});
       expect(result).toBe(expectedNormalized);
     });
@@ -120,7 +121,7 @@ describe("DwFlagsRepository", () => {
 
       await repository.set(flags);
 
-      expect(mockActor.setFlag).toHaveBeenCalledWith("dolmenwood", "dw", flags);
+      expect(mockActor.setFlag).toHaveBeenCalledWith(MODULE_ID, "dw", flags);
       expect(reportErrorMock).not.toHaveBeenCalled();
     });
 
@@ -192,7 +193,7 @@ describe("DwFlagsRepository", () => {
       expect(retrievedFlags).toBe(fullFlags);
 
       await repository.set(fullFlags);
-      expect(mockActor.setFlag).toHaveBeenCalledWith("dolmenwood", "dw", fullFlags);
+      expect(mockActor.setFlag).toHaveBeenCalledWith(MODULE_ID, "dw", fullFlags);
     });
   });
 });
