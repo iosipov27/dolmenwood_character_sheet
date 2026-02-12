@@ -116,13 +116,22 @@ export class RollChecks {
     abilityLabel: string,
     abilityMod: number
   ): Promise<{ roll: Roll; mod: number }> {
+    const localize = (key: string): string => game.i18n?.localize(key) ?? key;
     const mod = Number(abilityMod ?? 0);
     const roll = await new Roll("1d20 + @mod", { mod }).evaluate();
+    const dieRoll = RollChecks.getFirstDieResult(roll);
+    const autoFail = dieRoll === 1;
+    const autoSuccess = dieRoll === 20;
     const sign = mod >= 0 ? "+" : "-";
+    const resultText = autoFail
+      ? ` - d20 <b>1</b> => auto fail - <span class="dw-fail">${localize("DOLMENWOOD.Roll.Fail")}</span>`
+      : autoSuccess
+        ? ` - d20 <b>20</b> => auto success - <span class="dw-success">${localize("DOLMENWOOD.Roll.Success")}</span>`
+        : "";
 
     const flavor =
       `<span class="dw-roll-title">${attackLabel}</span>` +
-      ` - 1d20 ${sign} <b>${Math.abs(mod)}</b> (${abilityLabel})`;
+      ` - 1d20 ${sign} <b>${Math.abs(mod)}</b> (${abilityLabel})${resultText}`;
 
     await roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor }),

@@ -298,4 +298,90 @@ describe("RollChecks.rollAttackCheck", () => {
       })
     );
   });
+
+  it("always fails on natural 1 regardless of modifier", async () => {
+    const localizeMap: Record<string, string> = {
+      "DOLMENWOOD.Roll.Success": "SUCCESS",
+      "DOLMENWOOD.Roll.Fail": "FAIL"
+    };
+
+    vi.stubGlobal("game", {
+      i18n: { localize: (key: string) => localizeMap[key] ?? key }
+    });
+
+    const postedMessage = vi.fn(async () => {});
+
+    class MockRoll {
+      dice = [{ results: [{ result: 1 }] }];
+
+      constructor(_formula: string, _data: { mod: number }) {}
+
+      async evaluate(): Promise<this> {
+        return this;
+      }
+
+      async toMessage(payload: unknown): Promise<void> {
+        await postedMessage(payload);
+      }
+    }
+
+    vi.stubGlobal("Roll", MockRoll);
+    vi.stubGlobal("ChatMessage", { getSpeaker: () => ({}) });
+
+    await RollChecks.rollAttackCheck({} as Actor, "Melee Attack", "Strength", 9);
+
+    expect(postedMessage).toHaveBeenCalledWith(
+      expect.objectContaining({
+        flavor: expect.stringContaining("d20 <b>1</b> => auto fail")
+      })
+    );
+    expect(postedMessage).toHaveBeenCalledWith(
+      expect.objectContaining({
+        flavor: expect.stringContaining('<span class="dw-fail">FAIL</span>')
+      })
+    );
+  });
+
+  it("always succeeds on natural 20 regardless of modifier", async () => {
+    const localizeMap: Record<string, string> = {
+      "DOLMENWOOD.Roll.Success": "SUCCESS",
+      "DOLMENWOOD.Roll.Fail": "FAIL"
+    };
+
+    vi.stubGlobal("game", {
+      i18n: { localize: (key: string) => localizeMap[key] ?? key }
+    });
+
+    const postedMessage = vi.fn(async () => {});
+
+    class MockRoll {
+      dice = [{ results: [{ result: 20 }] }];
+
+      constructor(_formula: string, _data: { mod: number }) {}
+
+      async evaluate(): Promise<this> {
+        return this;
+      }
+
+      async toMessage(payload: unknown): Promise<void> {
+        await postedMessage(payload);
+      }
+    }
+
+    vi.stubGlobal("Roll", MockRoll);
+    vi.stubGlobal("ChatMessage", { getSpeaker: () => ({}) });
+
+    await RollChecks.rollAttackCheck({} as Actor, "Ranged Attack", "Dexterity", -8);
+
+    expect(postedMessage).toHaveBeenCalledWith(
+      expect.objectContaining({
+        flavor: expect.stringContaining("d20 <b>20</b> => auto success")
+      })
+    );
+    expect(postedMessage).toHaveBeenCalledWith(
+      expect.objectContaining({
+        flavor: expect.stringContaining('<span class="dw-success">SUCCESS</span>')
+      })
+    );
+  });
 });

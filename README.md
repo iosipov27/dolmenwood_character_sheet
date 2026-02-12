@@ -23,7 +23,7 @@ A custom character sheet module for Foundry VTT, designed for Dolmenwood and bui
 - Ability checks: `1d6 +/- modifier`, success on `>= 4`, natural `1/6` are auto-fail/auto-success
 - Skill checks: `1d6`, success on `>= skill value`, natural `1/6` are auto-fail/auto-success
 - Save checks: `1d20` against target value
-- Attack rolls: `1d20 + modifier` (STR for melee, DEX for ranged)
+- Attack rolls: `1d20 + modifier` (STR for melee, DEX for ranged), natural `1/20` are auto-fail/auto-success
 - Extra skills: add/remove up to 10 custom skill entries
 - Equipment management:
   - equipped and stowed item lists
