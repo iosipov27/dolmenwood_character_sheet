@@ -80,8 +80,9 @@ if (-not (Test-Path (Split-Path $distModuleJsonPath -Parent))) {
 }
 
 $releaseModuleJson = $releaseModule | ConvertTo-Json -Depth 100
-$releaseModuleJson | Set-Content -Path $distModuleJsonPath -Encoding UTF8
-$releaseModuleJson | Set-Content -Path $stagingModuleJsonPath -Encoding UTF8
+$utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+[System.IO.File]::WriteAllText($distModuleJsonPath, $releaseModuleJson, $utf8NoBom)
+[System.IO.File]::WriteAllText($stagingModuleJsonPath, $releaseModuleJson, $utf8NoBom)
 
 $latestZipPath = Join-Path $outRoot $ZipName
 $versionedZipPath = Join-Path $outRoot "$moduleId-v$version.zip"
