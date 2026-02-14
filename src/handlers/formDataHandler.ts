@@ -1,6 +1,5 @@
-import { normalizeDwFlags } from "../utils/normalizeDwFlags.js";
+import { cleanDwFlagsWithSchema } from "../models/dwSchema.js";
 import type { DwFlagsRepository } from "../repositories/dwFlagsRepository.js";
-import type { DwFlags } from "../types.js";
 import { OseCharacterSheetAdapter } from "../adapters/oseCharacterSheetAdapter.js";
 import { MODULE_ID } from "../constants/moduleId.js";
 
@@ -19,38 +18,30 @@ export class FormDataHandler {
       dw?: unknown;
       flags?: unknown;
     };
+    const dwPatch = this.extractDwPatch(expanded);
 
-    const dwPatch = this.extractDwFromForm(expanded);
+    if (dwPatch) {
+      const mergedDw = this.mergeWithCurrentDw(dwPatch);
+      const cleanedDw = cleanDwFlagsWithSchema(mergedDw);
 
-    if (dwPatch && typeof dwPatch === "object") {
-      const currentDw = this.getCurrentDwFlags();
-      const mergedDw = this.mergeDwPatch(currentDw, dwPatch as Record<string, unknown>);
-      const normalized = normalizeDwFlags(mergedDw as Partial<DwFlags>);
-
-      await this.flagsRepository.set(normalized);
+      if (cleanedDw) {
+        await this.flagsRepository.set(cleanedDw);
+      }
     }
 
-    delete expanded.dw;
-    this.removeModuleDwFlags(expanded);
+    this.stripDwPayload(expanded);
 
     return foundry.utils.flattenObject(expanded) as Record<string, unknown>;
   }
 
-  private getCurrentDwFlags(): Record<string, unknown> {
+  private mergeWithCurrentDw(dwPatch: Record<string, unknown>): Record<string, unknown> {
     const current = this.flagsRepository.get();
-
-    if (!current || typeof current !== "object") return {};
-
-    return foundry.utils.duplicate(current) as Record<string, unknown>;
-  }
-
-  private mergeDwPatch(
-    current: Record<string, unknown>,
-    patch: Record<string, unknown>
-  ): Record<string, unknown> {
-    const merged = foundry.utils.duplicate(current) as Record<string, unknown>;
+    const merged =
+      current && typeof current === "object"
+        ? (foundry.utils.duplicate(current) as Record<string, unknown>)
+        : {};
     const flattenedPatch = foundry.utils.flattenObject(
-      foundry.utils.duplicate(patch) as Record<string, unknown>
+      foundry.utils.duplicate(dwPatch) as Record<string, unknown>
     ) as Record<string, unknown>;
 
     for (const [path, value] of Object.entries(flattenedPatch)) {
@@ -60,37 +51,45 @@ export class FormDataHandler {
     return merged;
   }
 
-  private extractDwFromForm(expanded: Record<string, unknown> & { dw?: unknown }): unknown {
+  private extractDwPatch(
+    expanded: Record<string, unknown> & { dw?: unknown; flags?: unknown }
+  ): Record<string, unknown> | null {
     const fromDw = expanded.dw;
-    const flagsRoot = expanded.flags;
+    const fromFlags = this.getModuleDwFromFlags(expanded.flags);
+    let patch: Record<string, unknown> | null = null;
 
-    if (!flagsRoot || typeof flagsRoot !== "object") return fromDw;
-
-    const moduleFlags = (flagsRoot as Record<string, unknown>)[MODULE_ID];
-
-    if (!moduleFlags || typeof moduleFlags !== "object") return fromDw;
-
-    const fromFlags = (moduleFlags as Record<string, unknown>).dw;
-
-    if (!fromDw) return fromFlags;
-
-    if (!fromFlags || typeof fromFlags !== "object") return fromDw;
-
-    if (typeof fromDw !== "object") return fromDw;
-
-    const merged = foundry.utils.duplicate(fromDw) as Record<string, unknown>;
-    const flattenedFlags = foundry.utils.flattenObject(
-      foundry.utils.duplicate(fromFlags) as Record<string, unknown>
-    ) as Record<string, unknown>;
-
-    for (const [path, value] of Object.entries(flattenedFlags)) {
-      foundry.utils.setProperty(merged, path, value);
+    if (fromDw && typeof fromDw === "object") {
+      patch = foundry.utils.duplicate(fromDw) as Record<string, unknown>;
     }
 
-    return merged;
+    if (fromFlags && typeof fromFlags === "object") {
+      patch ??= {};
+
+      const flattenedFlags = foundry.utils.flattenObject(
+        foundry.utils.duplicate(fromFlags) as Record<string, unknown>
+      ) as Record<string, unknown>;
+
+      for (const [path, value] of Object.entries(flattenedFlags)) {
+        foundry.utils.setProperty(patch, path, value);
+      }
+    }
+
+    return patch;
   }
 
-  private removeModuleDwFlags(expanded: Record<string, unknown> & { flags?: unknown }): void {
+  private getModuleDwFromFlags(flags: unknown): unknown {
+    if (!flags || typeof flags !== "object") return undefined;
+
+    const moduleFlags = (flags as Record<string, unknown>)[MODULE_ID];
+
+    if (!moduleFlags || typeof moduleFlags !== "object") return undefined;
+
+    return (moduleFlags as Record<string, unknown>).dw;
+  }
+
+  private stripDwPayload(expanded: Record<string, unknown> & { flags?: unknown }): void {
+    delete expanded.dw;
+
     if (!expanded.flags || typeof expanded.flags !== "object") return;
 
     const flagsRoot = expanded.flags as Record<string, unknown>;
