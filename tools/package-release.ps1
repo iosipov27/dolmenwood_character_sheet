@@ -66,10 +66,9 @@ foreach ($path in $runtimePaths) {
   Copy-Item -Path $path -Destination $destination -Recurse -Force
 }
 
-# Build a release-specific module.json for immutable GitHub release URLs.
+# Build a release module.json that keeps stable latest URLs for Foundry auto-update checks.
 $normalizedRepoUrl = $repoUrl.TrimEnd("/")
-$tagName = "v$version"
-$releaseBaseUrl = "$normalizedRepoUrl/releases/download/$tagName"
+$releaseBaseUrl = "$normalizedRepoUrl/releases/latest/download"
 $releaseModule = $module | ConvertTo-Json -Depth 100 | ConvertFrom-Json
 
 $releaseModule.manifest = "$releaseBaseUrl/module.json"
