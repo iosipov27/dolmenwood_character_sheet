@@ -89,3 +89,6 @@ If you push a tag like `v0.1.0`, GitHub Actions will build the module and publis
 
 - `dist/module.json`
 - `dist/dolmenwood.zip`
+
+### Project Board
+- https://github.com/users/iosipov27/projects/1
