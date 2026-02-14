@@ -219,11 +219,19 @@ export interface DwEquipmentFieldEntry {
   weightValue: string;
 }
 
+export interface DwFormFields {
+  meta: {
+    kindredClassTraits: foundry.data.fields.DataField.Any;
+    otherNotes: foundry.data.fields.DataField.Any;
+  };
+}
+
 export type BaseSheetData = ReturnType<ActorSheet["getData"]>;
 
 export type DwSheetData = BaseSheetData & {
   system: Record<string, unknown>;
   dw: DwFlags;
+  dwFormFields: DwFormFields | null;
   dwSkillsList: DwSkillEntry[];
   dwUi: {
     saveTooltips: Record<string, string>;

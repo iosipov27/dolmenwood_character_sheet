@@ -33,8 +33,6 @@
   }
 
   &__input {
-    @include input-base;
-    border: none;
     width: 100%;
   }
 }

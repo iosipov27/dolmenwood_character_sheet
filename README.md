@@ -60,6 +60,14 @@ npm run build
 npm test
 ```
 
+## Field Implementation Rule
+
+For all new sheet fields, use this order:
+
+1. Add a `DataField` in the DW schema (`src/models/dwSchema.ts`).
+2. Render the field in templates via `{{formGroup ...}}` / `{{formInput ...}}` where applicable.
+3. Add a listener only for explicit actions (roll buttons, add/remove actions, etc.), not for per-field save on `blur/change`.
+
 ## Publishing
 
 1. Bump `version` in `module.json`.

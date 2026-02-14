@@ -2,6 +2,7 @@ import { MODULE_ID } from "../constants/moduleId.js";
 import { SAVE_TOOLTIPS } from "../constants/saveTooltips.js";
 import { SKILL_TOOLTIPS } from "../constants/skillTooltips.js";
 import { dwDefaults } from "../models/dwDefaults.js";
+import { getDwFormFields } from "../models/dwSchema.js";
 import { normalizeDwFlags } from "../utils/normalizeDwFlags.js";
 import { prettyKey } from "../utils/prettyKey.js";
 import { buildAbilities } from "../utils/buildAbilities.js";
@@ -41,6 +42,7 @@ export class DolmenwoodSheetData {
 
     // Merge defaults with stored flags.
     data.dw = foundry.utils.mergeObject(dwDefaults(), dwFlag, { inplace: false });
+    data.dwFormFields = getDwFormFields();
 
     // Skills (fixed + extra).
     const extras = Array.isArray(data.dw.extraSkills) ? data.dw.extraSkills : [];

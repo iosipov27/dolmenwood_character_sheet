@@ -1,8 +1,13 @@
 <div class="dw-block-head">
   <h3>{{localize "DOLMENWOOD.UI.Languages"}}</h3>
 </div>
-<div
-  class="dw-languages-editable contenteditable"
-  contenteditable="plaintext-only"
-  data-field="languages"
->{{~ctx.dw.meta.languages~}}</div>
+<div class="form-group stacked dw-languages-group">
+  <div class="form-fields">
+    <textarea
+      id="dw-meta-languages"
+      name="dw.meta.languages"
+      class="dw-languages-input dw-textarea"
+      rows="3"
+    >{{~ctx.dw.meta.languages~}}</textarea>
+  </div>
+</div>

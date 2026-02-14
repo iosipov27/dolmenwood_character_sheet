@@ -15,7 +15,6 @@
     text-align: center;
 
     input {
-      border: none;
       text-align: center;
       font-size: 2rem;
       padding: 0.3rem;
@@ -29,7 +28,6 @@
     font-size: 0.75rem;
     text-align: center;
     input {
-      border: none;
       text-align: center;
       font-size: 0.75rem;
       height: 1.2rem;
@@ -38,7 +36,6 @@
 
     button {
       @include flex-center;
-      border: none;
       padding: 0.5rem 0.5rem;
       background:
         linear-gradient(

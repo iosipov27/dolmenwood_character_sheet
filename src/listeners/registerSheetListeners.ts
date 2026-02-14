@@ -4,9 +4,6 @@ import {
   registerAttackRollListener,
   registerEquipmentListener,
   registerExtraSkillRollListener,
-  registerInputUpdateListeners,
-  registerKindredTraitsListener,
-  registerLanguagesListener,
   registerRemoveSkillListener,
   registerSaveDblRollListener,
   registerSaveRollListener,
@@ -15,22 +12,17 @@ import {
 import { prettyKey } from "../utils/prettyKey.js";
 import { RollChecks } from "../sheets/rollChecks.js";
 import type { DwFlags, GetDwFlags, HtmlRoot, SetDwFlags } from "../types.js";
-import { registerOtherNotesListener } from "../components/other-notes/other-notes.listener.js";
 
 export function registerSheetListeners(
   html: HtmlRoot,
   {
     actor,
     getDwFlags,
-    setDwFlags,
-    renderSheet: _renderSheet,
-    sheet
+    setDwFlags
   }: {
     actor: Actor;
     getDwFlags: GetDwFlags;
     setDwFlags: SetDwFlags;
-    renderSheet: () => void;
-    sheet: ActorSheet;
   }
 ): void {
   registerSaveRollListener(html, {
@@ -78,22 +70,5 @@ export function registerSheetListeners(
     rollSkillCheck: RollChecks.rollSkillCheck
   });
 
-  registerKindredTraitsListener(html, {
-    getDwFlags,
-    setDwFlags: (dw: DwFlags) => setDwFlags(dw)
-  });
-  registerLanguagesListener(html, {
-    getDwFlags,
-    setDwFlags: (dw: DwFlags) => setDwFlags(dw)
-  });
-  registerEquipmentListener(html, {
-    getDwFlags,
-    setDwFlags: (dw: DwFlags) => setDwFlags(dw)
-  });
-  registerInputUpdateListeners(html, sheet);
-
-  registerOtherNotesListener(html, {
-    getDwFlags,
-    setDwFlags: (dw: DwFlags) => setDwFlags(dw)
-  });
+  registerEquipmentListener(html);
 }
