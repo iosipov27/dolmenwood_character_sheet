@@ -1,6 +1,5 @@
-import type { DwFlags, GetDwFlags, HtmlRoot, JQueryWithOn, SetDwFlags } from "../../types.js";
+import type { DwFlags, GetDwFlags, HtmlRoot, SetDwFlags } from "../../types.js";
 import { reportError } from "../../utils/reportError.js";
-import { EditableTextarea } from "../../utils/EditableTextarea.js";
 
 export function registerEquipmentListener(
   html: HtmlRoot,
@@ -11,7 +10,6 @@ export function registerEquipmentListener(
     ".dw-equipment input.edit-input[name^='dw.meta.equipment.'][name*='Weight']"
   );
   const totalWeightValue = html.find(".dw-equipment [data-total-weight]");
-  const tinyEditable = html.find(".dw-equipment__tiny-editable") as JQueryWithOn<HTMLElement>;
   const parseWeight = (value: string): number => {
     const parsed = Number.parseFloat(value);
 
@@ -59,15 +57,4 @@ export function registerEquipmentListener(
   });
 
   refreshTotalWeight();
-
-  new EditableTextarea({
-    contentElement: tinyEditable,
-    setValue: async (value: string) => {
-      const dw = foundry.utils.duplicate(getDwFlags()) as DwFlags;
-
-      foundry.utils.setProperty(dw, "meta.equipment.tinyItems", value);
-      await setDwFlags(dw);
-    },
-    errorMessage: "Failed to update tiny items."
-  });
 }

@@ -1,7 +1,10 @@
-@use "../../styles/common" as *;
-
-.dw-kindred-traits-editable {
+.dw-kindred-traits-editor {
   min-height: 4rem;
-  padding: 0.5rem;
-  border-radius: 4px;
+
+  .editor-container,
+  .editor,
+  .editor-content,
+  .prosemirror {
+    min-height: 8rem;
+  }
 }

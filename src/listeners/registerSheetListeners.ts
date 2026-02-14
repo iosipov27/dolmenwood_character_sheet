@@ -5,8 +5,6 @@ import {
   registerEquipmentListener,
   registerExtraSkillRollListener,
   registerInputUpdateListeners,
-  registerKindredTraitsListener,
-  registerLanguagesListener,
   registerRemoveSkillListener,
   registerSaveDblRollListener,
   registerSaveRollListener,
@@ -78,14 +76,6 @@ export function registerSheetListeners(
     rollSkillCheck: RollChecks.rollSkillCheck
   });
 
-  registerKindredTraitsListener(html, {
-    getDwFlags,
-    setDwFlags: (dw: DwFlags) => setDwFlags(dw)
-  });
-  registerLanguagesListener(html, {
-    getDwFlags,
-    setDwFlags: (dw: DwFlags) => setDwFlags(dw)
-  });
   registerEquipmentListener(html, {
     getDwFlags,
     setDwFlags: (dw: DwFlags) => setDwFlags(dw)

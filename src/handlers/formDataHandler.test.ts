@@ -2,6 +2,7 @@ import { describe, expect, it, vi, beforeEach, type Mock } from "vitest";
 import { FormDataHandler } from "./formDataHandler.js";
 import type { DwFlags } from "../types.js";
 import * as normalizeDwFlagsModule from "../utils/normalizeDwFlags.js";
+import { MODULE_ID } from "../constants/moduleId.js";
 
 vi.mock("../utils/normalizeDwFlags.js");
 
@@ -209,6 +210,61 @@ describe("FormDataHandler", () => {
       const result = await handler.handleFormData(formData);
 
       expect(normalizeDwFlagsMock).toHaveBeenCalled();
+      expect(mockRepository.set).toHaveBeenCalledWith(normalizedFlags);
+      expect(result).toEqual({});
+    });
+
+    it("should process editor updates stored under module flags", async () => {
+      const formData = {
+        [`flags.${MODULE_ID}.dw.meta.otherNotes`]: "<p>Some notes</p>"
+      };
+
+      const normalizedFlags = {
+        meta: {
+          otherNotes: "<p>Some notes</p>"
+        }
+      } as unknown as DwFlags;
+
+      normalizeDwFlagsMock.mockReturnValue(normalizedFlags);
+
+      const result = await handler.handleFormData(formData);
+
+      expect(normalizeDwFlagsMock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          meta: expect.objectContaining({
+            otherNotes: "<p>Some notes</p>"
+          })
+        })
+      );
+      expect(mockRepository.set).toHaveBeenCalledWith(normalizedFlags);
+      expect(result).toEqual({});
+    });
+
+    it("should merge dw and module-flag dw updates before saving", async () => {
+      const formData = {
+        "dw.meta.xp": "1200",
+        [`flags.${MODULE_ID}.dw.meta.kindredClassTraits`]: "<p>Trait text</p>"
+      };
+
+      const normalizedFlags = {
+        meta: {
+          xp: "1200",
+          kindredClassTraits: "<p>Trait text</p>"
+        }
+      } as unknown as DwFlags;
+
+      normalizeDwFlagsMock.mockReturnValue(normalizedFlags);
+
+      const result = await handler.handleFormData(formData);
+
+      expect(normalizeDwFlagsMock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          meta: expect.objectContaining({
+            xp: "1200",
+            kindredClassTraits: "<p>Trait text</p>"
+          })
+        })
+      );
       expect(mockRepository.set).toHaveBeenCalledWith(normalizedFlags);
       expect(result).toEqual({});
     });

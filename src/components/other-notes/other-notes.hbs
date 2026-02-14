@@ -5,11 +5,17 @@
   </div>
 
   <div class="dw-other-notes__content">
-    <div
-      class="dw-other-notes-editable contenteditable"
-      contenteditable="plaintext-only"
-      data-field="otherNotes"
-    >{{~ctx.dw.meta.otherNotes~}}</div>
+    <div class="dw-other-notes__editor dw-editor">
+      {{editor
+        ctx.dw.meta.otherNotes
+        target="flags.yakov-dolmenwood-sheet.dw.meta.otherNotes"
+        button=true
+        engine="prosemirror"
+        collaborate=false
+        owner=ctx.owner
+        editable=ctx.editable
+      }}
+    </div>
 
     <aside class="dw-other-notes__coins">
       <h3 class="dw-other-notes__coins-title">{{localize "DOLMENWOOD.UI.Coins"}}</h3>

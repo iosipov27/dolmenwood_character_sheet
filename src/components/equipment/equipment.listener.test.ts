@@ -86,7 +86,6 @@ describe("registerEquipmentListener", () => {
     document.body.innerHTML = `
       <div class="dw-equipment">
         <input class="edit-input" name="dw.meta.equipment.equipped1" value="" />
-        <div class="dw-equipment__tiny-editable contenteditable" contenteditable="plaintext-only"></div>
       </div>
     `;
 
@@ -116,7 +115,6 @@ describe("registerEquipmentListener", () => {
     document.body.innerHTML = `
       <div class="dw-equipment">
         <input class="edit-input" name="dw.meta.equipment.stowed1" value="" />
-        <div class="dw-equipment__tiny-editable contenteditable" contenteditable="plaintext-only"></div>
       </div>
     `;
 
@@ -146,7 +144,6 @@ describe("registerEquipmentListener", () => {
     document.body.innerHTML = `
       <div class="dw-equipment">
         <input class="edit-input" name="dw.meta.equipment.equippedWeight1" value="" />
-        <div class="dw-equipment__tiny-editable contenteditable" contenteditable="plaintext-only"></div>
       </div>
     `;
 
@@ -178,7 +175,6 @@ describe("registerEquipmentListener", () => {
         <input class="edit-input" name="dw.meta.equipment.equippedWeight1" value="10" />
         <input class="edit-input" name="dw.meta.equipment.stowedWeight1" value="5" />
         <div data-total-weight>0</div>
-        <div class="dw-equipment__tiny-editable contenteditable" contenteditable="plaintext-only"></div>
       </div>
     `;
 
@@ -198,142 +194,5 @@ describe("registerEquipmentListener", () => {
     await flushPromises();
 
     expect(total.text()).toBe("18");
-  });
-
-  it("saves tiny items from contenteditable on blur", async () => {
-    document.body.innerHTML = `
-      <div class="dw-equipment">
-        <div
-          class="dw-equipment__tiny-editable contenteditable"
-          contenteditable="plaintext-only"
-          data-field="tinyItems"
-        >Rope, Torch</div>
-      </div>
-    `;
-
-    const html = $(document.body);
-    const getDwFlags = vi.fn(buildDwFlags);
-    const setDwFlags = vi.fn(async () => {});
-
-    registerEquipmentListener(html, { getDwFlags, setDwFlags });
-
-    const editable = html.find(".dw-equipment__tiny-editable").get(0) as HTMLElement;
-
-    editable.innerText = "Lamp, Oil";
-    $(editable).trigger("blur");
-    await flushPromises();
-
-    expect(setDwFlags).toHaveBeenCalledTimes(1);
-    expect(setDwFlags).toHaveBeenCalledWith(
-      expect.objectContaining({
-        meta: expect.objectContaining({
-          equipment: expect.objectContaining({ tinyItems: "Lamp, Oil" })
-        })
-      })
-    );
-    expect(editable.textContent).toBe("Lamp, Oil");
-  });
-
-  it("keeps multiline tiny items as plain text", async () => {
-    document.body.innerHTML = `
-      <div class="dw-equipment">
-        <div
-          class="dw-equipment__tiny-editable contenteditable"
-          contenteditable="plaintext-only"
-          data-field="tinyItems"
-        ></div>
-      </div>
-    `;
-
-    const html = $(document.body);
-    const getDwFlags = vi.fn(buildDwFlags);
-    const setDwFlags = vi.fn(async () => {});
-
-    registerEquipmentListener(html, { getDwFlags, setDwFlags });
-
-    const editable = html.find(".dw-equipment__tiny-editable").get(0) as HTMLElement;
-
-    editable.innerText = "Line 1\nLine 2\nLine 3";
-    $(editable).trigger("blur");
-    await flushPromises();
-
-    expect(editable.textContent).toBe("Line 1\nLine 2\nLine 3");
-    expect(setDwFlags).toHaveBeenCalledWith(
-      expect.objectContaining({
-        meta: expect.objectContaining({
-          equipment: expect.objectContaining({ tinyItems: "Line 1\nLine 2\nLine 3" })
-        })
-      })
-    );
-  });
-
-  it("normalizes leading/trailing whitespace for tiny items", async () => {
-    document.body.innerHTML = `
-      <div class="dw-equipment">
-        <div
-          class="dw-equipment__tiny-editable contenteditable"
-          contenteditable="plaintext-only"
-          data-field="tinyItems"
-        ></div>
-      </div>
-    `;
-
-    const html = $(document.body);
-    const getDwFlags = vi.fn(buildDwFlags);
-    const setDwFlags = vi.fn(async () => {});
-
-    registerEquipmentListener(html, { getDwFlags, setDwFlags });
-
-    const editable = html.find(".dw-equipment__tiny-editable").get(0) as HTMLElement;
-
-    editable.innerText = "\n\nItem 1\nItem 2   ";
-
-    $(editable).trigger("blur");
-    await flushPromises();
-
-    expect(setDwFlags).toHaveBeenCalledTimes(1);
-    expect(setDwFlags).toHaveBeenCalledWith(
-      expect.objectContaining({
-        meta: expect.objectContaining({
-          equipment: expect.objectContaining({ tinyItems: "Item 1\nItem 2" })
-        })
-      })
-    );
-    expect(editable.textContent).toBe("Item 1\nItem 2");
-  });
-
-  it("normalizes non-breaking spaces for tiny items", async () => {
-    document.body.innerHTML = `
-      <div class="dw-equipment">
-        <div
-          class="dw-equipment__tiny-editable contenteditable"
-          contenteditable="plaintext-only"
-          data-field="tinyItems"
-        ></div>
-      </div>
-    `;
-
-    const html = $(document.body);
-    const getDwFlags = vi.fn(buildDwFlags);
-    const setDwFlags = vi.fn(async () => {});
-
-    registerEquipmentListener(html, { getDwFlags, setDwFlags });
-
-    const editable = html.find(".dw-equipment__tiny-editable").get(0) as HTMLElement;
-
-    editable.innerText = "Rope\u00A0and\u00A0Torch";
-
-    $(editable).trigger("blur");
-    await flushPromises();
-
-    expect(setDwFlags).toHaveBeenCalledTimes(1);
-    expect(setDwFlags).toHaveBeenCalledWith(
-      expect.objectContaining({
-        meta: expect.objectContaining({
-          equipment: expect.objectContaining({ tinyItems: "Rope and Torch" })
-        })
-      })
-    );
-    expect(editable.textContent).toBe("Rope and Torch");
   });
 });

@@ -89,39 +89,8 @@ function buildDwFlags(): DwFlags {
 }
 
 describe("registerOtherNotesListener", () => {
-  it("saves other notes from contenteditable on blur", async () => {
-    document.body.innerHTML = `
-      <div
-        class="dw-other-notes-editable contenteditable"
-        contenteditable="plaintext-only"
-        data-field="otherNotes"
-      >Old note</div>
-      <input class="dw-other-notes__coin-input" name="dw.meta.coins.copper" value="1" />
-    `;
-    const html = $(document.body);
-    const getDwFlags = vi.fn(buildDwFlags);
-    const setDwFlags = vi.fn(async () => {});
-
-    registerOtherNotesListener(html, { getDwFlags, setDwFlags });
-
-    const editable = html.find(".dw-other-notes-editable").get(0) as HTMLElement;
-
-    editable.innerText = "Updated note";
-    $(editable).trigger("blur");
-    await flushPromises();
-
-    expect(setDwFlags).toHaveBeenCalledTimes(1);
-    expect(setDwFlags).toHaveBeenCalledWith(
-      expect.objectContaining({
-        meta: expect.objectContaining({ otherNotes: "Updated note" })
-      })
-    );
-    expect(editable.textContent).toBe("Updated note");
-  });
-
   it("saves coin value on change", async () => {
     document.body.innerHTML = `
-      <div class="dw-other-notes-editable contenteditable" contenteditable="plaintext-only"></div>
       <input class="dw-other-notes__coin-input" name="dw.meta.coins.gold" value="3" />
     `;
     const html = $(document.body);
@@ -148,7 +117,6 @@ describe("registerOtherNotesListener", () => {
 
   it("normalizes invalid coin values to 0", async () => {
     document.body.innerHTML = `
-      <div class="dw-other-notes-editable contenteditable" contenteditable="plaintext-only"></div>
       <input class="dw-other-notes__coin-input" name="dw.meta.coins.silver" value="2" />
     `;
     const html = $(document.body);

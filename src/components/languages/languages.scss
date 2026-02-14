@@ -1,7 +1,11 @@
 @use "../../styles/common" as *;
 
-.dw-languages-editable {
-  min-height: 4rem;
-  padding: 0.5rem;
-  border-radius: 4px;
+.dw-languages-group {
+  margin: 0;
+}
+
+.dw-languages-input {
+  width: 100%;
+  min-height: 3rem;
+  resize: vertical;
 }

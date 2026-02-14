@@ -46,9 +46,11 @@
     }
   }
 
-  &__tiny-editable {
+  &__tiny-input {
+    width: 100%;
     min-height: 8rem;
     padding: 0.5rem;
+    resize: vertical;
   }
 
   &__fields {

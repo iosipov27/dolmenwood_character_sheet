@@ -9,6 +9,11 @@ input {
   @include input-base;
 }
 
+textarea {
+  border: 1px solid $color-border-soft;
+  background: none;
+}
+
 .dw-x {
   width: 1rem;
   height: 1rem;
@@ -142,4 +147,31 @@ hr {
   }
 
   cursor: text;
+}
+
+.dw-editor {
+  .editor,
+  .editor-container {
+    min-height: inherit;
+  }
+
+  .editor-content,
+  .prosemirror {
+    padding: 0.5rem;
+    border-radius: 4px;
+    border: 1px solid $color-border-soft;
+    background-color: #e7deca;
+    background-image: url("/ui/parchment.jpg");
+    background-repeat: repeat;
+  }
+
+  .editor-content,
+  .prosemirror,
+  .editor-content * {
+    word-break: break-word;
+
+    p {
+      margin: 0;
+    }
+  }
 }
