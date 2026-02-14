@@ -28,6 +28,9 @@ export class DolmenwoodSheet extends BaseSheet {
       template: `modules/${MODULE_ID}/templates/dolmenwood.hbs`,
       width: 640,
       height: 730,
+      closeOnSubmit: false,
+      submitOnClose: true,
+      submitOnChange: true,
       resizable: true
     });
   }
@@ -49,9 +52,7 @@ export class DolmenwoodSheet extends BaseSheet {
     registerSheetListeners(html, {
       actor: this.actor,
       getDwFlags: () => this.flagsRepository.get(),
-      setDwFlags: (dw) => this.flagsRepository.set(dw),
-      renderSheet: () => this.render(),
-      sheet: this
+      setDwFlags: (dw) => this.flagsRepository.set(dw)
     });
   }
 

@@ -14,20 +14,6 @@ textarea {
   background: none;
 }
 
-.edit-input,
-.editable-field {
-  display: block;
-  width: 100%;
-  min-width: 0;
-  padding-top: 0.2rem;
-  padding-bottom: 0.2rem;
-  min-height: 1.6rem;
-}
-
-.editable-field {
-  cursor: text;
-}
-
 .dw-textarea {
   width: 100%;
   resize: vertical;

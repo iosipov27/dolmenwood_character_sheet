@@ -1,4 +1,6 @@
 import type { DwFlags, DwFlagsInput, DwMeta, DwSaves } from "../types.js";
+import { cleanDwFlagsWithSchema } from "../models/dwSchema.js";
+import { reportError } from "./reportError.js";
 
 export function normalizeDwFlags(dw: DwFlagsInput): DwFlags {
   // If an old "resistance" existed, fold it into magic (prefer magic if set).
@@ -25,6 +27,14 @@ export function normalizeDwFlags(dw: DwFlagsInput): DwFlags {
 
   delete (d as Record<string, unknown>).otherNotes;
   d.meta = meta as DwMeta;
+
+  try {
+    const schemaNormalized = cleanDwFlagsWithSchema(d);
+
+    if (schemaNormalized) return schemaNormalized;
+  } catch (error) {
+    reportError("Failed to normalize DW flags with field schema. Falling back to legacy normalization.", error);
+  }
 
   return d as DwFlags;
 }

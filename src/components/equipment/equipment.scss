@@ -67,21 +67,20 @@
     display: flex;
     align-items: center;
 
-    .edit-input,
-    .editable-field {
-      min-width: 0;
-    }
-
     &--weight {
       width: 3.2rem;
       justify-content: flex-end;
     }
   }
 
-  &__weight-input,
-  &__weight-value {
+  &__weight-input {
     width: 3.2rem;
     text-align: center;
+  }
+
+  &__item-input {
+    width: 100%;
+    min-width: 0;
   }
 
   &__weight-label {

@@ -1,75 +1,59 @@
 <div class="player-data">
   <div class="dw-field player-data__name">
-    <span class="editable-field" data-field="name" {{#unless ctx.actor.name}}style="display:none;"{{/unless}}>{{ctx.actor.name}}</span>
     <input
       id="dw-name"
-      class="edit-input"
+      class="player-data__input"
       name="name"
       placeholder="{{localize "DOLMENWOOD.UI.Name"}}"
       value="{{ctx.actor.name}}"
-      {{#if ctx.actor.name}}style="display:none;"{{/if}}
     />
   </div>
 
   <div class="dw-field">
-    <span
-      class="editable-field"
-      data-field="dw.meta.kindredClass"
-      {{#unless ctx.dw.meta.kindredClass}}style="display:none;"{{/unless}}
-    >{{ctx.dw.meta.kindredClass}}</span>
     <input
       id="dw-kindred-class"
       placeholder="{{localize "DOLMENWOOD.UI.KindredClass"}}"
-      class="edit-input"
+      class="player-data__input"
       name="dw.meta.kindredClass"
       value="{{ctx.dw.meta.kindredClass}}"
-      {{#if ctx.dw.meta.kindredClass}}style="display:none;"{{/if}}
     />
   </div>
 
   <div class="dw-field">
-    <span class="editable-field" data-field="dw.meta.background" {{#unless ctx.dw.meta.background}}style="display:none;"{{/unless}}>{{ctx.dw.meta.background}}</span>
     <input
       id="dw-background"
       placeholder="{{localize "DOLMENWOOD.UI.Background"}}"
-      class="edit-input"
+      class="player-data__input"
       name="dw.meta.background"
       value="{{ctx.dw.meta.background}}"
-      {{#if ctx.dw.meta.background}}style="display:none;"{{/if}}
     />
   </div>
   <div class="dw-field">
-    <span class="editable-field" data-field="dw.meta.alignment" {{#unless ctx.dw.meta.alignment}}style="display:none;"{{/unless}}>{{ctx.dw.meta.alignment}}</span>
     <input
       id="dw-alignment"
       placeholder="{{localize "DOLMENWOOD.UI.Alignment"}}"
-      class="edit-input"
+      class="player-data__input"
       name="dw.meta.alignment"
       value="{{ctx.dw.meta.alignment}}"
-      {{#if ctx.dw.meta.alignment}}style="display:none;"{{/if}}
     />
 
   </div>
   <div class="dw-field">
-    <span class="editable-field" data-field="dw.meta.affiliation" {{#unless ctx.dw.meta.affiliation}}style="display:none;"{{/unless}}>{{ctx.dw.meta.affiliation}}</span>
     <input
       id="dw-affiliation"
       placeholder="{{localize "DOLMENWOOD.UI.Affiliation"}}"
-      class="edit-input"
+      class="player-data__input"
       name="dw.meta.affiliation"
       value="{{ctx.dw.meta.affiliation}}"
-      {{#if ctx.dw.meta.affiliation}}style="display:none;"{{/if}}
     />
   </div>
   <div class="dw-field">
-    <span class="editable-field" data-field="dw.meta.moonSign" {{#unless ctx.dw.meta.moonSign}}style="display:none;"{{/unless}}>{{ctx.dw.meta.moonSign}}</span>
     <input
       id="dw-moon-sign"
       placeholder="{{localize "DOLMENWOOD.UI.MoonSign"}}"
-      class="edit-input"
+      class="player-data__input"
       name="dw.meta.moonSign"
       value="{{ctx.dw.meta.moonSign}}"
-      {{#if ctx.dw.meta.moonSign}}style="display:none;"{{/if}}
     />
   </div>
 </div>

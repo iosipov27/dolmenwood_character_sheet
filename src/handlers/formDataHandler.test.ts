@@ -269,6 +269,76 @@ describe("FormDataHandler", () => {
       expect(result).toEqual({});
     });
 
+    it("should preserve other editor value when one editor is updated", async () => {
+      mockRepository.get.mockReturnValue({
+        meta: {
+          kindredClassTraits: "<p>Old trait</p>",
+          otherNotes: "<p>Persist me</p>"
+        }
+      } as Partial<DwFlags>);
+
+      const formData = {
+        [`flags.${MODULE_ID}.dw.meta.kindredClassTraits`]: "<p>New trait</p>"
+      };
+
+      const normalizedFlags = {
+        meta: {
+          kindredClassTraits: "<p>New trait</p>",
+          otherNotes: "<p>Persist me</p>"
+        }
+      } as unknown as DwFlags;
+
+      normalizeDwFlagsMock.mockReturnValue(normalizedFlags);
+
+      await handler.handleFormData(formData);
+
+      expect(normalizeDwFlagsMock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          meta: expect.objectContaining({
+            kindredClassTraits: "<p>New trait</p>",
+            otherNotes: "<p>Persist me</p>"
+          })
+        })
+      );
+      expect(mockRepository.set).toHaveBeenCalledWith(normalizedFlags);
+    });
+
+    it("should preserve editor values when submit payload has no editor fields", async () => {
+      mockRepository.get.mockReturnValue({
+        meta: {
+          kindredClassTraits: "<p>Trait stays</p>",
+          otherNotes: "<p>Notes stay</p>"
+        }
+      } as Partial<DwFlags>);
+
+      const formData = {
+        "dw.meta.xp": "1200"
+      };
+
+      const normalizedFlags = {
+        meta: {
+          xp: "1200",
+          kindredClassTraits: "<p>Trait stays</p>",
+          otherNotes: "<p>Notes stay</p>"
+        }
+      } as unknown as DwFlags;
+
+      normalizeDwFlagsMock.mockReturnValue(normalizedFlags);
+
+      await handler.handleFormData(formData);
+
+      expect(normalizeDwFlagsMock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          meta: expect.objectContaining({
+            xp: "1200",
+            kindredClassTraits: "<p>Trait stays</p>",
+            otherNotes: "<p>Notes stay</p>"
+          })
+        })
+      );
+      expect(mockRepository.set).toHaveBeenCalledWith(normalizedFlags);
+    });
+
     it("should remap descending AC value edits to AC mod", async () => {
       const formData = {
         "system.ac.value": "7"

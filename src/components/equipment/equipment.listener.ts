@@ -1,13 +1,8 @@
-import type { DwFlags, GetDwFlags, HtmlRoot, SetDwFlags } from "../../types.js";
-import { reportError } from "../../utils/reportError.js";
+import type { HtmlRoot } from "../../types.js";
 
-export function registerEquipmentListener(
-  html: HtmlRoot,
-  { getDwFlags, setDwFlags }: { getDwFlags: GetDwFlags; setDwFlags: SetDwFlags }
-): void {
-  const equipmentFields = html.find(".dw-equipment input.edit-input[name^='dw.meta.equipment.']");
+export function registerEquipmentListener(html: HtmlRoot): void {
   const equipmentWeightFields = html.find(
-    ".dw-equipment input.edit-input[name^='dw.meta.equipment.'][name*='Weight']"
+    ".dw-equipment input[name^='dw.meta.equipment.'][name*='Weight']"
   );
   const totalWeightValue = html.find(".dw-equipment [data-total-weight]");
   const parseWeight = (value: string): number => {
@@ -29,31 +24,12 @@ export function registerEquipmentListener(
     totalWeightValue.text(formatTotalWeight(total));
   };
 
-  async function persistField(element: JQuery<HTMLElement>): Promise<void> {
-    const field = String(element.attr("name") ?? "");
-
-    if (!field.startsWith("dw.meta.equipment.")) return;
-
-    const value = String(element.val() ?? "");
-    const dw = foundry.utils.duplicate(getDwFlags()) as DwFlags;
-
-    foundry.utils.setProperty(dw, field.slice("dw.".length), value);
-
-    try {
-      await setDwFlags(dw);
-    } catch (error) {
-      reportError("Failed to update equipment field.", error);
-    }
-  }
-
-  equipmentFields.on("change", function () {
+  equipmentWeightFields.on("change", function () {
     refreshTotalWeight();
-    void persistField($(this));
   });
 
-  equipmentFields.on("blur", function () {
+  equipmentWeightFields.on("input", function () {
     refreshTotalWeight();
-    void persistField($(this));
   });
 
   refreshTotalWeight();

@@ -4,7 +4,6 @@ import {
   registerAttackRollListener,
   registerEquipmentListener,
   registerExtraSkillRollListener,
-  registerInputUpdateListeners,
   registerRemoveSkillListener,
   registerSaveDblRollListener,
   registerSaveRollListener,
@@ -20,15 +19,11 @@ export function registerSheetListeners(
   {
     actor,
     getDwFlags,
-    setDwFlags,
-    renderSheet: _renderSheet,
-    sheet
+    setDwFlags
   }: {
     actor: Actor;
     getDwFlags: GetDwFlags;
     setDwFlags: SetDwFlags;
-    renderSheet: () => void;
-    sheet: ActorSheet;
   }
 ): void {
   registerSaveRollListener(html, {
@@ -76,11 +71,7 @@ export function registerSheetListeners(
     rollSkillCheck: RollChecks.rollSkillCheck
   });
 
-  registerEquipmentListener(html, {
-    getDwFlags,
-    setDwFlags: (dw: DwFlags) => setDwFlags(dw)
-  });
-  registerInputUpdateListeners(html, sheet);
+  registerEquipmentListener(html);
 
   registerOtherNotesListener(html, {
     getDwFlags,

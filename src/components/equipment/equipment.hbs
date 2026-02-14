@@ -23,26 +23,22 @@
           {{#each ctx.dwUi.equipment.equippedFields as |field|}}
             <div class="dw-equipment__row">
               <div class="dw-equipment__entry dw-equipment__entry--item">
-                <span class="editable-field" data-field="{{field.name}}" {{#unless field.value}}style="display:none;"{{/unless}}>{{field.value}}</span>
                 <input
                   id="{{field.id}}"
-                  class="edit-input dw-equipment__item-input"
+                  class="dw-equipment__item-input"
                   name="{{field.name}}"
                   value="{{field.value}}"
-                  {{#if field.value}}style="display:none;"{{/if}}
                 />
               </div>
               <div class="dw-equipment__entry dw-equipment__entry--weight">
-                <span class="editable-field dw-equipment__weight-value" data-field="{{field.weightName}}" {{#unless field.weightValue}}style="display:none;"{{/unless}}>{{field.weightValue}}</span>
                 <input
                   id="{{field.weightId}}"
                   type="number"
                   min="0"
                   step="1"
-                  class="edit-input input--md dw-equipment__weight-input dw-number-input"
+                  class="input--md dw-equipment__weight-input dw-number-input"
                   name="{{field.weightName}}"
                   value="{{field.weightValue}}"
-                  {{#if field.weightValue}}style="display:none;"{{/if}}
                 />
               </div>
             </div>
@@ -62,26 +58,22 @@
         {{#each ctx.dwUi.equipment.stowedFields as |field|}}
           <div class="dw-equipment__row">
             <div class="dw-equipment__entry dw-equipment__entry--item">
-              <span class="editable-field" data-field="{{field.name}}" {{#unless field.value}}style="display:none;"{{/unless}}>{{field.value}}</span>
               <input
                 id="{{field.id}}"
-                class="edit-input dw-equipment__item-input"
+                class="dw-equipment__item-input"
                 name="{{field.name}}"
                 value="{{field.value}}"
-                {{#if field.value}}style="display:none;"{{/if}}
               />
             </div>
             <div class="dw-equipment__entry dw-equipment__entry--weight">
-              <span class="editable-field dw-equipment__weight-value" data-field="{{field.weightName}}" {{#unless field.weightValue}}style="display:none;"{{/unless}}>{{field.weightValue}}</span>
               <input
                 id="{{field.weightId}}"
                 type="number"
                 min="0"
                 step="1"
-                class="edit-input input--md dw-equipment__weight-input dw-number-input"
+                class="input--md dw-equipment__weight-input dw-number-input"
                 name="{{field.weightName}}"
                 value="{{field.weightValue}}"
-                {{#if field.weightValue}}style="display:none;"{{/if}}
               />
             </div>
           </div>

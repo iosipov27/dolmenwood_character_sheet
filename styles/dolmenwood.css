@@ -193,20 +193,6 @@ textarea {
   background: none;
 }
 
-.edit-input,
-.editable-field {
-  display: block;
-  width: 100%;
-  min-width: 0;
-  padding-top: 0.2rem;
-  padding-bottom: 0.2rem;
-  min-height: 1.6rem;
-}
-
-.editable-field {
-  cursor: text;
-}
-
 .dw-textarea {
   width: 100%;
   resize: vertical;
@@ -578,20 +564,13 @@ hr {
   --player-field-padding-bottom: 0.1rem;
   --player-field-line-height: 1.2;
 }
-.player-data .dw-field .edit-input {
+.player-data .dw-field .player-data__input {
   padding-top: var(--player-field-padding-top);
   padding-bottom: var(--player-field-padding-bottom);
   line-height: var(--player-field-line-height);
   min-height: calc(1em * var(--player-field-line-height) + var(--player-field-padding-top) + var(--player-field-padding-bottom));
 }
-.player-data .dw-field .editable-field {
-  padding-top: var(--player-field-padding-top);
-  padding-bottom: var(--player-field-padding-bottom);
-  line-height: var(--player-field-line-height);
-  min-height: calc(1em * var(--player-field-line-height) + var(--player-field-padding-top) + var(--player-field-padding-bottom));
-}
-.player-data__name .editable-field,
-.player-data__name .edit-input {
+.player-data__name .player-data__input {
   font-size: 1.75rem;
   font-weight: 600;
 }
@@ -713,17 +692,17 @@ hr {
   display: flex;
   align-items: center;
 }
-.dw-equipment__entry .edit-input,
-.dw-equipment__entry .editable-field {
-  min-width: 0;
-}
 .dw-equipment__entry--weight {
   width: 3.2rem;
   justify-content: flex-end;
 }
-.dw-equipment__weight-input, .dw-equipment__weight-value {
+.dw-equipment__weight-input {
   width: 3.2rem;
   text-align: center;
+}
+.dw-equipment__item-input {
+  width: 100%;
+  min-width: 0;
 }
 .dw-equipment__weight-label {
   display: block;
