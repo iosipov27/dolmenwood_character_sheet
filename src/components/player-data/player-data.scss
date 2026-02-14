@@ -16,7 +16,6 @@
     --player-field-line-height: 1.2;
 
     .edit-input {
-      width: 100%;
       padding-top: var(--player-field-padding-top);
       padding-bottom: var(--player-field-padding-bottom);
       line-height: var(--player-field-line-height);
@@ -27,8 +26,6 @@
     }
 
     .editable-field {
-      display: block;
-      width: 100%;
       padding-top: var(--player-field-padding-top);
       padding-bottom: var(--player-field-padding-bottom);
       line-height: var(--player-field-line-height);

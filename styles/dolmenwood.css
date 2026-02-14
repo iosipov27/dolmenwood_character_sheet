@@ -193,9 +193,72 @@ textarea {
   background: none;
 }
 
+.edit-input,
+.editable-field {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+  min-height: 1.6rem;
+}
+
+.editable-field {
+  cursor: text;
+}
+
+.dw-textarea {
+  width: 100%;
+  resize: vertical;
+}
+
+.dw-number-input {
+  -moz-appearance: textfield;
+}
+.dw-number-input::-webkit-inner-spin-button, .dw-number-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.dw-roll {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 1.5rem;
+  padding: 0 0.5rem;
+  font-size: 0.75rem;
+  line-height: var(--line-height-20);
+  border: 1px solid #a7a294;
+}
+
+.dw-target {
+  width: 2rem;
+  max-width: 2rem;
+  height: 1.5rem;
+  padding: 0 0.15rem;
+  text-align: center;
+}
+
+.dw-x,
+.dw-plus {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+  border: 1px solid #a7a294;
+}
+
 .dw-x {
   width: 1rem;
+  min-width: 1rem;
   height: 1rem;
+}
+
+.dw-plus {
+  width: 1.1rem;
+  min-width: 1.1rem;
+  height: 1.1rem;
 }
 
 hr {
@@ -234,10 +297,6 @@ hr {
 }
 .dw-field input {
   padding: 0.1rem;
-}
-.dw-field input[type=number]::-webkit-inner-spin-button, .dw-field input[type=number]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
 }
 .dw-field input.input--md {
   width: 3rem;
@@ -375,8 +434,6 @@ hr {
   font-size: 1.5rem;
 }
 .dw-abilities__input {
-  background: none;
-  border: none;
   text-align: center;
 }
 .dw-abilities__input--disabled {
@@ -411,16 +468,6 @@ hr {
   align-items: center;
   gap: 0.2rem;
 }
-.dw-save-throws .dw-saves .dw-save input {
-  border: none;
-  text-align: center;
-}
-.dw-save-throws .dw-saves .dw-save button {
-  font-size: 0.75rem;
-  padding: 0;
-  line-height: var(--line-height-20);
-  border: 1px solid #a7a294;
-}
 .dw-save-throws .dw-saves__info {
   font-size: 0.75rem;
   word-wrap: break-word;
@@ -447,7 +494,6 @@ hr {
   text-align: center;
 }
 .dw-hp__current input {
-  border: none;
   text-align: center;
   font-size: 2rem;
   padding: 0.3rem;
@@ -462,7 +508,6 @@ hr {
   text-align: center;
 }
 .dw-hp__max input {
-  border: none;
   text-align: center;
   font-size: 0.75rem;
   height: 1.2rem;
@@ -487,7 +532,6 @@ hr {
   text-align: center;
 }
 .dw-ac-attack__armor input {
-  border: none;
   text-align: center;
   font-size: 2rem;
   padding: 0.3rem;
@@ -503,7 +547,6 @@ hr {
   text-align: center;
 }
 .dw-ac-attack__attack input {
-  border: none;
   text-align: center;
   font-size: 0.75rem;
   height: 1.2rem;
@@ -513,7 +556,6 @@ hr {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: none;
   padding: 0.5rem 0.5rem;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 45%, rgba(0, 0, 0, 0.12) 100%), var(--color-text-dark-2);
 }
@@ -537,15 +579,12 @@ hr {
   --player-field-line-height: 1.2;
 }
 .player-data .dw-field .edit-input {
-  width: 100%;
   padding-top: var(--player-field-padding-top);
   padding-bottom: var(--player-field-padding-bottom);
   line-height: var(--player-field-line-height);
   min-height: calc(1em * var(--player-field-line-height) + var(--player-field-padding-top) + var(--player-field-padding-bottom));
 }
 .player-data .dw-field .editable-field {
-  display: block;
-  width: 100%;
   padding-top: var(--player-field-padding-top);
   padding-bottom: var(--player-field-padding-bottom);
   line-height: var(--player-field-line-height);
@@ -587,9 +626,6 @@ hr {
   color: var(--dw-primary-color);
 }
 .dw-movement__input {
-  border: none;
-  background: none;
-  border: none;
   width: 100%;
 }
 
@@ -616,39 +652,14 @@ hr {
 .dw-skills .dw-skill__extra__name {
   max-width: 4.6rem;
 }
-.dw-skills .dw-skill input {
-  border: none;
-  height: 1.5rem;
-  max-width: 2rem;
-}
-.dw-skills .dw-skill button {
-  display: flex;
-  padding: 0rem 0.5rem;
-  font-size: 0.75rem;
-  height: 1.5rem;
-  border: 1px solid #a7a294;
-}
 .dw-skills .dw-plus {
   align-self: start;
-  width: 1.1rem;
-  min-width: 1.1rem;
-  height: 1.1rem;
-  padding: 0;
-  line-height: 1;
-  justify-content: center;
 }
 
 .dw-equipment {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-}
-.dw-equipment .edit-input,
-.dw-equipment .editable-field {
-  width: 100%;
-  padding-top: 0.2rem;
-  padding-bottom: 0.2rem;
-  min-height: 1.6rem;
 }
 .dw-equipment__wrapper {
   display: grid;
@@ -678,10 +689,8 @@ hr {
   height: 100%;
 }
 .dw-equipment__tiny-input {
-  width: 100%;
   min-height: 8rem;
   padding: 0.5rem;
-  resize: vertical;
 }
 .dw-equipment__fields {
   display: flex;
@@ -722,13 +731,6 @@ hr {
   text-align: center;
   font-size: 0.6rem;
   text-transform: uppercase;
-}
-.dw-equipment__weight-input {
-  -moz-appearance: textfield;
-}
-.dw-equipment__weight-input::-webkit-inner-spin-button, .dw-equipment__weight-input::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
 }
 .dw-equipment__total-weight {
   margin-top: 0.45rem;
@@ -816,10 +818,6 @@ hr {
   font-weight: 600;
   padding: 0.1rem 0.2rem;
 }
-.dw-other-notes__coin-input::-webkit-inner-spin-button, .dw-other-notes__coin-input::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
 .dw-other-notes__coin-label {
   text-align: center;
   font-size: 0.62rem;
@@ -847,9 +845,7 @@ hr {
 }
 
 .dw-languages-input {
-  width: 100%;
   min-height: 3rem;
-  resize: vertical;
 }
 
 .dw-kindred-traits-editor {

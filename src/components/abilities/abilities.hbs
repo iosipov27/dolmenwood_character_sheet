@@ -9,7 +9,7 @@
       <div class="dw-abilities__header">
         <button
           type="button"
-          class="dw-abilities__roll-button"
+          class="dw-abilities__roll-button dw-roll"
           data-action="dw-roll-ability"
           data-label="{{a.label}}"
           data-mod="{{a.mod}}"
@@ -23,7 +23,7 @@
           <div class="dw-abilities__value">
             {{#if a.hasPath}}
               <input
-                class="dw-abilities__input"
+                class="dw-abilities__input dw-number-input"
                 name="{{a.name}}"
                 type="number"
                 value="{{a.value}}"

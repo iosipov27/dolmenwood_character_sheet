@@ -27,29 +27,9 @@
         max-width: 4.6rem;
       }
     }
-
-    input {
-      border: none;
-      height: 1.5rem;
-      max-width: 2rem;
-    }
-
-    button {
-      display: flex;
-      padding: 0rem 0.5rem;
-      font-size: 0.75rem;
-      height: 1.5rem;
-      border: 1px solid $color-border-main;
-    }
   }
 
   .dw-plus {
     align-self: start;
-    width: 1.1rem;
-    min-width: 1.1rem;
-    height: 1.1rem;
-    padding: 0;
-    line-height: 1;
-    justify-content: center;
   }
 }

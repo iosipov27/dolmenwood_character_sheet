@@ -16,16 +16,6 @@
       flex-direction: column;
       align-items: center;
       gap: 0.2rem;
-      input {
-        border: none;
-        text-align: center;
-      }
-      button {
-        font-size: 0.75rem;
-        padding: 0;
-        line-height: $line-height-20;
-        border: 1px solid $color-border-main;
-      }
     }
 
     &__info {

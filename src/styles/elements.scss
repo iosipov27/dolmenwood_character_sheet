@@ -14,9 +14,74 @@ textarea {
   background: none;
 }
 
+.edit-input,
+.editable-field {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+  min-height: 1.6rem;
+}
+
+.editable-field {
+  cursor: text;
+}
+
+.dw-textarea {
+  width: 100%;
+  resize: vertical;
+}
+
+.dw-number-input {
+  -moz-appearance: textfield;
+
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+.dw-roll {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 1.5rem;
+  padding: 0 0.5rem;
+  font-size: 0.75rem;
+  line-height: $line-height-20;
+  border: 1px solid $color-border-main;
+}
+
+.dw-target {
+  width: 2rem;
+  max-width: 2rem;
+  height: 1.5rem;
+  padding: 0 0.15rem;
+  text-align: center;
+}
+
+.dw-x,
+.dw-plus {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+  border: 1px solid $color-border-main;
+}
+
 .dw-x {
   width: 1rem;
+  min-width: 1rem;
   height: 1rem;
+}
+
+.dw-plus {
+  width: 1.1rem;
+  min-width: 1.1rem;
+  height: 1.1rem;
 }
 
 hr {
@@ -56,14 +121,6 @@ hr {
 
   input {
     padding: 0.1rem;
-
-    &[type="number"] {
-      &::-webkit-inner-spin-button,
-      &::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-      }
-    }
 
     &.input {
       &--md {
