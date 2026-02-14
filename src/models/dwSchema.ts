@@ -1,4 +1,4 @@
-import type { DwFlags } from "../types.js";
+import type { DwFlags, DwFormFields } from "../types.js";
 
 type FieldsApi = typeof foundry.data.fields;
 type AnyField = foundry.data.fields.DataField.Any;
@@ -154,4 +154,36 @@ export function cleanDwFlagsWithSchema(dw: unknown): DwFlags | null {
   if (!schema) return null;
 
   return schema.clean(dw as Record<string, unknown>) as DwFlags;
+}
+
+function getFieldMap(field: unknown): Record<string, unknown> | null {
+  if (!field || typeof field !== "object") return null;
+
+  const maybeFields = (field as { fields?: unknown }).fields;
+
+  if (!maybeFields || typeof maybeFields !== "object") return null;
+
+  return maybeFields as Record<string, unknown>;
+}
+
+export function getDwFormFields(): DwFormFields | null {
+  const rootFields = getFieldMap(getDwFlagsSchema());
+
+  if (!rootFields) return null;
+
+  const metaFields = getFieldMap(rootFields.meta);
+
+  if (!metaFields) return null;
+
+  const kindredClassTraits = metaFields.kindredClassTraits;
+  const otherNotes = metaFields.otherNotes;
+
+  if (!kindredClassTraits || !otherNotes) return null;
+
+  return {
+    meta: {
+      kindredClassTraits: kindredClassTraits as AnyField,
+      otherNotes: otherNotes as AnyField
+    }
+  };
 }

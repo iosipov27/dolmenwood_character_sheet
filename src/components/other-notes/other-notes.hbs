@@ -6,14 +6,15 @@
 
   <div class="dw-other-notes__content">
     <div class="dw-other-notes__editor dw-editor">
-      {{editor
-        ctx.dw.meta.otherNotes
-        target="flags.yakov-dolmenwood-sheet.dw.meta.otherNotes"
-        button=true
-        engine="prosemirror"
+      {{formInput
+        ctx.dwFormFields.meta.otherNotes
+        name="dw.meta.otherNotes"
+        value=ctx.dw.meta.otherNotes
+        enriched=ctx.dw.meta.otherNotes
+        toggled=true
         collaborate=false
-        owner=ctx.owner
-        editable=ctx.editable
+        classes="dw-other-notes__editor-input"
+        disabled=(not ctx.editable)
       }}
     </div>
 

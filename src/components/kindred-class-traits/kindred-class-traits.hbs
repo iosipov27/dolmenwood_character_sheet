@@ -2,13 +2,14 @@
   <h3>{{localize "DOLMENWOOD.UI.KindredClassTraits"}}</h3>
 </div>
 <div class="dw-kindred-traits-editor dw-editor">
-  {{editor
-    ctx.dw.meta.kindredClassTraits
-    target="flags.yakov-dolmenwood-sheet.dw.meta.kindredClassTraits"
-    button=true
-    engine="prosemirror"
+  {{formInput
+    ctx.dwFormFields.meta.kindredClassTraits
+    name="dw.meta.kindredClassTraits"
+    value=ctx.dw.meta.kindredClassTraits
+    enriched=ctx.dw.meta.kindredClassTraits
+    toggled=true
     collaborate=false
-    owner=ctx.owner
-    editable=ctx.editable
+    classes="dw-kindred-traits-editor__input"
+    disabled=(not ctx.editable)
   }}
 </div>
