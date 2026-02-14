@@ -12,7 +12,6 @@ import {
 import { prettyKey } from "../utils/prettyKey.js";
 import { RollChecks } from "../sheets/rollChecks.js";
 import type { DwFlags, GetDwFlags, HtmlRoot, SetDwFlags } from "../types.js";
-import { registerOtherNotesListener } from "../components/other-notes/other-notes.listener.js";
 
 export function registerSheetListeners(
   html: HtmlRoot,
@@ -72,9 +71,4 @@ export function registerSheetListeners(
   });
 
   registerEquipmentListener(html);
-
-  registerOtherNotesListener(html, {
-    getDwFlags,
-    setDwFlags: (dw: DwFlags) => setDwFlags(dw)
-  });
 }

@@ -1,6 +1,5 @@
 <div class="dw-block-head">
   <h2>{{localize "DOLMENWOOD.UI.AbilityScores"}}</h2>
-  {{! <div class="dw-hint">Roll 1d6 +/- mod. Success if final result is >= 4.</div> }}
 </div>
 
 <div class="dw-abilities">
@@ -22,12 +21,7 @@
         <div class="dw-abilities__score">
           <div class="dw-abilities__value">
             {{#if a.hasPath}}
-              {{numberInput
-                a.value
-                class="dw-abilities__input dw-number-input"
-                name=a.name
-                step=1
-              }}
+              {{numberInput a.value class="dw-abilities__input dw-number-input" name=a.name step=1}}
             {{else}}
               {{numberInput
                 a.value
