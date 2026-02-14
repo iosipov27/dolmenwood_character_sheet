@@ -22,19 +22,19 @@
         <div class="dw-abilities__score">
           <div class="dw-abilities__value">
             {{#if a.hasPath}}
-              <input
+              {{numberInput
+                a.value
                 class="dw-abilities__input dw-number-input"
-                name="{{a.name}}"
-                type="number"
-                value="{{a.value}}"
-              />
+                name=a.name
+                step=1
+              }}
             {{else}}
-              <input
-                class="dw-abilities__input dw-abilities__input--disabled"
-                type="text"
-                value="{{a.value}}"
-                disabled
-              />
+              {{numberInput
+                a.value
+                class="dw-abilities__input dw-number-input dw-abilities__input--disabled"
+                step=1
+                disabled=true
+              }}
             {{/if}}
           </div>
         </div>
