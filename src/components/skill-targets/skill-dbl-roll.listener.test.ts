@@ -1,9 +1,20 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { flushPromises } from "../../test/flushPromises.js";
 import { registerSkillDblRollListener } from "./skill-dbl-roll.listener.js";
 
 describe("registerSkillDblRollListener", () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+    vi.unstubAllGlobals();
+  });
+
   it("rolls skill on double click with input value", async () => {
+    vi.stubGlobal("game", {
+      i18n: {
+        localize: (key: string) => (key === "DOLMENWOOD.Roll.SkillPrefix" ? "Skill" : key)
+      }
+    });
+
     document.body.innerHTML = `<input data-dw-dblroll="skill" data-key="search" value="13" />`;
     const html = $(document.body);
     const actor = {} as Actor;

@@ -382,6 +382,34 @@ hr {
 .dw-editor .editor-content * p {
   margin: 0;
 }
+.dw-editor .editor-content .toggle,
+.dw-editor .prosemirror .toggle,
+.dw-editor .editor-content * .toggle {
+  background-image: url("/ui/parchment.jpg");
+  background-repeat: repeat;
+}
+
+.dw-roll-card {
+  display: grid;
+  gap: 0.25rem;
+  text-align: center;
+}
+.dw-roll-card__title {
+  font-weight: 700;
+  text-align: left;
+  margin-bottom: 0.15rem;
+}
+.dw-roll-card__status {
+  font-weight: 700;
+  line-height: 1.2;
+  padding: 0.05rem 0;
+}
+.dw-roll-card__status--success {
+  color: #1b6b1b;
+}
+.dw-roll-card__status--fail {
+  color: #8b1e1e;
+}
 
 .dw-abilities {
   display: grid;
@@ -828,12 +856,6 @@ hr {
 }
 
 .dw-kindred-traits-editor {
-  min-height: 4rem;
-}
-.dw-kindred-traits-editor .editor-container,
-.dw-kindred-traits-editor .editor,
-.dw-kindred-traits-editor .editor-content,
-.dw-kindred-traits-editor .prosemirror {
   min-height: 8rem;
 }
 

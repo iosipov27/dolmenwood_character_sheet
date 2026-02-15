@@ -61,7 +61,19 @@
     },
     "Ability": {
       "Strength": "Strength",
-      "Dexterity": "Dexterity"
+      "Dexterity": "Dexterity",
+      "Constitution": "Constitution",
+      "Intelligence": "Intelligence",
+      "Wisdom": "Wisdom",
+      "Charisma": "Charisma"
+    },
+    "AbilityTooltip": {
+      "Strength": "Physical power and melee attack bonus",
+      "Dexterity": "Agility and ranged attack bonus",
+      "Constitution": "Endurance and hit point bonus",
+      "Intelligence": "Reasoning and number of languages",
+      "Wisdom": "Perception and magic resistance",
+      "Charisma": "Leadership and reaction bonus"
     },
     "Skills": {
       "Listen": "LISTEN",
@@ -78,8 +90,13 @@
     },
     "Roll": {
       "AbilityPrefix": "Ability",
+      "SkillPrefix": "Skill",
       "SavePrefix": "Save",
       "TargetWord": "target",
+      "Formula": "Formula",
+      "Modifier": "Situational Modifier",
+      "ModifierPlaceholder": "e.g. +1d4",
+      "InvalidModifier": "Invalid modifier formula",
       "Success": "SUCCESS",
       "Fail": "FAIL"
     },

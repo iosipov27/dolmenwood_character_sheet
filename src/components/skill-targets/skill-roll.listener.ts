@@ -17,12 +17,14 @@ export function registerSkillRollListener(
     prettyKey: (key: string) => string;
   }
 ): void {
+  const localize = (key: string): string => game.i18n?.localize(key) ?? key;
+
   registerAction(html, DW_ROLL_SKILL, async (ev: ActionEvent) => {
     const { key } = getDataset(ev);
     const dw = getDwFlags();
     const targetRaw = Number(foundry.utils.getProperty(dw, `skills.${key}`) ?? 6);
     const target = Number.isFinite(targetRaw) && targetRaw > 0 ? targetRaw : 6;
 
-    await rollSkillCheck(actor, `Skill: ${prettyKey(key ?? "")}`, target);
+    await rollSkillCheck(actor, `${localize("DOLMENWOOD.Roll.SkillPrefix")}: ${prettyKey(key ?? "")}`, target);
   });
 }

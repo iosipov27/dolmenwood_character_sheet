@@ -3,19 +3,27 @@ export class RollChecks {
     actor: Actor,
     label: string,
     target: number
-  ): Promise<{ roll: Roll; success: boolean; target: number }> {
+  ): Promise<{ roll: Roll; success: boolean; target: number } | null> {
     const localize = (key: string): string => game.i18n?.localize(key) ?? key;
     const t = Number(target ?? 0);
-    const roll = await new Roll("1d20").evaluate();
-    const success = roll.total >= t;
-    const resultLabel = success
+    const roll = await RollChecks.createRollWithPrompt({
+      title: label,
+      displayFormula: "1d20",
+      rollFormula: "1d20"
+    });
+
+    if (!roll) return null;
+
+    const total = Number(roll.total ?? 0);
+    const success = total >= t;
+    const status = success
       ? localize("DOLMENWOOD.Roll.Success")
       : localize("DOLMENWOOD.Roll.Fail");
-
-    const flavor =
-      `<span class="dw-roll-title">${label}</span>` +
-      ` - ${localize("DOLMENWOOD.Roll.TargetWord")} <b>${t}</b> - ` +
-      `<span class="dw-${success ? "success" : "fail"}">${resultLabel}</span>`;
+    const flavor = RollChecks.buildRollFlavor({
+      title: label,
+      status,
+      statusKind: success ? "success" : "fail"
+    });
 
     await roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor }),
@@ -29,73 +37,216 @@ export class RollChecks {
     actor: Actor,
     abilityLabel: string,
     abilityMod: number
-  ): Promise<{ roll: Roll; success: boolean; target: number }> {
+  ): Promise<{ roll: Roll; success: boolean; target: number } | null> {
     const localize = (key: string): string => game.i18n?.localize(key) ?? key;
     const target = 4;
-    const mod = Number(abilityMod ?? 0);
-    const roll = await new Roll("1d6 + @mod", { mod }).evaluate();
+    const modRaw = Number(abilityMod ?? 0);
+    const mod = Number.isFinite(modRaw) ? modRaw : 0;
+    const title = `${localize("DOLMENWOOD.Roll.AbilityPrefix")}: ${abilityLabel}`;
+    const displayFormula = RollChecks.formatFormulaWithNumericModifier("1d6", mod);
+    const roll = await RollChecks.createRollWithPrompt({
+      title,
+      displayFormula,
+      rollFormula: "1d6 + @mod",
+      rollData: { mod }
+    });
+
+    if (!roll) return null;
+
     const total = Number(roll.total ?? 0);
     const dieRoll = RollChecks.getFirstDieResult(roll);
     const autoFail = dieRoll === 1;
     const autoSuccess = dieRoll === 6;
     const success = autoFail ? false : autoSuccess ? true : total >= target;
-    const resultLabel = success
+    const status = success
       ? localize("DOLMENWOOD.Roll.Success")
       : localize("DOLMENWOOD.Roll.Fail");
-    const modText = mod > 0 ? ` + ${mod}` : mod < 0 ? ` - ${Math.abs(mod)}` : "";
-    const checkText = autoFail
-      ? "d6 <b>1</b> => auto fail"
-      : autoSuccess
-        ? "d6 <b>6</b> => auto success"
-        : `<b>${total}</b> >= <b>${target}</b>`;
-
-    const flavor =
-      `<span class="dw-roll-title">${localize("DOLMENWOOD.Roll.AbilityPrefix")}: ${abilityLabel}</span>` +
-      ` - 1d6${modText} = <b>${total}</b> - ${checkText} - ` +
-      `<span class="dw-${success ? "success" : "fail"}">${resultLabel}</span>`;
+    const flavor = RollChecks.buildRollFlavor({
+      title,
+      status,
+      statusKind: success ? "success" : "fail"
+    });
 
     await roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor }),
       flavor
     });
 
-    return { roll: roll as unknown as Roll, success, target };
+    return { roll, success, target };
   }
 
   static async rollSkillCheck(
     actor: Actor,
     label: string,
     skillValue: number
-  ): Promise<{ roll: Roll; success: boolean; target: number }> {
+  ): Promise<{ roll: Roll; success: boolean; target: number } | null> {
     const localize = (key: string): string => game.i18n?.localize(key) ?? key;
     const targetRaw = Number(skillValue ?? 6);
     const target = Number.isFinite(targetRaw) && targetRaw > 0 ? targetRaw : 6;
-    const roll = await new Roll("1d6").evaluate();
+    const roll = await RollChecks.createRollWithPrompt({
+      title: label,
+      displayFormula: "1d6",
+      rollFormula: "1d6"
+    });
+
+    if (!roll) return null;
+
     const total = Number(roll.total ?? 0);
     const dieRoll = RollChecks.getFirstDieResult(roll);
     const autoFail = dieRoll === 1;
     const autoSuccess = dieRoll === 6;
     const success = autoFail ? false : autoSuccess ? true : total >= target;
-    const resultLabel = success
+    const status = success
       ? localize("DOLMENWOOD.Roll.Success")
       : localize("DOLMENWOOD.Roll.Fail");
-    const checkText = autoFail
-      ? "d6 <b>1</b> => auto fail"
-      : autoSuccess
-        ? "d6 <b>6</b> => auto success"
-        : `<b>${total}</b> >= <b>${target}</b>`;
-
-    const flavor =
-      `<span class="dw-roll-title">${label}</span>` +
-      ` - 1d6 = <b>${total}</b> - ${checkText} - ` +
-      `<span class="dw-${success ? "success" : "fail"}">${resultLabel}</span>`;
+    const flavor = RollChecks.buildRollFlavor({
+      title: label,
+      status,
+      statusKind: success ? "success" : "fail"
+    });
 
     await roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor }),
       flavor
     });
 
-    return { roll: roll as unknown as Roll, success, target };
+    return { roll, success, target };
+  }
+
+  static async rollAttackCheck(
+    actor: Actor,
+    attackLabel: string,
+    _abilityLabel: string,
+    abilityMod: number
+  ): Promise<{ roll: Roll; mod: number } | null> {
+    const localize = (key: string): string => game.i18n?.localize(key) ?? key;
+    const modRaw = Number(abilityMod ?? 0);
+    const mod = Number.isFinite(modRaw) ? modRaw : 0;
+    const displayFormula = RollChecks.formatFormulaWithNumericModifier("1d20", mod);
+    const roll = await RollChecks.createRollWithPrompt({
+      title: attackLabel,
+      displayFormula,
+      rollFormula: "1d20 + @mod",
+      rollData: { mod }
+    });
+
+    if (!roll) return null;
+
+    const dieRoll = RollChecks.getFirstDieResult(roll);
+    const autoFail = dieRoll === 1;
+    const autoSuccess = dieRoll === 20;
+    const status = autoFail
+      ? localize("DOLMENWOOD.Roll.Fail")
+      : autoSuccess
+        ? localize("DOLMENWOOD.Roll.Success")
+        : null;
+    const statusKind = autoFail ? "fail" : autoSuccess ? "success" : null;
+    const flavor = RollChecks.buildRollFlavor({
+      title: attackLabel,
+      status,
+      statusKind
+    });
+
+    await roll.toMessage({
+      speaker: ChatMessage.getSpeaker({ actor }),
+      flavor
+    });
+
+    return { roll, mod };
+  }
+
+  private static async createRollWithPrompt({
+    title,
+    displayFormula,
+    rollFormula,
+    rollData
+  }: {
+    title: string;
+    displayFormula: string;
+    rollFormula: string;
+    rollData?: Record<string, unknown>;
+  }): Promise<Roll | null> {
+    const localize = (key: string): string => game.i18n?.localize(key) ?? key;
+    const modifier = await RollChecks.promptRollModifier({ title, formula: displayFormula });
+
+    if (modifier === null) return null;
+
+    const formula = RollChecks.appendModifier(rollFormula, modifier);
+
+    try {
+      const evaluated = rollData
+        ? await new Roll(formula, rollData).evaluate()
+        : await new Roll(formula).evaluate();
+
+      return evaluated as unknown as Roll;
+    } catch {
+      ui.notifications?.error(localize("DOLMENWOOD.Roll.InvalidModifier"));
+
+      return null;
+    }
+  }
+
+  private static async promptRollModifier({
+    title,
+    formula
+  }: {
+    title: string;
+    formula: string;
+  }): Promise<string | null> {
+    const fvtt = globalThis.foundry as typeof foundry | undefined;
+
+    if (!fvtt?.applications?.api?.DialogV2) return "";
+
+    const localize = (key: string): string => game.i18n?.localize(key) ?? key;
+    const content =
+      `<div class="form-group">` +
+      `<label>${RollChecks.escapeHtml(localize("DOLMENWOOD.Roll.Formula"))}</label>` +
+      `<div>${RollChecks.escapeHtml(formula)}</div>` +
+      `</div>` +
+      `<div class="form-group">` +
+      `<label>${RollChecks.escapeHtml(localize("DOLMENWOOD.Roll.Modifier"))}</label>` +
+      `<input type="text" name="modifier" placeholder="${RollChecks.escapeHtml(localize("DOLMENWOOD.Roll.ModifierPlaceholder"))}" autofocus>` +
+      `</div>`;
+    const config: foundry.applications.api.DialogV2.PromptConfig = {
+      window: { title },
+      content,
+      modal: true,
+      rejectClose: false,
+      ok: {
+        label: localize("DOLMENWOOD.UI.Roll"),
+        icon: "fa-solid fa-dice-d20",
+        callback: (_event: PointerEvent | SubmitEvent, button: HTMLButtonElement) => {
+          const input = button.form?.elements.namedItem("modifier");
+
+          return input instanceof HTMLInputElement ? input.value.trim() : "";
+        }
+      }
+    };
+    const result = await fvtt.applications.api.DialogV2.prompt(config);
+
+    if (result === null) return null;
+
+    return String(result ?? "").trim();
+  }
+
+  private static appendModifier(formula: string, modifier: string): string {
+    const trimmed = modifier.trim();
+
+    if (!trimmed) return formula;
+
+    if (trimmed.startsWith("+") || trimmed.startsWith("-")) {
+      return `${formula} ${trimmed}`;
+    }
+
+    return `${formula} + ${trimmed}`;
+  }
+
+  private static formatFormulaWithNumericModifier(baseFormula: string, modifier: number): string {
+    if (!modifier) return baseFormula;
+
+    const sign = modifier > 0 ? "+" : "-";
+
+    return `${baseFormula} ${sign} ${Math.abs(modifier)}`;
   }
 
   private static getFirstDieResult(roll: unknown): number | null {
@@ -110,34 +261,40 @@ export class RollChecks {
     return firstResult;
   }
 
-  static async rollAttackCheck(
-    actor: Actor,
-    attackLabel: string,
-    abilityLabel: string,
-    abilityMod: number
-  ): Promise<{ roll: Roll; mod: number }> {
-    const localize = (key: string): string => game.i18n?.localize(key) ?? key;
-    const mod = Number(abilityMod ?? 0);
-    const roll = await new Roll("1d20 + @mod", { mod }).evaluate();
-    const dieRoll = RollChecks.getFirstDieResult(roll);
-    const autoFail = dieRoll === 1;
-    const autoSuccess = dieRoll === 20;
-    const sign = mod >= 0 ? "+" : "-";
-    const resultText = autoFail
-      ? ` - d20 <b>1</b> => auto fail - <span class="dw-fail">${localize("DOLMENWOOD.Roll.Fail")}</span>`
-      : autoSuccess
-        ? ` - d20 <b>20</b> => auto success - <span class="dw-success">${localize("DOLMENWOOD.Roll.Success")}</span>`
+  private static buildRollFlavor({
+    title,
+    status,
+    statusKind
+  }: {
+    title: string;
+    status: string | null;
+    statusKind: "success" | "fail" | null;
+  }): string {
+    const statusMarkup =
+      status && statusKind
+        ? `<div class="dw-roll-card__status dw-roll-card__status--${statusKind}">${RollChecks.escapeHtml(status)}</div>`
         : "";
 
-    const flavor =
-      `<span class="dw-roll-title">${attackLabel}</span>` +
-      ` - 1d20 ${sign} <b>${Math.abs(mod)}</b> (${abilityLabel})${resultText}`;
+    return (
+      `<div class="dw-roll-card">` +
+      `<div class="dw-roll-card__title">${RollChecks.escapeHtml(title)}</div>` +
+      statusMarkup +
+      `</div>`
+    );
+  }
 
-    await roll.toMessage({
-      speaker: ChatMessage.getSpeaker({ actor }),
-      flavor
-    });
+  private static escapeHtml(value: unknown): string {
+    const raw = String(value ?? "");
+    const fvtt = globalThis.foundry as typeof foundry | undefined;
+    const escape = fvtt?.utils?.escapeHTML;
 
-    return { roll: roll as unknown as Roll, mod };
+    if (typeof escape === "function") return escape(raw);
+
+    return raw
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#39;");
   }
 }
