@@ -1,9 +1,20 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { flushPromises } from "../../test/flushPromises.js";
 import { registerExtraSkillRollListener } from "./extra-skill-roll.listener.js";
 
 describe("registerExtraSkillRollListener", () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+    vi.unstubAllGlobals();
+  });
+
   it("rolls extra skill on mouse down using row inputs", async () => {
+    vi.stubGlobal("game", {
+      i18n: {
+        localize: (key: string) => (key === "DOLMENWOOD.Roll.SkillPrefix" ? "Skill" : key)
+      }
+    });
+
     document.body.innerHTML = `
       <div class="dw-skill__extra">
         <button data-action="dw-roll-extra-skill" data-name="fallback"></button>

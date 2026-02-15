@@ -1,8 +1,32 @@
 export const ABILITIES = [
-  { key: "str", label: "Strength", title: "Physical power and melee attack bonus" },
-  { key: "dex", label: "Dexterity", title: "Agility and ranged attack bonus" },
-  { key: "con", label: "Constitution", title: "Endurance and hit point bonus" },
-  { key: "int", label: "Intelligence", title: "Reasoning and number of languages" },
-  { key: "wis", label: "Wisdom", title: "Perception and magic resistance" },
-  { key: "cha", label: "Charisma", title: "Leadership and reaction bonus" }
+  {
+    key: "str",
+    labelKey: "DOLMENWOOD.Ability.Strength",
+    titleKey: "DOLMENWOOD.AbilityTooltip.Strength"
+  },
+  {
+    key: "dex",
+    labelKey: "DOLMENWOOD.Ability.Dexterity",
+    titleKey: "DOLMENWOOD.AbilityTooltip.Dexterity"
+  },
+  {
+    key: "con",
+    labelKey: "DOLMENWOOD.Ability.Constitution",
+    titleKey: "DOLMENWOOD.AbilityTooltip.Constitution"
+  },
+  {
+    key: "int",
+    labelKey: "DOLMENWOOD.Ability.Intelligence",
+    titleKey: "DOLMENWOOD.AbilityTooltip.Intelligence"
+  },
+  {
+    key: "wis",
+    labelKey: "DOLMENWOOD.Ability.Wisdom",
+    titleKey: "DOLMENWOOD.AbilityTooltip.Wisdom"
+  },
+  {
+    key: "cha",
+    labelKey: "DOLMENWOOD.Ability.Charisma",
+    titleKey: "DOLMENWOOD.AbilityTooltip.Charisma"
+  }
 ];

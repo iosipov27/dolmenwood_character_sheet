@@ -5,6 +5,7 @@ export function registerExtraSkillDblRollListener(
   html: HtmlRoot,
   { actor, rollSkillCheck }: { actor: Actor; rollSkillCheck: RollSkillCheck }
 ): void {
+  const localize = (key: string): string => game.i18n?.localize(key) ?? key;
   const nodes = html.find("input[data-dw-dblroll='extra-skill']") as JQueryWithOn<HTMLInputElement>;
 
   nodes.on("dblclick", async (ev: ActionEvent<HTMLInputElement>) => {
@@ -14,6 +15,10 @@ export function registerExtraSkillDblRollListener(
     const targetRaw = Number(ev.currentTarget.value ?? 6);
     const target = Number.isFinite(targetRaw) && targetRaw > 0 ? targetRaw : 6;
 
-    await rollSkillCheck(actor, `Skill: ${skillName.toUpperCase()}`, target);
+    await rollSkillCheck(
+      actor,
+      `${localize("DOLMENWOOD.Roll.SkillPrefix")}: ${skillName.toUpperCase()}`,
+      target
+    );
   });
 }

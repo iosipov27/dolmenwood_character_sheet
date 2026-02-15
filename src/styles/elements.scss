@@ -216,5 +216,36 @@ hr {
     p {
       margin: 0;
     }
+
+    .toggle {
+      background-image: url("/ui/parchment.jpg");
+      background-repeat: repeat;
+    }
+  }
+}
+
+.dw-roll-card {
+  display: grid;
+  gap: 0.25rem;
+  text-align: center;
+
+  &__title {
+    font-weight: 700;
+    text-align: left;
+    margin-bottom: 0.15rem;
+  }
+
+  &__status {
+    font-weight: 700;
+    line-height: 1.2;
+    padding: 0.05rem 0;
+
+    &--success {
+      color: #1b6b1b;
+    }
+
+    &--fail {
+      color: #8b1e1e;
+    }
   }
 }

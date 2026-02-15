@@ -51,7 +51,14 @@ describe("RollChecks.rollAbilityCheck", () => {
     expect(getSpeaker).toHaveBeenCalledWith({ actor });
     expect(postedMessage).toHaveBeenCalledWith(
       expect.objectContaining({
-        flavor: expect.stringContaining("1d6 + 2 = <b>4</b> - <b>4</b> >= <b>4</b>")
+        flavor: expect.stringContaining('<div class="dw-roll-card__title">Ability: Strength</div>')
+      })
+    );
+    expect(postedMessage).toHaveBeenCalledWith(
+      expect.objectContaining({
+        flavor: expect.stringContaining(
+          '<div class="dw-roll-card__status dw-roll-card__status--success">Success</div>'
+        )
       })
     );
   });
@@ -176,7 +183,14 @@ describe("RollChecks.rollSkillCheck", () => {
     expect(result.target).toBe(5);
     expect(postedMessage).toHaveBeenCalledWith(
       expect.objectContaining({
-        flavor: expect.stringContaining("1d6 = <b>5</b> - <b>5</b> >= <b>5</b>")
+        flavor: expect.stringContaining('<div class="dw-roll-card__title">Skill: LISTEN</div>')
+      })
+    );
+    expect(postedMessage).toHaveBeenCalledWith(
+      expect.objectContaining({
+        flavor: expect.stringContaining(
+          '<div class="dw-roll-card__status dw-roll-card__status--success">DOLMENWOOD.Roll.Success</div>'
+        )
       })
     );
   });
@@ -273,6 +287,8 @@ describe("RollChecks.rollAttackCheck", () => {
     const getSpeaker = vi.fn(() => ({ alias: "Actor" }));
 
     class MockRoll {
+      total = 11;
+
       constructor(formula: string, data: { mod: number }) {
         builtRolls.push({ formula, mod: data.mod });
       }
@@ -297,7 +313,7 @@ describe("RollChecks.rollAttackCheck", () => {
     expect(getSpeaker).toHaveBeenCalledWith({ actor });
     expect(postedMessage).toHaveBeenCalledWith(
       expect.objectContaining({
-        flavor: expect.stringContaining("1d20 - <b>1</b> (Strength)")
+        flavor: expect.stringContaining('<div class="dw-roll-card__title">Melee Attack</div>')
       })
     );
   });
@@ -315,6 +331,7 @@ describe("RollChecks.rollAttackCheck", () => {
     const postedMessage = vi.fn(async () => {});
 
     class MockRoll {
+      total = 10;
       dice = [{ results: [{ result: 1 }] }];
 
       constructor(_formula: string, _data: { mod: number }) {}
@@ -335,12 +352,7 @@ describe("RollChecks.rollAttackCheck", () => {
 
     expect(postedMessage).toHaveBeenCalledWith(
       expect.objectContaining({
-        flavor: expect.stringContaining("d20 <b>1</b> => auto fail")
-      })
-    );
-    expect(postedMessage).toHaveBeenCalledWith(
-      expect.objectContaining({
-        flavor: expect.stringContaining('<span class="dw-fail">FAIL</span>')
+        flavor: expect.stringContaining('<div class="dw-roll-card__status dw-roll-card__status--fail">FAIL</div>')
       })
     );
   });
@@ -358,6 +370,7 @@ describe("RollChecks.rollAttackCheck", () => {
     const postedMessage = vi.fn(async () => {});
 
     class MockRoll {
+      total = 20;
       dice = [{ results: [{ result: 20 }] }];
 
       constructor(_formula: string, _data: { mod: number }) {}
@@ -378,12 +391,9 @@ describe("RollChecks.rollAttackCheck", () => {
 
     expect(postedMessage).toHaveBeenCalledWith(
       expect.objectContaining({
-        flavor: expect.stringContaining("d20 <b>20</b> => auto success")
-      })
-    );
-    expect(postedMessage).toHaveBeenCalledWith(
-      expect.objectContaining({
-        flavor: expect.stringContaining('<span class="dw-success">SUCCESS</span>')
+        flavor: expect.stringContaining(
+          '<div class="dw-roll-card__status dw-roll-card__status--success">SUCCESS</div>'
+        )
       })
     );
   });

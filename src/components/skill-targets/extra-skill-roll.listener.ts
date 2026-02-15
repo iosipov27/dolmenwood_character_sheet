@@ -6,6 +6,7 @@ export function registerExtraSkillRollListener(
   html: HtmlRoot,
   { actor, rollSkillCheck }: { actor: Actor; rollSkillCheck: RollSkillCheck }
 ): void {
+  const localize = (key: string): string => game.i18n?.localize(key) ?? key;
   const nodes = html.find(
     `[data-action='${DW_ROLL_EXTRA_SKILL}']`
   ) as JQueryWithOn<HTMLButtonElement>;
@@ -21,6 +22,10 @@ export function registerExtraSkillRollListener(
     const targetRaw = Number(targetInput?.value ?? 6);
     const target = Number.isFinite(targetRaw) && targetRaw > 0 ? targetRaw : 6;
 
-    await rollSkillCheck(actor, `Skill: ${skillName.toUpperCase()}`, target);
+    await rollSkillCheck(
+      actor,
+      `${localize("DOLMENWOOD.Roll.SkillPrefix")}: ${skillName.toUpperCase()}`,
+      target
+    );
   });
 }

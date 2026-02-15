@@ -1,9 +1,20 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { flushPromises } from "../../test/flushPromises.js";
 import { registerSkillRollListener } from "./skill-roll.listener.js";
 
 describe("registerSkillRollListener", () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+    vi.unstubAllGlobals();
+  });
+
   it("rolls skill with target from dw flags", async () => {
+    vi.stubGlobal("game", {
+      i18n: {
+        localize: (key: string) => (key === "DOLMENWOOD.Roll.SkillPrefix" ? "Skill" : key)
+      }
+    });
+
     document.body.innerHTML = `<button data-action="dw-roll-skill" data-key="listen"></button>`;
     const html = $(document.body);
     const actor = {} as Actor;
@@ -21,6 +32,12 @@ describe("registerSkillRollListener", () => {
   });
 
   it("uses default skill target 6 when flag value is missing", async () => {
+    vi.stubGlobal("game", {
+      i18n: {
+        localize: (key: string) => (key === "DOLMENWOOD.Roll.SkillPrefix" ? "Skill" : key)
+      }
+    });
+
     document.body.innerHTML = `<button data-action="dw-roll-skill" data-key="search"></button>`;
     const html = $(document.body);
     const actor = {} as Actor;

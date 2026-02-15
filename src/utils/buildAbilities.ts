@@ -3,6 +3,7 @@ import { formatSigned } from "./formatSigned.js";
 import type { DwAbilityView } from "../types.js";
 
 export function buildAbilities(systemData: Record<string, unknown>): DwAbilityView[] {
+  const localize = (key: string): string => game.i18n?.localize(key) ?? key;
   const candidates: Array<(k: string) => string> = [
     (k: string) => `system.abilities.${k}.value`,
     (k: string) => `system.abilities.${k}`,
@@ -59,8 +60,8 @@ export function buildAbilities(systemData: Record<string, unknown>): DwAbilityVi
 
     out.push({
       key: a.key,
-      label: a.label,
-      title: a.title,
+      label: localize(a.labelKey),
+      title: localize(a.titleKey),
       value,
       name: foundPath ?? "",
       hasPath: Boolean(foundPath),
