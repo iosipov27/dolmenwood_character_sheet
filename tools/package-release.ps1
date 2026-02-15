@@ -66,14 +66,15 @@ foreach ($path in $runtimePaths) {
   Copy-Item -Path $path -Destination $destination -Recurse -Force
 }
 
-# Build a release-specific module.json for immutable GitHub release URLs.
+# Build a release module.json with stable manifest URL and immutable versioned download URL.
 $normalizedRepoUrl = $repoUrl.TrimEnd("/")
 $tagName = "v$version"
-$releaseBaseUrl = "$normalizedRepoUrl/releases/download/$tagName"
+$latestReleaseBaseUrl = "$normalizedRepoUrl/releases/latest/download"
+$versionedReleaseBaseUrl = "$normalizedRepoUrl/releases/download/$tagName"
 $releaseModule = $module | ConvertTo-Json -Depth 100 | ConvertFrom-Json
 
-$releaseModule.manifest = "$releaseBaseUrl/module.json"
-$releaseModule.download = "$releaseBaseUrl/$ZipName"
+$releaseModule.manifest = "$latestReleaseBaseUrl/module.json"
+$releaseModule.download = "$versionedReleaseBaseUrl/$ZipName"
 
 if (-not (Test-Path (Split-Path $distModuleJsonPath -Parent))) {
   New-Item -ItemType Directory -Path (Split-Path $distModuleJsonPath -Parent) -Force | Out-Null
