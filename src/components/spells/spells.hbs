@@ -1,7 +1,9 @@
 <div class="dw-spells">
   <div class="dw-spells__header">
     <h2>{{localize "DOLMENWOOD.UI.Spells"}}</h2>
-    <p class="dw-hint">{{localize "DOLMENWOOD.UI.SpellsDropHint"}}</p>
+    {{#unless ctx.dwSpellItems.length}}
+      <p class="dw-hint">{{localize "DOLMENWOOD.UI.SpellsDropHint"}}</p>
+    {{/unless}}
   </div>
 
   <div class="dw-spells__scroll">

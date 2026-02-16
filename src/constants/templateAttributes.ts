@@ -7,3 +7,4 @@ export const DW_REMOVE_SKILL = "dw-remove-skill";
 export const DW_ROLL_ATTACK = "dw-roll-attack";
 export const DW_OPEN_ITEM = "dw-open-item";
 export const DW_DELETE_ITEM = "dw-delete-item";
+export const DW_SET_SPELLS_TRAITS_VIEW = "dw-set-spells-traits-view";

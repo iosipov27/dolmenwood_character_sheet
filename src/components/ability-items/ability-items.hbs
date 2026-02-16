@@ -1,7 +1,9 @@
 <div class="dw-ability-items">
   <div class="dw-ability-items__header">
     <h2>{{localize "DOLMENWOOD.UI.Abilities"}}</h2>
-    <p class="dw-hint">{{localize "DOLMENWOOD.UI.AbilitiesDropHint"}}</p>
+    {{#unless ctx.dwAbilityItems.length}}
+      <p class="dw-hint">{{localize "DOLMENWOOD.UI.AbilitiesDropHint"}}</p>
+    {{/unless}}
   </div>
 
   <div class="dw-ability-items__scroll">

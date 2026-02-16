@@ -1,11 +1,48 @@
-<section class="dw-spells-abilities">
-    <div class="dw-spells-abilities__section" data-dw-drop-kind="spell">
+<section class="dw-spells-abilities dw-spells-abilities--view-both">
+    <header class="dw-spells-abilities__toolbar">
+        <span class="dw-spells-abilities__toolbar-label">{{localize "DOLMENWOOD.UI.ViewMode"}}:</span>
+
+        <div class="dw-spells-abilities__view-switch" role="group">
+            <button
+                type="button"
+                class="dw-spells-abilities__view-btn"
+                data-action="dw-set-spells-traits-view"
+                data-view="cards"
+            >
+                {{localize "DOLMENWOOD.UI.ViewCards"}}
+            </button>
+            <button
+                type="button"
+                class="dw-spells-abilities__view-btn"
+                data-action="dw-set-spells-traits-view"
+                data-view="text"
+            >
+                {{localize "DOLMENWOOD.UI.ViewText"}}
+            </button>
+            <button
+                type="button"
+                class="dw-spells-abilities__view-btn is-active"
+                data-action="dw-set-spells-traits-view"
+                data-view="both"
+            >
+                {{localize "DOLMENWOOD.UI.ViewBoth"}}
+            </button>
+        </div>
+    </header>
+
+    <div class="dw-spells-abilities__section dw-spells-abilities__section--spells" data-dw-drop-kind="spell">
         {{~> spells ctx=ctx~}}
     </div>
 
-    <hr class="dw-spells-abilities__divider" />
+    <hr class="dw-spells-abilities__divider dw-spells-abilities__divider--cards mt1 mb2" />
 
-    <div class="dw-spells-abilities__section" data-dw-drop-kind="ability">
+    <div class="dw-spells-abilities__section dw-spells-abilities__section--traits" data-dw-drop-kind="ability">
         {{~> ability-items ctx=ctx~}}
+    </div>
+
+    <hr class="dw-spells-abilities__divider dw-spells-abilities__divider--notes mt1 mb2" />
+
+    <div class="dw-spells-abilities__section dw-spells-abilities__section--notes">
+        {{~> kindred-class-traits ctx=ctx~}}
     </div>
 </section>

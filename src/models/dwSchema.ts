@@ -27,6 +27,15 @@ function htmlField(fields: FieldsApi): AnyField {
   });
 }
 
+function spellsTraitsViewField(fields: FieldsApi): AnyField {
+  return new fields.StringField({
+    required: true,
+    nullable: false,
+    blank: false,
+    initial: "both"
+  });
+}
+
 function numberField(
   fields: FieldsApi,
   {
@@ -101,6 +110,7 @@ function buildDwFlagsSchema(fields: FieldsApi): AnyField {
       attack: numberField(fields, { min: 0 })
     }),
     meta: new SchemaField({
+      spellsTraitsView: spellsTraitsViewField(fields),
       kindredClass: stringField(fields),
       kindredClassTraits: htmlField(fields),
       background: stringField(fields),

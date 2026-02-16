@@ -28,7 +28,10 @@ export interface DwCombat {
   attack: number;
 }
 
+export type DwSpellsTraitsView = "cards" | "text" | "both";
+
 export interface DwMeta {
+  spellsTraitsView: DwSpellsTraitsView;
   kindredClass: string;
   kindredClassTraits: string;
   background: string;

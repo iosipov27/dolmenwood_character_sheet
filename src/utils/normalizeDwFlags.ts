@@ -1,6 +1,12 @@
-import type { DwFlags, DwFlagsInput, DwMeta, DwSaves } from "../types.js";
+import type { DwFlags, DwFlagsInput, DwMeta, DwSaves, DwSpellsTraitsView } from "../types.js";
 import { cleanDwFlagsWithSchema } from "../models/dwSchema.js";
 import { reportError } from "./reportError.js";
+
+const SPELLS_TRAITS_VIEW_MODES: readonly DwSpellsTraitsView[] = ["cards", "text", "both"];
+
+function isSpellsTraitsView(value: string): value is DwSpellsTraitsView {
+  return SPELLS_TRAITS_VIEW_MODES.includes(value as DwSpellsTraitsView);
+}
 
 export function normalizeDwFlags(dw: DwFlagsInput): DwFlags {
   // If an old "resistance" existed, fold it into magic (prefer magic if set).
@@ -26,6 +32,13 @@ export function normalizeDwFlags(dw: DwFlagsInput): DwFlags {
   }
 
   delete (d as Record<string, unknown>).otherNotes;
+
+  const spellsTraitsViewRaw = String(meta.spellsTraitsView ?? "")
+    .trim()
+    .toLowerCase();
+
+  meta.spellsTraitsView = isSpellsTraitsView(spellsTraitsViewRaw) ? spellsTraitsViewRaw : "both";
+
   d.meta = meta as DwMeta;
 
   try {
