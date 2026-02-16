@@ -17,7 +17,7 @@
           <div class="dw-equipment__row dw-equipment__row--header">
             <div class="dw-equipment__entry dw-equipment__entry--item"></div>
             <div class="dw-equipment__entry dw-equipment__entry--weight">
-              <span class="dw-equipment__weight-label">{{localize "DOLMENWOOD.UI.Weight"}}</span>
+              <span class="dw-equipment__weight-label">{{uppercase (localize "DOLMENWOOD.UI.Weight")}}</span>
             </div>
           </div>
           {{#each ctx.dwUi.equipment.equippedFields as |field|}}
@@ -52,7 +52,7 @@
         <div class="dw-equipment__row dw-equipment__row--header">
           <div class="dw-equipment__entry dw-equipment__entry--item"></div>
           <div class="dw-equipment__entry dw-equipment__entry--weight">
-            <span class="dw-equipment__weight-label">{{localize "DOLMENWOOD.UI.Weight"}}</span>
+            <span class="dw-equipment__weight-label">{{uppercase (localize "DOLMENWOOD.UI.Weight")}}</span>
           </div>
         </div>
         {{#each ctx.dwUi.equipment.stowedFields as |field|}}

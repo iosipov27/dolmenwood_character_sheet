@@ -50,6 +50,10 @@
   margin-bottom: 0;
 }
 
+.mb {
+  margin-bottom: var(--mb, 0);
+}
+
 .mb1 {
   margin-bottom: 0.5rem;
 }
@@ -176,6 +180,20 @@
 
 .m5 {
   margin: 2.5rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  padding: 0;
+}
+
+h3,
+h4 {
+  margin: 0;
 }
 
 button {
@@ -483,10 +501,10 @@ hr {
   gap: 0.2rem;
 }
 .dw-save-throws .dw-saves__info {
-  font-size: 0.75rem;
+  font-size: 0.65rem;
   word-wrap: break-word;
-  margin-bottom: 0.3rem;
   padding-top: 0.2rem;
+  text-align: center;
 }
 
 .dw-hp {

@@ -59,6 +59,9 @@
 .mb0 {
   margin-bottom: 0;
 }
+.mb {
+  margin-bottom: var(--mb, 0);
+}
 .mb1 {
   margin-bottom: 0.5rem;
 }
