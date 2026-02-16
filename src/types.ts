@@ -31,6 +31,8 @@ export interface DwCombat {
 export type DwSpellsTraitsView = "cards" | "text" | "both";
 
 export interface DwMeta {
+  spellsCollapsed: boolean;
+  traitsCollapsed: boolean;
   spellsTraitsView: DwSpellsTraitsView;
   kindredClass: string;
   kindredClassTraits: string;

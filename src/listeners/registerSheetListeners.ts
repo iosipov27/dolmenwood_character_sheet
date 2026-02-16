@@ -72,7 +72,11 @@ export function registerSheetListeners(
     rollSkillCheck: RollChecks.rollSkillCheck
   });
 
-  registerSpellsListener(html, actor);
+  registerSpellsListener(html, {
+    actor,
+    getDwFlags,
+    setDwFlags: (dw: DwFlags) => setDwFlags(dw)
+  });
   registerSpellsTraitsViewListener(html, {
     getDwFlags,
     setDwFlags: (dw: DwFlags) => setDwFlags(dw)

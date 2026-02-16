@@ -36,6 +36,14 @@ function spellsTraitsViewField(fields: FieldsApi): AnyField {
   });
 }
 
+function booleanField(fields: FieldsApi, { initial = false }: { initial?: boolean } = {}): AnyField {
+  return new fields.BooleanField({
+    required: true,
+    nullable: false,
+    initial
+  });
+}
+
 function numberField(
   fields: FieldsApi,
   {
@@ -110,6 +118,8 @@ function buildDwFlagsSchema(fields: FieldsApi): AnyField {
       attack: numberField(fields, { min: 0 })
     }),
     meta: new SchemaField({
+      spellsCollapsed: booleanField(fields, { initial: false }),
+      traitsCollapsed: booleanField(fields, { initial: false }),
       spellsTraitsView: spellsTraitsViewField(fields),
       kindredClass: stringField(fields),
       kindredClassTraits: htmlField(fields),

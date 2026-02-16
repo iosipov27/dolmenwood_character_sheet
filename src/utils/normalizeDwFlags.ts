@@ -8,6 +8,20 @@ function isSpellsTraitsView(value: string): value is DwSpellsTraitsView {
   return SPELLS_TRAITS_VIEW_MODES.includes(value as DwSpellsTraitsView);
 }
 
+function normalizeBoolean(value: unknown): boolean {
+  if (typeof value === "boolean") return value;
+  if (typeof value === "number") return value !== 0;
+
+  if (typeof value === "string") {
+    const normalized = value.trim().toLowerCase();
+
+    if (normalized === "true") return true;
+    if (normalized === "false" || normalized === "") return false;
+  }
+
+  return false;
+}
+
 export function normalizeDwFlags(dw: DwFlagsInput): DwFlags {
   // If an old "resistance" existed, fold it into magic (prefer magic if set).
   const d = foundry.utils.duplicate(dw ?? {}) as DwFlagsInput;
@@ -37,6 +51,8 @@ export function normalizeDwFlags(dw: DwFlagsInput): DwFlags {
     .trim()
     .toLowerCase();
 
+  meta.spellsCollapsed = normalizeBoolean(meta.spellsCollapsed);
+  meta.traitsCollapsed = normalizeBoolean(meta.traitsCollapsed);
   meta.spellsTraitsView = isSpellsTraitsView(spellsTraitsViewRaw) ? spellsTraitsViewRaw : "both";
 
   d.meta = meta as DwMeta;
