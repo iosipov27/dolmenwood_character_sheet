@@ -1,126 +1,27 @@
-import { MODULE_ID } from "../constants/moduleId.js";
-import { SAVE_TOOLTIPS } from "../constants/saveTooltips.js";
-import { SKILL_TOOLTIPS } from "../constants/skillTooltips.js";
-import { dwDefaults } from "../models/dwDefaults.js";
-import { getDwFormFields } from "../models/dwSchema.js";
-import { normalizeDwFlags } from "../utils/normalizeDwFlags.js";
-import { prettyKey } from "../utils/prettyKey.js";
 import { buildAbilities } from "../utils/buildAbilities.js";
 import { buildCombat } from "../utils/buildCombat.js";
 import { buildHp } from "../utils/buildHp.js";
-import { reportError } from "../utils/reportError.js";
-import type { DwEquipmentFieldEntry, DwSheetData, DwExtraSkill, DwSkillEntry } from "../types.js";
+import type { DwSheetData } from "../types.js";
+import { buildDwData } from "./buildDwData.js";
+import { buildDwAbilityItems } from "./buildDwAbilityItems.js";
+import { buildDwSavesList } from "./buildDwSavesList.js";
+import { buildDwSkillsList } from "./buildDwSkillsList.js";
+import { buildDwSpellItems } from "./buildDwSpellItems.js";
+import { buildDwUi } from "./buildDwUi.js";
+import { getDwFormFields } from "./dwSchema.js";
+import { buildDwLocalize } from "./localize.js";
 
 export class DolmenwoodSheetData {
   static populate(data: DwSheetData, actor: Actor): DwSheetData {
-    const localize = (key: string): string => game.i18n?.localize(key) ?? key;
-    const localizeMap = (map: Record<string, string>): Record<string, string> =>
-      Object.fromEntries(Object.entries(map).map(([k, v]) => [k, localize(v)]));
-    const moduleRegistry = game?.modules as Collection<Module> | undefined;
-    const moduleActive = moduleRegistry?.get(MODULE_ID)?.active;
+    const localize = buildDwLocalize();
 
     // OSE system data.
     data.system = (actor.system as Record<string, unknown>) ?? {};
 
-    // Dolmenwood flags (actor.flags.<module>.dw).
-    let dwFlagRaw: Partial<Record<string, unknown>> = {};
-
-    try {
-      if (moduleActive) {
-        const actorWithFlags = actor as Actor & {
-          getFlag?(scope: string, key: string): unknown;
-        };
-
-        dwFlagRaw =
-          (actorWithFlags.getFlag?.(MODULE_ID, "dw") as Partial<Record<string, unknown>>) ?? {};
-      }
-    } catch (error) {
-      reportError("Failed to read dolmenwood flags while building sheet data.", error);
-    }
-
-    const dwFlag = normalizeDwFlags(dwFlagRaw);
-
-    // Merge defaults with stored flags.
-    data.dw = foundry.utils.mergeObject(dwDefaults(), dwFlag, { inplace: false });
+    data.dw = buildDwData(actor);
     data.dwFormFields = getDwFormFields();
-
-    // Skills (fixed + extra).
-    const extras = Array.isArray(data.dw.extraSkills) ? data.dw.extraSkills : [];
-
-    const prettyKeyMap = Object.fromEntries(
-      Object.keys(data.dw.skills).map((key) => [key, prettyKey(key)])
-    );
-    const equipment = data.dw.meta.equipment;
-    const buildEquipmentField = (
-      prefix: "equipped" | "stowed",
-      index: number
-    ): DwEquipmentFieldEntry => {
-      const key = `${prefix}${index}` as keyof typeof equipment;
-      const weightKey = `${prefix}Weight${index}` as keyof typeof equipment;
-      const value = String(equipment[key] ?? "");
-      const weightValue = String(equipment[weightKey] ?? "");
-
-      return {
-        id: `dw-${prefix}-${index}`,
-        name: `dw.meta.equipment.${prefix}${index}`,
-        value,
-        placeholder: `Item ${index}`,
-        weightId: `dw-${prefix}-weight-${index}`,
-        weightName: `dw.meta.equipment.${prefix}Weight${index}`,
-        weightValue
-      };
-    };
-    const equippedFields = Array.from({ length: 10 }, (_, i) => buildEquipmentField("equipped", i + 1));
-    const stowedFields = Array.from({ length: 16 }, (_, i) => buildEquipmentField("stowed", i + 1));
-    const allWeightFields = [...equippedFields, ...stowedFields];
-    const totalWeight = allWeightFields
-      .map((field) => Number.parseFloat(field.weightValue))
-      .filter((weight) => Number.isFinite(weight))
-      .reduce((sum, weight) => sum + weight, 0);
-    const formattedTotalWeight = Number.isInteger(totalWeight)
-      ? String(totalWeight)
-      : String(Number(totalWeight.toFixed(2)));
-
-    data.dwSkillsList = [
-      {
-        kind: "fixed",
-        key: "listen",
-        label: localize("DOLMENWOOD.Skills.Listen"),
-        value: data.dw.skills.listen
-      },
-      {
-        kind: "fixed",
-        key: "search",
-        label: localize("DOLMENWOOD.Skills.Search"),
-        value: data.dw.skills.search
-      },
-      {
-        kind: "fixed",
-        key: "survival",
-        label: localize("DOLMENWOOD.Skills.Survival"),
-        value: data.dw.skills.survival
-      },
-      ...extras.map(
-        (s: DwExtraSkill, i: number): DwSkillEntry => ({
-          kind: "extra",
-          index: i,
-          name: s?.name ?? "",
-          target: Number(s?.target ?? 6)
-        })
-      )
-    ];
-
-    // UI helpers for the template.
-    data.dwUi = {
-      saveTooltips: localizeMap(SAVE_TOOLTIPS),
-      skillTooltips: localizeMap(SKILL_TOOLTIPS),
-      prettyKey: prettyKeyMap,
-      equipment: {
-        equippedFields,
-        stowedFields,
-        totalWeight: formattedTotalWeight
-      }
-    };
+    data.dwSkillsList = buildDwSkillsList(data.dw, localize);
+    data.dwUi = buildDwUi(data.dw, localize);
 
     // Abilities from OSE system data.
     data.dwAbilities = buildAbilities(actor.system as Record<string, unknown>);
@@ -131,45 +32,9 @@ export class DolmenwoodSheetData {
     // HP from OSE system data.
     data.dwHp = buildHp(actor.system as Record<string, unknown>);
 
-    // Save targets list (labels, rollable, order).
-    data.dwSavesList = [
-      {
-        key: "doom",
-        label: localize("DOLMENWOOD.Saves.Doom"),
-        rollable: true,
-        value: data.dw.saves.doom
-      },
-      {
-        key: "hold",
-        label: localize("DOLMENWOOD.Saves.Hold"),
-        rollable: true,
-        value: data.dw.saves.hold
-      },
-      {
-        key: "spell",
-        label: localize("DOLMENWOOD.Saves.Spell"),
-        rollable: true,
-        value: data.dw.saves.spell
-      },
-      {
-        key: "ray",
-        label: localize("DOLMENWOOD.Saves.Ray"),
-        rollable: true,
-        value: data.dw.saves.ray
-      },
-      {
-        key: "blast",
-        label: localize("DOLMENWOOD.Saves.Blast"),
-        rollable: true,
-        value: data.dw.saves.blast
-      },
-      {
-        key: "magic",
-        label: localize("DOLMENWOOD.Saves.MagicResist"),
-        rollable: false,
-        value: data.dw.saves.magic
-      }
-    ];
+    data.dwSavesList = buildDwSavesList(data.dw, localize);
+    data.dwSpellItems = buildDwSpellItems(actor);
+    data.dwAbilityItems = buildDwAbilityItems(actor);
 
     return data;
   }

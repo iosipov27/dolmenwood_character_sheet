@@ -1,0 +1,70 @@
+@use "../../styles/common" as *;
+
+.dw-ability-items {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+
+  &__header {
+    flex: 0 0 auto;
+  }
+
+  &__scroll {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: auto;
+    padding-right: 0.1rem;
+  }
+
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.35rem;
+    border: 1px solid $color-border-soft;
+    padding: 0.2rem 0.3rem;
+  }
+
+  &__open {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.45rem;
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 0;
+    background: none;
+    border: none;
+    text-align: left;
+  }
+
+  .dw-x {
+    margin-left: auto;
+  }
+
+  &__icon {
+    width: 1.3rem;
+    height: 1.3rem;
+    object-fit: cover;
+    border: 1px solid $color-border-soft;
+    border-radius: 2px;
+    flex: 0 0 auto;
+  }
+
+  &__name {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

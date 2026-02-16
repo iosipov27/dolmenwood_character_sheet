@@ -219,6 +219,12 @@ export interface DwEquipmentFieldEntry {
   weightValue: string;
 }
 
+export interface DwActorItemEntry {
+  id: string;
+  name: string;
+  img: string;
+}
+
 export interface DwFormFields {
   meta: {
     kindredClassTraits: foundry.data.fields.DataField.Any;
@@ -247,6 +253,8 @@ export type DwSheetData = BaseSheetData & {
   dwCombat: DwCombatView;
   dwHp: DwHpView;
   dwSavesList: DwSaveEntry[];
+  dwSpellItems: DwActorItemEntry[];
+  dwAbilityItems: DwActorItemEntry[];
 };
 
 declare global {

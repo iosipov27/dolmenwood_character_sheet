@@ -7,7 +7,8 @@ import {
   registerRemoveSkillListener,
   registerSaveDblRollListener,
   registerSaveRollListener,
-  registerSkillRollListener
+  registerSkillRollListener,
+  registerSpellsListener
 } from "../components/index.js";
 import { prettyKey } from "../utils/prettyKey.js";
 import { RollChecks } from "../sheets/rollChecks.js";
@@ -69,6 +70,8 @@ export function registerSheetListeners(
     actor,
     rollSkillCheck: RollChecks.rollSkillCheck
   });
+
+  registerSpellsListener(html, actor);
 
   registerEquipmentListener(html);
 }

@@ -11,6 +11,8 @@
 @use "../components/other-notes/other-notes.scss" as *;
 @use "../components/languages/languages.scss" as *;
 @use "../components/kindred-class-traits/kindred-class-traits.scss" as *;
+@use "../components/spells/spells.scss" as *;
+@use "../components/ability-items/ability-items.scss" as *;
 
 .dolmenwood.sheet.actor .window-content {
   overflow: visible;
@@ -26,10 +28,16 @@
     &__tabs {
       position: static;
       flex-direction: row;
+      transform: none;
     }
 
     &__tab {
       margin-left: 0;
+    }
+
+    &__tab + &__tab {
+      margin-left: 0;
+      margin-top: 0;
     }
   }
 }
@@ -58,37 +66,46 @@
 
   &__tabs {
     position: absolute;
-    top: 0.75rem;
-    right: -7rem;
+    top: 23.5rem;
+    right: -1.7rem;
     display: flex;
-    flex-direction: column;
-    gap: 5rem;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 0;
     background: transparent;
     z-index: 2;
+    transform: rotate(90deg);
+    transform-origin: top right;
   }
 
   &__tab {
-    display: block;
-    max-height: 35px;
-    padding: 1px 10px 0;
-    margin-left: -5px;
-    text-indent: 4px;
-    line-height: 16px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 1rem 0;
+    width: max-content;
+
+    line-height: 1.2rem;
     background: url(/ui/parchment.jpg);
-    border-top-right-radius: 4px;
-    border-top-left-radius: 80px;
-    font-size: var(--font-size-12);
+    border-top-left-radius: 0.8rem;
+    border-top: 1px solid $color-text-dark-primary;
+    border-left: 1px solid $color-text-dark-primary;
+    font-size: $font-size-14;
     color: $color-text-dark-primary;
-    text-transform: uppercase;
     text-decoration: none;
     cursor: pointer;
     white-space: nowrap;
-    transform: rotate(90deg);
-    filter: brightness(0.85);
-    transform-origin: left top;
+    box-shadow: 3px -3px 4px 0px rgb(8 8 8 / 25%);
+    filter: brightness(0.87);
+    position: relative;
+    z-index: 1;
 
     &.is-active {
       filter: brightness(1);
+      z-index: 10;
     }
+  }
+
+  &__tab + &__tab {
+    margin-left: -0.1rem;
   }
 }

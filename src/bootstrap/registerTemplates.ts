@@ -6,7 +6,12 @@ const TEMPLATES_ROOT = `${MODULE_ROOT}/templates`;
 
 const componentTemplate = (name: string): string => `${COMPONENTS_ROOT}/${name}/${name}.hbs`;
 
-const TAB_TEMPLATES = ["dolmenwood-main-tab", "dolmenwood-details-tab", "dolmenwood-equipment-tab"];
+const TAB_TEMPLATES = [
+  "dolmenwood-main-tab",
+  "dolmenwood-details-tab",
+  "dolmenwood-equipment-tab",
+  "dolmenwood-spells-abilities-tab"
+];
 
 const COMPONENT_TEMPLATES = [
   "player-data",
@@ -21,7 +26,9 @@ const COMPONENT_TEMPLATES = [
   "equipment",
   "xp-section",
   "avatar",
-  "other-notes"
+  "other-notes",
+  "spells",
+  "ability-items"
 ];
 
 const TEMPLATE_PATHS: Record<string, string> = {

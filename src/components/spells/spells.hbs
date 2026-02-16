@@ -1,0 +1,39 @@
+<div class="dw-spells">
+  <div class="dw-spells__header">
+    <h2>{{localize "DOLMENWOOD.UI.Spells"}}</h2>
+    <p class="dw-hint">{{localize "DOLMENWOOD.UI.SpellsDropHint"}}</p>
+  </div>
+
+  <div class="dw-spells__scroll">
+    {{#if ctx.dwSpellItems.length}}
+      <ul class="dw-spells__list">
+        {{#each ctx.dwSpellItems as |spell|}}
+          <li class="dw-spells__item">
+            <button
+              type="button"
+              class="dw-spells__open"
+              data-action="dw-open-item"
+              data-item-id="{{spell.id}}"
+            >
+              <img class="dw-spells__icon" src="{{spell.img}}" alt="" />
+              <span class="dw-spells__name">{{spell.name}}</span>
+            </button>
+
+            <button
+              type="button"
+              class="dw-x"
+              data-action="dw-delete-item"
+              data-item-id="{{spell.id}}"
+              aria-label="{{localize "DOLMENWOOD.UI.Remove"}}"
+              title="{{localize "DOLMENWOOD.UI.Remove"}}"
+            >
+              &times;
+            </button>
+          </li>
+        {{/each}}
+      </ul>
+    {{else}}
+      <p class="dw-hint">{{localize "DOLMENWOOD.UI.SpellsEmpty"}}</p>
+    {{/if}}
+  </div>
+</div>

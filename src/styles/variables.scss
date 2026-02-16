@@ -124,6 +124,7 @@ $form-field-height: var(--form-field-height);
 
 // Typography
 $font-primary: var(--font-primary);
+$font-size-14: var(--font-size-14);
 $line-height-12: var(--line-height-12);
 $line-height-16: var(--line-height-16);
 $line-height-20: var(--line-height-20);
@@ -131,3 +132,7 @@ $line-height-30: var(--line-height-30);
 
 // Backgrounds
 $background-parchment: var(--background-parchment);
+
+// Module custom CSS variables
+$dw-border-color: var(--dw-border-color);
+$dw-primary-color: var(--dw-primary-color);
