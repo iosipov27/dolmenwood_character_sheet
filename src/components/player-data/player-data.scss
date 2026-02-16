@@ -1,4 +1,8 @@
-﻿@use "../../styles/common" as *;
+@use "../../styles/common" as *;
+
+$player-field-padding-top: 0.9rem;
+$player-field-padding-bottom: 0.1rem;
+$player-field-line-height: 1.2;
 
 .player-data {
   display: flex;
@@ -11,17 +15,13 @@
     border-bottom: 1px solid $color-border-main;
     width: 100%;
 
-    --player-field-padding-top: 0.9rem;
-    --player-field-padding-bottom: 0.1rem;
-    --player-field-line-height: 1.2;
-
     .player-data__input {
-      padding-top: var(--player-field-padding-top);
-      padding-bottom: var(--player-field-padding-bottom);
-      line-height: var(--player-field-line-height);
+      padding-top: $player-field-padding-top;
+      padding-bottom: $player-field-padding-bottom;
+      line-height: $player-field-line-height;
       min-height: calc(
-        (1em * var(--player-field-line-height)) + var(--player-field-padding-top) +
-          var(--player-field-padding-bottom)
+        (1em * $player-field-line-height) + $player-field-padding-top +
+          $player-field-padding-bottom
       );
     }
   }

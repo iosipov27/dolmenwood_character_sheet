@@ -588,15 +588,12 @@ hr {
   position: relative;
   border-bottom: 1px solid #a7a294;
   width: 100%;
-  --player-field-padding-top: 0.9rem;
-  --player-field-padding-bottom: 0.1rem;
-  --player-field-line-height: 1.2;
 }
 .player-data .dw-field .player-data__input {
-  padding-top: var(--player-field-padding-top);
-  padding-bottom: var(--player-field-padding-bottom);
-  line-height: var(--player-field-line-height);
-  min-height: calc(1em * var(--player-field-line-height) + var(--player-field-padding-top) + var(--player-field-padding-bottom));
+  padding-top: 0.9rem;
+  padding-bottom: 0.1rem;
+  line-height: 1.2;
+  min-height: calc(1.2em + 0.9rem + 0.1rem);
 }
 .player-data__name .player-data__input {
   font-size: 1.75rem;
@@ -859,6 +856,145 @@ hr {
   min-height: 8rem;
 }
 
+.dw-spells-abilities {
+  display: flex;
+  flex-direction: column;
+  min-height: 34rem;
+  height: 100%;
+}
+.dw-spells-abilities__section {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: hidden;
+  padding: 0.2rem 1rem;
+}
+.dw-spells-abilities__divider {
+  margin: 0;
+  border-top: 1px solid #c9c5ba;
+}
+
+.dw-spells {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+}
+.dw-spells__header {
+  flex: 0 0 auto;
+}
+.dw-spells__scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  padding-right: 0.1rem;
+}
+.dw-spells__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.35rem;
+}
+.dw-spells__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem;
+  border: 1px solid #c9c5ba;
+  padding: 0.2rem 0.3rem;
+}
+.dw-spells__open {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.45rem;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0;
+  background: none;
+  border: none;
+  text-align: left;
+}
+.dw-spells .dw-x {
+  margin-left: auto;
+}
+.dw-spells__icon {
+  width: 1.3rem;
+  height: 1.3rem;
+  object-fit: cover;
+  border: 1px solid #c9c5ba;
+  border-radius: 2px;
+  flex: 0 0 auto;
+}
+.dw-spells__name {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dw-ability-items {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+}
+.dw-ability-items__header {
+  flex: 0 0 auto;
+}
+.dw-ability-items__scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  padding-right: 0.1rem;
+}
+.dw-ability-items__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.35rem;
+}
+.dw-ability-items__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem;
+  border: 1px solid #c9c5ba;
+  padding: 0.2rem 0.3rem;
+}
+.dw-ability-items__open {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.45rem;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0;
+  background: none;
+  border: none;
+  text-align: left;
+}
+.dw-ability-items .dw-x {
+  margin-left: auto;
+}
+.dw-ability-items__icon {
+  width: 1.3rem;
+  height: 1.3rem;
+  object-fit: cover;
+  border: 1px solid #c9c5ba;
+  border-radius: 2px;
+  flex: 0 0 auto;
+}
+.dw-ability-items__name {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .dolmenwood.sheet.actor .window-content {
   overflow: visible;
 }
@@ -872,9 +1008,14 @@ hr {
   .dolmenwood-sheet__tabs {
     position: static;
     flex-direction: row;
+    transform: none;
   }
   .dolmenwood-sheet__tab {
     margin-left: 0;
+  }
+  .dolmenwood-sheet__tab + .dolmenwood-sheet__tab {
+    margin-left: 0;
+    margin-top: 0;
   }
 }
 .dolmenwood-sheet {
@@ -897,36 +1038,43 @@ hr {
 }
 .dolmenwood-sheet__tabs {
   position: absolute;
-  top: 0.75rem;
-  right: -7rem;
+  top: 23.5rem;
+  right: -1.7rem;
   display: flex;
-  flex-direction: column;
-  gap: 5rem;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 0;
   background: transparent;
   z-index: 2;
+  transform: rotate(90deg);
+  transform-origin: top right;
 }
 .dolmenwood-sheet__tab {
-  display: block;
-  max-height: 35px;
-  padding: 1px 10px 0;
-  margin-left: -5px;
-  text-indent: 4px;
-  line-height: 16px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 1rem 0;
+  width: max-content;
+  line-height: 1.2rem;
   background: url(/ui/parchment.jpg);
-  border-top-right-radius: 4px;
-  border-top-left-radius: 80px;
-  font-size: var(--font-size-12);
+  border-top-left-radius: 0.8rem;
+  border-top: 1px solid var(--color-text-dark-primary);
+  border-left: 1px solid var(--color-text-dark-primary);
+  font-size: var(--font-size-14);
   color: var(--color-text-dark-primary);
-  text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
   white-space: nowrap;
-  transform: rotate(90deg);
-  filter: brightness(0.85);
-  transform-origin: left top;
+  box-shadow: 3px -3px 4px 0px rgba(8, 8, 8, 0.25);
+  filter: brightness(0.87);
+  position: relative;
+  z-index: 1;
 }
 .dolmenwood-sheet__tab.is-active {
   filter: brightness(1);
+  z-index: 10;
+}
+.dolmenwood-sheet__tab + .dolmenwood-sheet__tab {
+  margin-left: -0.1rem;
 }
 
 /*# sourceMappingURL=dolmenwood.css.map */

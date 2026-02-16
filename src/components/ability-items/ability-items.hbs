@@ -1,0 +1,39 @@
+<div class="dw-ability-items">
+  <div class="dw-ability-items__header">
+    <h2>{{localize "DOLMENWOOD.UI.Abilities"}}</h2>
+    <p class="dw-hint">{{localize "DOLMENWOOD.UI.AbilitiesDropHint"}}</p>
+  </div>
+
+  <div class="dw-ability-items__scroll">
+    {{#if ctx.dwAbilityItems.length}}
+      <ul class="dw-ability-items__list">
+        {{#each ctx.dwAbilityItems as |ability|}}
+          <li class="dw-ability-items__item">
+            <button
+              type="button"
+              class="dw-ability-items__open"
+              data-action="dw-open-item"
+              data-item-id="{{ability.id}}"
+            >
+              <img class="dw-ability-items__icon" src="{{ability.img}}" alt="" />
+              <span class="dw-ability-items__name">{{ability.name}}</span>
+            </button>
+
+            <button
+              type="button"
+              class="dw-x"
+              data-action="dw-delete-item"
+              data-item-id="{{ability.id}}"
+              aria-label="{{localize "DOLMENWOOD.UI.Remove"}}"
+              title="{{localize "DOLMENWOOD.UI.Remove"}}"
+            >
+              &times;
+            </button>
+          </li>
+        {{/each}}
+      </ul>
+    {{else}}
+      <p class="dw-hint">{{localize "DOLMENWOOD.UI.AbilitiesEmpty"}}</p>
+    {{/if}}
+  </div>
+</div>

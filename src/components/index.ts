@@ -3,6 +3,7 @@ export { registerAttackRollListener } from "./ac-attack/attack-roll.listener.js"
 export { registerEquipmentListener } from "./equipment/equipment.listener.js";
 export { registerSaveDblRollListener } from "./save-throws/save-dbl-roll.listener.js";
 export { registerSaveRollListener } from "./save-throws/save-roll.listener.js";
+export { registerSpellsListener } from "./spells/spells.listener.js";
 export { registerAddSkillListener } from "./skill-targets/add-skill.listener.js";
 export { registerExtraSkillDblRollListener } from "./skill-targets/extra-skill-dbl-roll.listener.js";
 export { registerExtraSkillRollListener } from "./skill-targets/extra-skill-roll.listener.js";
