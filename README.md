@@ -9,14 +9,23 @@ A custom character sheet module for Foundry VTT, designed for Dolmenwood and bui
 
 ## Overview
 
-- Three-tab sheet layout: `Main`, `Equipment`, `Details`
+- Four-tab sheet layout: `Main`, `Equipment`, `Spells & Abilities`, `Details`
 - Uses OSE actor system data (HP, AC, attack, movement, abilities, etc.)
 - Stores Dolmenwood-specific fields in `actor.flags["yakov-dolmenwood-sheet"].dw`
 - Clickable rolls directly from the sheet to chat
 
+## Compendium Compatibility
+
+- Supports OSE compendium items in the sheet tab `Spells & Abilities`.
+- You can drag-and-drop entries from OSE compendiums directly to the actor.
+- Supported item types for this tab:
+  - `spell` (upper section)
+  - `ability` (lower section)
+- Supports your own custom compendium built on top of OSE, as long as items use compatible OSE item types (`spell` / `ability`).
+
 ## Screenshot
 
-![Dolmenwood Fighter Sheet](docs/fighter.png)
+![Dolmenwood Fighter Sheet](docs/char-josprey.png)
 
 ## Core Features
 
@@ -31,42 +40,6 @@ A custom character sheet module for Foundry VTT, designed for Dolmenwood and bui
   - automatic total encumbrance calculation
 - Editable text blocks: `Kindred & Class Traits`, `Languages`, `Other Notes`
 - Coins block: `copper`, `silver`, `gold`, `pellucidium`
-
-## Default Values
-
-- Base skills: `6`
-- New extra skill target: `6`
-- Coins: `0`
-
-## Usage
-
-The module registers a custom sheet for `character` actors, but does not set it as default (`makeDefault: false`).
-Select it manually in the actor sheet configuration.
-
-## Module Settings
-
-- `Enable debug logging`
-- `Enable error notifications`
-
-## Roadmap
-
-- Planned: move away from inheriting the OSE sheet module and make this character sheet fully independent.
-
-## Development
-
-```bash
-npm install
-npm run build
-npm test
-```
-
-## Field Implementation Rule
-
-For all new sheet fields, use this order:
-
-1. Add a `DataField` in the DW schema (`src/models/dwSchema.ts`).
-2. Render the field in templates via `{{formGroup ...}}` / `{{formInput ...}}` where applicable.
-3. Add a listener only for explicit actions (roll buttons, add/remove actions, etc.), not for per-field save on `blur/change`.
 
 ## Publishing
 
@@ -99,4 +72,5 @@ If you push a tag like `v0.1.0`, GitHub Actions will build the module and publis
 - `dist/dolmenwood.zip`
 
 ### Project Board
+
 - https://github.com/users/iosipov27/projects/1
