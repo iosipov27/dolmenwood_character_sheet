@@ -5,6 +5,8 @@ import { registerAction } from "../../utils/registerAction.js";
 
 const VIEW_MODES = ["cards", "text", "both"] as const;
 type ViewMode = (typeof VIEW_MODES)[number];
+const TOGGLE_VIEW_MODES = ["cards", "text"] as const;
+type ToggleViewMode = (typeof TOGGLE_VIEW_MODES)[number];
 
 const VIEW_CLASS_PREFIX = "dw-spells-abilities--view-";
 const VIEW_CLASSES = VIEW_MODES.map((mode) => `${VIEW_CLASS_PREFIX}${mode}`).join(" ");
@@ -15,6 +17,19 @@ function asViewMode(value: string | undefined): ViewMode | null {
   return VIEW_MODES.includes(normalized as ViewMode) ? (normalized as ViewMode) : null;
 }
 
+function asToggleViewMode(value: string | undefined): ToggleViewMode | null {
+  const normalized = String(value ?? "").trim().toLowerCase();
+
+  return TOGGLE_VIEW_MODES.includes(normalized as ToggleViewMode) ? (normalized as ToggleViewMode) : null;
+}
+
+function viewModeFromStates({ cards, text }: { cards: boolean; text: boolean }): ViewMode | null {
+  if (!cards && !text) return null;
+  if (cards && text) return "both";
+
+  return cards ? "cards" : "text";
+}
+
 export function registerSpellsTraitsViewListener(
   html: HtmlRoot,
   { getDwFlags, setDwFlags }: { getDwFlags: GetDwFlags; setDwFlags: SetDwFlags }
@@ -22,14 +37,16 @@ export function registerSpellsTraitsViewListener(
   const panel = html.find("[data-tab-panel='spells-abilities']").first();
   const container = panel.find(".dw-spells-abilities").first();
   const buttons = panel.find(`[data-action='${DW_SET_SPELLS_TRAITS_VIEW}']`);
+  const cardsButton = buttons.filter("[data-view='cards']");
+  const textButton = buttons.filter("[data-view='text']");
 
   if (!container.length || !buttons.length) return;
 
   const applyViewMode = (mode: ViewMode): void => {
     container.removeClass(VIEW_CLASSES);
     container.addClass(`${VIEW_CLASS_PREFIX}${mode}`);
-    buttons.removeClass("is-active");
-    buttons.filter(`[data-view='${mode}']`).addClass("is-active");
+    cardsButton.toggleClass("is-active", mode === "cards" || mode === "both");
+    textButton.toggleClass("is-active", mode === "text" || mode === "both");
   };
 
   const savedMode = asViewMode(getDwFlags()?.meta?.spellsTraitsView);
@@ -38,17 +55,25 @@ export function registerSpellsTraitsViewListener(
 
   registerAction(html, DW_SET_SPELLS_TRAITS_VIEW, async (ev: ActionEvent) => {
     const { view } = getDataset(ev);
-    const mode = asViewMode(view);
+    const toggleMode = asToggleViewMode(view);
 
-    if (!mode) return;
+    if (!toggleMode) return;
 
-    applyViewMode(mode);
+    const currentCards = cardsButton.hasClass("is-active");
+    const currentText = textButton.hasClass("is-active");
+    const nextCards = toggleMode === "cards" ? !currentCards : currentCards;
+    const nextText = toggleMode === "text" ? !currentText : currentText;
+    const nextMode = viewModeFromStates({ cards: nextCards, text: nextText });
+
+    if (!nextMode) return;
+
+    applyViewMode(nextMode);
 
     const dw = getDwFlags();
 
-    if (dw.meta.spellsTraitsView === mode) return;
+    if (dw.meta.spellsTraitsView === nextMode) return;
 
-    dw.meta.spellsTraitsView = mode;
+    dw.meta.spellsTraitsView = nextMode;
     await setDwFlags(dw);
   });
 }

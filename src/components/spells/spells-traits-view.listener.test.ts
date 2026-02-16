@@ -18,7 +18,6 @@ describe("registerSpellsTraitsViewListener", () => {
         <section class="dw-spells-abilities dw-spells-abilities--view-cards">
           <button data-action="dw-set-spells-traits-view" data-view="cards"></button>
           <button data-action="dw-set-spells-traits-view" data-view="text"></button>
-          <button data-action="dw-set-spells-traits-view" data-view="both"></button>
         </section>
       </div>
     `;
@@ -32,13 +31,13 @@ describe("registerSpellsTraitsViewListener", () => {
 
     const container = html.find(".dw-spells-abilities");
     const buttons = html.find("[data-action='dw-set-spells-traits-view']");
-    const bothButton = buttons.filter("[data-view='both']");
     const cardsButton = buttons.filter("[data-view='cards']");
+    const textButton = buttons.filter("[data-view='text']");
 
     expect(container.hasClass("dw-spells-abilities--view-both")).toBe(true);
     expect(container.hasClass("dw-spells-abilities--view-cards")).toBe(false);
-    expect(bothButton.hasClass("is-active")).toBe(true);
-    expect(cardsButton.hasClass("is-active")).toBe(false);
+    expect(cardsButton.hasClass("is-active")).toBe(true);
+    expect(textButton.hasClass("is-active")).toBe(true);
   });
 
   it("applies saved mode on init", () => {
@@ -47,7 +46,6 @@ describe("registerSpellsTraitsViewListener", () => {
         <section class="dw-spells-abilities dw-spells-abilities--view-both">
           <button data-action="dw-set-spells-traits-view" data-view="cards"></button>
           <button data-action="dw-set-spells-traits-view" data-view="text"></button>
-          <button data-action="dw-set-spells-traits-view" data-view="both"></button>
         </section>
       </div>
     `;
@@ -58,24 +56,85 @@ describe("registerSpellsTraitsViewListener", () => {
     registerSpellsTraitsViewListener(html, { getDwFlags, setDwFlags });
 
     const container = html.find(".dw-spells-abilities");
+    const cardsButton = html.find("[data-view='cards']");
     const textButton = html.find("[data-view='text']");
 
     expect(container.hasClass("dw-spells-abilities--view-text")).toBe(true);
+    expect(cardsButton.hasClass("is-active")).toBe(false);
     expect(textButton.hasClass("is-active")).toBe(true);
   });
 
-  it("switches modes and saves selected value", async () => {
+  it("switches from both to text and saves selected value", async () => {
     document.body.innerHTML = `
       <div data-tab-panel="spells-abilities">
         <section class="dw-spells-abilities dw-spells-abilities--view-both">
-          <button data-action="dw-set-spells-traits-view" data-view="cards"></button>
-          <button data-action="dw-set-spells-traits-view" data-view="text"></button>
-          <button data-action="dw-set-spells-traits-view" data-view="both"></button>
+          <button class="is-active" data-action="dw-set-spells-traits-view" data-view="cards"></button>
+          <button class="is-active" data-action="dw-set-spells-traits-view" data-view="text"></button>
         </section>
       </div>
     `;
     const html = $(document.body);
     const dw = buildDw("both");
+    const getDwFlags = vi.fn(() => dw);
+    const setDwFlags = vi.fn(async () => {});
+
+    registerSpellsTraitsViewListener(html, { getDwFlags, setDwFlags });
+
+    const cardsButton = html.find("[data-view='cards']");
+    const textButton = html.find("[data-view='text']");
+    const container = html.find(".dw-spells-abilities");
+
+    cardsButton.trigger("click");
+    await flushPromises();
+
+    expect(container.hasClass("dw-spells-abilities--view-text")).toBe(true);
+    expect(cardsButton.hasClass("is-active")).toBe(false);
+    expect(textButton.hasClass("is-active")).toBe(true);
+    expect(dw.meta.spellsTraitsView).toBe("text");
+    expect(setDwFlags).toHaveBeenCalledWith(dw);
+  });
+
+  it("switches from text to both when second toggle is enabled", async () => {
+    document.body.innerHTML = `
+      <div data-tab-panel="spells-abilities">
+        <section class="dw-spells-abilities dw-spells-abilities--view-text">
+          <button data-action="dw-set-spells-traits-view" data-view="cards"></button>
+          <button class="is-active" data-action="dw-set-spells-traits-view" data-view="text"></button>
+        </section>
+      </div>
+    `;
+    const html = $(document.body);
+    const dw = buildDw("text");
+    const getDwFlags = vi.fn(() => dw);
+    const setDwFlags = vi.fn(async () => {});
+
+    registerSpellsTraitsViewListener(html, { getDwFlags, setDwFlags });
+
+    const cardsButton = html.find("[data-view='cards']");
+    const textButton = html.find("[data-view='text']");
+    const container = html.find(".dw-spells-abilities");
+
+    cardsButton.trigger("click");
+    await flushPromises();
+
+    expect(container.hasClass("dw-spells-abilities--view-both")).toBe(true);
+    expect(cardsButton.hasClass("is-active")).toBe(true);
+    expect(textButton.hasClass("is-active")).toBe(true);
+    expect(dw.meta.spellsTraitsView).toBe("both");
+    expect(setDwFlags).toHaveBeenCalledWith(dw);
+  });
+
+  it("does not allow disabling the last active toggle", async () => {
+    document.body.innerHTML = `
+      <div data-tab-panel="spells-abilities">
+        <section class="dw-spells-abilities dw-spells-abilities--view-cards">
+          <button class="is-active" data-action="dw-set-spells-traits-view" data-view="cards"></button>
+          <button data-action="dw-set-spells-traits-view" data-view="text"></button>
+        </section>
+      </div>
+    `;
+    const html = $(document.body);
+    const dw = buildDw("cards");
     const getDwFlags = vi.fn(() => dw);
     const setDwFlags = vi.fn(async () => {});
 
@@ -90,20 +149,22 @@ describe("registerSpellsTraitsViewListener", () => {
     expect(container.hasClass("dw-spells-abilities--view-cards")).toBe(true);
     expect(cardsButton.hasClass("is-active")).toBe(true);
     expect(dw.meta.spellsTraitsView).toBe("cards");
-    expect(setDwFlags).toHaveBeenCalledWith(dw);
+    expect(setDwFlags).not.toHaveBeenCalled();
   });
 
   it("ignores invalid mode value", async () => {
     document.body.innerHTML = `
       <div data-tab-panel="spells-abilities">
-        <section class="dw-spells-abilities">
+        <section class="dw-spells-abilities dw-spells-abilities--view-both">
+          <button class="is-active" data-action="dw-set-spells-traits-view" data-view="cards"></button>
+          <button class="is-active" data-action="dw-set-spells-traits-view" data-view="text"></button>
           <button data-action="dw-set-spells-traits-view" data-view="invalid"></button>
-          <button data-action="dw-set-spells-traits-view" data-view="both"></button>
         </section>
       </div>
     `;
     const html = $(document.body);
-    const getDwFlags = vi.fn(() => buildDw("both"));
+    const dw = buildDw("both");
+    const getDwFlags = vi.fn(() => dw);
     const setDwFlags = vi.fn(async () => {});
 
     registerSpellsTraitsViewListener(html, { getDwFlags, setDwFlags });
@@ -115,8 +176,6 @@ describe("registerSpellsTraitsViewListener", () => {
     await flushPromises();
 
     expect(container.hasClass("dw-spells-abilities--view-both")).toBe(true);
-    expect(container.hasClass("dw-spells-abilities--view-cards")).toBe(false);
-    expect(container.hasClass("dw-spells-abilities--view-text")).toBe(false);
     expect(setDwFlags).not.toHaveBeenCalled();
   });
 });
