@@ -902,7 +902,7 @@ hr {
   line-height: 1.2;
   border: none;
   border-right: 1px solid #a7a294;
-  background: rgba(255, 255, 255, 0.25);
+  background: rgb(220, 220, 210);
 }
 .dw-spells-abilities__view-btn:last-child {
   border-right: none;
@@ -932,6 +932,9 @@ hr {
 }
 .dw-spells-abilities__divider {
   border-top: 1px solid #c9c5ba;
+}
+.dw-spells-abilities--view-cards {
+  min-height: 32rem;
 }
 .dw-spells-abilities--view-cards .dw-spells-abilities__section--spells,
 .dw-spells-abilities--view-cards .dw-spells-abilities__section--traits {
@@ -980,6 +983,9 @@ hr {
 .dw-spells-abilities--view-both .dw-kindred-traits__title--notes {
   display: inline;
 }
+.dw-spells-abilities__section--spells.is-collapsed, .dw-spells-abilities__section--traits.is-collapsed {
+  flex: 0 0 auto;
+}
 
 .dw-spells {
   display: flex;
@@ -989,6 +995,15 @@ hr {
 }
 .dw-spells__header {
   flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
 }
 .dw-spells__scroll {
   flex: 1 1 auto;
@@ -1041,6 +1056,9 @@ hr {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.dw-spells.is-collapsed .dw-spells__scroll {
+  display: none;
+}
 
 .dw-ability-items {
   display: flex;
@@ -1050,6 +1068,15 @@ hr {
 }
 .dw-ability-items__header {
   flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
 }
 .dw-ability-items__scroll {
   flex: 1 1 auto;
@@ -1101,6 +1128,9 @@ hr {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.dw-ability-items.is-collapsed .dw-ability-items__scroll {
+  display: none;
 }
 
 .dolmenwood.sheet.actor .window-content {

@@ -1,12 +1,12 @@
 <div class="dw-spells">
-  <div class="dw-spells__header">
+  <div class="dw-spells__header" data-action="dw-toggle-collapsible-section" aria-expanded="true">
     <h2>{{localize "DOLMENWOOD.UI.Spells"}}</h2>
-    {{#unless ctx.dwSpellItems.length}}
-      <p class="dw-hint">{{localize "DOLMENWOOD.UI.SpellsDropHint"}}</p>
-    {{/unless}}
   </div>
 
   <div class="dw-spells__scroll">
+    {{#unless ctx.dwSpellItems.length}}
+      <p class="dw-hint">{{localize "DOLMENWOOD.UI.SpellsDropHint"}}</p>
+    {{/unless}}
     {{#if ctx.dwSpellItems.length}}
       <ul class="dw-spells__list">
         {{#each ctx.dwSpellItems as |spell|}}
@@ -26,8 +26,8 @@
               class="dw-x"
               data-action="dw-delete-item"
               data-item-id="{{spell.id}}"
-              aria-label="{{localize "DOLMENWOOD.UI.Remove"}}"
-              title="{{localize "DOLMENWOOD.UI.Remove"}}"
+              aria-label="{{localize 'DOLMENWOOD.UI.Remove'}}"
+              title="{{localize 'DOLMENWOOD.UI.Remove'}}"
             >
               &times;
             </button>

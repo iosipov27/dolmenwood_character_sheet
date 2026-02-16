@@ -1,12 +1,17 @@
 <div class="dw-ability-items">
-  <div class="dw-ability-items__header">
+  <div
+    class="dw-ability-items__header"
+    data-action="dw-toggle-collapsible-section"
+    aria-expanded="true"
+  >
     <h2>{{localize "DOLMENWOOD.UI.Abilities"}}</h2>
-    {{#unless ctx.dwAbilityItems.length}}
-      <p class="dw-hint">{{localize "DOLMENWOOD.UI.AbilitiesDropHint"}}</p>
-    {{/unless}}
+
   </div>
 
   <div class="dw-ability-items__scroll">
+    {{#unless ctx.dwAbilityItems.length}}
+      <p class="dw-hint">{{localize "DOLMENWOOD.UI.AbilitiesDropHint"}}</p>
+    {{/unless}}
     {{#if ctx.dwAbilityItems.length}}
       <ul class="dw-ability-items__list">
         {{#each ctx.dwAbilityItems as |ability|}}
@@ -26,8 +31,8 @@
               class="dw-x"
               data-action="dw-delete-item"
               data-item-id="{{ability.id}}"
-              aria-label="{{localize "DOLMENWOOD.UI.Remove"}}"
-              title="{{localize "DOLMENWOOD.UI.Remove"}}"
+              aria-label="{{localize 'DOLMENWOOD.UI.Remove'}}"
+              title="{{localize 'DOLMENWOOD.UI.Remove'}}"
             >
               &times;
             </button>
