@@ -874,6 +874,7 @@ hr {
 }
 
 .dw-spells-abilities {
+  --dw-cards-row-height: 16rem;
   display: flex;
   flex-direction: column;
   min-height: 38rem;
@@ -944,6 +945,10 @@ hr {
 .dw-spells-abilities--view-cards .dw-spells-abilities__section--notes {
   display: none;
 }
+.dw-spells-abilities--view-cards.dw-spells-abilities--cards-collapsed .dw-spells-abilities__section--spells,
+.dw-spells-abilities--view-cards.dw-spells-abilities--cards-collapsed .dw-spells-abilities__section--traits {
+  flex: 0 0 auto;
+}
 .dw-spells-abilities--view-text .dw-spells-abilities__section--spells,
 .dw-spells-abilities--view-text .dw-spells-abilities__section--traits,
 .dw-spells-abilities--view-text .dw-spells-abilities__divider--cards,
@@ -982,6 +987,22 @@ hr {
 }
 .dw-spells-abilities--view-both .dw-kindred-traits__title--notes {
   display: inline;
+}
+.dw-spells-abilities--view-both.dw-spells-abilities--cards-collapsed .dw-spells-abilities__section--spells,
+.dw-spells-abilities--view-both.dw-spells-abilities--cards-collapsed .dw-spells-abilities__section--traits {
+  flex: 0 0 auto;
+}
+.dw-spells-abilities--view-both.dw-spells-abilities--cards-collapsed .dw-spells-abilities__section--notes {
+  flex: 0 0 10rem;
+  min-height: 10rem;
+}
+.dw-spells-abilities--view-both.dw-spells-abilities--traits-collapsed:not(.dw-spells-abilities--spells-collapsed) .dw-spells {
+  height: auto;
+  max-height: var(--dw-cards-row-height, 16rem);
+}
+.dw-spells-abilities--view-both.dw-spells-abilities--spells-collapsed:not(.dw-spells-abilities--traits-collapsed) .dw-ability-items {
+  height: auto;
+  max-height: var(--dw-cards-row-height, 16rem);
 }
 .dw-spells-abilities__section--spells.is-collapsed, .dw-spells-abilities__section--traits.is-collapsed {
   flex: 0 0 auto;

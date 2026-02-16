@@ -8,6 +8,10 @@ import { getDataset } from "../../utils/getDataset.js";
 import { registerAction } from "../../utils/registerAction.js";
 
 type CollapseKind = "spells" | "traits";
+const CARDS_COLLAPSED_LAYOUT_CLASS = "dw-spells-abilities--cards-collapsed";
+const SPELLS_COLLAPSED_LAYOUT_CLASS = "dw-spells-abilities--spells-collapsed";
+const TRAITS_COLLAPSED_LAYOUT_CLASS = "dw-spells-abilities--traits-collapsed";
+const CARDS_ROW_HEIGHT_CSS_VAR = "--dw-cards-row-height";
 
 function getCollapseKind(root: HTMLElement): CollapseKind | null {
   const section = root.closest(".dw-spells-abilities__section");
@@ -26,6 +30,52 @@ function applyCollapsedState(root: HTMLElement, collapsed: boolean): void {
   root.classList.toggle("is-collapsed", collapsed);
   section?.classList.toggle("is-collapsed", collapsed);
   header?.setAttribute("aria-expanded", String(!collapsed));
+}
+
+function getVisibleElementHeight(element: Element | null): number {
+  if (!(element instanceof HTMLElement)) return 0;
+
+  if (window.getComputedStyle(element).display === "none") return 0;
+
+  return element.getBoundingClientRect().height;
+}
+
+function updateCardsCollapsedLayoutClass(panel: HtmlRoot): void {
+  const container = panel.find(".dw-spells-abilities").first().get(0);
+
+  if (!(container instanceof HTMLElement)) return;
+
+  const spellsCollapsed = panel.find(".dw-spells-abilities__section--spells").first().hasClass("is-collapsed");
+  const traitsCollapsed = panel.find(".dw-spells-abilities__section--traits").first().hasClass("is-collapsed");
+
+  container.classList.toggle(CARDS_COLLAPSED_LAYOUT_CLASS, spellsCollapsed || traitsCollapsed);
+  container.classList.toggle(SPELLS_COLLAPSED_LAYOUT_CLASS, spellsCollapsed);
+  container.classList.toggle(TRAITS_COLLAPSED_LAYOUT_CLASS, traitsCollapsed);
+
+  if (!container.classList.contains("dw-spells-abilities--view-both")) {
+    container.style.removeProperty(CARDS_ROW_HEIGHT_CSS_VAR);
+
+    return;
+  }
+
+  const toolbar = container.querySelector(".dw-spells-abilities__toolbar");
+  const notesSection = container.querySelector(".dw-spells-abilities__section--notes");
+  const cardsDivider = container.querySelector(".dw-spells-abilities__divider--cards");
+  const notesDivider = container.querySelector(".dw-spells-abilities__divider--notes");
+
+  const availableCardsSpace =
+    container.clientHeight -
+    getVisibleElementHeight(toolbar) -
+    getVisibleElementHeight(notesSection) -
+    getVisibleElementHeight(cardsDivider) -
+    getVisibleElementHeight(notesDivider);
+  const rowHeight = Math.floor(availableCardsSpace / 2);
+
+  if (rowHeight > 0) {
+    container.style.setProperty(CARDS_ROW_HEIGHT_CSS_VAR, `${rowHeight}px`);
+  } else {
+    container.style.removeProperty(CARDS_ROW_HEIGHT_CSS_VAR);
+  }
 }
 
 export function registerSpellsListener(
@@ -52,6 +102,8 @@ export function registerSpellsListener(
   if (traitsRoot instanceof HTMLElement) {
     applyCollapsedState(traitsRoot, Boolean(dw.meta.traitsCollapsed));
   }
+
+  updateCardsCollapsedLayoutClass(panel);
 
   registerAction(html, DW_OPEN_ITEM, async (event: ActionEvent) => {
     const { itemId } = getDataset(event);
@@ -87,6 +139,7 @@ export function registerSpellsListener(
 
     const expanded = !root.classList.contains("is-collapsed");
     target.setAttribute("aria-expanded", String(expanded));
+    updateCardsCollapsedLayoutClass(panel);
 
     const kind = getCollapseKind(root);
 
