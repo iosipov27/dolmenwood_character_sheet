@@ -318,6 +318,73 @@ describe("RollChecks.rollAttackCheck", () => {
     );
   });
 
+  it("shows attack modifier parts in formula prompt when provided", async () => {
+    const localizeMap: Record<string, string> = {
+      "DOLMENWOOD.Roll.Formula": "Formula",
+      "DOLMENWOOD.Roll.Modifier": "Situational Modifier",
+      "DOLMENWOOD.Roll.ModifierPlaceholder": "e.g. +1d4",
+      "DOLMENWOOD.UI.Roll": "Roll"
+    };
+
+    vi.stubGlobal("game", {
+      i18n: { localize: (key: string) => localizeMap[key] ?? key }
+    });
+
+    const builtRolls: Array<{ formula: string; mod: number }> = [];
+    const prompt = vi.fn(async () => "");
+
+    class MockRoll {
+      total = 12;
+
+      constructor(formula: string, data: { mod: number }) {
+        builtRolls.push({ formula, mod: data.mod });
+      }
+
+      async evaluate(): Promise<this> {
+        return this;
+      }
+
+      async toMessage(_payload: unknown): Promise<void> {}
+    }
+
+    vi.stubGlobal("Roll", MockRoll);
+    vi.stubGlobal("ChatMessage", { getSpeaker: () => ({}) });
+
+    const originalFoundry = globalThis.foundry as Record<string, unknown> | undefined;
+    const foundryWithDialogPrompt = {
+      ...(originalFoundry ?? {}),
+      applications: {
+        ...((originalFoundry as { applications?: Record<string, unknown> } | undefined)?.applications ??
+          {}),
+        api: {
+          ...((originalFoundry as { applications?: { api?: Record<string, unknown> } } | undefined)
+            ?.applications?.api ?? {}),
+          DialogV2: { prompt }
+        }
+      }
+    };
+
+    vi.stubGlobal("foundry", foundryWithDialogPrompt);
+
+    const result = await RollChecks.rollAttackCheck(
+      {} as Actor,
+      "Ranged attack",
+      "Dexterity",
+      4,
+      [
+        { value: 2, label: "DEX" },
+        { value: 2, label: "BONUS" }
+      ]
+    );
+
+    expect(prompt).toHaveBeenCalledTimes(1);
+    expect((prompt.mock.calls[0][0] as { content: string }).content).toContain(
+      "1d20 + 2 (DEX) + 2 (BONUS)"
+    );
+    expect(builtRolls).toEqual([{ formula: "1d20 + @mod", mod: 4 }]);
+    expect(result.mod).toBe(4);
+  });
+
   it("always fails on natural 1 regardless of modifier", async () => {
     const localizeMap: Record<string, string> = {
       "DOLMENWOOD.Roll.Success": "SUCCESS",

@@ -1,3 +1,5 @@
+import type { RollModifierPart } from "../types.js";
+
 export class RollChecks {
   static async rollTargetCheck(
     actor: Actor,
@@ -117,12 +119,24 @@ export class RollChecks {
     actor: Actor,
     attackLabel: string,
     _abilityLabel: string,
-    abilityMod: number
+    abilityMod: number,
+    modifierParts: RollModifierPart[] = []
   ): Promise<{ roll: Roll; mod: number } | null> {
     const localize = (key: string): string => game.i18n?.localize(key) ?? key;
-    const modRaw = Number(abilityMod ?? 0);
-    const mod = Number.isFinite(modRaw) ? modRaw : 0;
-    const displayFormula = RollChecks.formatFormulaWithNumericModifier("1d20", mod);
+    const normalizedParts = modifierParts
+      .map((part) => ({
+        value: Number(part.value),
+        label: String(part.label ?? "").trim()
+      }))
+      .filter((part) => Number.isFinite(part.value) && part.value !== 0);
+    const fallbackModRaw = Number(abilityMod ?? 0);
+    const fallbackMod = Number.isFinite(fallbackModRaw) ? fallbackModRaw : 0;
+    const mod = normalizedParts.length
+      ? normalizedParts.reduce((sum, part) => sum + part.value, 0)
+      : fallbackMod;
+    const displayFormula = normalizedParts.length
+      ? RollChecks.formatFormulaWithModifierParts("1d20", normalizedParts)
+      : RollChecks.formatFormulaWithNumericModifier("1d20", mod);
     const roll = await RollChecks.createRollWithPrompt({
       title: attackLabel,
       displayFormula,
@@ -247,6 +261,20 @@ export class RollChecks {
     const sign = modifier > 0 ? "+" : "-";
 
     return `${baseFormula} ${sign} ${Math.abs(modifier)}`;
+  }
+
+  private static formatFormulaWithModifierParts(
+    baseFormula: string,
+    modifiers: RollModifierPart[]
+  ): string {
+    if (!modifiers.length) return baseFormula;
+
+    return modifiers.reduce((formula, part) => {
+      const sign = part.value > 0 ? "+" : "-";
+      const label = part.label ? ` (${part.label})` : "";
+
+      return `${formula} ${sign} ${Math.abs(part.value)}${label}`;
+    }, baseFormula);
   }
 
   private static getFirstDieResult(roll: unknown): number | null {

@@ -12,6 +12,10 @@ const ATTACK_TO_ABILITY: Record<string, "str" | "dex"> = {
   melee: "str",
   ranged: "dex"
 };
+const ATTACK_TO_BONUS_PATH: Record<string, string> = {
+  melee: "meta.meleeAttackBonus",
+  ranged: "meta.missileAttackBonus"
+};
 const COMBAT_BONUSES_DIALOG_TEMPLATE = `modules/${MODULE_ID}/src/components/ac-attack/combat-bonuses-dialog.hbs`;
 
 function asFiniteNumber(value: unknown): number {
@@ -82,13 +86,21 @@ export function registerAttackRollListener(
       .trim()
       .toLowerCase();
     const abilityKey = ATTACK_TO_ABILITY[attackType];
+    const attackBonusPath = ATTACK_TO_BONUS_PATH[attackType];
 
-    if (!abilityKey) return;
+    if (!abilityKey || !attackBonusPath) return;
 
     const abilities = buildAbilities(actor.system as Record<string, unknown>);
     const ability = abilities.find((entry) => entry.key === abilityKey);
-    const mod = Number(ability?.mod ?? 0);
+    const abilityMod = asFiniteNumber(ability?.mod);
+    const attackBonus = asFiniteNumber(
+      foundry.utils.getProperty(actor, `flags.${MODULE_ID}.dw.${attackBonusPath}`)
+    );
+    const mod = abilityMod + attackBonus;
 
-    await rollAttackCheck(actor, attackLabels[attackType], abilityLabels[abilityKey], mod);
+    await rollAttackCheck(actor, attackLabels[attackType], abilityLabels[abilityKey], mod, [
+      { value: abilityMod, label: abilityKey.toUpperCase() },
+      { value: attackBonus, label: "BONUS" }
+    ]);
   });
 }

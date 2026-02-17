@@ -199,8 +199,14 @@ export type RollAttackCheck = (
   actor: Actor,
   attackLabel: string,
   abilityLabel: string,
-  abilityMod: number
+  abilityMod: number,
+  modifierParts?: RollModifierPart[]
 ) => Promise<{ roll: Roll; mod: number } | null>;
+
+export interface RollModifierPart {
+  value: number;
+  label: string;
+}
 
 export type GetDwFlags = () => DwFlags;
 export type SetDwFlags = (dw: DwFlags) => Promise<void> | void;
