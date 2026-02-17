@@ -24,6 +24,9 @@ const FALLBACK_DW_DEFAULTS: DwFlags = {
   meta: {
     spellsCollapsed: false,
     traitsCollapsed: false,
+    meleeAttackBonus: 0,
+    missileAttackBonus: 0,
+    meleeDamageBonus: 0,
     spellsTraitsView: "both",
     kindredClass: "",
     kindredClassTraits: "",

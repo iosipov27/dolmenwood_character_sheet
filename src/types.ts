@@ -33,6 +33,9 @@ export type DwSpellsTraitsView = "cards" | "text" | "both";
 export interface DwMeta {
   spellsCollapsed: boolean;
   traitsCollapsed: boolean;
+  meleeAttackBonus: number;
+  missileAttackBonus: number;
+  meleeDamageBonus: number;
   spellsTraitsView: DwSpellsTraitsView;
   kindredClass: string;
   kindredClassTraits: string;

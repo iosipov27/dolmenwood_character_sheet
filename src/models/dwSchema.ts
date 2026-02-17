@@ -120,6 +120,9 @@ function buildDwFlagsSchema(fields: FieldsApi): AnyField {
     meta: new SchemaField({
       spellsCollapsed: booleanField(fields, { initial: false }),
       traitsCollapsed: booleanField(fields, { initial: false }),
+      meleeAttackBonus: numberField(fields),
+      missileAttackBonus: numberField(fields),
+      meleeDamageBonus: numberField(fields),
       spellsTraitsView: spellsTraitsViewField(fields),
       kindredClass: stringField(fields),
       kindredClassTraits: htmlField(fields),

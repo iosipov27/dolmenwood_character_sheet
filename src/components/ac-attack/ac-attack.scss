@@ -2,11 +2,29 @@
 
 .dw-ac-attack {
   @include flex-center;
+  position: relative;
   flex-direction: column;
   gap: 0.3rem;
   padding: 0.1rem;
   border: none;
   border-left: 1px solid $color-border-soft;
+
+  &__edit {
+    @include flex-center;
+    position: absolute;
+    top: 0.1rem;
+    right: 0.1rem;
+    width: 1rem;
+    height: 1rem;
+    padding: 0;
+    border: 1px solid $color-border-main;
+    background: transparent;
+
+    i {
+      font-size: 0.55rem;
+      color: $color-text-dark-primary;
+    }
+  }
 
   &__armor {
     @include flex-center;
