@@ -29,13 +29,13 @@ export function registerRemoveSkillListener(
 
 async function confirmRemoveSkill(): Promise<boolean> {
   const localize = (key: string): string => game.i18n?.localize(key) ?? key;
-
-  const confirmed = await Dialog.confirm({
-    title: localize("DOLMENWOOD.UI.RemoveSkillTitle"),
-    content: `<p>${localize("DOLMENWOOD.UI.RemoveSkillConfirm")}</p>`,
-    yes: () => true,
-    no: () => false,
-    defaultYes: false
+  const title = localize("DOLMENWOOD.UI.RemoveSkillTitle");
+  const content = `<p>${localize("DOLMENWOOD.UI.RemoveSkillConfirm")}</p>`;
+  const confirmed = await foundry.applications.api.DialogV2.confirm({
+    window: { title },
+    content,
+    modal: true,
+    rejectClose: false
   });
 
   return Boolean(confirmed);

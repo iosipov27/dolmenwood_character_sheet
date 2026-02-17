@@ -52,32 +52,43 @@ export function registerAttackRollListener(
     };
     const content = await renderTemplate(COMBAT_BONUSES_DIALOG_TEMPLATE, { moduleId: MODULE_ID, bonuses });
 
-    new foundry.appv1.api.Dialog({
-      title: localize("DOLMENWOOD.UI.CombatBonuses"),
+    await foundry.applications.api.DialogV2.prompt({
+      window: { title: localize("DOLMENWOOD.UI.CombatBonuses") },
       content,
-      buttons: {
-        done: {
-          label: localize("DOLMENWOOD.UI.Done"),
-          callback: (dialogHtml) => {
-            const root = dialogHtml instanceof HTMLElement ? dialogHtml : dialogHtml.get(0);
-            const form =
-              root instanceof HTMLFormElement
-                ? root
-                : root instanceof HTMLElement
-                  ? root.querySelector("form")
-                  : null;
+      modal: true,
+      rejectClose: false,
+      ok: {
+        label: localize("DOLMENWOOD.UI.Done"),
+        callback: (_event: PointerEvent | SubmitEvent, button: HTMLButtonElement) => {
+          const form = button.form;
 
-            if (!(form instanceof HTMLFormElement)) return;
+          if (!(form instanceof HTMLFormElement)) return null;
 
-            const formData = new foundry.applications.ux.FormDataExtended(form);
-            const updateData = formData.object as Record<string, unknown>;
+          const formData = new foundry.applications.ux.FormDataExtended(form);
+          const updateData = formData.object as Record<string, unknown>;
+          const updatePathBase = `flags.${MODULE_ID}.dw.meta`;
 
-            void actor.update(updateData);
-          }
+          foundry.utils.setProperty(
+            updateData,
+            `${updatePathBase}.meleeAttackBonus`,
+            asFiniteNumber(foundry.utils.getProperty(updateData, `${updatePathBase}.meleeAttackBonus`))
+          );
+          foundry.utils.setProperty(
+            updateData,
+            `${updatePathBase}.missileAttackBonus`,
+            asFiniteNumber(foundry.utils.getProperty(updateData, `${updatePathBase}.missileAttackBonus`))
+          );
+          foundry.utils.setProperty(
+            updateData,
+            `${updatePathBase}.meleeDamageBonus`,
+            asFiniteNumber(foundry.utils.getProperty(updateData, `${updatePathBase}.meleeDamageBonus`))
+          );
+
+          void actor.update(updateData);
+          return true;
         }
-      },
-      default: "done"
-    }).render(true);
+      }
+    });
   });
 
   registerAction(html, DW_ROLL_ATTACK, async (ev: ActionEvent) => {

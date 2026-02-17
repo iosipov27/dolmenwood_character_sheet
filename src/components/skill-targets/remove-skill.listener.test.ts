@@ -12,9 +12,22 @@ describe("registerRemoveSkillListener", () => {
     vi.stubGlobal("game", {
       i18n: { localize: (key: string) => key }
     });
-    vi.stubGlobal("Dialog", {
-      confirm: vi.fn(async () => true)
-    });
+    const confirm = vi.fn(async () => true);
+    const originalFoundry = globalThis.foundry as Record<string, unknown> | undefined;
+    const foundryWithDialogConfirm = {
+      ...(originalFoundry ?? {}),
+      applications: {
+        ...((originalFoundry as { applications?: Record<string, unknown> } | undefined)?.applications ??
+          {}),
+        api: {
+          ...((originalFoundry as { applications?: { api?: Record<string, unknown> } } | undefined)
+            ?.applications?.api ?? {}),
+          DialogV2: { confirm }
+        }
+      }
+    };
+
+    vi.stubGlobal("foundry", foundryWithDialogConfirm);
 
     document.body.innerHTML = `
       <button data-action="dw-remove-skill" data-index="0"></button>
@@ -32,6 +45,7 @@ describe("registerRemoveSkillListener", () => {
     html.find("[data-action='dw-remove-skill']").trigger("click");
     await flushPromises(3);
 
+    expect(confirm).toHaveBeenCalledTimes(1);
     expect(setDwFlags).toHaveBeenCalledTimes(1);
     expect(setDwFlags).toHaveBeenCalledWith(
       expect.objectContaining({

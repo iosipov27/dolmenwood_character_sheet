@@ -113,21 +113,8 @@ describe("registerAttackRollListener", () => {
 
     vi.stubGlobal("renderTemplate", renderTemplateMock);
 
-    const render = vi.fn();
-    const createDialog = vi.fn();
+    const prompt = vi.fn(async () => null);
     const formDataExtended = vi.fn();
-
-    class DialogMock {
-      constructor(config: unknown) {
-        createDialog(config);
-      }
-
-      render(open: boolean): this {
-        render(open);
-
-        return this;
-      }
-    }
 
     class FormDataExtendedMock {
       object: Record<string, unknown>;
@@ -160,17 +147,14 @@ describe("registerAttackRollListener", () => {
     const originalFoundry = globalThis.foundry as Record<string, unknown> | undefined;
     const foundryWithDialog = {
       ...(originalFoundry ?? {}),
-      appv1: {
-        ...((originalFoundry as { appv1?: Record<string, unknown> } | undefined)?.appv1 ?? {}),
-        api: {
-          ...((originalFoundry as { appv1?: { api?: Record<string, unknown> } } | undefined)?.appv1
-            ?.api ?? {}),
-          Dialog: DialogMock
-        }
-      },
       applications: {
         ...((originalFoundry as { applications?: Record<string, unknown> } | undefined)?.applications ??
           {}),
+        api: {
+          ...((originalFoundry as { applications?: { api?: Record<string, unknown> } } | undefined)
+            ?.applications?.api ?? {}),
+          DialogV2: { prompt }
+        },
         ux: {
           ...((originalFoundry as {
             applications?: { ux?: Record<string, unknown> };
@@ -208,7 +192,7 @@ describe("registerAttackRollListener", () => {
     html.find("[data-action='dw-open-combat-bonuses-dialog']").trigger("click");
     await flushPromises();
 
-    expect(createDialog).toHaveBeenCalledTimes(1);
+    expect(prompt).toHaveBeenCalledTimes(1);
     expect(renderTemplateMock).toHaveBeenCalledWith(
       "modules/yakov-dolmenwood-sheet/src/components/ac-attack/combat-bonuses-dialog.hbs",
       {
@@ -220,29 +204,30 @@ describe("registerAttackRollListener", () => {
         }
       }
     );
-    const config = createDialog.mock.calls[0][0] as { title: string; content: string };
+    const config = prompt.mock.calls[0][0] as { window: { title: string }; content: string };
 
-    expect(config.title).toBe("Combat Bonuses");
+    expect(config.window.title).toBe("Combat Bonuses");
     expect(config.content).toContain("Melee Attack Bonus");
     expect(config.content).toContain("Missile Attack Bonus");
     expect(config.content).toContain("Melee Damage Bonus");
-    expect(render).toHaveBeenCalledWith(true);
 
     const form = document.createElement("form");
+    const submitButton = document.createElement("button");
 
     form.innerHTML = `
       <input name="flags.yakov-dolmenwood-sheet.dw.meta.meleeAttackBonus" value="4" />
       <input name="flags.yakov-dolmenwood-sheet.dw.meta.missileAttackBonus" value="5" />
       <input name="flags.yakov-dolmenwood-sheet.dw.meta.meleeDamageBonus" value="6" />
     `;
+    form.appendChild(submitButton);
 
     const doneCallback = (
       config as {
-        buttons: { done?: { callback?: (html: JQuery<HTMLElement>) => void } };
+        ok?: { callback?: (event: PointerEvent | SubmitEvent, button: HTMLButtonElement) => unknown };
       }
-    ).buttons.done?.callback;
+    ).ok?.callback;
 
-    doneCallback?.($(form));
+    doneCallback?.(new Event("click") as unknown as PointerEvent, submitButton);
     await flushPromises();
 
     expect(formDataExtended).toHaveBeenCalledTimes(1);
