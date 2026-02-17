@@ -556,17 +556,21 @@ hr {
   justify-content: center;
   align-items: center;
   position: absolute;
-  top: 0.1rem;
-  right: 0.1rem;
+  top: 0;
+  right: 0;
   width: 1rem;
   height: 1rem;
-  padding: 0;
-  border: 1px solid #a7a294;
   background: transparent;
+  cursor: pointer;
 }
 .dw-ac-attack__edit i {
-  font-size: 0.55rem;
+  font-size: 0.6rem;
   color: var(--color-text-dark-primary);
+  opacity: 0.6;
+  transition: opacity 0.15s ease-in-out;
+}
+.dw-ac-attack:hover .dw-ac-attack__edit i {
+  opacity: 1;
 }
 .dw-ac-attack__armor {
   display: flex;
@@ -607,6 +611,13 @@ hr {
 .dw-ac-attack__attack button i {
   font-size: 0.75rem;
   color: var(--color-text-light-1);
+}
+
+.dw-combat-bonuses-form .dw-field {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: space-around;
 }
 
 .player-data {
