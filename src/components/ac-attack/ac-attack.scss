@@ -1,4 +1,4 @@
-﻿@use "../../styles/common" as *;
+@use "../../styles/common" as *;
 
 .dw-ac-attack {
   @include flex-center;
@@ -8,28 +8,6 @@
   padding: 0.1rem;
   border: none;
   border-left: 1px solid $color-border-soft;
-
-  &__edit {
-    @include flex-center;
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 1rem;
-    height: 1rem;
-    background: transparent;
-    cursor: pointer;
-
-    i {
-      font-size: 0.6rem;
-      color: $color-text-dark-primary;
-      opacity: 0.6;
-      transition: opacity 0.15s ease-in-out;
-    }
-  }
-
-  &:hover &__edit i {
-    opacity: 1;
-  }
 
   &__armor {
     @include flex-center;
@@ -44,17 +22,29 @@
       height: 2rem;
     }
   }
+
   &__attack {
     @include flex-center;
     align-items: center;
     flex-direction: row;
+    gap: 0.4rem;
     font-size: 0.75rem;
     text-align: center;
+  }
+
+  &__attack-control {
+    @include flex-center;
+    flex-direction: row;
+    gap: 0.2rem;
+
     input {
       text-align: center;
       font-size: 0.75rem;
       height: 1.2rem;
-      width: 1.5rem;
+      width: 2ch;
+      min-width: 2ch;
+      padding: 0;
+      line-height: 1;
     }
 
     button {
@@ -68,19 +58,11 @@
           rgba(0, 0, 0, 0.12) 100%
         ),
         $color-text-dark-2;
+
       i {
         font-size: 0.75rem;
         color: $color-text-light-1;
       }
     }
-  }
-}
-
-.dw-combat-bonuses-form {
-  .dw-field {
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
-    justify-content: space-around;
   }
 }
