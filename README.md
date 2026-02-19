@@ -9,37 +9,49 @@ A custom character sheet module for Foundry VTT, designed for Dolmenwood and bui
 
 ## Overview
 
-- Four-tab sheet layout: `Main`, `Equipment`, `Spells & Abilities`, `Details`
+- Four-tab sheet layout: `Main`, `Equipment`, `Spells & Traits`, `Details`
 - Uses OSE actor system data (HP, AC, attack, movement, abilities, etc.)
 - Stores Dolmenwood-specific fields in `actor.flags["yakov-dolmenwood-sheet"].dw`
 - Clickable rolls directly from the sheet to chat
+- Ability order follows Dolmenwood preference: `STR`, `INT`, `WIS`, `DEX`, `CON`, `CHA`
 
 ## Compendium Compatibility
 
-- Supports OSE compendium items in the sheet tab `Spells & Abilities`.
+- Supports OSE compendium items in the sheet tab `Spells & Traits`.
 - You can drag-and-drop entries from OSE compendiums directly to the actor.
 - Supported item types for this tab:
   - `spell` (upper section)
-  - `ability` (lower section)
+  - `ability` (traits section)
 - Supports your own custom compendium built on top of OSE, as long as items use compatible OSE item types (`spell` / `ability`).
 
 ## Screenshot
 
-![Dolmenwood Fighter Sheet](docs/char-josprey.png)
+![Dolmenwood Fighter Sheet](docs/joe.png)
 
 ## Core Features
 
 - Ability checks: `1d6 +/- modifier`, success on `>= 4`, natural `1/6` are auto-fail/auto-success
 - Skill checks: `1d6`, success on `>= skill value`, natural `1/6` are auto-fail/auto-success
 - Save checks: `1d20` against target value
-- Attack rolls: `1d20 + modifier` (STR for melee, DEX for ranged), natural `1/20` are auto-fail/auto-success
+- Attack rolls:
+  - `1d20 + modifier` (STR for melee, DEX for ranged), natural `1/20` are auto-fail/auto-success
+  - Includes inline attack bonuses (`Melee Attack Bonus`, `Missile Attack Bonus`)
+  - Roll prompt shows modifier sources explicitly (example: `1d20 + 2 (DEX) + 2 (BONUS)`)
 - Extra skills: add/remove up to 10 custom skill entries
 - Equipment management:
   - equipped and stowed item lists
   - per-item weight fields
   - automatic total encumbrance calculation
-- Editable text blocks: `Kindred & Class Traits`, `Languages`, `Other Notes`
+- Spells & Traits UX:
+  - View toggle with `Cards` and `Text` buttons (`both` mode when both are active)
+  - Collapsible `Spells` and `Traits` sections (state is persisted per actor)
+  - Dynamic layout/scroll behavior when sections are collapsed or hidden
+  - Empty-state hints are shown only when there are no items in the section
+- Editable text blocks:
+  - `Kindred & Class Traits` editor on the `Spells & Traits` tab
+  - `Languages`, `Other Notes` on `Details`
 - Coins block: `copper`, `silver`, `gold`, `pellucidium`
+- Native dark FVTT dialogs are used for confirmation flows (item/skill deletion)
 
 ## Publishing
 
