@@ -511,6 +511,7 @@ hr {
   padding: 0.1rem;
   border: none;
   border-right: 1px solid #c9c5ba;
+  height: 100%;
 }
 .dw-hp__current {
   display: flex;
@@ -544,12 +545,12 @@ hr {
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
   flex-direction: column;
   gap: 0.3rem;
   padding: 0.1rem;
   border: none;
   border-left: 1px solid #c9c5ba;
+  height: 100%;
 }
 .dw-ac-attack__armor {
   display: flex;
@@ -595,7 +596,7 @@ hr {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0.5rem 0.5rem;
+  padding: 0.2rem;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 45%, rgba(0, 0, 0, 0.12) 100%), var(--color-text-dark-2);
 }
 .dw-ac-attack__attack-control button i {

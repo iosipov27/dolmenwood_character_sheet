@@ -24,8 +24,9 @@
       <input
         class="dw-number-input"
         type="number"
+        placeholder="+0"
         name="dw.meta.meleeAttackBonus"
-        value="{{ctx.dw.meta.meleeAttackBonus}}"
+        value="{{#if ctx.dw.meta.meleeAttackBonus}}{{ctx.dw.meta.meleeAttackBonus}}{{/if}}"
         title="{{localize 'DOLMENWOOD.UI.MeleeAttackBonus'}}"
         aria-label="{{localize 'DOLMENWOOD.UI.MeleeAttackBonus'}}"
       />
@@ -45,8 +46,9 @@
       <input
         class="dw-number-input"
         type="number"
+        placeholder="+0"
         name="dw.meta.missileAttackBonus"
-        value="{{ctx.dw.meta.missileAttackBonus}}"
+        value="{{#if ctx.dw.meta.missileAttackBonus}}{{ctx.dw.meta.missileAttackBonus}}{{/if}}"
         title="{{localize 'DOLMENWOOD.UI.MissileAttackBonus'}}"
         aria-label="{{localize 'DOLMENWOOD.UI.MissileAttackBonus'}}"
       />

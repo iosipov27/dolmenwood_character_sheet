@@ -2,19 +2,18 @@
 
 .dw-ac-attack {
   @include flex-center;
-  position: relative;
   flex-direction: column;
   gap: 0.3rem;
   padding: 0.1rem;
   border: none;
   border-left: 1px solid $color-border-soft;
+  height: 100%;
 
   &__armor {
     @include flex-center;
     flex-direction: column;
     font-size: 1.5rem;
     text-align: center;
-
     input {
       text-align: center;
       font-size: 2rem;
@@ -30,6 +29,7 @@
     gap: 0.4rem;
     font-size: 0.75rem;
     text-align: center;
+    height: 2rem;
   }
 
   &__attack-control {
@@ -49,7 +49,7 @@
 
     button {
       @include flex-center;
-      padding: 0.5rem 0.5rem;
+      padding: 0.2rem;
       background:
         linear-gradient(
           180deg,
