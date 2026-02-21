@@ -145,6 +145,20 @@ export function registerSpellsListener(
 
     if (!item) return;
 
+    const rollItem = (item as unknown as {
+      roll?: (options?: Record<string, unknown>) => Promise<unknown>;
+    }).roll;
+
+    if (typeof rollItem === "function") {
+      await rollItem.call(item, {
+        skipDialog: true,
+        chatMessage: true,
+        rollMode: getPublicRollMode()
+      });
+
+      return;
+    }
+
     const formulaFromButton = findFirstValidRollFormula(rollFormula);
     const formula = formulaFromButton ?? extractSpellRollFormula(item);
 

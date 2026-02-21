@@ -161,7 +161,50 @@ describe("registerSpellsListener", () => {
     expect(show).toHaveBeenCalledTimes(1);
   });
 
-  it("rolls spell formula in public mode", async () => {
+  it("uses item.roll for spell chat card + roll", async () => {
+    document.body.innerHTML = `
+      <div data-tab-panel="spells-abilities">
+        <section class="dw-spells-abilities">
+          <div class="dw-spells">
+            <button data-action="dw-roll-spell-formula" data-item-id="spell-1" data-roll-formula="1d4"></button>
+          </div>
+        </section>
+      </div>
+    `;
+
+    const html = $(document.body);
+    const roll = vi.fn(async () => {});
+    vi.stubGlobal("CONST", {
+      DICE_ROLL_MODES: {
+        PUBLIC: "publicroll"
+      }
+    });
+
+    const actor = {
+      items: {
+        get: vi.fn(() => ({ id: "spell-1", name: "Illusion", roll }))
+      }
+    } as unknown as Actor;
+
+    registerSpellsListener(html, {
+      actor,
+      getDwFlags: () => ({ meta: { spellsCollapsed: false, traitsCollapsed: false } }) as unknown as DwFlags,
+      setDwFlags: vi.fn(async () => {})
+    });
+
+    html.find("[data-action='dw-roll-spell-formula']").trigger("click");
+    await flushPromises();
+
+    expect(roll).toHaveBeenCalledWith(
+      expect.objectContaining({
+        skipDialog: true,
+        chatMessage: true,
+        rollMode: "publicroll"
+      })
+    );
+  });
+
+  it("falls back to raw roll message when item.roll is unavailable", async () => {
     document.body.innerHTML = `
       <div data-tab-panel="spells-abilities">
         <section class="dw-spells-abilities">

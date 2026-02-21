@@ -254,11 +254,14 @@
   }
 
   &__action--icon {
+    border: none;
+    background: none;
     min-width: 1.25rem;
     padding: 0;
 
     i {
-      font-size: 0.7rem;
+      font-size: 1rem;
+      margin: 0;
     }
   }
 
