@@ -575,6 +575,7 @@ hr {
   gap: 0.4rem;
   font-size: 0.75rem;
   text-align: center;
+  height: 2rem;
 }
 .dw-ac-attack__attack-control {
   display: flex;
@@ -890,8 +891,10 @@ hr {
   --dw-cards-row-height: 16rem;
   display: flex;
   flex-direction: column;
-  min-height: 38rem;
+  flex: 1 1 auto;
+  min-height: 0;
   height: 100%;
+  padding-bottom: 1rem;
 }
 .dw-spells-abilities__toolbar {
   display: flex;
@@ -946,9 +949,6 @@ hr {
 }
 .dw-spells-abilities__divider {
   border-top: 1px solid #c9c5ba;
-}
-.dw-spells-abilities--view-cards {
-  min-height: 32rem;
 }
 .dw-spells-abilities--view-cards .dw-spells-abilities__section--spells,
 .dw-spells-abilities--view-cards .dw-spells-abilities__section--traits {
@@ -1194,19 +1194,30 @@ hr {
   max-width: 45rem;
   display: flex;
   position: relative;
+  height: 100%;
 }
 .dolmenwood-sheet__layout {
   width: 100%;
   position: relative;
+  height: 100%;
+  min-height: 0;
 }
 .dolmenwood-sheet__content {
   min-width: 0;
+  height: 100%;
+  min-height: 0;
 }
 .dolmenwood-sheet__tab-panel {
   display: none;
 }
 .dolmenwood-sheet__tab-panel.is-active {
   display: block;
+}
+.dolmenwood-sheet__spells-abilities-tab.is-active {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
 }
 .dolmenwood-sheet__tabs {
   position: absolute;
