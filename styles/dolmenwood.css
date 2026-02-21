@@ -635,11 +635,6 @@ hr {
 .dw-movement__title {
   margin: 0;
 }
-.dw-movement__hint {
-  font-size: 0.75rem;
-  color: var(--dw-border-color);
-  font-style: italic;
-}
 .dw-movement__item {
   display: flex;
   justify-content: start;

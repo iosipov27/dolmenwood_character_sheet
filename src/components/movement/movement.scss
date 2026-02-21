@@ -9,12 +9,6 @@
     margin: 0;
   }
 
-  &__hint {
-    font-size: 0.75rem;
-    color: $dw-border-color;
-    font-style: italic;
-  }
-
   &__item {
     @include flex-start;
     flex-direction: row;
