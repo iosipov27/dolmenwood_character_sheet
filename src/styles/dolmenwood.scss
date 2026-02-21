@@ -46,14 +46,19 @@
   max-width: 45rem;
   display: flex;
   position: relative;
+  height: 100%;
 
   &__layout {
     width: 100%;
     position: relative;
+    height: 100%;
+    min-height: 0;
   }
 
   &__content {
     min-width: 0;
+    height: 100%;
+    min-height: 0;
   }
 
   &__tab-panel {
@@ -62,6 +67,13 @@
 
   &__tab-panel.is-active {
     display: block;
+  }
+
+  &__spells-abilities-tab.is-active {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
   }
 
   &__tabs {
