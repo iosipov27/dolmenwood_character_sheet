@@ -87,12 +87,12 @@
       "Charisma": "Charisma"
     },
     "AbilityTooltip": {
-      "Strength": "Physical power and melee attack bonus",
-      "Dexterity": "Agility and ranged attack bonus",
-      "Constitution": "Endurance and hit point bonus",
-      "Intelligence": "Reasoning and number of languages",
-      "Wisdom": "Perception and magic resistance",
-      "Charisma": "Leadership and reaction bonus"
+      "Strength": "Melee attacks/damage",
+      "Dexterity": "AC and missile attacks",
+      "Constitution": "Hit Points per Level",
+      "Intelligence": "Extra languages",
+      "Wisdom": "Magic Resistance",
+      "Charisma": "Reaction Rolls"
     },
     "Skills": {
       "Listen": "Listen",
