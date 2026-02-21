@@ -237,6 +237,7 @@ export interface DwActorItemEntry {
   id: string;
   name: string;
   img: string;
+  rollFormula?: string;
 }
 
 export interface DwFormFields {

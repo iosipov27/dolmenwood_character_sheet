@@ -1,9 +1,14 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { flushPromises } from "../../test/flushPromises.js";
 import { registerSpellsListener } from "./spells.listener.js";
 import type { DwFlags } from "../../types.js";
 
 describe("registerSpellsListener", () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+    vi.unstubAllGlobals();
+  });
+
   it("applies saved collapsed states on init", () => {
     document.body.innerHTML = `
       <div data-tab-panel="spells-abilities">
@@ -123,5 +128,89 @@ describe("registerSpellsListener", () => {
     expect(container.hasClass("dw-spells-abilities--cards-collapsed")).toBe(true);
     expect(dw.meta.traitsCollapsed).toBe(true);
     expect(setDwFlags).toHaveBeenCalledWith(dw);
+  });
+
+  it("sends spell card to chat via item.show", async () => {
+    document.body.innerHTML = `
+      <div data-tab-panel="spells-abilities">
+        <section class="dw-spells-abilities">
+          <div class="dw-spells">
+            <button data-action="dw-send-spell-to-chat" data-item-id="spell-1"></button>
+          </div>
+        </section>
+      </div>
+    `;
+
+    const html = $(document.body);
+    const show = vi.fn(async () => {});
+    const actor = {
+      items: {
+        get: vi.fn(() => ({ id: "spell-1", name: "Illusion", show }))
+      }
+    } as unknown as Actor;
+
+    registerSpellsListener(html, {
+      actor,
+      getDwFlags: () => ({ meta: { spellsCollapsed: false, traitsCollapsed: false } }) as unknown as DwFlags,
+      setDwFlags: vi.fn(async () => {})
+    });
+
+    html.find("[data-action='dw-send-spell-to-chat']").trigger("click");
+    await flushPromises();
+
+    expect(show).toHaveBeenCalledTimes(1);
+  });
+
+  it("rolls spell formula in public mode", async () => {
+    document.body.innerHTML = `
+      <div data-tab-panel="spells-abilities">
+        <section class="dw-spells-abilities">
+          <div class="dw-spells">
+            <button data-action="dw-roll-spell-formula" data-item-id="spell-1" data-roll-formula="1d4"></button>
+          </div>
+        </section>
+      </div>
+    `;
+
+    const html = $(document.body);
+    const toMessage = vi.fn(async () => {});
+    const evaluate = vi.fn(async () => ({ toMessage }));
+    const RollMock = vi.fn(() => ({ evaluate })) as unknown as {
+      new (formula: string): { evaluate: () => Promise<{ toMessage: typeof toMessage }> };
+      validate: (formula: string) => boolean;
+    };
+
+    RollMock.validate = vi.fn(() => true);
+
+    vi.stubGlobal("Roll", RollMock);
+    vi.stubGlobal("ChatMessage", {
+      getSpeaker: vi.fn(() => ({ actor: "actor-id" }))
+    });
+    vi.stubGlobal("CONST", {
+      DICE_ROLL_MODES: {
+        PUBLIC: "publicroll"
+      }
+    });
+
+    const actor = {
+      items: {
+        get: vi.fn(() => ({ id: "spell-1", name: "Illusion" }))
+      }
+    } as unknown as Actor;
+
+    registerSpellsListener(html, {
+      actor,
+      getDwFlags: () => ({ meta: { spellsCollapsed: false, traitsCollapsed: false } }) as unknown as DwFlags,
+      setDwFlags: vi.fn(async () => {})
+    });
+
+    html.find("[data-action='dw-roll-spell-formula']").trigger("click");
+    await flushPromises();
+
+    expect(RollMock).toHaveBeenCalledWith("1d4");
+    expect(toMessage).toHaveBeenCalledWith(
+      expect.objectContaining({ flavor: "Illusion: 1d4" }),
+      expect.objectContaining({ rollMode: "publicroll" })
+    );
   });
 });

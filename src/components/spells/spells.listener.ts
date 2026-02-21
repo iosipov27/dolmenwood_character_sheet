@@ -1,11 +1,14 @@
 import {
   DW_DELETE_ITEM,
   DW_OPEN_ITEM,
+  DW_ROLL_SPELL_FORMULA,
+  DW_SEND_SPELL_TO_CHAT,
   DW_TOGGLE_COLLAPSIBLE_SECTION
 } from "../../constants/templateAttributes.js";
 import type { ActionEvent, GetDwFlags, HtmlRoot, SetDwFlags } from "../../types.js";
 import { getDataset } from "../../utils/getDataset.js";
 import { registerAction } from "../../utils/registerAction.js";
+import { extractSpellRollFormula, findFirstValidRollFormula } from "../../utils/spellRollFormula.js";
 
 type CollapseKind = "spells" | "traits";
 const CARDS_COLLAPSED_LAYOUT_CLASS = "dw-spells-abilities--cards-collapsed";
@@ -123,6 +126,46 @@ export function registerSpellsListener(
     await item.deleteDialog();
   });
 
+  registerAction(html, DW_SEND_SPELL_TO_CHAT, async (event: ActionEvent) => {
+    const { itemId } = getDataset(event);
+    const item = getActorItem(actor, itemId);
+
+    if (!item) return;
+
+    const show = (item as unknown as { show?: () => Promise<unknown> }).show;
+
+    if (typeof show === "function") {
+      await show.call(item);
+    }
+  });
+
+  registerAction(html, DW_ROLL_SPELL_FORMULA, async (event: ActionEvent) => {
+    const { itemId, rollFormula } = getDataset(event);
+    const item = getActorItem(actor, itemId);
+
+    if (!item) return;
+
+    const formulaFromButton = findFirstValidRollFormula(rollFormula);
+    const formula = formulaFromButton ?? extractSpellRollFormula(item);
+
+    if (!formula) return;
+
+    const roll = await new Roll(formula).evaluate();
+
+    await (
+      roll.toMessage as (
+        messageData?: Record<string, unknown>,
+        options?: Record<string, unknown>
+      ) => Promise<void>
+    )(
+      {
+        speaker: ChatMessage.getSpeaker({ actor }),
+        flavor: `${item.name}: ${formula}`
+      },
+      { rollMode: getPublicRollMode() }
+    );
+  });
+
   registerAction(html, DW_TOGGLE_COLLAPSIBLE_SECTION, async (event: ActionEvent) => {
     const target = event.currentTarget;
 
@@ -165,4 +208,8 @@ function getActorItem(actor: Actor, itemId: string | undefined): Item.Implementa
   if (!itemId) return null;
 
   return actor.items.get(itemId) ?? null;
+}
+
+function getPublicRollMode(): string {
+  return String(globalThis.CONST?.DICE_ROLL_MODES?.PUBLIC ?? "publicroll");
 }

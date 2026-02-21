@@ -21,16 +21,43 @@
               <span class="dw-spells__name">{{spell.name}}</span>
             </button>
 
-            <button
-              type="button"
-              class="dw-x"
-              data-action="dw-delete-item"
-              data-item-id="{{spell.id}}"
-              aria-label="{{localize 'DOLMENWOOD.UI.Remove'}}"
-              data-tooltip="{{localize 'DOLMENWOOD.UI.Remove'}}"
-            >
-              &times;
-            </button>
+            <div class="dw-spells__actions">
+              <button
+                type="button"
+                class="dw-roll dw-spells__action"
+                data-action="dw-send-spell-to-chat"
+                data-item-id="{{spell.id}}"
+                aria-label="Send to chat"
+                data-tooltip="Send to chat"
+              >
+                Chat
+              </button>
+
+              {{#if spell.rollFormula}}
+                <button
+                  type="button"
+                  class="dw-roll dw-spells__action dw-spells__action--icon"
+                  data-action="dw-roll-spell-formula"
+                  data-item-id="{{spell.id}}"
+                  data-roll-formula="{{spell.rollFormula}}"
+                  aria-label="Roll"
+                  data-tooltip="Roll"
+                >
+                  <i class="fa-solid fa-dice-d20"></i>
+                </button>
+              {{/if}}
+
+              <button
+                type="button"
+                class="dw-x ml1"
+                data-action="dw-delete-item"
+                data-item-id="{{spell.id}}"
+                aria-label="{{localize 'DOLMENWOOD.UI.Remove'}}"
+                data-tooltip="{{localize 'DOLMENWOOD.UI.Remove'}}"
+              >
+                &times;
+              </button>
+            </div>
           </li>
         {{/each}}
       </ul>
