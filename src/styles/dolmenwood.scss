@@ -65,10 +65,12 @@
     display: none;
   }
 
+  &__tab-panel.active,
   &__tab-panel.is-active {
     display: block;
   }
 
+  &__spells-abilities-tab.active,
   &__spells-abilities-tab.is-active {
     display: flex;
     flex-direction: column;
@@ -111,9 +113,12 @@
     position: relative;
     z-index: 1;
 
+    &.active,
     &.is-active {
       filter: brightness(1);
       z-index: 10;
+      outline: none;
+      box-shadow: 3px -3px 4px 0px rgb(8 8 8 / 25%);
     }
   }
 

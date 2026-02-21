@@ -1210,10 +1210,10 @@ hr {
 .dolmenwood-sheet__tab-panel {
   display: none;
 }
-.dolmenwood-sheet__tab-panel.is-active {
+.dolmenwood-sheet__tab-panel.active, .dolmenwood-sheet__tab-panel.is-active {
   display: block;
 }
-.dolmenwood-sheet__spells-abilities-tab.is-active {
+.dolmenwood-sheet__spells-abilities-tab.active, .dolmenwood-sheet__spells-abilities-tab.is-active {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -1252,9 +1252,11 @@ hr {
   position: relative;
   z-index: 1;
 }
-.dolmenwood-sheet__tab.is-active {
+.dolmenwood-sheet__tab.active, .dolmenwood-sheet__tab.is-active {
   filter: brightness(1);
   z-index: 10;
+  outline: none;
+  box-shadow: 3px -3px 4px 0px rgba(8, 8, 8, 0.25);
 }
 .dolmenwood-sheet__tab + .dolmenwood-sheet__tab {
   margin-left: 0;

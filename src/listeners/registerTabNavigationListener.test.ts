@@ -1,15 +1,70 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { registerTabNavigationListener } from "./registerTabNavigationListener.js";
 
 describe("registerTabNavigationListener", () => {
-  it("activates the current tab and panel on initialization", () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+    vi.unstubAllGlobals();
+  });
+
+  it("binds Foundry Tabs with the currently active tab", () => {
+    let capturedConfig:
+      | {
+          group?: string;
+          navSelector: string;
+          contentSelector?: string;
+          initial?: string;
+          callback?: ((event: MouseEvent | null, tabs: unknown, tabName: string) => unknown) | null;
+        }
+      | undefined;
+    const bind = vi.fn();
+
+    class TabsMock {
+      active: string;
+
+      constructor(config: {
+        group?: string;
+        navSelector: string;
+        contentSelector?: string;
+        initial?: string;
+        callback?: ((event: MouseEvent | null, tabs: unknown, tabName: string) => unknown) | null;
+      }) {
+        capturedConfig = config;
+        this.active = config.initial ?? "main";
+      }
+
+      bind(html: HTMLElement): void {
+        bind(html);
+      }
+    }
+
+    const originalFoundry = globalThis.foundry as Record<string, unknown> | undefined;
+    const foundryWithTabs = {
+      ...(originalFoundry ?? {}),
+      applications: {
+        ...((originalFoundry as { applications?: Record<string, unknown> } | undefined)?.applications ??
+          {}),
+        ux: {
+          ...((originalFoundry as { applications?: { ux?: Record<string, unknown> } } | undefined)
+            ?.applications?.ux ?? {}),
+          Tabs: TabsMock
+        }
+      }
+    };
+
+    vi.stubGlobal("foundry", foundryWithTabs);
+
     document.body.innerHTML = `
-      <button data-tab-target="main">Main</button>
-      <button data-tab-target="second">Second</button>
-      <button data-tab-target="third">Third</button>
-      <div data-tab-panel="main">Main content</div>
-      <div data-tab-panel="second">Second content</div>
-      <div data-tab-panel="third">Third content</div>
+      <div class="dolmenwood-sheet__tabs">
+        <button data-tab-target="main">Main</button>
+        <button data-tab-target="second">Second</button>
+        <button data-tab-target="third">Third</button>
+      </div>
+      <div class="dolmenwood-sheet__content">
+        <div data-tab-panel="main">Main content</div>
+        <div data-tab-panel="second">Second content</div>
+        <div data-tab-panel="third">Third content</div>
+      </div>
     `;
     const html = $(document.body);
     const getActiveTab = vi.fn(() => "second");
@@ -17,21 +72,62 @@ describe("registerTabNavigationListener", () => {
 
     registerTabNavigationListener(html, { getActiveTab, setActiveTab });
 
-    expect(html.find("[data-tab-target='second']").hasClass("is-active")).toBe(true);
-    expect(html.find("[data-tab-target='main']").hasClass("is-active")).toBe(false);
-    expect(html.find("[data-tab-target='third']").hasClass("is-active")).toBe(false);
-
-    expect(html.find("[data-tab-panel='second']").hasClass("is-active")).toBe(true);
-    expect(html.find("[data-tab-panel='main']").hasClass("is-active")).toBe(false);
-    expect(html.find("[data-tab-panel='third']").hasClass("is-active")).toBe(false);
+    expect(capturedConfig).toEqual(
+      expect.objectContaining({
+        group: "dolmenwood-sheet-tabs",
+        navSelector: ".dolmenwood-sheet__tabs",
+        contentSelector: ".dolmenwood-sheet__content",
+        initial: "second"
+      })
+    );
+    expect(bind).toHaveBeenCalledTimes(1);
+    expect(bind).toHaveBeenCalledWith(document.body);
+    expect(html.find("[data-tab-target='second']").attr("data-tab")).toBe("second");
+    expect(html.find("[data-tab-panel='second']").attr("data-tab")).toBe("second");
+    expect(html.find("[data-tab-target='second']").attr("data-group")).toBe("dolmenwood-sheet-tabs");
+    expect(html.find("[data-tab-panel='second']").attr("data-group")).toBe("dolmenwood-sheet-tabs");
+    expect(setActiveTab).not.toHaveBeenCalled();
   });
 
-  it("sets default tab when active tab does not exist", () => {
+  it("sets fallback tab when active tab does not exist", () => {
+    let capturedConfig: { initial?: string } | undefined;
+
+    class TabsMock {
+      active: string;
+
+      constructor(config: { initial?: string }) {
+        capturedConfig = config;
+        this.active = config.initial ?? "main";
+      }
+
+      bind(_html: HTMLElement): void {}
+    }
+
+    const originalFoundry = globalThis.foundry as Record<string, unknown> | undefined;
+    const foundryWithTabs = {
+      ...(originalFoundry ?? {}),
+      applications: {
+        ...((originalFoundry as { applications?: Record<string, unknown> } | undefined)?.applications ??
+          {}),
+        ux: {
+          ...((originalFoundry as { applications?: { ux?: Record<string, unknown> } } | undefined)
+            ?.applications?.ux ?? {}),
+          Tabs: TabsMock
+        }
+      }
+    };
+
+    vi.stubGlobal("foundry", foundryWithTabs);
+
     document.body.innerHTML = `
-      <button data-tab-target="main">Main</button>
-      <button data-tab-target="second">Second</button>
-      <div data-tab-panel="main">Main content</div>
-      <div data-tab-panel="second">Second content</div>
+      <div class="dolmenwood-sheet__tabs">
+        <button data-tab-target="main">Main</button>
+        <button data-tab-target="second">Second</button>
+      </div>
+      <div class="dolmenwood-sheet__content">
+        <div data-tab-panel="main">Main content</div>
+        <div data-tab-panel="second">Second content</div>
+      </div>
     `;
     const html = $(document.body);
     const getActiveTab = vi.fn(() => "nonexistent");
@@ -40,67 +136,53 @@ describe("registerTabNavigationListener", () => {
     registerTabNavigationListener(html, { getActiveTab, setActiveTab });
 
     expect(setActiveTab).toHaveBeenCalledWith("main");
-    expect(getActiveTab).toHaveBeenCalled();
+    expect(capturedConfig?.initial).toBe("main");
   });
 
-  it("switches tabs on click", () => {
+  it("propagates Foundry Tabs callback into setActiveTab", () => {
+    let capturedConfig:
+      | {
+          callback?: ((event: MouseEvent | null, tabs: unknown, tabName: string) => unknown) | null;
+        }
+      | undefined;
+
+    class TabsMock {
+      active = "main";
+
+      constructor(config: {
+        callback?: ((event: MouseEvent | null, tabs: unknown, tabName: string) => unknown) | null;
+      }) {
+        capturedConfig = config;
+      }
+
+      bind(_html: HTMLElement): void {}
+    }
+
+    const originalFoundry = globalThis.foundry as Record<string, unknown> | undefined;
+    const foundryWithTabs = {
+      ...(originalFoundry ?? {}),
+      applications: {
+        ...((originalFoundry as { applications?: Record<string, unknown> } | undefined)?.applications ??
+          {}),
+        ux: {
+          ...((originalFoundry as { applications?: { ux?: Record<string, unknown> } } | undefined)
+            ?.applications?.ux ?? {}),
+          Tabs: TabsMock
+        }
+      }
+    };
+
+    vi.stubGlobal("foundry", foundryWithTabs);
+
     document.body.innerHTML = `
-      <button data-tab-target="main" class="is-active">Main</button>
-      <button data-tab-target="second">Second</button>
-      <button data-tab-target="third">Third</button>
-      <div data-tab-panel="main" class="is-active">Main content</div>
-      <div data-tab-panel="second">Second content</div>
-      <div data-tab-panel="third">Third content</div>
-    `;
-    const html = $(document.body);
-    let activeTab = "main";
-    const getActiveTab = vi.fn(() => activeTab);
-    const setActiveTab = vi.fn((tab: string) => {
-      activeTab = tab;
-    });
-
-    registerTabNavigationListener(html, { getActiveTab, setActiveTab });
-
-    const secondTabButton = html.find("[data-tab-target='second']");
-
-    secondTabButton.trigger("click");
-
-    expect(setActiveTab).toHaveBeenCalledWith("second");
-    expect(secondTabButton.hasClass("is-active")).toBe(true);
-    expect(html.find("[data-tab-target='main']").hasClass("is-active")).toBe(false);
-    expect(html.find("[data-tab-panel='second']").hasClass("is-active")).toBe(true);
-    expect(html.find("[data-tab-panel='main']").hasClass("is-active")).toBe(false);
-  });
-
-  it("prevents default behavior and stops propagation on tab click", () => {
-    document.body.innerHTML = `
-      <button data-tab-target="main">Main</button>
-      <button data-tab-target="second">Second</button>
-      <div data-tab-panel="main">Main content</div>
-      <div data-tab-panel="second">Second content</div>
-    `;
-    const html = $(document.body);
-    const getActiveTab = vi.fn(() => "main");
-    const setActiveTab = vi.fn();
-
-    registerTabNavigationListener(html, { getActiveTab, setActiveTab });
-
-    const event = $.Event("click");
-    const secondTabButton = html.find("[data-tab-target='second']");
-
-    secondTabButton.trigger(event);
-
-    expect(event.isDefaultPrevented()).toBe(true);
-    expect(event.isPropagationStopped()).toBe(true);
-  });
-
-  it("does nothing when clicking an element without data-tab-target", () => {
-    document.body.innerHTML = `
-      <button data-tab-target="main" class="is-active">Main</button>
-      <button data-tab-target="second">Second</button>
-      <button class="no-target">No Target</button>
-      <div data-tab-panel="main" class="is-active">Main content</div>
-      <div data-tab-panel="second">Second content</div>
+      <div class="dolmenwood-sheet__tabs">
+        <button data-tab-target="main">Main</button>
+        <button data-tab-target="second">Second</button>
+      </div>
+      <div class="dolmenwood-sheet__content">
+        <div data-tab-panel="main">Main content</div>
+        <div data-tab-panel="second">Second content</div>
+      </div>
     `;
     const html = $(document.body);
     const getActiveTab = vi.fn(() => "main");
@@ -108,56 +190,40 @@ describe("registerTabNavigationListener", () => {
 
     registerTabNavigationListener(html, { getActiveTab, setActiveTab });
 
-    const noTargetButton = html.find(".no-target");
+    capturedConfig?.callback?.(null, {}, "second");
 
-    noTargetButton.trigger("click");
-
-    // setActiveTab should only be called during initialization (if needed)
-    // but not from clicking the button without data-tab-target
-    const callsBeforeClick = setActiveTab.mock.calls.length;
-
-    expect(callsBeforeClick).toBe(0); // No calls during init since panel exists
-  });
-
-  it("handles multiple tab switches correctly", () => {
-    document.body.innerHTML = `
-      <button data-tab-target="main" class="is-active">Main</button>
-      <button data-tab-target="second">Second</button>
-      <button data-tab-target="third">Third</button>
-      <div data-tab-panel="main" class="is-active">Main content</div>
-      <div data-tab-panel="second">Second content</div>
-      <div data-tab-panel="third">Third content</div>
-    `;
-    const html = $(document.body);
-    let activeTab = "main";
-    const getActiveTab = vi.fn(() => activeTab);
-    const setActiveTab = vi.fn((tab: string) => {
-      activeTab = tab;
-    });
-
-    registerTabNavigationListener(html, { getActiveTab, setActiveTab });
-
-    html.find("[data-tab-target='second']").trigger("click");
     expect(setActiveTab).toHaveBeenCalledWith("second");
-    expect(html.find("[data-tab-target='second']").hasClass("is-active")).toBe(true);
-    expect(html.find("[data-tab-panel='second']").hasClass("is-active")).toBe(true);
-
-    html.find("[data-tab-target='third']").trigger("click");
-    expect(setActiveTab).toHaveBeenCalledWith("third");
-    expect(html.find("[data-tab-target='third']").hasClass("is-active")).toBe(true);
-    expect(html.find("[data-tab-target='second']").hasClass("is-active")).toBe(false);
-    expect(html.find("[data-tab-panel='third']").hasClass("is-active")).toBe(true);
-    expect(html.find("[data-tab-panel='second']").hasClass("is-active")).toBe(false);
-
-    html.find("[data-tab-target='main']").trigger("click");
-    expect(setActiveTab).toHaveBeenCalledWith("main");
-    expect(html.find("[data-tab-target='main']").hasClass("is-active")).toBe(true);
-    expect(html.find("[data-tab-target='third']").hasClass("is-active")).toBe(false);
-    expect(html.find("[data-tab-panel='main']").hasClass("is-active")).toBe(true);
-    expect(html.find("[data-tab-panel='third']").hasClass("is-active")).toBe(false);
   });
 
-  it("defaults to 'main' when no tabs exist", () => {
+  it("defaults to main when tab markup is missing", () => {
+    const createTabs = vi.fn();
+
+    class TabsMock {
+      active = "main";
+
+      constructor(_config: unknown) {
+        createTabs();
+      }
+
+      bind(_html: HTMLElement): void {}
+    }
+
+    const originalFoundry = globalThis.foundry as Record<string, unknown> | undefined;
+    const foundryWithTabs = {
+      ...(originalFoundry ?? {}),
+      applications: {
+        ...((originalFoundry as { applications?: Record<string, unknown> } | undefined)?.applications ??
+          {}),
+        ux: {
+          ...((originalFoundry as { applications?: { ux?: Record<string, unknown> } } | undefined)
+            ?.applications?.ux ?? {}),
+          Tabs: TabsMock
+        }
+      }
+    };
+
+    vi.stubGlobal("foundry", foundryWithTabs);
+
     document.body.innerHTML = `
       <div>No tabs here</div>
     `;
@@ -168,5 +234,6 @@ describe("registerTabNavigationListener", () => {
     registerTabNavigationListener(html, { getActiveTab, setActiveTab });
 
     expect(setActiveTab).toHaveBeenCalledWith("main");
+    expect(createTabs).not.toHaveBeenCalled();
   });
 });

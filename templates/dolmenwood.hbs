@@ -1,29 +1,73 @@
 <form class="dolmenwood-sheet" autocomplete="off">
     <div class="dolmenwood-sheet__layout">
         <div class="dolmenwood-sheet__content">
-            <div class="dolmenwood-sheet__tab-panel dolmenwood-sheet__main-tab is-active" data-tab-panel="main">
+            <div
+                class="dolmenwood-sheet__tab-panel dolmenwood-sheet__main-tab tab active"
+                data-tab-panel="main"
+                data-tab="main"
+                data-group="dolmenwood-sheet-tabs"
+            >
                 {{~> dolmenwood-main-tab ctx=this~}}
             </div>
 
-            <div class="dolmenwood-sheet__tab-panel dolmenwood-sheet__equipment-tab" data-tab-panel="equipment">
+            <div
+                class="dolmenwood-sheet__tab-panel dolmenwood-sheet__equipment-tab tab"
+                data-tab-panel="equipment"
+                data-tab="equipment"
+                data-group="dolmenwood-sheet-tabs"
+            >
                 {{~> dolmenwood-equipment-tab ctx=this~}}
             </div>
 
-            <div class="dolmenwood-sheet__tab-panel dolmenwood-sheet__spells-abilities-tab" data-tab-panel="spells-abilities">
+            <div
+                class="dolmenwood-sheet__tab-panel dolmenwood-sheet__spells-abilities-tab tab"
+                data-tab-panel="spells-abilities"
+                data-tab="spells-abilities"
+                data-group="dolmenwood-sheet-tabs"
+            >
                 {{~> dolmenwood-spells-abilities-tab ctx=this~}}
             </div>
 
-            <div class="dolmenwood-sheet__tab-panel dolmenwood-sheet__details-tab" data-tab-panel="details">
+            <div
+                class="dolmenwood-sheet__tab-panel dolmenwood-sheet__details-tab tab"
+                data-tab-panel="details"
+                data-tab="details"
+                data-group="dolmenwood-sheet-tabs"
+            >
                 {{~> dolmenwood-details-tab ctx=this~}}
             </div>
 
         </div>
 
-        <div class="dolmenwood-sheet__tabs">
-            <a href="#" class="dolmenwood-sheet__tab is-active" data-tab-target="main">{{localize "DOLMENWOOD.UI.Main"}}</a>
-            <a href="#" class="dolmenwood-sheet__tab" data-tab-target="equipment">{{localize "DOLMENWOOD.UI.Equipment"}}</a>
-            <a href="#" class="dolmenwood-sheet__tab" data-tab-target="spells-abilities">{{localize "DOLMENWOOD.UI.SpellsAbilities"}}</a>
-            <a href="#" class="dolmenwood-sheet__tab" data-tab-target="details">{{localize "DOLMENWOOD.UI.Details"}}</a>
+        <div class="dolmenwood-sheet__tabs" data-group="dolmenwood-sheet-tabs">
+            <button
+                type="button"
+                class="dolmenwood-sheet__tab item active"
+                data-tab-target="main"
+                data-tab="main"
+                data-group="dolmenwood-sheet-tabs"
+            >{{localize "DOLMENWOOD.UI.Main"}}</button>
+            <button
+                type="button"
+                class="dolmenwood-sheet__tab item"
+                data-tab-target="equipment"
+                data-tab="equipment"
+                data-group="dolmenwood-sheet-tabs"
+            >{{localize "DOLMENWOOD.UI.Equipment"}}</button>
+            <button
+                type="button"
+                class="dolmenwood-sheet__tab item"
+                data-tab-target="spells-abilities"
+                data-tab="spells-abilities"
+                data-group="dolmenwood-sheet-tabs"
+            >{{localize "DOLMENWOOD.UI.SpellsAbilities"}}</button>
+            <button
+                type="button"
+                class="dolmenwood-sheet__tab item"
+                data-tab-target="details"
+                data-tab="details"
+                data-group="dolmenwood-sheet-tabs"
+            >{{localize "DOLMENWOOD.UI.Details"}}</button>
         </div>
     </div>
 </form>
