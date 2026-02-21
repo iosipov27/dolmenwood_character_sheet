@@ -10,7 +10,7 @@
         "HPMax": "HP max path not detected."
       },
       "MeleeAttack": "Melee attacks",
-      "RangedAttack": "Ranged attack",
+      "RangedAttack": "Missile attacks",
       "HP": "HP",
       "MaxHP": "Max HP",
       "KindredClassTraits": "Kindred & Class Traits",

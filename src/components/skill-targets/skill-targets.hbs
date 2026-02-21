@@ -10,7 +10,7 @@
         <button
           type="button"
           class="dw-roll"
-          title="{{lookup ctx.dwUi.skillTooltips key}}"
+          data-tooltip="{{lookup ctx.dwUi.skillTooltips key}}"
           data-action="dw-roll-skill"
           data-key="{{key}}"
         >{{uppercase key}}</button>
@@ -22,7 +22,7 @@
           value="{{val}}"
           data-dw-dblroll="skill"
           data-key="{{key}}"
-          title="{{lookup ctx.dwUi.skillTooltips key}}"
+          data-tooltip="{{lookup ctx.dwUi.skillTooltips key}}"
         />
       </div>
     {{/each}}
@@ -69,7 +69,7 @@
           class="dw-x"
           data-action="dw-remove-skill"
           data-index="{{idx}}"
-          title="{{localize 'DOLMENWOOD.UI.Remove'}}"
+          data-tooltip="{{localize 'DOLMENWOOD.UI.Remove'}}"
         >
           &times;
         </button>
@@ -81,6 +81,6 @@
     type="button"
     class="dw-plus"
     data-action="dw-add-skill"
-    title="{{localize 'DOLMENWOOD.UI.AddSkillMax10'}}"
+    data-tooltip="{{localize 'DOLMENWOOD.UI.AddSkillMax10'}}"
   >+</button>
 </div>

@@ -13,12 +13,12 @@
             style="--mb: 0.3rem;"
             data-action="dw-roll-save"
             data-key="{{s.key}}"
-            title="{{lookup ctx.dwUi.saveTooltips s.key}}"
+            data-tooltip="{{lookup ctx.dwUi.saveTooltips s.key}}"
           >{{uppercase s.label}}</button>
         {{else}}
           <div
             class="dw-roll-placeholder dw-saves__info"
-            title="{{localize 'DOLMENWOOD.UI.NotRolledHere'}}"
+            data-tooltip="{{localize 'DOLMENWOOD.UI.NotRolledHere'}}"
           >{{uppercase s.label}}</div>
         {{/if}}
 
@@ -30,7 +30,7 @@
             value="{{s.value}}"
             data-dw-dblroll="save"
             data-key="{{s.key}}"
-            title="{{lookup ctx.dwUi.saveTooltips s.key}}"
+            data-tooltip="{{lookup ctx.dwUi.saveTooltips s.key}}"
           />
         {{else}}
           <input
@@ -38,7 +38,7 @@
             name="dw.saves.{{s.key}}"
             type="number"
             value="{{s.value}}"
-            title="{{lookup ctx.dwUi.saveTooltips s.key}}"
+            data-tooltip="{{lookup ctx.dwUi.saveTooltips s.key}}"
           />
         {{/if}}
       </div>
