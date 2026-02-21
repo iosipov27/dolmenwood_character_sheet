@@ -5,7 +5,6 @@ import {
   registerEquipmentListener,
   registerExtraSkillRollListener,
   registerRemoveSkillListener,
-  registerSaveDblRollListener,
   registerSaveRollListener,
   registerSkillRollListener,
   registerSpellsListener,
@@ -38,12 +37,6 @@ export function registerSheetListeners(
     actor,
     getDwFlags,
     rollSkillCheck: RollChecks.rollSkillCheck,
-    prettyKey
-  });
-
-  registerSaveDblRollListener(html, {
-    actor,
-    rollTargetCheck: RollChecks.rollTargetCheck,
     prettyKey
   });
 
