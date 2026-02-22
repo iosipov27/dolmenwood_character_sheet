@@ -19,9 +19,7 @@ export class RollChecks {
 
     const total = Number(roll.total ?? 0);
     const success = total >= t;
-    const status = success
-      ? localize("DOLMENWOOD.Roll.Success")
-      : localize("DOLMENWOOD.Roll.Fail");
+    const status = success ? localize("DOLMENWOOD.Roll.Success") : localize("DOLMENWOOD.Roll.Fail");
     const flavor = RollChecks.buildRollFlavor({
       title: label,
       status,
@@ -61,9 +59,7 @@ export class RollChecks {
     const autoFail = dieRoll === 1;
     const autoSuccess = dieRoll === 6;
     const success = autoFail ? false : autoSuccess ? true : total >= target;
-    const status = success
-      ? localize("DOLMENWOOD.Roll.Success")
-      : localize("DOLMENWOOD.Roll.Fail");
+    const status = success ? localize("DOLMENWOOD.Roll.Success") : localize("DOLMENWOOD.Roll.Fail");
     const flavor = RollChecks.buildRollFlavor({
       title,
       status,
@@ -99,9 +95,7 @@ export class RollChecks {
     const autoFail = dieRoll === 1;
     const autoSuccess = dieRoll === 6;
     const success = autoFail ? false : autoSuccess ? true : total >= target;
-    const status = success
-      ? localize("DOLMENWOOD.Roll.Success")
-      : localize("DOLMENWOOD.Roll.Fail");
+    const status = success ? localize("DOLMENWOOD.Roll.Success") : localize("DOLMENWOOD.Roll.Fail");
     const flavor = RollChecks.buildRollFlavor({
       title: label,
       status,
@@ -334,13 +328,11 @@ export class RollChecks {
     const escapedFormula = RollChecks.escapeHtml(formula);
     const escapedLabel = RollChecks.escapeHtml(label);
 
-    return (
-      `<div class="dw-roll-card__actions">` +
-      `<button class="dw-roll-card__action-button" type="button" data-action="${DW_ROLL_ATTACK_DAMAGE}" data-damage-formula="${escapedFormula}">` +
-      escapedLabel +
-      `</button>` +
-      `</div>`
-    );
+    return `<div class="dw-roll-card__actions">
+      <button class="dw-roll-card__action-button" type="button" data-action="${DW_ROLL_ATTACK_DAMAGE}" data-damage-formula="${escapedFormula}">
+      <i class="fa-solid fa-dice-d20"></i><span>${escapedLabel}</span>
+      </button>
+      </div>`;
   }
 
   private static escapeHtml(value: unknown): string {

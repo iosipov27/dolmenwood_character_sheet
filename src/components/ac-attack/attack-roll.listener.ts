@@ -32,6 +32,35 @@ function asFiniteNumber(value: unknown): number {
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
+function appendNumericModifier(formula: string, modifier: number): string {
+  const normalizedFormula = formula.trim();
+
+  if (!normalizedFormula) return "";
+
+  const normalizedModifier = asFiniteNumber(modifier);
+
+  if (!normalizedModifier) return normalizedFormula;
+
+  const sign = normalizedModifier > 0 ? "+" : "-";
+
+  return `${normalizedFormula} ${sign} ${Math.abs(normalizedModifier)}`;
+}
+
+function getDamageFormula({
+  attackType,
+  baseFormula,
+  strengthModifier
+}: {
+  attackType: string;
+  baseFormula: string;
+  strengthModifier: number;
+}): string {
+  if (attackType !== "melee") return baseFormula;
+
+  // Melee damage gets only the STR modifier as an automatic bonus.
+  return appendNumericModifier(baseFormula, strengthModifier);
+}
+
 export function registerAttackRollListener(
   html: HtmlRoot,
   { actor, rollAttackCheck }: { actor: Actor; rollAttackCheck: RollAttackCheck }
@@ -83,11 +112,16 @@ export function registerAttackRollListener(
           ? storedDamageFormula
           : ""
     ).trim();
+    const adjustedDamageFormula = getDamageFormula({
+      attackType,
+      baseFormula: damageFormula,
+      strengthModifier: abilityMod
+    });
     const mod = abilityMod + attackBonus;
 
     await rollAttackCheck(actor, attackLabels[attackType], abilityLabels[abilityKey], mod, [
       { value: abilityMod, label: abilityKey.toUpperCase() },
       { value: attackBonus, label: "BONUS" }
-    ], damageFormula);
+    ], adjustedDamageFormula);
   });
 }

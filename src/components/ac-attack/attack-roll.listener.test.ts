@@ -136,7 +136,7 @@ describe("registerAttackRollListener", () => {
     ], "");
   });
 
-  it("uses current damage formula input for attack roll chat action", async () => {
+  it("adds STR modifier to current melee damage formula for attack roll chat action", async () => {
     const localizeMap: Record<string, string> = {
       "DOLMENWOOD.UI.MeleeAttack": "Melee Attack",
       "DOLMENWOOD.UI.RangedAttack": "Ranged Attack",
@@ -180,6 +180,80 @@ describe("registerAttackRollListener", () => {
     expect(rollAttackCheck).toHaveBeenCalledWith(actor, "Melee Attack", "Strength", 4, [
       { value: 2, label: "STR" },
       { value: 2, label: "BONUS" }
-    ], "1d8 + 1");
+    ], "1d8 + 1 + 2");
+  });
+
+  it("does not add DEX modifier to ranged damage formula", async () => {
+    const localizeMap: Record<string, string> = {
+      "DOLMENWOOD.UI.MeleeAttack": "Melee Attack",
+      "DOLMENWOOD.UI.RangedAttack": "Ranged Attack",
+      "DOLMENWOOD.Ability.Strength": "Strength",
+      "DOLMENWOOD.Ability.Dexterity": "Dexterity"
+    };
+
+    vi.stubGlobal("game", {
+      i18n: { localize: (key: string) => localizeMap[key] ?? key }
+    });
+
+    const rollAttackCheck = vi.fn(async () => ({ roll: {} as Roll, mod: 0 }));
+
+    document.body.innerHTML = `
+      <form>
+        <input name="dw.meta.missileAttackBonus" value="2" />
+        <input name="dw.meta.missileDamageFormula" value="1d6" />
+        <button data-action="dw-roll-attack" data-attack="ranged"></button>
+      </form>
+    `;
+    const html = $(document.body);
+    const actor = {
+      system: { abilities: { str: { value: 13, mod: 2 }, dex: { value: 11, mod: 1 } } }
+    } as Actor;
+
+    registerAttackRollListener(html, { actor, rollAttackCheck });
+
+    html.find("[data-action='dw-roll-attack'][data-attack='ranged']").trigger("click");
+    await flushPromises();
+
+    expect(rollAttackCheck).toHaveBeenCalledWith(actor, "Ranged Attack", "Dexterity", 3, [
+      { value: 1, label: "DEX" },
+      { value: 2, label: "BONUS" }
+    ], "1d6");
+  });
+
+  it("does not add melee attack bonus to melee damage formula", async () => {
+    const localizeMap: Record<string, string> = {
+      "DOLMENWOOD.UI.MeleeAttack": "Melee Attack",
+      "DOLMENWOOD.UI.RangedAttack": "Ranged Attack",
+      "DOLMENWOOD.Ability.Strength": "Strength",
+      "DOLMENWOOD.Ability.Dexterity": "Dexterity"
+    };
+
+    vi.stubGlobal("game", {
+      i18n: { localize: (key: string) => localizeMap[key] ?? key }
+    });
+
+    const rollAttackCheck = vi.fn(async () => ({ roll: {} as Roll, mod: 0 }));
+
+    document.body.innerHTML = `
+      <form>
+        <input name="dw.meta.meleeAttackBonus" value="4" />
+        <input name="dw.meta.meleeDamageFormula" value="1d4" />
+        <button data-action="dw-roll-attack" data-attack="melee"></button>
+      </form>
+    `;
+    const html = $(document.body);
+    const actor = {
+      system: { abilities: { str: { value: 17, mod: 2 }, dex: { value: 11, mod: 0 } } }
+    } as Actor;
+
+    registerAttackRollListener(html, { actor, rollAttackCheck });
+
+    html.find("[data-action='dw-roll-attack'][data-attack='melee']").trigger("click");
+    await flushPromises();
+
+    expect(rollAttackCheck).toHaveBeenCalledWith(actor, "Melee Attack", "Strength", 6, [
+      { value: 2, label: "STR" },
+      { value: 4, label: "BONUS" }
+    ], "1d4 + 2");
   });
 });
