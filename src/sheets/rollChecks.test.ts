@@ -318,6 +318,53 @@ describe("RollChecks.rollAttackCheck", () => {
     );
   });
 
+  it("adds damage roll button to attack flavor when formula is provided", async () => {
+    const localizeMap: Record<string, string> = {
+      "DOLMENWOOD.UI.RollDamage": "Roll damage"
+    };
+
+    vi.stubGlobal("game", {
+      i18n: { localize: (key: string) => localizeMap[key] ?? key }
+    });
+
+    const postedMessage = vi.fn(async () => {});
+
+    class MockRoll {
+      total = 14;
+
+      constructor(_formula: string, _data: { mod: number }) {}
+
+      async evaluate(): Promise<this> {
+        return this;
+      }
+
+      async toMessage(payload: unknown): Promise<void> {
+        await postedMessage(payload);
+      }
+    }
+
+    vi.stubGlobal("Roll", MockRoll);
+    vi.stubGlobal("ChatMessage", { getSpeaker: () => ({}) });
+
+    await RollChecks.rollAttackCheck({} as Actor, "Melee Attack", "Strength", 2, [], "2d6 + 1");
+
+    expect(postedMessage).toHaveBeenCalledWith(
+      expect.objectContaining({
+        flavor: expect.stringContaining('data-action="dw-roll-attack-damage"')
+      })
+    );
+    expect(postedMessage).toHaveBeenCalledWith(
+      expect.objectContaining({
+        flavor: expect.stringContaining('data-damage-formula="2d6 + 1"')
+      })
+    );
+    expect(postedMessage).toHaveBeenCalledWith(
+      expect.objectContaining({
+        flavor: expect.stringContaining(">Roll damage</button>")
+      })
+    );
+  });
+
   it("shows attack modifier parts in formula prompt when provided", async () => {
     const localizeMap: Record<string, string> = {
       "DOLMENWOOD.Roll.Formula": "Formula",

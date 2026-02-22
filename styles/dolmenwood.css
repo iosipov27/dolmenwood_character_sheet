@@ -403,7 +403,8 @@ hr {
 }
 
 .dw-roll-card {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 0.25rem;
   text-align: center;
 }
@@ -422,6 +423,15 @@ hr {
 }
 .dw-roll-card__status--fail {
   color: #8b1e1e;
+}
+.dw-roll-card__actions {
+  margin-top: 0.4rem;
+}
+.dw-roll-card__action-button {
+  width: 100%;
+  min-height: 1.6rem;
+  border: 1px solid #c9c5ba;
+  font-size: 0.8rem;
 }
 
 .dw-abilities {

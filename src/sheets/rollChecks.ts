@@ -1,4 +1,5 @@
 import type { RollModifierPart } from "../types.js";
+import { DW_ROLL_ATTACK_DAMAGE } from "../constants/templateAttributes.js";
 
 export class RollChecks {
   static async rollTargetCheck(
@@ -120,7 +121,8 @@ export class RollChecks {
     attackLabel: string,
     _abilityLabel: string,
     abilityMod: number,
-    modifierParts: RollModifierPart[] = []
+    modifierParts: RollModifierPart[] = [],
+    damageFormula?: string
   ): Promise<{ roll: Roll; mod: number } | null> {
     const localize = (key: string): string => game.i18n?.localize(key) ?? key;
     const normalizedParts = modifierParts
@@ -155,10 +157,18 @@ export class RollChecks {
         ? localize("DOLMENWOOD.Roll.Success")
         : null;
     const statusKind = autoFail ? "fail" : autoSuccess ? "success" : null;
+    const parsedDamageFormula = String(damageFormula ?? "").trim();
+    const actions = parsedDamageFormula
+      ? RollChecks.buildDamageRollActionMarkup({
+          formula: parsedDamageFormula,
+          label: localize("DOLMENWOOD.UI.RollDamage")
+        })
+      : "";
     const flavor = RollChecks.buildRollFlavor({
       title: attackLabel,
       status,
-      statusKind
+      statusKind,
+      actions
     });
 
     await roll.toMessage({
@@ -292,11 +302,13 @@ export class RollChecks {
   private static buildRollFlavor({
     title,
     status,
-    statusKind
+    statusKind,
+    actions = ""
   }: {
     title: string;
     status: string | null;
     statusKind: "success" | "fail" | null;
+    actions?: string;
   }): string {
     const statusMarkup =
       status && statusKind
@@ -307,6 +319,26 @@ export class RollChecks {
       `<div class="dw-roll-card">` +
       `<div class="dw-roll-card__title">${RollChecks.escapeHtml(title)}</div>` +
       statusMarkup +
+      actions +
+      `</div>`
+    );
+  }
+
+  private static buildDamageRollActionMarkup({
+    formula,
+    label
+  }: {
+    formula: string;
+    label: string;
+  }): string {
+    const escapedFormula = RollChecks.escapeHtml(formula);
+    const escapedLabel = RollChecks.escapeHtml(label);
+
+    return (
+      `<div class="dw-roll-card__actions">` +
+      `<button class="dw-roll-card__action-button" type="button" data-action="${DW_ROLL_ATTACK_DAMAGE}" data-damage-formula="${escapedFormula}">` +
+      escapedLabel +
+      `</button>` +
       `</div>`
     );
   }

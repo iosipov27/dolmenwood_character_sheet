@@ -34,6 +34,12 @@ function normalizeNumber(value: unknown): number {
   return 0;
 }
 
+function normalizeString(value: unknown): string {
+  if (typeof value === "string") return value.trim();
+
+  return "";
+}
+
 export function normalizeDwFlags(dw: DwFlagsInput): DwFlags {
   // If an old "resistance" existed, fold it into magic (prefer magic if set).
   const d = foundry.utils.duplicate(dw ?? {}) as DwFlagsInput;
@@ -67,6 +73,8 @@ export function normalizeDwFlags(dw: DwFlagsInput): DwFlags {
   meta.traitsCollapsed = normalizeBoolean(meta.traitsCollapsed);
   meta.meleeAttackBonus = normalizeNumber(meta.meleeAttackBonus);
   meta.missileAttackBonus = normalizeNumber(meta.missileAttackBonus);
+  meta.meleeDamageFormula = normalizeString(meta.meleeDamageFormula);
+  meta.missileDamageFormula = normalizeString(meta.missileDamageFormula);
   meta.meleeDamageBonus = normalizeNumber(meta.meleeDamageBonus);
   meta.spellsTraitsView = isSpellsTraitsView(spellsTraitsViewRaw) ? spellsTraitsViewRaw : "both";
 

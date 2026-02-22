@@ -17,6 +17,14 @@ const ATTACK_TO_BONUS_INPUT: Record<string, string> = {
   melee: "dw.meta.meleeAttackBonus",
   ranged: "dw.meta.missileAttackBonus"
 };
+const ATTACK_TO_DAMAGE_PATH: Record<string, string> = {
+  melee: "meta.meleeDamageFormula",
+  ranged: "meta.missileDamageFormula"
+};
+const ATTACK_TO_DAMAGE_INPUT: Record<string, string> = {
+  melee: "dw.meta.meleeDamageFormula",
+  ranged: "dw.meta.missileDamageFormula"
+};
 
 function asFiniteNumber(value: unknown): number {
   const parsed = Number(value);
@@ -48,8 +56,12 @@ export function registerAttackRollListener(
     const abilityKey = ATTACK_TO_ABILITY[attackType];
     const attackBonusPath = ATTACK_TO_BONUS_PATH[attackType];
     const attackBonusInputName = ATTACK_TO_BONUS_INPUT[attackType];
+    const damagePath = ATTACK_TO_DAMAGE_PATH[attackType];
+    const damageInputName = ATTACK_TO_DAMAGE_INPUT[attackType];
 
-    if (!abilityKey || !attackBonusPath || !attackBonusInputName) return;
+    if (!abilityKey || !attackBonusPath || !attackBonusInputName || !damagePath || !damageInputName) {
+      return;
+    }
 
     const abilities = buildAbilities(actor.system as Record<string, unknown>);
     const ability = abilities.find((entry) => entry.key === abilityKey);
@@ -62,11 +74,20 @@ export function registerAttackRollListener(
       typeof inputValue === "string"
         ? asFiniteNumber(inputValue)
         : asFiniteNumber(foundry.utils.getProperty(actor, `flags.${MODULE_ID}.dw.${attackBonusPath}`));
+    const damageInput = form?.querySelector<HTMLInputElement>(`input[name='${damageInputName}']`) ?? null;
+    const storedDamageFormula = foundry.utils.getProperty(actor, `flags.${MODULE_ID}.dw.${damagePath}`);
+    const damageFormula = (
+      damageInput
+        ? damageInput.value
+        : typeof storedDamageFormula === "string"
+          ? storedDamageFormula
+          : ""
+    ).trim();
     const mod = abilityMod + attackBonus;
 
     await rollAttackCheck(actor, attackLabels[attackType], abilityLabels[abilityKey], mod, [
       { value: abilityMod, label: abilityKey.toUpperCase() },
       { value: attackBonus, label: "BONUS" }
-    ]);
+    ], damageFormula);
   });
 }
