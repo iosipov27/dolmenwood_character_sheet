@@ -9,3 +9,5 @@ Thumbs.db
 scripts/
 scripts/**
 dist/
+*.css
+*.css.map
