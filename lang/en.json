@@ -9,8 +9,10 @@
         "HPCurrent": "HP current path not detected.",
         "HPMax": "HP max path not detected."
       },
-      "MeleeAttack": "Melee attacks",
-      "RangedAttack": "Missile attacks",
+      "MeleeAttack": "Melee attack",
+      "MeleeDamage": "Melee damage",
+      "RangedAttack": "Missile attack",
+      "MissileDamage": "Missile damage",
       "HP": "HP",
       "MaxHP": "Max HP",
       "KindredClassTraits": "Kindred & Class Traits",

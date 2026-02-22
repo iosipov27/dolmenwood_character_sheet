@@ -200,6 +200,10 @@ input {
   border: none;
   background: none;
 }
+input::placeholder {
+  color: var(--color-text-light-6);
+  opacity: 1;
+}
 
 textarea {
   border: 1px solid #c9c5ba;

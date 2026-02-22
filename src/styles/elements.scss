@@ -16,6 +16,11 @@ button {
 
 input {
   @include input-base;
+
+  &::placeholder {
+    color: $color-text-light-6;
+    opacity: 1;
+  }
 }
 
 textarea {
