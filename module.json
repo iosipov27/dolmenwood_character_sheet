@@ -2,7 +2,7 @@
   "id": "yakov-dolmenwood-sheet",
   "title": "Dolmenwood Character Sheet (for OSE)",
   "description": "A custom Dolmenwood character sheet module for OSE.",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "compatibility": { "minimum": "13", "verified": "13" },
   "relationships": {
     "systems": [
