@@ -26,7 +26,7 @@ A custom character sheet module for Foundry VTT, designed for Dolmenwood and bui
 
 ## Screenshot
 
-![Dolmenwood Fighter Sheet](docs/joe.png)
+![Dolmenwood Fighter Sheet](docs/dolmenwood_charsheet_attack.png)
 
 ## Core Features
 
