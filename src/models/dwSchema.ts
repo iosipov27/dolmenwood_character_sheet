@@ -122,6 +122,8 @@ function buildDwFlagsSchema(fields: FieldsApi): AnyField {
       traitsCollapsed: booleanField(fields, { initial: false }),
       meleeAttackBonus: numberField(fields),
       missileAttackBonus: numberField(fields),
+      meleeDamageFormula: stringField(fields),
+      missileDamageFormula: stringField(fields),
       meleeDamageBonus: numberField(fields),
       spellsTraitsView: spellsTraitsViewField(fields),
       kindredClass: stringField(fields),

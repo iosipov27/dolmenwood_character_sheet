@@ -200,6 +200,10 @@ input {
   border: none;
   background: none;
 }
+input::placeholder {
+  color: var(--color-text-light-6);
+  opacity: 1;
+}
 
 textarea {
   border: 1px solid #c9c5ba;
@@ -403,7 +407,8 @@ hr {
 }
 
 .dw-roll-card {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 0.25rem;
   text-align: center;
 }
@@ -422,6 +427,15 @@ hr {
 }
 .dw-roll-card__status--fail {
   color: #8b1e1e;
+}
+.dw-roll-card__actions {
+  margin-bottom: 0.4rem;
+}
+.dw-roll-card__action-button {
+  width: 100%;
+  min-height: 1.6rem;
+  border: 1px solid #c9c5ba;
+  font-size: 0.8rem;
 }
 
 .dw-abilities {
@@ -547,7 +561,7 @@ hr {
   align-items: center;
   flex-direction: column;
   gap: 0.3rem;
-  padding: 0.1rem;
+  padding: 0.1rem 0.3rem;
   border: none;
   border-left: 1px solid #c9c5ba;
   height: 100%;
@@ -575,12 +589,12 @@ hr {
   gap: 0.4rem;
   font-size: 0.75rem;
   text-align: center;
-  height: 2rem;
+  height: auto;
 }
 .dw-ac-attack__attack-control {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
   flex-direction: row;
   gap: 0.2rem;
 }
@@ -588,7 +602,7 @@ hr {
   text-align: center;
   font-size: 0.75rem;
   height: 1.2rem;
-  width: 2ch;
+  width: 100%;
   min-width: 2ch;
   padding: 0;
   line-height: 1;
@@ -603,6 +617,17 @@ hr {
 .dw-ac-attack__attack-control button i {
   font-size: 0.75rem;
   color: var(--color-text-light-1);
+}
+.dw-ac-attack__attack-button-stack {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.dw-ac-attack__attack-button-modifier {
+  display: flex;
+  flex-direction: column;
 }
 
 .player-data {

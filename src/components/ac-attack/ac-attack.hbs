@@ -11,48 +11,76 @@
 
   <div class="dw-ac-attack__attack">
     <div class="dw-ac-attack__attack-control">
-      <button
-        type="button"
-        class="attack-btn"
-        data-action="dw-roll-attack"
-        data-attack="melee"
-        data-tooltip="{{localize 'DOLMENWOOD.UI.MeleeAttack'}}"
-      >
-        <i class="fas fa-sword"></i>
-      </button>
+      <div class="dw-ac-attack__attack-button-stack">
+        <input
+          class="dw-number-input"
+          type="text"
+          placeholder="1d4"
+          name="dw.meta.meleeDamageFormula"
+          value="{{ctx.dw.meta.meleeDamageFormula}}"
+          data-tooltip="{{localize 'DOLMENWOOD.UI.MeleeDamage'}}"
+        />
 
-      <input
-        class="dw-number-input"
-        type="number"
-        placeholder="+0"
-        name="dw.meta.meleeAttackBonus"
-        value="{{#if ctx.dw.meta.meleeAttackBonus}}{{ctx.dw.meta.meleeAttackBonus}}{{/if}}"
-        data-tooltip="{{localize 'DOLMENWOOD.UI.MeleeAttackBonus'}}"
-        aria-label="{{localize 'DOLMENWOOD.UI.MeleeAttackBonus'}}"
-      />
+        <button
+          type="button"
+          class="attack-btn"
+          data-action="dw-roll-attack"
+          data-attack="melee"
+          data-tooltip="{{localize 'DOLMENWOOD.UI.MeleeAttack'}}"
+        >
+          <i class="fas fa-sword"></i>
+        </button>
+      </div>
+      <div class="dw-ac-attack__attack-button-modifier">
+        <input
+          class="dw-number-input"
+          type="number"
+          placeholder="+0"
+          name="dw.meta.meleeAttackBonus"
+          value="{{#if ctx.dw.meta.meleeAttackBonus}}{{ctx.dw.meta.meleeAttackBonus}}{{/if}}"
+          data-tooltip="{{localize 'DOLMENWOOD.UI.MeleeAttackBonus'}}"
+          aria-label="{{localize 'DOLMENWOOD.UI.MeleeAttackBonus'}}"
+        />
+      </div>
+
+
     </div>
 
     <div class="dw-ac-attack__attack-control">
-      <button
-        type="button"
-        class="attack-btn"
-        data-action="dw-roll-attack"
-        data-attack="ranged"
-        data-tooltip="{{localize 'DOLMENWOOD.UI.RangedAttack'}}"
-      >
-        <i class="fas fa-bow-arrow"></i>
-      </button>
+      <div class="dw-ac-attack__attack-button-stack">
+        <input
+          class="dw-number-input"
+          type="text"
+          placeholder="1d4"
+          name="dw.meta.missileDamageFormula"
+          value="{{ctx.dw.meta.missileDamageFormula}}"
+          data-tooltip="{{localize 'DOLMENWOOD.UI.MissileDamage'}}"
+        />
 
-      <input
-        class="dw-number-input"
-        type="number"
-        placeholder="+0"
-        name="dw.meta.missileAttackBonus"
-        value="{{#if ctx.dw.meta.missileAttackBonus}}{{ctx.dw.meta.missileAttackBonus}}{{/if}}"
-        data-tooltip="{{localize 'DOLMENWOOD.UI.MissileAttackBonus'}}"
-        aria-label="{{localize 'DOLMENWOOD.UI.MissileAttackBonus'}}"
-      />
-    </div>
+        <button
+          type="button"
+          class="attack-btn"
+          data-action="dw-roll-attack"
+          data-attack="ranged"
+          data-tooltip="{{localize 'DOLMENWOOD.UI.RangedAttack'}}"
+        >
+          <i class="fas fa-bow-arrow"></i>
+        </button>
+      </div>
+      <div class="dw-ac-attack__attack-button-modifier">
+        <input
+          class="dw-number-input"
+          type="number"
+          placeholder="+0"
+          name="dw.meta.missileAttackBonus"
+          value="{{#if ctx.dw.meta.missileAttackBonus}}{{ctx.dw.meta.missileAttackBonus}}{{/if}}"
+          data-tooltip="{{localize 'DOLMENWOOD.UI.MissileAttackBonus'}}"
+          aria-label="{{localize 'DOLMENWOOD.UI.MissileAttackBonus'}}"
+        />
+      </div>
+      </div>
+
+
   </div>
 
 </div>

@@ -35,6 +35,8 @@ export interface DwMeta {
   traitsCollapsed: boolean;
   meleeAttackBonus: number;
   missileAttackBonus: number;
+  meleeDamageFormula: string;
+  missileDamageFormula: string;
   meleeDamageBonus: number;
   spellsTraitsView: DwSpellsTraitsView;
   kindredClass: string;
@@ -200,7 +202,8 @@ export type RollAttackCheck = (
   attackLabel: string,
   abilityLabel: string,
   abilityMod: number,
-  modifierParts?: RollModifierPart[]
+  modifierParts?: RollModifierPart[],
+  damageFormula?: string
 ) => Promise<{ roll: Roll; mod: number } | null>;
 
 export interface RollModifierPart {

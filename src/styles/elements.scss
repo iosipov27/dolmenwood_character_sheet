@@ -16,6 +16,11 @@ button {
 
 input {
   @include input-base;
+
+  &::placeholder {
+    color: $color-text-light-6;
+    opacity: 1;
+  }
 }
 
 textarea {
@@ -234,7 +239,8 @@ hr {
 }
 
 .dw-roll-card {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 0.25rem;
   text-align: center;
 
@@ -256,5 +262,16 @@ hr {
     &--fail {
       color: #8b1e1e;
     }
+  }
+
+  &__actions {
+    margin-bottom: 0.4rem;
+  }
+
+  &__action-button {
+    width: 100%;
+    min-height: 1.6rem;
+    border: 1px solid $color-border-soft;
+    font-size: 0.8rem;
   }
 }

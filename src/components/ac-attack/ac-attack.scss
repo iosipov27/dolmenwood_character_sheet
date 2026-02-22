@@ -4,7 +4,7 @@
   @include flex-center;
   flex-direction: column;
   gap: 0.3rem;
-  padding: 0.1rem;
+  padding: 0.1rem 0.3rem;
   border: none;
   border-left: 1px solid $color-border-soft;
   height: 100%;
@@ -29,11 +29,13 @@
     gap: 0.4rem;
     font-size: 0.75rem;
     text-align: center;
-    height: 2rem;
+    height: auto;
   }
 
   &__attack-control {
-    @include flex-center;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
     flex-direction: row;
     gap: 0.2rem;
 
@@ -41,7 +43,7 @@
       text-align: center;
       font-size: 0.75rem;
       height: 1.2rem;
-      width: 2ch;
+      width: 100%;
       min-width: 2ch;
       padding: 0;
       line-height: 1;
@@ -64,5 +66,16 @@
         color: $color-text-light-1;
       }
     }
+  }
+
+  &__attack-button-stack {
+    @include flex-center;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  &__attack-button-modifier {
+    display: flex;
+    flex-direction: column;
   }
 }
