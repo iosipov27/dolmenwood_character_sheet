@@ -1,5 +1,22 @@
 import { MODULE_ID } from "../constants/moduleId.js";
 import {
+  ATTACK_TO_ABILITY,
+  ATTACK_TO_BONUS_INPUT,
+  ATTACK_TO_BONUS_PATH,
+  ATTACK_TO_DAMAGE_INPUT,
+  ATTACK_TO_DAMAGE_PATH,
+  CARDS_COLLAPSED_LAYOUT_CLASS,
+  CARDS_ROW_HEIGHT_CSS_VAR,
+  SPELLS_COLLAPSED_LAYOUT_CLASS,
+  TAB_GROUP,
+  TAB_IDS,
+  TOGGLE_VIEW_MODES,
+  TRAITS_COLLAPSED_LAYOUT_CLASS,
+  VIEW_CLASSES,
+  VIEW_CLASS_PREFIX,
+  VIEW_MODES
+} from "../constants/dolmenwoodSheetV2.js";
+import {
   DW_ADD_SKILL,
   DW_DELETE_ITEM,
   DW_OPEN_ITEM,
@@ -15,7 +32,7 @@ import {
 import { FormDataHandler } from "../handlers/formDataHandler.js";
 import { registerAttackDamageRollChatListener } from "../listeners/registerAttackDamageRollChatListener.js";
 import { DolmenwoodSheetData } from "../models/dolmenwoodSheetData.js";
-import { DwFlagsRepository } from "../repositories/dwFlagsRepository.js";
+import { readDwFlags, writeDwFlags } from "../repositories/dwFlagsRepository.js";
 import { RollChecks } from "./rollChecks.js";
 import { prettyKey } from "../utils/prettyKey.js";
 import { buildAbilities } from "../utils/buildAbilities.js";
@@ -23,38 +40,7 @@ import type { BaseSheetData, DwExtraSkill, HtmlRoot } from "../types.js";
 import { reportError } from "../utils/reportError.js";
 import { SpellsAbilitiesDropHandler } from "../utils/spellsAbilitiesDropHandler.js";
 import { registerEquipmentListener } from "../components/equipment/equipment.listener.js";
-
-const TAB_GROUP = "dolmenwood-sheet-tabs";
-const TAB_IDS = ["main", "equipment", "spells-abilities", "details"] as const;
-const VIEW_MODES = ["cards", "text", "both"] as const;
-const TOGGLE_VIEW_MODES = ["cards", "text"] as const;
-const VIEW_CLASS_PREFIX = "dw-spells-abilities--view-";
-const VIEW_CLASSES = VIEW_MODES.map((mode) => `${VIEW_CLASS_PREFIX}${mode}`).join(" ");
-const CARDS_COLLAPSED_LAYOUT_CLASS = "dw-spells-abilities--cards-collapsed";
-const SPELLS_COLLAPSED_LAYOUT_CLASS = "dw-spells-abilities--spells-collapsed";
-const TRAITS_COLLAPSED_LAYOUT_CLASS = "dw-spells-abilities--traits-collapsed";
-const CARDS_ROW_HEIGHT_CSS_VAR = "--dw-cards-row-height";
-
-const ATTACK_TO_ABILITY: Record<string, "str" | "dex"> = {
-  melee: "str",
-  ranged: "dex"
-};
-const ATTACK_TO_BONUS_PATH: Record<string, string> = {
-  melee: "meta.meleeAttackBonus",
-  ranged: "meta.missileAttackBonus"
-};
-const ATTACK_TO_BONUS_INPUT: Record<string, string> = {
-  melee: "dw.meta.meleeAttackBonus",
-  ranged: "dw.meta.missileAttackBonus"
-};
-const ATTACK_TO_DAMAGE_PATH: Record<string, string> = {
-  melee: "meta.meleeDamageFormula",
-  ranged: "meta.missileDamageFormula"
-};
-const ATTACK_TO_DAMAGE_INPUT: Record<string, string> = {
-  melee: "dw.meta.meleeDamageFormula",
-  ranged: "dw.meta.missileDamageFormula"
-};
+import { handleSaveRollAction } from "../components/save-throws/save-roll.action.js";
 
 declare abstract class BaseV2SheetClass {
   actor: Actor.Implementation;
@@ -78,7 +64,10 @@ declare abstract class BaseV2SheetClass {
     options?: unknown
   ): Promise<void>;
   protected _preClose(options: Record<string, unknown>): Promise<void>;
-  protected _onDropItem(event: DragEvent, item: Item.Implementation): Promise<Item.Implementation | null>;
+  protected _onDropItem(
+    event: DragEvent,
+    item: Item.Implementation
+  ): Promise<Item.Implementation | null>;
 }
 
 type BaseV2SheetConstructor = abstract new (...args: unknown[]) => BaseV2SheetClass;
@@ -88,6 +77,11 @@ const BaseV2Sheet = foundry.applications.api.HandlebarsApplicationMixin(
 ) as unknown as BaseV2SheetConstructor;
 
 export class DolmenwoodSheetV2 extends BaseV2Sheet {
+  constructor(...args: ConstructorParameters<typeof BaseV2Sheet>) {
+    super(...args);
+    this.formDataHandler = new FormDataHandler(this.actor);
+  }
+
   static DEFAULT_OPTIONS = {
     id: `${MODULE_ID}-v2`,
     classes: ["dolmenwood", "sheet", "actor", "themed", "theme-light"],
@@ -108,8 +102,11 @@ export class DolmenwoodSheetV2 extends BaseV2Sheet {
         event: PointerEvent,
         target: HTMLElement
       ): Promise<void> {
-        event.preventDefault();
-        await this.handleRollSave(target);
+        await handleSaveRollAction({
+          actor: this.actor,
+          event,
+          target
+        });
       },
       [DW_ROLL_SKILL]: async function (
         this: DolmenwoodSheetV2,
@@ -143,10 +140,7 @@ export class DolmenwoodSheetV2 extends BaseV2Sheet {
         event.preventDefault();
         await this.handleRollExtraSkill(target);
       },
-      [DW_ADD_SKILL]: async function (
-        this: DolmenwoodSheetV2,
-        event: PointerEvent
-      ): Promise<void> {
+      [DW_ADD_SKILL]: async function (this: DolmenwoodSheetV2, event: PointerEvent): Promise<void> {
         event.preventDefault();
         await this.handleAddSkill();
       },
@@ -207,22 +201,19 @@ export class DolmenwoodSheetV2 extends BaseV2Sheet {
     }
   };
 
-  private readonly flagsRepository: DwFlagsRepository;
   private readonly formDataHandler: FormDataHandler;
 
-  constructor(...args: ConstructorParameters<typeof BaseV2Sheet>) {
-    super(...args);
-    this.flagsRepository = new DwFlagsRepository(this.actor);
-    this.formDataHandler = new FormDataHandler(this.flagsRepository, this.actor);
-  }
+  protected async _prepareContext(
+    options: Record<string, unknown>
+  ): Promise<Record<string, unknown>> {
+    const context = await super._prepareContext(
+      options as Record<string, unknown> & { isFirstRender: boolean }
+    );
 
-  protected async _prepareContext(options: Record<string, unknown>): Promise<Record<string, unknown>> {
-    const context = await super._prepareContext(options as Record<string, unknown> & { isFirstRender: boolean });
-
-    return DolmenwoodSheetData.populate(context as unknown as BaseSheetData, this.actor) as unknown as Record<
-      string,
-      unknown
-    >;
+    return DolmenwoodSheetData.populate(
+      context as unknown as BaseSheetData,
+      this.actor
+    ) as unknown as Record<string, unknown>;
   }
 
   protected _attachPartListeners(
@@ -315,21 +306,9 @@ export class DolmenwoodSheetV2 extends BaseV2Sheet {
     }
   }
 
-  private async handleRollSave(target: HTMLElement): Promise<void> {
-    const key = String(target.dataset.key ?? "");
-    const dw = this.flagsRepository.get();
-    const rollTarget = Number(foundry.utils.getProperty(dw, `saves.${key}`) ?? 0);
-
-    await RollChecks.rollTargetCheck(
-      this.actor,
-      `${this.localize("DOLMENWOOD.Roll.SavePrefix")}: ${prettyKey(key)}`,
-      rollTarget
-    );
-  }
-
   private async handleRollSkill(target: HTMLElement): Promise<void> {
     const key = String(target.dataset.key ?? "");
-    const dw = this.flagsRepository.get();
+    const dw = readDwFlags(this.actor);
     const targetRaw = Number(foundry.utils.getProperty(dw, `skills.${key}`) ?? 6);
     const rollTarget = Number.isFinite(targetRaw) && targetRaw > 0 ? targetRaw : 6;
 
@@ -357,7 +336,13 @@ export class DolmenwoodSheetV2 extends BaseV2Sheet {
     const damagePath = ATTACK_TO_DAMAGE_PATH[attackType];
     const damageInputName = ATTACK_TO_DAMAGE_INPUT[attackType];
 
-    if (!abilityKey || !attackBonusPath || !attackBonusInputName || !damagePath || !damageInputName) {
+    if (
+      !abilityKey ||
+      !attackBonusPath ||
+      !attackBonusInputName ||
+      !damagePath ||
+      !damageInputName
+    ) {
       return;
     }
 
@@ -373,13 +358,21 @@ export class DolmenwoodSheetV2 extends BaseV2Sheet {
     const ability = abilities.find((entry) => entry.key === abilityKey);
     const abilityMod = this.asFiniteNumber(ability?.mod);
     const form = target.closest("form");
-    const inputValue = form?.querySelector<HTMLInputElement>(`input[name='${attackBonusInputName}']`)?.value;
+    const inputValue = form?.querySelector<HTMLInputElement>(
+      `input[name='${attackBonusInputName}']`
+    )?.value;
     const attackBonus =
       typeof inputValue === "string"
         ? this.asFiniteNumber(inputValue)
-        : this.asFiniteNumber(foundry.utils.getProperty(this.actor, `flags.${MODULE_ID}.dw.${attackBonusPath}`));
-    const damageInput = form?.querySelector<HTMLInputElement>(`input[name='${damageInputName}']`) ?? null;
-    const storedDamageFormula = foundry.utils.getProperty(this.actor, `flags.${MODULE_ID}.dw.${damagePath}`);
+        : this.asFiniteNumber(
+            foundry.utils.getProperty(this.actor, `flags.${MODULE_ID}.dw.${attackBonusPath}`)
+          );
+    const damageInput =
+      form?.querySelector<HTMLInputElement>(`input[name='${damageInputName}']`) ?? null;
+    const storedDamageFormula = foundry.utils.getProperty(
+      this.actor,
+      `flags.${MODULE_ID}.dw.${damagePath}`
+    );
     const damageFormula = (
       damageInput
         ? damageInput.value
@@ -409,8 +402,12 @@ export class DolmenwoodSheetV2 extends BaseV2Sheet {
 
   private async handleRollExtraSkill(target: HTMLElement): Promise<void> {
     const row = target.closest(".dw-skill__extra");
-    const nameInput = row?.querySelector<HTMLInputElement>("input[name^='dw.extraSkills.'][name$='.name']");
-    const targetInput = row?.querySelector<HTMLInputElement>("input[name^='dw.extraSkills.'][name$='.target']");
+    const nameInput = row?.querySelector<HTMLInputElement>(
+      "input[name^='dw.extraSkills.'][name$='.name']"
+    );
+    const targetInput = row?.querySelector<HTMLInputElement>(
+      "input[name^='dw.extraSkills.'][name$='.target']"
+    );
     const fallbackName = String(target.dataset.name ?? "SKILL").trim() || "SKILL";
     const skillName = String(nameInput?.value ?? fallbackName).trim() || "SKILL";
     const targetRaw = Number(targetInput?.value ?? 6);
@@ -424,14 +421,14 @@ export class DolmenwoodSheetV2 extends BaseV2Sheet {
   }
 
   private async handleAddSkill(): Promise<void> {
-    const dw = this.flagsRepository.get();
+    const dw = readDwFlags(this.actor);
 
     dw.extraSkills = this.readExtraSkillsFromForm(dw.extraSkills);
 
     if (dw.extraSkills.length >= 10) return;
 
     dw.extraSkills.push({ name: "", target: 6 });
-    await this.flagsRepository.set(dw);
+    await writeDwFlags(this.actor, dw);
   }
 
   private async handleRemoveSkill(target: HTMLElement): Promise<void> {
@@ -439,7 +436,7 @@ export class DolmenwoodSheetV2 extends BaseV2Sheet {
 
     if (!Number.isFinite(skillIndex)) return;
 
-    const dw = this.flagsRepository.get();
+    const dw = readDwFlags(this.actor);
 
     dw.extraSkills = this.readExtraSkillsFromForm(dw.extraSkills);
 
@@ -455,7 +452,7 @@ export class DolmenwoodSheetV2 extends BaseV2Sheet {
     if (!confirmed) return;
 
     dw.extraSkills.splice(skillIndex, 1);
-    await this.flagsRepository.set(dw);
+    await writeDwFlags(this.actor, dw);
   }
 
   private async handleOpenItem(target: HTMLElement): Promise<void> {
@@ -511,12 +508,12 @@ export class DolmenwoodSheetV2 extends BaseV2Sheet {
     this.applyViewMode(container, nextMode);
     this.updateCardsCollapsedLayoutClass(container);
 
-    const dw = this.flagsRepository.get();
+    const dw = readDwFlags(this.actor);
 
     if (dw.meta.spellsTraitsView === nextMode) return;
 
     dw.meta.spellsTraitsView = nextMode;
-    await this.flagsRepository.set(dw);
+    await writeDwFlags(this.actor, dw);
   }
 
   private async handleToggleCollapsibleSection(target: HTMLElement): Promise<void> {
@@ -542,8 +539,9 @@ export class DolmenwoodSheetV2 extends BaseV2Sheet {
     if (!kind) return;
 
     const nextCollapsed = root.classList.contains("is-collapsed");
-    const flags = this.flagsRepository.get();
-    const prevCollapsed = kind === "spells" ? flags.meta.spellsCollapsed : flags.meta.traitsCollapsed;
+    const flags = readDwFlags(this.actor);
+    const prevCollapsed =
+      kind === "spells" ? flags.meta.spellsCollapsed : flags.meta.traitsCollapsed;
 
     if (prevCollapsed === nextCollapsed) return;
 
@@ -553,7 +551,7 @@ export class DolmenwoodSheetV2 extends BaseV2Sheet {
       flags.meta.traitsCollapsed = nextCollapsed;
     }
 
-    await this.flagsRepository.set(flags);
+    await writeDwFlags(this.actor, flags);
   }
 
   private applySavedSpellsUiState(root: HTMLElement): void {
@@ -561,7 +559,7 @@ export class DolmenwoodSheetV2 extends BaseV2Sheet {
 
     if (!container) return;
 
-    const dw = this.flagsRepository.get();
+    const dw = readDwFlags(this.actor);
     const savedMode = this.asViewMode(dw?.meta?.spellsTraitsView);
 
     this.applyViewMode(container, savedMode ?? "both");
@@ -580,10 +578,7 @@ export class DolmenwoodSheetV2 extends BaseV2Sheet {
     this.updateCardsCollapsedLayoutClass(container);
   }
 
-  private applyViewMode(
-    container: HTMLElement,
-    mode: (typeof VIEW_MODES)[number]
-  ): void {
+  private applyViewMode(container: HTMLElement, mode: (typeof VIEW_MODES)[number]): void {
     container.classList.remove(...VIEW_CLASSES.split(" "));
     container.classList.add(`${VIEW_CLASS_PREFIX}${mode}`);
     const cardsButton = container.querySelector<HTMLElement>(
@@ -599,7 +594,9 @@ export class DolmenwoodSheetV2 extends BaseV2Sheet {
 
   private applyCollapsedState(root: HTMLElement, collapsed: boolean): void {
     const section = root.closest(".dw-spells-abilities__section");
-    const header = root.querySelector<HTMLElement>(`[data-action='${DW_TOGGLE_COLLAPSIBLE_SECTION}']`);
+    const header = root.querySelector<HTMLElement>(
+      `[data-action='${DW_TOGGLE_COLLAPSIBLE_SECTION}']`
+    );
 
     root.classList.toggle("is-collapsed", collapsed);
     section?.classList.toggle("is-collapsed", collapsed);
@@ -618,10 +615,14 @@ export class DolmenwoodSheetV2 extends BaseV2Sheet {
 
   private updateCardsCollapsedLayoutClass(container: HTMLElement): void {
     const spellsCollapsed = Boolean(
-      container.querySelector(".dw-spells-abilities__section--spells")?.classList.contains("is-collapsed")
+      container
+        .querySelector(".dw-spells-abilities__section--spells")
+        ?.classList.contains("is-collapsed")
     );
     const traitsCollapsed = Boolean(
-      container.querySelector(".dw-spells-abilities__section--traits")?.classList.contains("is-collapsed")
+      container
+        .querySelector(".dw-spells-abilities__section--traits")
+        ?.classList.contains("is-collapsed")
     );
 
     container.classList.toggle(CARDS_COLLAPSED_LAYOUT_CLASS, spellsCollapsed || traitsCollapsed);
@@ -663,7 +664,9 @@ export class DolmenwoodSheetV2 extends BaseV2Sheet {
   }
 
   private asViewMode(value: string | undefined): (typeof VIEW_MODES)[number] | null {
-    const normalized = String(value ?? "").trim().toLowerCase();
+    const normalized = String(value ?? "")
+      .trim()
+      .toLowerCase();
 
     return VIEW_MODES.includes(normalized as (typeof VIEW_MODES)[number])
       ? (normalized as (typeof VIEW_MODES)[number])
@@ -671,7 +674,9 @@ export class DolmenwoodSheetV2 extends BaseV2Sheet {
   }
 
   private asToggleViewMode(value: string | undefined): (typeof TOGGLE_VIEW_MODES)[number] | null {
-    const normalized = String(value ?? "").trim().toLowerCase();
+    const normalized = String(value ?? "")
+      .trim()
+      .toLowerCase();
 
     return TOGGLE_VIEW_MODES.includes(normalized as (typeof TOGGLE_VIEW_MODES)[number])
       ? (normalized as (typeof TOGGLE_VIEW_MODES)[number])

@@ -30,10 +30,7 @@ export function registerSheetListeners(
   registerAttackDamageRollChatListener();
 
   registerSaveRollListener(html, {
-    actor,
-    getDwFlags,
-    rollTargetCheck: RollChecks.rollTargetCheck,
-    prettyKey
+    actor
   });
 
   registerSkillRollListener(html, {

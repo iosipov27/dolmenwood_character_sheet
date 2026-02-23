@@ -1,5 +1,5 @@
-import { describe, expect, it, vi, beforeEach, type Mock } from "vitest";
-import { DwFlagsRepository } from "./dwFlagsRepository.js";
+import { beforeEach, describe, expect, it, vi, type Mock } from "vitest";
+import { readDwFlags, writeDwFlags } from "./dwFlagsRepository.js";
 import type { DwFlags } from "../types.js";
 import * as normalizeDwFlagsModule from "../utils/normalizeDwFlags.js";
 import * as reportErrorModule from "../utils/reportError.js";
@@ -13,7 +13,7 @@ type MockActor = {
   setFlag?: Mock;
 };
 
-describe("DwFlagsRepository", () => {
+describe("dwFlagsRepository", () => {
   let mockActor: MockActor;
   let normalizeDwFlagsMock: Mock;
   let reportErrorMock: Mock;
@@ -29,50 +29,47 @@ describe("DwFlagsRepository", () => {
     reportErrorMock.mockImplementation(() => {});
   });
 
-  describe("get", () => {
-    it("should return normalized flags when actor has dolmenwood flags", () => {
+  describe("readDwFlags", () => {
+    it("returns normalized flags when actor has dolmenwood flags", () => {
       const expectedFlags: Partial<DwFlags> = {
         extraSkills: [{ name: "Tracking", target: 8 }]
       };
 
       mockActor.getFlag = vi.fn().mockReturnValue(expectedFlags);
 
-      const repository = new DwFlagsRepository(mockActor as never);
-      const result = repository.get();
+      const result = readDwFlags(mockActor as never);
 
       expect(mockActor.getFlag).toHaveBeenCalledWith(MODULE_ID, "dw");
       expect(normalizeDwFlagsMock).toHaveBeenCalledWith(expectedFlags);
       expect(result).toBe(expectedFlags);
     });
 
-    it("should return normalized empty flags when actor has no flags", () => {
+    it("returns normalized empty flags when actor has no flags", () => {
       mockActor.getFlag = vi.fn().mockReturnValue(undefined);
 
       const expectedNormalized: DwFlags = {} as DwFlags;
 
       normalizeDwFlagsMock.mockReturnValue(expectedNormalized);
 
-      const repository = new DwFlagsRepository(mockActor as never);
-      const result = repository.get();
+      const result = readDwFlags(mockActor as never);
 
       expect(mockActor.getFlag).toHaveBeenCalledWith(MODULE_ID, "dw");
       expect(normalizeDwFlagsMock).toHaveBeenCalledWith({});
       expect(result).toBe(expectedNormalized);
     });
 
-    it("should return normalized empty flags when actor has no getFlag method", () => {
+    it("returns normalized empty flags when actor has no getFlag method", () => {
       const expectedNormalized: DwFlags = {} as DwFlags;
 
       normalizeDwFlagsMock.mockReturnValue(expectedNormalized);
 
-      const repository = new DwFlagsRepository(mockActor as never);
-      const result = repository.get();
+      const result = readDwFlags(mockActor as never);
 
       expect(normalizeDwFlagsMock).toHaveBeenCalledWith({});
       expect(result).toBe(expectedNormalized);
     });
 
-    it("should handle errors and return normalized empty flags", () => {
+    it("handles errors and returns normalized empty flags", () => {
       const error = new Error("Failed to get flag");
 
       mockActor.getFlag = vi.fn().mockImplementation(() => {
@@ -83,8 +80,7 @@ describe("DwFlagsRepository", () => {
 
       normalizeDwFlagsMock.mockReturnValue(expectedNormalized);
 
-      const repository = new DwFlagsRepository(mockActor as never);
-      const result = repository.get();
+      const result = readDwFlags(mockActor as never);
 
       expect(reportErrorMock).toHaveBeenCalledWith(
         "Failed to read dolmenwood flags from actor.",
@@ -94,48 +90,43 @@ describe("DwFlagsRepository", () => {
       expect(result).toBe(expectedNormalized);
     });
 
-    it("should normalize flags even when getFlag returns null", () => {
+    it("normalizes flags even when getFlag returns null", () => {
       mockActor.getFlag = vi.fn().mockReturnValue(null);
 
       const expectedNormalized: DwFlags = {} as DwFlags;
 
       normalizeDwFlagsMock.mockReturnValue(expectedNormalized);
 
-      const repository = new DwFlagsRepository(mockActor as never);
-      const result = repository.get();
+      const result = readDwFlags(mockActor as never);
 
       expect(normalizeDwFlagsMock).toHaveBeenCalledWith({});
       expect(result).toBe(expectedNormalized);
     });
   });
 
-  describe("set", () => {
-    it("should set flags on actor successfully", async () => {
+  describe("writeDwFlags", () => {
+    it("sets flags on actor successfully", async () => {
       const flags: DwFlags = {
         extraSkills: [{ name: "Hunting", target: 10 }]
       } as DwFlags;
 
       mockActor.setFlag = vi.fn().mockResolvedValue(undefined);
 
-      const repository = new DwFlagsRepository(mockActor as never);
-
-      await repository.set(flags);
+      await writeDwFlags(mockActor as never, flags);
 
       expect(mockActor.setFlag).toHaveBeenCalledWith(MODULE_ID, "dw", flags);
       expect(reportErrorMock).not.toHaveBeenCalled();
     });
 
-    it("should do nothing when actor has no setFlag method", async () => {
+    it("does nothing when actor has no setFlag method", async () => {
       const flags: DwFlags = {} as DwFlags;
 
-      const repository = new DwFlagsRepository(mockActor as never);
-
-      await repository.set(flags);
+      await writeDwFlags(mockActor as never, flags);
 
       expect(reportErrorMock).not.toHaveBeenCalled();
     });
 
-    it("should handle errors when setting flags fails", async () => {
+    it("handles errors when setting flags fails", async () => {
       const flags: DwFlags = {} as DwFlags;
       const error = new Error("Failed to set flag");
 
@@ -143,9 +134,7 @@ describe("DwFlagsRepository", () => {
         throw error;
       });
 
-      const repository = new DwFlagsRepository(mockActor as never);
-
-      await repository.set(flags);
+      await writeDwFlags(mockActor as never, flags);
 
       expect(reportErrorMock).toHaveBeenCalledWith(
         "Failed to write dolmenwood flags to actor.",
@@ -153,15 +142,13 @@ describe("DwFlagsRepository", () => {
       );
     });
 
-    it("should handle promise rejection", async () => {
+    it("handles promise rejection", async () => {
       const flags: DwFlags = {} as DwFlags;
       const error = new Error("Async failure");
 
       mockActor.setFlag = vi.fn().mockRejectedValue(error);
 
-      const repository = new DwFlagsRepository(mockActor as never);
-
-      await repository.set(flags);
+      await writeDwFlags(mockActor as never, flags);
 
       expect(reportErrorMock).toHaveBeenCalledWith(
         "Failed to write dolmenwood flags to actor.",
@@ -171,7 +158,7 @@ describe("DwFlagsRepository", () => {
   });
 
   describe("integration", () => {
-    it("should work with full flags object", async () => {
+    it("works with full flags object", async () => {
       const fullFlags = {
         extraSkills: [
           { name: "Bushcraft", target: 7 },
@@ -186,13 +173,11 @@ describe("DwFlagsRepository", () => {
       mockActor.setFlag = vi.fn().mockResolvedValue(undefined);
       normalizeDwFlagsMock.mockReturnValue(fullFlags);
 
-      const repository = new DwFlagsRepository(mockActor as never);
-
-      const retrievedFlags = repository.get();
+      const retrievedFlags = readDwFlags(mockActor as never);
 
       expect(retrievedFlags).toBe(fullFlags);
 
-      await repository.set(fullFlags);
+      await writeDwFlags(mockActor as never, fullFlags);
       expect(mockActor.setFlag).toHaveBeenCalledWith(MODULE_ID, "dw", fullFlags);
     });
   });

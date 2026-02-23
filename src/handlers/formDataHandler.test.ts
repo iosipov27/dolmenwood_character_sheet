@@ -2,26 +2,22 @@ import { beforeEach, describe, expect, it, vi, type Mock } from "vitest";
 import { FormDataHandler } from "./formDataHandler.js";
 import type { DwFlags } from "../types.js";
 import * as dwSchemaModule from "../models/dwSchema.js";
+import * as dwFlagsRepositoryModule from "../repositories/dwFlagsRepository.js";
 import { MODULE_ID } from "../constants/moduleId.js";
 
 vi.mock("../models/dwSchema.js");
+vi.mock("../repositories/dwFlagsRepository.js");
 
 describe("FormDataHandler", () => {
-  let mockRepository: {
-    get: Mock;
-    set: Mock;
-  };
   let mockActor: Actor;
   let cleanDwFlagsWithSchemaMock: Mock;
+  let readDwFlagsMock: Mock;
+  let writeDwFlagsMock: Mock;
   let handler: FormDataHandler;
 
   beforeEach(() => {
     vi.clearAllMocks();
 
-    mockRepository = {
-      get: vi.fn().mockReturnValue({}),
-      set: vi.fn().mockResolvedValue(undefined)
-    };
     mockActor = {
       system: {
         ac: { value: 9, mod: 0 },
@@ -30,9 +26,13 @@ describe("FormDataHandler", () => {
     } as unknown as Actor;
 
     cleanDwFlagsWithSchemaMock = vi.mocked(dwSchemaModule.cleanDwFlagsWithSchema);
+    readDwFlagsMock = vi.mocked(dwFlagsRepositoryModule.readDwFlags);
+    writeDwFlagsMock = vi.mocked(dwFlagsRepositoryModule.writeDwFlags);
     cleanDwFlagsWithSchemaMock.mockImplementation((flags) => flags as DwFlags);
+    readDwFlagsMock.mockReturnValue({});
+    writeDwFlagsMock.mockResolvedValue(undefined);
 
-    handler = new FormDataHandler(mockRepository as never, mockActor);
+    handler = new FormDataHandler(mockActor);
   });
 
   describe("handleFormData", () => {
@@ -45,7 +45,7 @@ describe("FormDataHandler", () => {
       const result = await handler.handleFormData(formData);
 
       expect(cleanDwFlagsWithSchemaMock).not.toHaveBeenCalled();
-      expect(mockRepository.set).not.toHaveBeenCalled();
+      expect(writeDwFlagsMock).not.toHaveBeenCalled();
       expect(result).toEqual(formData);
     });
 
@@ -68,7 +68,7 @@ describe("FormDataHandler", () => {
           extraSkills: [{ name: "Tracking", target: "8" }]
         })
       );
-      expect(mockRepository.set).toHaveBeenCalledWith(cleaned);
+      expect(writeDwFlagsMock).toHaveBeenCalledWith(mockActor, cleaned);
       expect(result).toEqual({ name: "Ranger" });
     });
 
@@ -93,12 +93,12 @@ describe("FormDataHandler", () => {
           })
         })
       );
-      expect(mockRepository.set).toHaveBeenCalledWith(cleaned);
+      expect(writeDwFlagsMock).toHaveBeenCalledWith(mockActor, cleaned);
       expect(result).toEqual({});
     });
 
     it("merges current stored dw before schema clean", async () => {
-      mockRepository.get.mockReturnValue({
+      readDwFlagsMock.mockReturnValue({
         meta: {
           otherNotes: "<p>Keep me</p>"
         }
@@ -146,13 +146,13 @@ describe("FormDataHandler", () => {
       });
 
       expect(cleanDwFlagsWithSchemaMock).toHaveBeenCalledTimes(1);
-      expect(mockRepository.set).not.toHaveBeenCalled();
+      expect(writeDwFlagsMock).not.toHaveBeenCalled();
     });
 
     it("propagates repository write errors", async () => {
       const error = new Error("Failed to save");
 
-      mockRepository.set.mockRejectedValue(error);
+      writeDwFlagsMock.mockRejectedValue(error);
 
       await expect(
         handler.handleFormData({
@@ -177,7 +177,7 @@ describe("FormDataHandler", () => {
           aac: { value: 13, mod: 1 }
         }
       } as unknown as Actor;
-      handler = new FormDataHandler(mockRepository as never, mockActor);
+      handler = new FormDataHandler(mockActor);
 
       const result = await handler.handleFormData({
         "system.aac.value": "15"

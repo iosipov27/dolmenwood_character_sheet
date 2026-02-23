@@ -1,13 +1,10 @@
 import { cleanDwFlagsWithSchema } from "../models/dwSchema.js";
-import type { DwFlagsRepository } from "../repositories/dwFlagsRepository.js";
+import { readDwFlags, writeDwFlags } from "../repositories/dwFlagsRepository.js";
 import { OseCharacterSheetAdapter } from "../adapters/oseCharacterSheetAdapter.js";
 import { MODULE_ID } from "../constants/moduleId.js";
 
 export class FormDataHandler {
-  constructor(
-    private readonly flagsRepository: DwFlagsRepository,
-    private readonly actor: Actor
-  ) {}
+  constructor(private readonly actor: Actor) {}
 
   async handleFormData(formData: Record<string, unknown>): Promise<Record<string, unknown>> {
     const remappedFormData = OseCharacterSheetAdapter.remapDerivedArmorClassEdits(
@@ -25,7 +22,7 @@ export class FormDataHandler {
       const cleanedDw = cleanDwFlagsWithSchema(mergedDw);
 
       if (cleanedDw) {
-        await this.flagsRepository.set(cleanedDw);
+        await writeDwFlags(this.actor, cleanedDw);
       }
     }
 
@@ -35,7 +32,7 @@ export class FormDataHandler {
   }
 
   private mergeWithCurrentDw(dwPatch: Record<string, unknown>): Record<string, unknown> {
-    const current = this.flagsRepository.get();
+    const current = readDwFlags(this.actor);
     const merged =
       current && typeof current === "object"
         ? (foundry.utils.duplicate(current) as Record<string, unknown>)
