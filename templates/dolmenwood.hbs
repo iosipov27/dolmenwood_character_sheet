@@ -2,7 +2,7 @@
     <div class="dolmenwood-sheet__layout">
         <div class="dolmenwood-sheet__content">
             <div
-                class="dolmenwood-sheet__tab-panel dolmenwood-sheet__main-tab tab active"
+                class="dolmenwood-sheet__tab-panel dolmenwood-sheet__main-tab tab {{#if tabs.main.cssClass}}{{tabs.main.cssClass}}{{else}}active{{/if}}"
                 data-tab-panel="main"
                 data-tab="main"
                 data-group="dolmenwood-sheet-tabs"
@@ -11,7 +11,7 @@
             </div>
 
             <div
-                class="dolmenwood-sheet__tab-panel dolmenwood-sheet__equipment-tab tab"
+                class="dolmenwood-sheet__tab-panel dolmenwood-sheet__equipment-tab tab {{tabs.equipment.cssClass}}"
                 data-tab-panel="equipment"
                 data-tab="equipment"
                 data-group="dolmenwood-sheet-tabs"
@@ -20,7 +20,7 @@
             </div>
 
             <div
-                class="dolmenwood-sheet__tab-panel dolmenwood-sheet__spells-abilities-tab tab"
+                class="dolmenwood-sheet__tab-panel dolmenwood-sheet__spells-abilities-tab tab {{tabs.[spells-abilities].cssClass}}"
                 data-tab-panel="spells-abilities"
                 data-tab="spells-abilities"
                 data-group="dolmenwood-sheet-tabs"
@@ -29,7 +29,7 @@
             </div>
 
             <div
-                class="dolmenwood-sheet__tab-panel dolmenwood-sheet__details-tab tab"
+                class="dolmenwood-sheet__tab-panel dolmenwood-sheet__details-tab tab {{tabs.details.cssClass}}"
                 data-tab-panel="details"
                 data-tab="details"
                 data-group="dolmenwood-sheet-tabs"
@@ -39,31 +39,35 @@
 
         </div>
 
-        <div class="dolmenwood-sheet__tabs" data-group="dolmenwood-sheet-tabs">
+        <div class="dolmenwood-sheet__tabs tabs" data-group="dolmenwood-sheet-tabs">
             <button
                 type="button"
-                class="dolmenwood-sheet__tab item active"
+                class="dolmenwood-sheet__tab item {{#if tabs.main.cssClass}}{{tabs.main.cssClass}}{{else}}active{{/if}}"
+                data-action="tab"
                 data-tab-target="main"
                 data-tab="main"
                 data-group="dolmenwood-sheet-tabs"
             >{{localize "DOLMENWOOD.UI.Main"}}</button>
             <button
                 type="button"
-                class="dolmenwood-sheet__tab item"
+                class="dolmenwood-sheet__tab item {{tabs.equipment.cssClass}}"
+                data-action="tab"
                 data-tab-target="equipment"
                 data-tab="equipment"
                 data-group="dolmenwood-sheet-tabs"
             >{{localize "DOLMENWOOD.UI.Equipment"}}</button>
             <button
                 type="button"
-                class="dolmenwood-sheet__tab item"
+                class="dolmenwood-sheet__tab item {{tabs.[spells-abilities].cssClass}}"
+                data-action="tab"
                 data-tab-target="spells-abilities"
                 data-tab="spells-abilities"
                 data-group="dolmenwood-sheet-tabs"
             >{{localize "DOLMENWOOD.UI.SpellsAbilities"}}</button>
             <button
                 type="button"
-                class="dolmenwood-sheet__tab item"
+                class="dolmenwood-sheet__tab item {{tabs.details.cssClass}}"
+                data-action="tab"
                 data-tab-target="details"
                 data-tab="details"
                 data-group="dolmenwood-sheet-tabs"
