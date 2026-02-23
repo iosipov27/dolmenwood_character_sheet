@@ -90,7 +90,7 @@ const BaseV2Sheet = foundry.applications.api.HandlebarsApplicationMixin(
 export class DolmenwoodSheetV2 extends BaseV2Sheet {
   static DEFAULT_OPTIONS = {
     id: `${MODULE_ID}-v2`,
-    classes: ["dolmenwood", "sheet", "actor"],
+    classes: ["dolmenwood", "sheet", "actor", "themed", "theme-light"],
     position: {
       width: 640,
       height: 730
