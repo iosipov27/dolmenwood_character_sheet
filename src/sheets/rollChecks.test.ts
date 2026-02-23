@@ -360,7 +360,7 @@ describe("RollChecks.rollAttackCheck", () => {
     );
     expect(postedMessage).toHaveBeenCalledWith(
       expect.objectContaining({
-        flavor: expect.stringContaining(">Roll damage</button>")
+        flavor: expect.stringContaining("<span>Roll damage</span>")
       })
     );
   });

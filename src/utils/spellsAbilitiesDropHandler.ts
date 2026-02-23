@@ -8,24 +8,24 @@ type DropValidationResult =
     };
 
 export class SpellsAbilitiesDropHandler {
-  static async handleDrop(
+  static async handleDrop<T>(
     {
       event,
-      data,
+      item,
       onAcceptedDrop,
       localize
     }: {
       event: DragEvent;
-      data: ActorSheet.DropData.Item;
-      onAcceptedDrop: (event: DragEvent, data: ActorSheet.DropData.Item) => Promise<unknown>;
+      item: Item.Implementation;
+      onAcceptedDrop: () => Promise<T>;
       localize: (key: string) => string;
     }
-  ): Promise<unknown> {
+  ): Promise<T | null> {
     if (!this.isDropInsideSpellsAbilitiesTab(event)) {
-      return onAcceptedDrop(event, data);
+      return onAcceptedDrop();
     }
 
-    const validation = await this.validateDrop(event, data);
+    const validation = this.validateDrop(event, item);
 
     if (!validation.allowed) {
       if (validation.warningKey) {
@@ -35,22 +35,18 @@ export class SpellsAbilitiesDropHandler {
       return null;
     }
 
-    return onAcceptedDrop(event, data);
+    return onAcceptedDrop();
   }
 
-  private static async validateDrop(
+  private static validateDrop(
     event: DragEvent,
-    data: ActorSheet.DropData.Item
-  ): Promise<DropValidationResult> {
+    item: Item.Implementation
+  ): DropValidationResult {
     const dropKind = this.getDropKindFromEvent(event);
 
     if (!dropKind) return { allowed: false };
 
-    const droppedItem = await Item.fromDropData(data);
-
-    if (!droppedItem) return { allowed: false };
-
-    const itemType = String(droppedItem.type ?? "").toLowerCase();
+    const itemType = String(item.type ?? "").toLowerCase();
 
     if (itemType === dropKind) return { allowed: true };
 

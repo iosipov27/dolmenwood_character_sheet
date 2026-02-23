@@ -64,10 +64,14 @@ export class DolmenwoodSheet extends ActorSheet {
     event: DragEvent,
     data: ActorSheet.DropData.Item
   ): Promise<unknown> {
+    const droppedItem = await Item.fromDropData(data);
+
+    if (!(droppedItem instanceof Item)) return null;
+
     return SpellsAbilitiesDropHandler.handleDrop({
       event,
-      data,
-      onAcceptedDrop: (dropEvent, dropData) => super._onDropItem(dropEvent, dropData),
+      item: droppedItem,
+      onAcceptedDrop: () => super._onDropItem(event, data),
       localize: this.localize
     });
   }
