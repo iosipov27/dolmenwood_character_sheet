@@ -47,7 +47,7 @@ export class DolmenwoodSheet extends BaseSheet {
   }
 
   getData(options?: Partial<ActorSheet.Options>): DwSheetData {
-    const data = super.getData(options) as DwSheetData;
+    const data = super.getData(options);
 
     return DolmenwoodSheetData.populate(data, this.actor);
   }
