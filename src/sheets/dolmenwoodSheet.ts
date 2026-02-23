@@ -4,19 +4,17 @@ import { registerSheetListeners } from "../listeners/registerSheetListeners.js";
 import { DolmenwoodSheetData } from "../models/dolmenwoodSheetData.js";
 import { DwFlagsRepository } from "../repositories/dwFlagsRepository.js";
 import type { DwSheetData, HtmlRoot } from "../types.js";
-import { getBaseOSECharacterSheetClass } from "../utils/getBaseOSECharacterSheetClass.js";
 import { SpellsAbilitiesDropHandler } from "../utils/spellsAbilitiesDropHandler.js";
 
-const BaseSheet = getBaseOSECharacterSheetClass() as typeof foundry.appv1.sheets.ActorSheet;
 const TAB_GROUP = "dolmenwood-sheet-tabs";
 const TAB_NAV_SELECTOR = ".dolmenwood-sheet__tabs";
 const TAB_CONTENT_SELECTOR = ".dolmenwood-sheet__content";
 
-export class DolmenwoodSheet extends BaseSheet {
+export class DolmenwoodSheet extends ActorSheet {
   private readonly flagsRepository: DwFlagsRepository;
   private readonly formDataHandler: FormDataHandler;
 
-  constructor(...args: ConstructorParameters<typeof BaseSheet>) {
+  constructor(...args: ConstructorParameters<typeof ActorSheet>) {
     super(...args);
     this.flagsRepository = new DwFlagsRepository(this.actor);
     this.formDataHandler = new FormDataHandler(this.flagsRepository, this.actor);

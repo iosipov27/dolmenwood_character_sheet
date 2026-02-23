@@ -166,15 +166,6 @@ export type ActionHandler<T extends HTMLElement = HTMLElement> = (
   event: ActionEvent<T>
 ) => void | Promise<void>;
 
-export type ActorSheetConstructor = typeof ActorSheet;
-
-export interface SheetClassConfigLike {
-  label?: string;
-  cls?: ActorSheetConstructor;
-  id?: string;
-  namespace?: string;
-}
-
 export type JQueryWithOn<T extends HTMLElement = HTMLElement> = JQuery<T> & {
   on(event: string, handler: (ev: ActionEvent<T>) => void): JQuery<T>;
 };

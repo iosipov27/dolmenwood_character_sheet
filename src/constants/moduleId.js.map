@@ -1,1 +1,0 @@
-{"version":3,"file":"moduleId.js","sourceRoot":"","sources":["moduleId.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,MAAM,SAAS,GAAG,YAAY,CAAC","sourcesContent":["export const MODULE_ID = \"yakov-dolmenwood-sheet\";\n"]}
