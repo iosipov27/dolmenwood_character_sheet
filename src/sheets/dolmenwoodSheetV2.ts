@@ -242,12 +242,17 @@ export class DolmenwoodSheetV2 extends BaseV2Sheet {
     formData: foundry.applications.ux.FormDataExtended,
     options?: unknown
   ): Promise<void> {
-    const rawFormData = foundry.utils.flattenObject(
-      foundry.utils.duplicate(formData.object) as Record<string, unknown>
-    ) as Record<string, unknown>;
+    const rawFormData = this.extractRawFormData(formData);
     const processedData = await this.formDataHandler.handleFormData(rawFormData);
+    const actorUpdateData = Object.fromEntries(
+      Object.entries(processedData).filter(([, value]) => value !== undefined)
+    ) as Record<string, unknown>;
 
-    this.syncProcessedDataToFormData(formData, processedData);
+    // DW-only edits are persisted to flags in FormDataHandler and should not submit
+    // an empty actor update payload through the V2 document validation pipeline.
+    if (Object.keys(actorUpdateData).length === 0) return;
+
+    this.syncProcessedDataToFormData(formData, actorUpdateData);
 
     await super._processSubmitData(event, form, formData, options);
   }
@@ -282,16 +287,20 @@ export class DolmenwoodSheetV2 extends BaseV2Sheet {
     formData: foundry.applications.ux.FormDataExtended,
     flattenedData: Record<string, unknown>
   ): void {
-    const expandedData = foundry.utils.expandObject(
-      foundry.utils.duplicate(flattenedData) as Record<string, unknown>
-    ) as Record<string, unknown>;
-    const objectTarget = formData.object as Record<string, unknown>;
+    const objectTarget = (formData as unknown as { object?: unknown }).object;
 
-    for (const key of Object.keys(objectTarget)) {
-      delete objectTarget[key];
+    if (objectTarget && typeof objectTarget === "object") {
+      const expandedData = foundry.utils.expandObject(
+        foundry.utils.duplicate(flattenedData) as Record<string, unknown>
+      ) as Record<string, unknown>;
+      const objectRecord = objectTarget as Record<string, unknown>;
+
+      for (const key of Object.keys(objectRecord)) {
+        delete objectRecord[key];
+      }
+
+      Object.assign(objectRecord, expandedData);
     }
-
-    Object.assign(objectTarget, expandedData);
 
     const keys: string[] = [];
 
@@ -304,6 +313,26 @@ export class DolmenwoodSheetV2 extends BaseV2Sheet {
     for (const [key, value] of Object.entries(flattenedData)) {
       formData.set(key, value as string | Blob);
     }
+  }
+
+  private extractRawFormData(
+    formData: foundry.applications.ux.FormDataExtended
+  ): Record<string, unknown> {
+    const objectSource = (formData as unknown as { object?: unknown }).object;
+
+    if (objectSource && typeof objectSource === "object") {
+      return foundry.utils.flattenObject(
+        foundry.utils.duplicate(objectSource) as Record<string, unknown>
+      ) as Record<string, unknown>;
+    }
+
+    const fromEntries: Record<string, unknown> = {};
+
+    formData.forEach((value, key) => {
+      fromEntries[key] = value;
+    });
+
+    return fromEntries;
   }
 
   private async handleRollSkill(target: HTMLElement): Promise<void> {
