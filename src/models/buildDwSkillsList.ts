@@ -1,4 +1,4 @@
-import type { DwFlags, DwSheetData, DwSkillEntry } from "../types.js";
+import type { DwFlags, DwSheetData, DwSkillEntry } from "../types/index.js";
 import type { DwLocalize } from "./localize.js";
 
 export function buildDwSkillsList(dw: DwFlags, localize: DwLocalize): DwSheetData["dwSkillsList"] {

@@ -1,6 +1,6 @@
 import { registerAction } from "../../utils/registerAction.js";
 import { DW_ROLL_SAVE } from "../../constants/templateAttributes.js";
-import type { ActionEvent, HtmlRoot } from "../../types.js";
+import type { ActionEvent, HtmlRoot } from "../../types/index.js";
 import { handleSaveRollAction } from "./save-roll.action.js";
 
 export function registerSaveRollListener(

@@ -1,4 +1,4 @@
-import type { RollModifierPart } from "../types.js";
+import type { RollModifierPart } from "../types/index.js";
 import { DW_ROLL_ATTACK_DAMAGE } from "../constants/templateAttributes.js";
 
 export class RollChecks {

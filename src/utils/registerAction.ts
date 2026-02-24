@@ -1,4 +1,4 @@
-import type { ActionHandler, ActionEvent, HtmlRoot, JQueryWithOn } from "../types.js";
+import type { ActionHandler, ActionEvent, HtmlRoot, JQueryWithOn } from "../types/index.js";
 
 export function registerAction(html: HtmlRoot, actionId: string, handler: ActionHandler): void {
   const nodes = html.find(`[data-action='${actionId}']`) as JQueryWithOn;

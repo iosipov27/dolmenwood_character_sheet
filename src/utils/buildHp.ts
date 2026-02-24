@@ -1,4 +1,4 @@
-import type { DwHpView } from "../types.js";
+import type { DwHpView } from "../types/index.js";
 
 export function buildHp(systemData: Record<string, unknown>): DwHpView {
   const wrapper: { system: Record<string, unknown> } = { system: systemData };

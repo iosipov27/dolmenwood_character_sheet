@@ -1,7 +1,7 @@
 ﻿import { registerAction } from "../../utils/registerAction.js";
 import { DW_REMOVE_SKILL } from "../../constants/templateAttributes.js";
 import { getDataset } from "../../utils/getDataset.js";
-import type { ActionEvent, DwExtraSkill, GetDwFlags, HtmlRoot, SetDwFlags } from "../../types.js";
+import type { ActionEvent, DwExtraSkill, GetDwFlags, HtmlRoot, SetDwFlags } from "../../types/index.js";
 
 export function registerRemoveSkillListener(
   html: HtmlRoot,

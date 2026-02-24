@@ -1,4 +1,4 @@
-import type { DwActorItemEntry } from "../types.js";
+import type { DwActorItemEntry } from "../types/index.js";
 
 export function buildDwItemEntriesByType(actor: Actor, itemType: string): DwActorItemEntry[] {
   const normalizedType = String(itemType ?? "").trim().toLowerCase();

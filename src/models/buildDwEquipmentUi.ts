@@ -1,4 +1,4 @@
-import type { DwEquipmentFieldEntry, DwMeta, DwSheetData } from "../types.js";
+import type { DwEquipmentFieldEntry, DwMeta, DwSheetData } from "../types/index.js";
 
 type DwEquipmentState = DwMeta["equipment"];
 

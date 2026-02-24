@@ -13,7 +13,7 @@ import {
 import { registerAttackDamageRollChatListener } from "./registerAttackDamageRollChatListener.js";
 import { prettyKey } from "../utils/prettyKey.js";
 import { RollChecks } from "../sheets/rollChecks.js";
-import type { DwFlags, GetDwFlags, HtmlRoot, SetDwFlags } from "../types.js";
+import type { DwFlags, GetDwFlags, HtmlRoot, SetDwFlags } from "../types/index.js";
 
 export function registerSheetListeners(
   html: HtmlRoot,

@@ -1,5 +1,5 @@
 import { MODULE_ID } from "../constants/moduleId.js";
-import type { DwFlags } from "../types.js";
+import type { DwFlags } from "../types/index.js";
 import { normalizeDwFlags } from "../utils/normalizeDwFlags.js";
 import { reportError } from "../utils/reportError.js";
 

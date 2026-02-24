@@ -1,4 +1,4 @@
-import type { DwFlags } from "../types.js";
+import type { DwFlags } from "../types/index.js";
 import { dwDefaults } from "./dwDefaults.js";
 import { buildDwFlagsFromActor } from "./buildDwFlagsFromActor.js";
 

@@ -1,7 +1,7 @@
 import { buildAbilities } from "../utils/buildAbilities.js";
 import { buildCombat } from "../utils/buildCombat.js";
 import { buildHp } from "../utils/buildHp.js";
-import type { BaseSheetData, DwSheetData } from "../types.js";
+import type { BaseSheetData, DwSheetData } from "../types/index.js";
 import { buildDwData } from "./buildDwData.js";
 import { buildDwAbilityItems } from "./buildDwAbilityItems.js";
 import { buildDwSavesList } from "./buildDwSavesList.js";

@@ -1,7 +1,7 @@
 import { registerAction } from "../../utils/registerAction.js";
 import { DW_ROLL_SKILL } from "../../constants/templateAttributes.js";
 import { getDataset } from "../../utils/getDataset.js";
-import type { ActionEvent, GetDwFlags, HtmlRoot, RollSkillCheck } from "../../types.js";
+import type { ActionEvent, GetDwFlags, HtmlRoot, RollSkillCheck } from "../../types/index.js";
 
 export function registerSkillRollListener(
   html: HtmlRoot,

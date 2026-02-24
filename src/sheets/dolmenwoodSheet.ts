@@ -3,7 +3,7 @@ import { FormDataHandler } from "../handlers/formDataHandler.js";
 import { registerSheetListeners } from "../listeners/registerSheetListeners.js";
 import { DolmenwoodSheetData } from "../models/dolmenwoodSheetData.js";
 import { readDwFlags, writeDwFlags } from "../repositories/dwFlagsRepository.js";
-import type { DwSheetData, HtmlRoot } from "../types.js";
+import type { DwSheetData, HtmlRoot } from "../types/index.js";
 import { SpellsAbilitiesDropHandler } from "../utils/spellsAbilitiesDropHandler.js";
 
 const TAB_GROUP = "dolmenwood-sheet-tabs";

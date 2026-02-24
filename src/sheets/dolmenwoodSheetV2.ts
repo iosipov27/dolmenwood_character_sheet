@@ -36,7 +36,7 @@ import { readDwFlags, writeDwFlags } from "../repositories/dwFlagsRepository.js"
 import { RollChecks } from "./rollChecks.js";
 import { prettyKey } from "../utils/prettyKey.js";
 import { buildAbilities } from "../utils/buildAbilities.js";
-import type { BaseSheetData, DwExtraSkill, HtmlRoot } from "../types.js";
+import type { BaseSheetData, DwExtraSkill, HtmlRoot } from "../types/index.js";
 import { reportError } from "../utils/reportError.js";
 import { SpellsAbilitiesDropHandler } from "../utils/spellsAbilitiesDropHandler.js";
 import { registerEquipmentListener } from "../components/equipment/equipment.listener.js";

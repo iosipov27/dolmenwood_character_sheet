@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi, type Mock } from "vitest";
 import { readDwFlags, writeDwFlags } from "./dwFlagsRepository.js";
-import type { DwFlags } from "../types.js";
+import type { DwFlags } from "../types/index.js";
 import * as normalizeDwFlagsModule from "../utils/normalizeDwFlags.js";
 import * as reportErrorModule from "../utils/reportError.js";
 import { MODULE_ID } from "../constants/moduleId.js";

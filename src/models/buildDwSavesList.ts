@@ -1,4 +1,4 @@
-import type { DwFlags, DwSheetData } from "../types.js";
+import type { DwFlags, DwSheetData } from "../types/index.js";
 import type { DwLocalize } from "./localize.js";
 
 export function buildDwSavesList(dw: DwFlags, localize: DwLocalize): DwSheetData["dwSavesList"] {
