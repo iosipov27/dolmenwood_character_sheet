@@ -1,7 +1,7 @@
 <div class="dw-avatar">
   {{#if ctx.document.img}}
-    <img src="{{ctx.document.img}}" data-edit="img" data-tooltip="{{ctx.document.name}}" />
+    <img src="{{ctx.document.img}}" data-action="editImage" data-edit="img" data-tooltip="{{ctx.document.name}}" />
   {{else}}
-    <img class="profile-img" src="icons/svg/mystery-man.svg" data-edit="img" />
+    <img class="profile-img" src="icons/svg/mystery-man.svg" data-action="editImage" data-edit="img" />
   {{/if}}
 </div>
