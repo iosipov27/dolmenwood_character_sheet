@@ -52,7 +52,7 @@ export class DolmenwoodSheet extends BaseSheet {
     registerSheetListeners(html, {
       actor: this.actor,
       getDwFlags: () => this.flagsRepository.get(),
-      setDwFlags: (dw) => this.flagsRepository.set(dw)
+      setDwFlags: (dw) => this.persistSheetChanges({ dwPatch: dw })
     });
   }
 
@@ -89,9 +89,39 @@ export class DolmenwoodSheet extends BaseSheet {
   }
 
   async _updateObject(event: Event, formData: Record<string, unknown>): Promise<void> {
-    const processedData = await this.formDataHandler.handleFormData(formData);
+    await this.persistSheetChanges({ event, formData });
+  }
 
-    await super._updateObject(event, processedData);
+  private async persistSheetChanges({
+    event,
+    formData,
+    dwPatch
+  }: {
+    event?: Event;
+    formData?: Record<string, unknown>;
+    dwPatch?: object;
+  }): Promise<void> {
+    if (!formData && !dwPatch) return;
+
+    let updatePayload: Record<string, unknown>;
+
+    if (formData) {
+      updatePayload = await this.formDataHandler.handleFormData(formData);
+    } else if (dwPatch) {
+      updatePayload = await this.formDataHandler.handleDwPatch(dwPatch);
+    } else {
+      return;
+    }
+
+    if (Object.keys(updatePayload).length === 0) return;
+
+    if (event) {
+      await super._updateObject(event, updatePayload);
+
+      return;
+    }
+
+    await this.actor.update(updatePayload);
   }
 
   private isDropInsideSpellsAbilitiesTab(event: DragEvent): boolean {
@@ -115,7 +145,11 @@ export class DolmenwoodSheet extends BaseSheet {
   private getDropTargetElement(event: DragEvent): Element | null {
     const target = event.target;
 
-    return target instanceof Element ? target : target instanceof Node ? target.parentElement : null;
+    return target instanceof Element
+      ? target
+      : target instanceof Node
+        ? target.parentElement
+        : null;
   }
 
   private readonly localize = (key: string): string => game.i18n?.localize(key) ?? key;

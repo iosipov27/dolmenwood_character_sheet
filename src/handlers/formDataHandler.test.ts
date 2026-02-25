@@ -45,11 +45,10 @@ describe("FormDataHandler", () => {
       const result = await handler.handleFormData(formData);
 
       expect(cleanDwFlagsWithSchemaMock).not.toHaveBeenCalled();
-      expect(mockRepository.set).not.toHaveBeenCalled();
       expect(result).toEqual(formData);
     });
 
-    it("cleans and saves dw payload from form fields", async () => {
+    it("cleans dw payload from form fields and returns a single actor update payload", async () => {
       const formData = {
         name: "Ranger",
         "dw.extraSkills.0.name": "Tracking",
@@ -68,32 +67,20 @@ describe("FormDataHandler", () => {
           extraSkills: [{ name: "Tracking", target: "8" }]
         })
       );
-      expect(mockRepository.set).toHaveBeenCalledWith(cleaned);
-      expect(result).toEqual({ name: "Ranger" });
+      expect(result).toEqual({
+        name: "Ranger",
+        [`flags.${MODULE_ID}.dw`]: cleaned
+      });
     });
 
-    it("cleans and saves dw payload from module flags (editor fields)", async () => {
+    it("ignores module flags dw payload", async () => {
       const formData = {
         [`flags.${MODULE_ID}.dw.meta.otherNotes`]: "<p>Some notes</p>"
       };
-      const cleaned = {
-        meta: {
-          otherNotes: "<p>Some notes</p>"
-        }
-      } as unknown as DwFlags;
-
-      cleanDwFlagsWithSchemaMock.mockReturnValue(cleaned);
 
       const result = await handler.handleFormData(formData);
 
-      expect(cleanDwFlagsWithSchemaMock).toHaveBeenCalledWith(
-        expect.objectContaining({
-          meta: expect.objectContaining({
-            otherNotes: "<p>Some notes</p>"
-          })
-        })
-      );
-      expect(mockRepository.set).toHaveBeenCalledWith(cleaned);
+      expect(cleanDwFlagsWithSchemaMock).not.toHaveBeenCalled();
       expect(result).toEqual({});
     });
 
@@ -120,45 +107,15 @@ describe("FormDataHandler", () => {
       );
     });
 
-    it("merges dw and module-flag dw patches before schema clean", async () => {
-      const formData = {
-        "dw.meta.xp": "1200",
-        [`flags.${MODULE_ID}.dw.meta.kindredClassTraits`]: "<p>Trait text</p>"
-      };
-
-      await handler.handleFormData(formData);
-
-      expect(cleanDwFlagsWithSchemaMock).toHaveBeenCalledWith(
-        expect.objectContaining({
-          meta: expect.objectContaining({
-            xp: "1200",
-            kindredClassTraits: "<p>Trait text</p>"
-          })
-        })
-      );
-    });
-
-    it("does not write flags when schema clean returns null", async () => {
+    it("does not include dw flags when schema clean returns null", async () => {
       cleanDwFlagsWithSchemaMock.mockReturnValue(null);
 
-      await handler.handleFormData({
+      const result = await handler.handleFormData({
         "dw.meta.xp": "800"
       });
 
       expect(cleanDwFlagsWithSchemaMock).toHaveBeenCalledTimes(1);
-      expect(mockRepository.set).not.toHaveBeenCalled();
-    });
-
-    it("propagates repository write errors", async () => {
-      const error = new Error("Failed to save");
-
-      mockRepository.set.mockRejectedValue(error);
-
-      await expect(
-        handler.handleFormData({
-          "dw.languages.0": "Elvish"
-        })
-      ).rejects.toThrow("Failed to save");
+      expect(result).toEqual({});
     });
 
     it("remaps descending AC edits to AC mod", async () => {
@@ -185,6 +142,29 @@ describe("FormDataHandler", () => {
 
       expect(result).not.toHaveProperty("system.aac.value");
       expect(result).toHaveProperty("system.aac.mod", 3);
+    });
+  });
+
+  describe("handleDwPatch", () => {
+    it("returns dw update payload for listeners", async () => {
+      const cleaned = {
+        meta: {
+          spellsCollapsed: true
+        }
+      } as unknown as DwFlags;
+
+      cleanDwFlagsWithSchemaMock.mockReturnValue(cleaned);
+
+      const result = await handler.handleDwPatch({
+        meta: {
+          spellsCollapsed: true
+        }
+      });
+
+      expect(cleanDwFlagsWithSchemaMock).toHaveBeenCalled();
+      expect(result).toEqual({
+        [`flags.${MODULE_ID}.dw`]: cleaned
+      });
     });
   });
 });

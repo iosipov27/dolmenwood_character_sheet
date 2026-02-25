@@ -2,6 +2,7 @@ import { cleanDwFlagsWithSchema } from "../models/dwSchema.js";
 import type { DwFlagsRepository } from "../repositories/dwFlagsRepository.js";
 import { OseCharacterSheetAdapter } from "../adapters/oseCharacterSheetAdapter.js";
 import { MODULE_ID } from "../constants/moduleId.js";
+import type { DwFlags } from "../types.js";
 
 export class FormDataHandler {
   constructor(
@@ -20,21 +21,29 @@ export class FormDataHandler {
     };
     const dwPatch = this.extractDwPatch(expanded);
 
-    if (dwPatch) {
-      const mergedDw = this.mergeWithCurrentDw(dwPatch);
-      const cleanedDw = cleanDwFlagsWithSchema(mergedDw);
-
-      if (cleanedDw) {
-        await this.flagsRepository.set(cleanedDw);
-      }
-    }
-
     this.stripDwPayload(expanded);
 
-    return foundry.utils.flattenObject(expanded) as Record<string, unknown>;
+    const actorUpdate = foundry.utils.flattenObject(expanded) as Record<string, unknown>;
+    const cleanedDw = this.buildCleanDw(dwPatch);
+
+    if (cleanedDw) {
+      actorUpdate[`flags.${MODULE_ID}.dw`] = cleanedDw;
+    }
+
+    return actorUpdate;
   }
 
-  private mergeWithCurrentDw(dwPatch: Record<string, unknown>): Record<string, unknown> {
+  async handleDwPatch(dwPatch: object): Promise<Record<string, unknown>> {
+    const cleanedDw = this.buildCleanDw(dwPatch);
+
+    if (!cleanedDw) return {};
+
+    return {
+      [`flags.${MODULE_ID}.dw`]: cleanedDw
+    };
+  }
+
+  private mergeWithCurrentDw(dwPatch: object): Record<string, unknown> {
     const current = this.flagsRepository.get();
     const merged =
       current && typeof current === "object"
@@ -51,40 +60,24 @@ export class FormDataHandler {
     return merged;
   }
 
-  private extractDwPatch(
-    expanded: Record<string, unknown> & { dw?: unknown; flags?: unknown }
-  ): Record<string, unknown> | null {
-    const fromDw = expanded.dw;
-    const fromFlags = this.getModuleDwFromFlags(expanded.flags);
-    let patch: Record<string, unknown> | null = null;
+  private buildCleanDw(dwPatch: object | null): DwFlags | null {
+    if (!dwPatch) return null;
 
-    if (fromDw && typeof fromDw === "object") {
-      patch = foundry.utils.duplicate(fromDw) as Record<string, unknown>;
-    }
+    const mergedDw = this.mergeWithCurrentDw(dwPatch);
 
-    if (fromFlags && typeof fromFlags === "object") {
-      patch ??= {};
-
-      const flattenedFlags = foundry.utils.flattenObject(
-        foundry.utils.duplicate(fromFlags) as Record<string, unknown>
-      ) as Record<string, unknown>;
-
-      for (const [path, value] of Object.entries(flattenedFlags)) {
-        foundry.utils.setProperty(patch, path, value);
-      }
-    }
-
-    return patch;
+    return cleanDwFlagsWithSchema(mergedDw);
   }
 
-  private getModuleDwFromFlags(flags: unknown): unknown {
-    if (!flags || typeof flags !== "object") return undefined;
+  private extractDwPatch(
+    expanded: Record<string, unknown> & { dw?: unknown }
+  ): object | null {
+    const fromDw = expanded.dw;
 
-    const moduleFlags = (flags as Record<string, unknown>)[MODULE_ID];
+    if (fromDw && typeof fromDw === "object") {
+      return foundry.utils.duplicate(fromDw) as Record<string, unknown>;
+    }
 
-    if (!moduleFlags || typeof moduleFlags !== "object") return undefined;
-
-    return (moduleFlags as Record<string, unknown>).dw;
+    return null;
   }
 
   private stripDwPayload(expanded: Record<string, unknown> & { flags?: unknown }): void {
