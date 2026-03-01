@@ -16,6 +16,7 @@ export type {
   DwFlagsInput,
   DwMeta,
   DwMovement,
+  DwPlayer,
   DwSaves,
   DwSkills,
   DwSpellsTraitsView

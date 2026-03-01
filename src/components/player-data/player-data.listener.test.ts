@@ -16,7 +16,7 @@ describe("registerPlayerDataListener", () => {
     await flushPromises();
 
     expect(applyDwPatch).toHaveBeenCalledWith({
-      meta: {
+      player: {
         affiliationVisible: false
       }
     });

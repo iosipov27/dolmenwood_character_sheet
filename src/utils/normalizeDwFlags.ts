@@ -1,4 +1,4 @@
-import type { DwFlags, DwFlagsInput, DwMeta, DwSaves, DwSpellsTraitsView } from "../types/index.js";
+import type { DwFlags, DwFlagsInput, DwMeta, DwPlayer, DwSaves, DwSpellsTraitsView } from "../types/index.js";
 import { cleanDwFlagsWithSchema } from "../models/dwSchema.js";
 import { reportError } from "./reportError.js";
 
@@ -57,6 +57,7 @@ export function normalizeDwFlags(dw: DwFlagsInput): DwFlags {
   d.saves = saves as DwSaves;
 
   const meta = (d.meta ?? {}) as Partial<DwMeta> & Record<string, unknown>;
+  const player = (d.player ?? {}) as Partial<DwPlayer> & Record<string, unknown>;
   const legacyOtherNotes = (d as Record<string, unknown>).otherNotes;
 
   if (typeof legacyOtherNotes === "string" && !meta.otherNotes) {
@@ -69,6 +70,14 @@ export function normalizeDwFlags(dw: DwFlagsInput): DwFlags {
     .trim()
     .toLowerCase();
 
+  migrateLegacyPlayerField(meta, player, "kindredClass");
+  migrateLegacyPlayerField(meta, player, "background");
+  migrateLegacyPlayerField(meta, player, "alignment");
+  migrateLegacyPlayerField(meta, player, "affiliation");
+  migrateLegacyPlayerField(meta, player, "moonSign");
+  migrateLegacyPlayerField(meta, player, "affiliationVisible");
+  migrateLegacyPlayerField(meta, player, "moonSignVisible");
+
   meta.spellsCollapsed = normalizeBoolean(meta.spellsCollapsed);
   meta.traitsCollapsed = normalizeBoolean(meta.traitsCollapsed);
   meta.meleeAttackBonus = normalizeNumber(meta.meleeAttackBonus);
@@ -77,9 +86,15 @@ export function normalizeDwFlags(dw: DwFlagsInput): DwFlags {
   meta.missileDamageFormula = normalizeString(meta.missileDamageFormula);
   meta.meleeDamageBonus = normalizeNumber(meta.meleeDamageBonus);
   meta.spellsTraitsView = isSpellsTraitsView(spellsTraitsViewRaw) ? spellsTraitsViewRaw : "both";
-  meta.affiliationVisible = normalizeBoolean(meta.affiliationVisible ?? true);
-  meta.moonSignVisible = normalizeBoolean(meta.moonSignVisible ?? true);
+  player.kindredClass = normalizeString(player.kindredClass);
+  player.background = normalizeString(player.background);
+  player.alignment = normalizeString(player.alignment);
+  player.affiliation = normalizeString(player.affiliation);
+  player.affiliationVisible = normalizeBoolean(player.affiliationVisible ?? true);
+  player.moonSign = normalizeString(player.moonSign);
+  player.moonSignVisible = normalizeBoolean(player.moonSignVisible ?? true);
 
+  d.player = player as DwPlayer;
   d.meta = meta as DwMeta;
 
   try {
@@ -91,4 +106,19 @@ export function normalizeDwFlags(dw: DwFlagsInput): DwFlags {
   }
 
   return d as DwFlags;
+}
+
+function migrateLegacyPlayerField(
+  meta: Partial<DwMeta> & Record<string, unknown>,
+  player: Partial<DwPlayer> & Record<string, unknown>,
+  key: Extract<keyof DwPlayer, string>
+): void {
+  const metaRecord = meta as Record<string, unknown>;
+  const playerRecord = player as Record<string, unknown>;
+
+  if (playerRecord[key] === undefined && metaRecord[key] !== undefined) {
+    playerRecord[key] = metaRecord[key];
+  }
+
+  delete metaRecord[key];
 }

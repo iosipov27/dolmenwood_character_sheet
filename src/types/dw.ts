@@ -30,6 +30,16 @@ export interface DwCombat {
 
 export type DwSpellsTraitsView = "cards" | "text" | "both";
 
+export interface DwPlayer {
+  kindredClass: string;
+  background: string;
+  alignment: string;
+  affiliation: string;
+  affiliationVisible: boolean;
+  moonSign: string;
+  moonSignVisible: boolean;
+}
+
 export interface DwMeta {
   spellsCollapsed: boolean;
   traitsCollapsed: boolean;
@@ -39,14 +49,7 @@ export interface DwMeta {
   missileDamageFormula: string;
   meleeDamageBonus: number;
   spellsTraitsView: DwSpellsTraitsView;
-  kindredClass: string;
   kindredClassTraits: string;
-  background: string;
-  alignment: string;
-  affiliation: string;
-  affiliationVisible: boolean;
-  moonSign: string;
-  moonSignVisible: boolean;
   languages: string;
   equipment: {
     tinyItems: string;
@@ -122,6 +125,7 @@ export interface DwFlags {
   extraSkills: DwExtraSkill[];
   movement: DwMovement;
   combat: DwCombat;
+  player: DwPlayer;
   meta: DwMeta;
 }
 

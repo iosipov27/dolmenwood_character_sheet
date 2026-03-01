@@ -117,6 +117,15 @@ function buildDwFlagsSchema(fields: FieldsApi): AnyField {
     combat: new SchemaField({
       attack: numberField(fields, { min: 0 })
     }),
+    player: new SchemaField({
+      kindredClass: stringField(fields),
+      background: stringField(fields),
+      alignment: stringField(fields),
+      affiliation: stringField(fields),
+      affiliationVisible: booleanField(fields, { initial: true }),
+      moonSign: stringField(fields),
+      moonSignVisible: booleanField(fields, { initial: true })
+    }),
     meta: new SchemaField({
       spellsCollapsed: booleanField(fields, { initial: false }),
       traitsCollapsed: booleanField(fields, { initial: false }),
@@ -126,14 +135,7 @@ function buildDwFlagsSchema(fields: FieldsApi): AnyField {
       missileDamageFormula: stringField(fields),
       meleeDamageBonus: numberField(fields),
       spellsTraitsView: spellsTraitsViewField(fields),
-      kindredClass: stringField(fields),
       kindredClassTraits: htmlField(fields),
-      background: stringField(fields),
-      alignment: stringField(fields),
-      affiliation: stringField(fields),
-      affiliationVisible: booleanField(fields, { initial: true }),
-      moonSign: stringField(fields),
-      moonSignVisible: booleanField(fields, { initial: true }),
       languages: stringField(fields),
       equipment: buildEquipmentSchema(fields),
       xp: numberField(fields, { min: 0 }),

@@ -14,8 +14,8 @@
       id="dw-kindred-class"
       placeholder="{{localize 'DOLMENWOOD.UI.KindredClass'}}"
       class="player-data__input"
-      name="dw.meta.kindredClass"
-      value="{{ctx.dw.meta.kindredClass}}"
+      name="dw.player.kindredClass"
+      value="{{ctx.dw.player.kindredClass}}"
     />
   </div>
 
@@ -24,8 +24,8 @@
       id="dw-background"
       placeholder="{{localize 'DOLMENWOOD.UI.Background'}}"
       class="player-data__input"
-      name="dw.meta.background"
-      value="{{ctx.dw.meta.background}}"
+      name="dw.player.background"
+      value="{{ctx.dw.player.background}}"
     />
   </div>
   <div class="dw-field">
@@ -33,19 +33,19 @@
       id="dw-alignment"
       placeholder="{{localize 'DOLMENWOOD.UI.Alignment'}}"
       class="player-data__input"
-      name="dw.meta.alignment"
-      value="{{ctx.dw.meta.alignment}}"
+      name="dw.player.alignment"
+      value="{{ctx.dw.player.alignment}}"
     />
 
   </div>
-  {{#if ctx.dw.meta.affiliationVisible}}
+  {{#if ctx.dw.player.affiliationVisible}}
     <div class="dw-field dw-field--optional">
       <input
         id="dw-affiliation"
         placeholder="{{localize 'DOLMENWOOD.UI.Affiliation'}}"
         class="player-data__input"
-        name="dw.meta.affiliation"
-        value="{{ctx.dw.meta.affiliation}}"
+        name="dw.player.affiliation"
+        value="{{ctx.dw.player.affiliation}}"
       />
       <button
         type="button"
@@ -58,14 +58,14 @@
       </button>
     </div>
   {{/if}}
-  {{#if ctx.dw.meta.moonSignVisible}}
+  {{#if ctx.dw.player.moonSignVisible}}
     <div class="dw-field dw-field--optional">
       <input
         id="dw-moon-sign"
         placeholder="{{localize 'DOLMENWOOD.UI.MoonSign'}}"
         class="player-data__input"
-        name="dw.meta.moonSign"
-        value="{{ctx.dw.meta.moonSign}}"
+        name="dw.player.moonSign"
+        value="{{ctx.dw.player.moonSign}}"
       />
       <button
         type="button"

@@ -4,8 +4,8 @@ import { getDataset } from "../../utils/getDataset.js";
 import { registerActions } from "../../utils/registerActions.js";
 
 const OPTIONAL_META_FIELD_VISIBILITY_KEYS = {
-  affiliation: "affiliationVisible",
-  moonSign: "moonSignVisible"
+  affiliation: "player.affiliationVisible",
+  moonSign: "player.moonSignVisible"
 } as const;
 
 type OptionalMetaField = keyof typeof OPTIONAL_META_FIELD_VISIBILITY_KEYS;
@@ -20,16 +20,18 @@ export function registerPlayerDataListener(
 
       if (!visibilityKey) return;
 
-      await applyDwPatch({
-        meta: {
-          [visibilityKey]: false
-        }
-      });
+      const dwPatch: Record<string, boolean> = {};
+
+      foundry.utils.setProperty(dwPatch, visibilityKey, false);
+
+      await applyDwPatch(dwPatch);
     }
   });
 }
 
-function asVisibilityKey(value: string | undefined): (typeof OPTIONAL_META_FIELD_VISIBILITY_KEYS)[OptionalMetaField] | null {
+function asVisibilityKey(
+  value: string | undefined
+): (typeof OPTIONAL_META_FIELD_VISIBILITY_KEYS)[OptionalMetaField] | null {
   const normalized = String(value ?? "").trim() as OptionalMetaField;
 
   return OPTIONAL_META_FIELD_VISIBILITY_KEYS[normalized] ?? null;
