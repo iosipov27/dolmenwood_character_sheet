@@ -1,4 +1,5 @@
 import { MODULE_ID } from "../constants/moduleId.js";
+import { SheetDropHandler } from "../handlers/sheetDropHandler.js";
 import { buildDwUpdatePayload, buildFieldUpdatePayload } from "../handlers/sheetUpdateBuilder.js";
 import { registerSheetListeners } from "../listeners/registerSheetListeners.js";
 import { registerFormChangeListener } from "../listeners/registerFormChangeListener.js";
@@ -10,8 +11,17 @@ import { getBaseOSECharacterSheetClass } from "../utils/getBaseOSECharacterSheet
 const BaseSheet = getBaseOSECharacterSheetClass() as typeof foundry.appv1.sheets.ActorSheet;
 
 export class DolmenwoodSheet extends BaseSheet {
+  private readonly dropHandler: SheetDropHandler;
+
   constructor(...args: ConstructorParameters<typeof BaseSheet>) {
     super(...args);
+    this.dropHandler = new SheetDropHandler({
+      fromDropData: async (data) => (await Item.fromDropData(data)) ?? null,
+      localize: this.localize,
+      warn: (message) => {
+        ui.notifications?.warn(message);
+      }
+    });
   }
 
   static get defaultOptions(): ActorSheet.Options {
@@ -62,32 +72,9 @@ export class DolmenwoodSheet extends BaseSheet {
     event: DragEvent,
     data: ActorSheet.DropData.Item
   ): Promise<unknown> {
-    if (!this.isDropInsideSpellsAbilitiesTab(event)) {
-      return super._onDropItem(event, data);
-    }
-
-    const dropKind = this.getDropKindFromEvent(event);
-
-    if (!dropKind) return null;
-
-    const droppedItem = await Item.fromDropData(data);
-
-    if (!droppedItem) return null;
-
-    const itemType = String(droppedItem.type ?? "").toLowerCase();
-
-    if (itemType !== dropKind) {
-      const messageKey =
-        dropKind === "spell"
-          ? "DOLMENWOOD.UI.SpellsDropOnlySpells"
-          : "DOLMENWOOD.UI.SpellsDropOnlyAbilities";
-
-      ui.notifications?.warn(this.localize(messageKey));
-
-      return null;
-    }
-
-    return super._onDropItem(event, data);
+    return this.dropHandler.handleItemDrop(event, data, {
+      forwardDrop: () => super._onDropItem(event, data)
+    });
   }
 
   private getDwFlags(): DwFlags {
@@ -98,34 +85,6 @@ export class DolmenwoodSheet extends BaseSheet {
     if (Object.keys(updatePayload).length === 0) return;
 
     await this.actor.update(updatePayload);
-  }
-
-  private isDropInsideSpellsAbilitiesTab(event: DragEvent): boolean {
-    const targetElement = this.getDropTargetElement(event);
-
-    if (!targetElement) return false;
-
-    return Boolean(targetElement.closest(".tab[data-tab='spells-abilities']"));
-  }
-
-  private getDropKindFromEvent(event: DragEvent): "spell" | "ability" | null {
-    const targetElement = this.getDropTargetElement(event);
-
-    if (!targetElement) return null;
-
-    const rawKind = targetElement.closest("[data-dw-drop-kind]")?.getAttribute("data-dw-drop-kind");
-
-    return rawKind === "spell" || rawKind === "ability" ? rawKind : null;
-  }
-
-  private getDropTargetElement(event: DragEvent): Element | null {
-    const target = event.target;
-
-    return target instanceof Element
-      ? target
-      : target instanceof Node
-        ? target.parentElement
-        : null;
   }
 
   private readonly localize = (key: string): string => game.i18n?.localize(key) ?? key;
