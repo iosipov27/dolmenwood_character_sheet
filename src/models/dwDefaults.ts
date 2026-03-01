@@ -21,6 +21,15 @@ const FALLBACK_DW_DEFAULTS: DwFlags = {
   combat: {
     attack: 0
   },
+  player: {
+    kindredClass: "",
+    background: "",
+    alignment: "",
+    affiliation: "",
+    affiliationVisible: true,
+    moonSign: "",
+    moonSignVisible: true
+  },
   meta: {
     spellsCollapsed: false,
     traitsCollapsed: false,
@@ -30,12 +39,7 @@ const FALLBACK_DW_DEFAULTS: DwFlags = {
     missileDamageFormula: "",
     meleeDamageBonus: 0,
     spellsTraitsView: "both",
-    kindredClass: "",
     kindredClassTraits: "",
-    background: "",
-    alignment: "",
-    affiliation: "",
-    moonSign: "",
     languages: "",
     equipment: {
       tinyItems: "",

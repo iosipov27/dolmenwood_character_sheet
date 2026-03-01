@@ -4,6 +4,7 @@ import {
   registerAttackRollListener,
   registerEquipmentListener,
   registerExtraSkillRollListener,
+  registerPlayerDataListener,
   registerRemoveSkillListener,
   registerSaveRollListener,
   registerSkillRollListener,
@@ -48,6 +49,10 @@ export function registerSheetListeners(
   registerAttackRollListener(html, {
     actor,
     rollAttackCheck: RollChecks.rollAttackCheck
+  });
+
+  registerPlayerDataListener(html, {
+    applyDwPatch: (dwPatch) => applyDwPatch(dwPatch)
   });
 
   registerAddSkillListener(html, {
