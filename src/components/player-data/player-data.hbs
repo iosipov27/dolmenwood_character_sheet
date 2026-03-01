@@ -4,7 +4,7 @@
       id="dw-name"
       class="player-data__input"
       name="name"
-      placeholder="{{localize "DOLMENWOOD.UI.Name"}}"
+      placeholder="{{localize 'DOLMENWOOD.UI.Name'}}"
       value="{{ctx.actor.name}}"
     />
   </div>
@@ -12,7 +12,7 @@
   <div class="dw-field">
     <input
       id="dw-kindred-class"
-      placeholder="{{localize "DOLMENWOOD.UI.KindredClass"}}"
+      placeholder="{{localize 'DOLMENWOOD.UI.KindredClass'}}"
       class="player-data__input"
       name="dw.meta.kindredClass"
       value="{{ctx.dw.meta.kindredClass}}"
@@ -22,7 +22,7 @@
   <div class="dw-field">
     <input
       id="dw-background"
-      placeholder="{{localize "DOLMENWOOD.UI.Background"}}"
+      placeholder="{{localize 'DOLMENWOOD.UI.Background'}}"
       class="player-data__input"
       name="dw.meta.background"
       value="{{ctx.dw.meta.background}}"
@@ -31,29 +31,51 @@
   <div class="dw-field">
     <input
       id="dw-alignment"
-      placeholder="{{localize "DOLMENWOOD.UI.Alignment"}}"
+      placeholder="{{localize 'DOLMENWOOD.UI.Alignment'}}"
       class="player-data__input"
       name="dw.meta.alignment"
       value="{{ctx.dw.meta.alignment}}"
     />
 
   </div>
-  <div class="dw-field">
-    <input
-      id="dw-affiliation"
-      placeholder="{{localize "DOLMENWOOD.UI.Affiliation"}}"
-      class="player-data__input"
-      name="dw.meta.affiliation"
-      value="{{ctx.dw.meta.affiliation}}"
-    />
-  </div>
-  <div class="dw-field">
-    <input
-      id="dw-moon-sign"
-      placeholder="{{localize "DOLMENWOOD.UI.MoonSign"}}"
-      class="player-data__input"
-      name="dw.meta.moonSign"
-      value="{{ctx.dw.meta.moonSign}}"
-    />
-  </div>
+  {{#if ctx.dw.meta.affiliationVisible}}
+    <div class="dw-field dw-field--optional">
+      <input
+        id="dw-affiliation"
+        placeholder="{{localize 'DOLMENWOOD.UI.Affiliation'}}"
+        class="player-data__input"
+        name="dw.meta.affiliation"
+        value="{{ctx.dw.meta.affiliation}}"
+      />
+      <button
+        type="button"
+        class="player-data__hide"
+        data-action="dw-hide-optional-meta-field"
+        data-field="affiliation"
+        aria-label="{{localize 'DOLMENWOOD.UI.Remove'}}"
+      >
+        <i class="fas fa-trash"></i>
+      </button>
+    </div>
+  {{/if}}
+  {{#if ctx.dw.meta.moonSignVisible}}
+    <div class="dw-field dw-field--optional">
+      <input
+        id="dw-moon-sign"
+        placeholder="{{localize 'DOLMENWOOD.UI.MoonSign'}}"
+        class="player-data__input"
+        name="dw.meta.moonSign"
+        value="{{ctx.dw.meta.moonSign}}"
+      />
+      <button
+        type="button"
+        class="player-data__hide"
+        data-action="dw-hide-optional-meta-field"
+        data-field="moonSign"
+        aria-label="{{localize 'DOLMENWOOD.UI.Remove'}}"
+      >
+        <i class="fas fa-trash"></i>
+      </button>
+    </div>
+  {{/if}}
 </div>

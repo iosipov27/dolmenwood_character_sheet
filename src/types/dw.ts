@@ -44,7 +44,9 @@ export interface DwMeta {
   background: string;
   alignment: string;
   affiliation: string;
+  affiliationVisible: boolean;
   moonSign: string;
+  moonSignVisible: boolean;
   languages: string;
   equipment: {
     tinyItems: string;

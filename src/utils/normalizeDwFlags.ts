@@ -77,6 +77,8 @@ export function normalizeDwFlags(dw: DwFlagsInput): DwFlags {
   meta.missileDamageFormula = normalizeString(meta.missileDamageFormula);
   meta.meleeDamageBonus = normalizeNumber(meta.meleeDamageBonus);
   meta.spellsTraitsView = isSpellsTraitsView(spellsTraitsViewRaw) ? spellsTraitsViewRaw : "both";
+  meta.affiliationVisible = normalizeBoolean(meta.affiliationVisible ?? true);
+  meta.moonSignVisible = normalizeBoolean(meta.moonSignVisible ?? true);
 
   d.meta = meta as DwMeta;
 

@@ -26,10 +26,42 @@ $player-field-line-height: 1.2;
     }
   }
 
+  .dw-field--optional {
+    .player-data__input {
+      padding-right: 2rem;
+    }
+
+    &:hover .player-data__hide,
+    &:focus-within .player-data__hide {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
   &__name {
     .player-data__input {
       font-size: 1.75rem;
       font-weight: 600;
     }
+  }
+
+  &__hide {
+    position: absolute;
+    top: 50%;
+    right: 0.1rem;
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: $color-text-dark-primary;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 120ms ease;
   }
 }

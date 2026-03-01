@@ -35,7 +35,9 @@ const FALLBACK_DW_DEFAULTS: DwFlags = {
     background: "",
     alignment: "",
     affiliation: "",
+    affiliationVisible: true,
     moonSign: "",
+    moonSignVisible: true,
     languages: "",
     equipment: {
       tinyItems: "",
