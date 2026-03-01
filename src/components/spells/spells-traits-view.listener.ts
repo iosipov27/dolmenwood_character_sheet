@@ -1,7 +1,7 @@
 import { DW_SET_SPELLS_TRAITS_VIEW } from "../../constants/templateAttributes.js";
 import type { ActionEvent, GetDwFlags, HtmlRoot, SetDwFlags } from "../../types.js";
 import { getDataset } from "../../utils/getDataset.js";
-import { registerAction } from "../../utils/registerAction.js";
+import { registerActions } from "../../utils/registerActions.js";
 
 const VIEW_MODES = ["cards", "text", "both"] as const;
 type ViewMode = (typeof VIEW_MODES)[number];
@@ -53,27 +53,29 @@ export function registerSpellsTraitsViewListener(
 
   applyViewMode(savedMode ?? "both");
 
-  registerAction(html, DW_SET_SPELLS_TRAITS_VIEW, async (ev: ActionEvent) => {
-    const { view } = getDataset(ev);
-    const toggleMode = asToggleViewMode(view);
+  registerActions(html, {
+    [DW_SET_SPELLS_TRAITS_VIEW]: async (ev: ActionEvent) => {
+      const { view } = getDataset(ev);
+      const toggleMode = asToggleViewMode(view);
 
-    if (!toggleMode) return;
+      if (!toggleMode) return;
 
-    const currentCards = cardsButton.hasClass("is-active");
-    const currentText = textButton.hasClass("is-active");
-    const nextCards = toggleMode === "cards" ? !currentCards : currentCards;
-    const nextText = toggleMode === "text" ? !currentText : currentText;
-    const nextMode = viewModeFromStates({ cards: nextCards, text: nextText });
+      const currentCards = cardsButton.hasClass("is-active");
+      const currentText = textButton.hasClass("is-active");
+      const nextCards = toggleMode === "cards" ? !currentCards : currentCards;
+      const nextText = toggleMode === "text" ? !currentText : currentText;
+      const nextMode = viewModeFromStates({ cards: nextCards, text: nextText });
 
-    if (!nextMode) return;
+      if (!nextMode) return;
 
-    applyViewMode(nextMode);
+      applyViewMode(nextMode);
 
-    const dw = getDwFlags();
+      const dw = getDwFlags();
 
-    if (dw.meta.spellsTraitsView === nextMode) return;
+      if (dw.meta.spellsTraitsView === nextMode) return;
 
-    dw.meta.spellsTraitsView = nextMode;
-    await setDwFlags(dw);
+      dw.meta.spellsTraitsView = nextMode;
+      await setDwFlags(dw);
+    }
   });
 }

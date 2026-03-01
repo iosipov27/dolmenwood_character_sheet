@@ -1,4 +1,4 @@
-﻿import { registerAction } from "../../utils/registerAction.js";
+﻿import { registerActions } from "../../utils/registerActions.js";
 import { DW_ADD_SKILL } from "../../constants/templateAttributes.js";
 import type { DwExtraSkill, GetDwFlags, HtmlRoot, SetDwFlags } from "../../types.js";
 
@@ -6,15 +6,17 @@ export function registerAddSkillListener(
   html: HtmlRoot,
   { getDwFlags, setDwFlags }: { getDwFlags: GetDwFlags; setDwFlags: SetDwFlags }
 ): void {
-  registerAction(html, DW_ADD_SKILL, async () => {
-    const dw = getDwFlags();
+  registerActions(html, {
+    [DW_ADD_SKILL]: async () => {
+      const dw = getDwFlags();
 
-    dw.extraSkills = readExtraSkillsFromForm(html, dw.extraSkills);
+      dw.extraSkills = readExtraSkillsFromForm(html, dw.extraSkills);
 
-    if (dw.extraSkills.length >= 10) return;
+      if (dw.extraSkills.length >= 10) return;
 
-    dw.extraSkills.push({ name: "", target: 6 });
-    await setDwFlags(dw);
+      dw.extraSkills.push({ name: "", target: 6 });
+      await setDwFlags(dw);
+    }
   });
 }
 

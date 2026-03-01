@@ -5,7 +5,7 @@ import {
 } from "../../constants/templateAttributes.js";
 import type { ActionEvent, GetDwFlags, HtmlRoot, SetDwFlags } from "../../types.js";
 import { getDataset } from "../../utils/getDataset.js";
-import { registerAction } from "../../utils/registerAction.js";
+import { registerActions } from "../../utils/registerActions.js";
 
 type CollapseKind = "spells" | "traits";
 const CARDS_COLLAPSED_LAYOUT_CLASS = "dw-spells-abilities--cards-collapsed";
@@ -105,59 +105,59 @@ export function registerSpellsListener(
 
   updateCardsCollapsedLayoutClass(panel);
 
-  registerAction(html, DW_OPEN_ITEM, async (event: ActionEvent) => {
-    const { itemId } = getDataset(event);
-    const item = getActorItem(actor, itemId);
+  registerActions(html, {
+    [DW_OPEN_ITEM]: async (event: ActionEvent) => {
+      const { itemId } = getDataset(event);
+      const item = getActorItem(actor, itemId);
 
-    if (!item) return;
+      if (!item) return;
 
-    void item.sheet?.render(true);
-  });
+      void item.sheet?.render(true);
+    },
+    [DW_DELETE_ITEM]: async (event: ActionEvent) => {
+      const { itemId } = getDataset(event);
+      const item = getActorItem(actor, itemId);
 
-  registerAction(html, DW_DELETE_ITEM, async (event: ActionEvent) => {
-    const { itemId } = getDataset(event);
-    const item = getActorItem(actor, itemId);
+      if (!item) return;
 
-    if (!item) return;
+      await item.deleteDialog();
+    },
+    [DW_TOGGLE_COLLAPSIBLE_SECTION]: async (event: ActionEvent) => {
+      const target = event.currentTarget;
 
-    await item.deleteDialog();
-  });
+      if (!(target instanceof HTMLElement)) return;
 
-  registerAction(html, DW_TOGGLE_COLLAPSIBLE_SECTION, async (event: ActionEvent) => {
-    const target = event.currentTarget;
+      const root = target.closest(".dw-spells, .dw-ability-items");
 
-    if (!(target instanceof HTMLElement)) return;
+      if (!(root instanceof HTMLElement)) return;
 
-    const root = target.closest(".dw-spells, .dw-ability-items");
+      const section = root.closest(".dw-spells-abilities__section");
 
-    if (!(root instanceof HTMLElement)) return;
+      root.classList.toggle("is-collapsed");
+      section?.classList.toggle("is-collapsed");
 
-    const section = root.closest(".dw-spells-abilities__section");
+      const expanded = !root.classList.contains("is-collapsed");
+      target.setAttribute("aria-expanded", String(expanded));
+      updateCardsCollapsedLayoutClass(panel);
 
-    root.classList.toggle("is-collapsed");
-    section?.classList.toggle("is-collapsed");
+      const kind = getCollapseKind(root);
 
-    const expanded = !root.classList.contains("is-collapsed");
-    target.setAttribute("aria-expanded", String(expanded));
-    updateCardsCollapsedLayoutClass(panel);
+      if (!kind) return;
 
-    const kind = getCollapseKind(root);
+      const nextCollapsed = root.classList.contains("is-collapsed");
+      const flags = getDwFlags();
+      const prevCollapsed = kind === "spells" ? flags.meta.spellsCollapsed : flags.meta.traitsCollapsed;
 
-    if (!kind) return;
+      if (prevCollapsed === nextCollapsed) return;
 
-    const nextCollapsed = root.classList.contains("is-collapsed");
-    const flags = getDwFlags();
-    const prevCollapsed = kind === "spells" ? flags.meta.spellsCollapsed : flags.meta.traitsCollapsed;
+      if (kind === "spells") {
+        flags.meta.spellsCollapsed = nextCollapsed;
+      } else {
+        flags.meta.traitsCollapsed = nextCollapsed;
+      }
 
-    if (prevCollapsed === nextCollapsed) return;
-
-    if (kind === "spells") {
-      flags.meta.spellsCollapsed = nextCollapsed;
-    } else {
-      flags.meta.traitsCollapsed = nextCollapsed;
+      await setDwFlags(flags);
     }
-
-    await setDwFlags(flags);
   });
 }
 
