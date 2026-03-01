@@ -7,22 +7,17 @@ import { MODULE_ID } from "../constants/moduleId.js";
 vi.mock("../models/dwSchema.js");
 
 describe("FormDataHandler", () => {
-  let mockRepository: {
-    get: Mock;
-    set: Mock;
-  };
   let mockActor: Actor;
+  let mockGetFlag: Mock;
   let cleanDwFlagsWithSchemaMock: Mock;
   let handler: FormDataHandler;
 
   beforeEach(() => {
     vi.clearAllMocks();
 
-    mockRepository = {
-      get: vi.fn().mockReturnValue({}),
-      set: vi.fn().mockResolvedValue(undefined)
-    };
+    mockGetFlag = vi.fn().mockReturnValue({});
     mockActor = {
+      getFlag: mockGetFlag,
       system: {
         ac: { value: 9, mod: 0 },
         aac: { value: 10, mod: 0 }
@@ -32,7 +27,7 @@ describe("FormDataHandler", () => {
     cleanDwFlagsWithSchemaMock = vi.mocked(dwSchemaModule.cleanDwFlagsWithSchema);
     cleanDwFlagsWithSchemaMock.mockImplementation((flags) => flags as DwFlags);
 
-    handler = new FormDataHandler(mockRepository as never, mockActor);
+    handler = new FormDataHandler(mockActor);
   });
 
   describe("handleFormData", () => {
@@ -85,7 +80,7 @@ describe("FormDataHandler", () => {
     });
 
     it("merges current stored dw before schema clean", async () => {
-      mockRepository.get.mockReturnValue({
+      mockGetFlag.mockReturnValue({
         meta: {
           otherNotes: "<p>Keep me</p>"
         }
@@ -129,12 +124,13 @@ describe("FormDataHandler", () => {
 
     it("remaps ascending AC edits to AAC mod", async () => {
       mockActor = {
+        getFlag: mockGetFlag,
         system: {
           ac: { value: 9, mod: 0 },
           aac: { value: 13, mod: 1 }
         }
       } as unknown as Actor;
-      handler = new FormDataHandler(mockRepository as never, mockActor);
+      handler = new FormDataHandler(mockActor);
 
       const result = await handler.handleFormData({
         "system.aac.value": "15"

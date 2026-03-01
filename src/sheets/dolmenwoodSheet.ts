@@ -1,25 +1,19 @@
 import { MODULE_ID } from "../constants/moduleId.js";
-import { TabController } from "../controllers/tabController.js";
-import { FormDataHandler } from "../handlers/formDataHandler.js";
+import { OseCharacterSheetAdapter } from "../adapters/oseCharacterSheetAdapter.js";
 import { registerSheetListeners } from "../listeners/registerSheetListeners.js";
+import { registerFormChangeListener } from "../listeners/registerFormChangeListener.js";
 import { registerTabNavigationListener } from "../listeners/registerTabNavigationListener.js";
+import { cleanDwFlagsWithSchema } from "../models/dwSchema.js";
+import { buildDwFlagsFromActor } from "../models/buildDwFlagsFromActor.js";
 import { DolmenwoodSheetData } from "../models/dolmenwoodSheetData.js";
-import { DwFlagsRepository } from "../repositories/dwFlagsRepository.js";
-import type { DwSheetData, HtmlRoot } from "../types.js";
+import type { DwFlags, DwSheetData, HtmlRoot } from "../types.js";
 import { getBaseOSECharacterSheetClass } from "../utils/getBaseOSECharacterSheetClass.js";
 
 const BaseSheet = getBaseOSECharacterSheetClass() as typeof foundry.appv1.sheets.ActorSheet;
 
 export class DolmenwoodSheet extends BaseSheet {
-  private readonly tabController: TabController;
-  private readonly flagsRepository: DwFlagsRepository;
-  private readonly formDataHandler: FormDataHandler;
-
   constructor(...args: ConstructorParameters<typeof BaseSheet>) {
     super(...args);
-    this.tabController = new TabController();
-    this.flagsRepository = new DwFlagsRepository(this.actor);
-    this.formDataHandler = new FormDataHandler(this.flagsRepository, this.actor);
   }
 
   static get defaultOptions(): ActorSheet.Options {
@@ -29,8 +23,8 @@ export class DolmenwoodSheet extends BaseSheet {
       width: 640,
       height: 730,
       closeOnSubmit: false,
-      submitOnClose: true,
-      submitOnChange: true,
+      submitOnClose: false,
+      submitOnChange: false,
       resizable: true
     });
   }
@@ -45,14 +39,22 @@ export class DolmenwoodSheet extends BaseSheet {
     super.activateListeners(html);
 
     registerTabNavigationListener(html, {
-      getActiveTab: () => this.tabController.getActiveTab(),
-      setActiveTab: (tab: string) => this.tabController.setActiveTab(tab)
+      getActiveTab: () => "main",
+      setActiveTab: () => {}
+    });
+
+    registerFormChangeListener(html, {
+      onFieldChange: async (name, value) => {
+        await this.handleFieldChange(name, value);
+      }
     });
 
     registerSheetListeners(html, {
       actor: this.actor,
-      getDwFlags: () => this.flagsRepository.get(),
-      setDwFlags: (dw) => this.persistSheetChanges({ dwPatch: dw })
+      getDwFlags: () => this.getDwFlags(),
+      setDwFlags: async (dw) => {
+        await this.updateDw(dw);
+      }
     });
   }
 
@@ -88,40 +90,53 @@ export class DolmenwoodSheet extends BaseSheet {
     return super._onDropItem(event, data);
   }
 
-  async _updateObject(event: Event, formData: Record<string, unknown>): Promise<void> {
-    await this.persistSheetChanges({ event, formData });
+  private getDwFlags(): DwFlags {
+    return buildDwFlagsFromActor(this.actor);
   }
 
-  private async persistSheetChanges({
-    event,
-    formData,
-    dwPatch
-  }: {
-    event?: Event;
-    formData?: Record<string, unknown>;
-    dwPatch?: object;
-  }): Promise<void> {
-    if (!formData && !dwPatch) return;
+  private async updateDw(dwPatch: object): Promise<void> {
+    const nextDw = foundry.utils.duplicate(this.getDwFlags()) as Record<string, unknown>;
+    const flattenedPatch = foundry.utils.flattenObject(
+      foundry.utils.duplicate(dwPatch) as Record<string, unknown>
+    ) as Record<string, unknown>;
 
-    let updatePayload: Record<string, unknown>;
+    for (const [path, value] of Object.entries(flattenedPatch)) {
+      foundry.utils.setProperty(nextDw, path, value);
+    }
 
-    if (formData) {
-      updatePayload = await this.formDataHandler.handleFormData(formData);
-    } else if (dwPatch) {
-      updatePayload = await this.formDataHandler.handleDwPatch(dwPatch);
-    } else {
+    const cleanedDw = cleanDwFlagsWithSchema(nextDw);
+
+    if (!cleanedDw) return;
+
+    await this.actor.update({
+      [`flags.${MODULE_ID}.dw`]: cleanedDw
+    });
+  }
+
+  private async handleFieldChange(name: string, value: unknown): Promise<void> {
+    if (name.startsWith("dw.")) {
+      const dwPath = name.slice(3);
+      const dwPatch: Record<string, unknown> = {};
+
+      foundry.utils.setProperty(dwPatch, dwPath, value);
+
+      await this.updateDw(dwPatch);
+
       return;
     }
 
-    if (Object.keys(updatePayload).length === 0) return;
-
-    if (event) {
-      await super._updateObject(event, updatePayload);
-
+    if (name === `flags.${MODULE_ID}.dw` || name.startsWith(`flags.${MODULE_ID}.dw.`)) {
       return;
     }
 
-    await this.actor.update(updatePayload);
+    const actorUpdate =
+      name === "system.ac.value" || name === "system.aac.value"
+        ? OseCharacterSheetAdapter.remapDerivedArmorClassEdits({ [name]: value }, this.actor)
+        : { [name]: value };
+
+    if (Object.keys(actorUpdate).length === 0) return;
+
+    await this.actor.update(actorUpdate);
   }
 
   private isDropInsideSpellsAbilitiesTab(event: DragEvent): boolean {
