@@ -34,7 +34,7 @@ export class DolmenwoodSheetData {
         spells: buildDwSpellItems(actor),
         abilities: buildDwAbilityItems(actor)
       },
-      ui: buildDwUi(data.dw, localize)
+      ui: buildDwUi(data.dw, localize, actor.name)
     };
 
     return data;

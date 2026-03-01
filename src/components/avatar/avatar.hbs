@@ -1,7 +1,18 @@
 <div class="dw-avatar">
   {{#if ctx.actor.img}}
-    <img src="{{ctx.actor.img}}" data-edit="img" data-tooltip="{{ctx.actor.name}}" />
+    <img
+      src="{{ctx.actor.img}}"
+      data-edit="img"
+      data-tooltip="{{ctx.view.ui.avatarTooltip}}"
+      data-tooltip-class="dw-tooltip--multiline"
+    />
   {{else}}
-    <img class="profile-img" src="icons/svg/mystery-man.svg" data-edit="img" />
+    <img
+      class="profile-img"
+      src="icons/svg/mystery-man.svg"
+      data-edit="img"
+      data-tooltip="{{ctx.view.ui.avatarTooltip}}"
+      data-tooltip-class="dw-tooltip--multiline"
+    />
   {{/if}}
 </div>

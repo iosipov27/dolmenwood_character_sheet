@@ -75,6 +75,7 @@ export interface DwSheetView {
     abilities: DwActorItemEntry[];
   };
   ui: {
+    avatarTooltip: string;
     saveTooltips: Record<string, string>;
     skillTooltips: Record<string, string>;
     equipment: {
