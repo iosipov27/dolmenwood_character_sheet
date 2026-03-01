@@ -32,6 +32,7 @@ export class DolmenwoodSheet extends BaseSheet {
       width: 640,
       height: 730,
       closeOnSubmit: false,
+      // Native submit-on-close is disabled; close() flushes the active field and waits for queued updates.
       submitOnClose: false,
       submitOnChange: false,
       tabs: [
@@ -69,6 +70,12 @@ export class DolmenwoodSheet extends BaseSheet {
     });
   }
 
+  override async close(options?: Application.CloseOptions): Promise<void> {
+    await this.flushActiveFieldBeforeClose();
+
+    await super.close(options);
+  }
+
   protected override async _onDropItem(
     event: DragEvent,
     data: ActorSheet.DropData.Item
@@ -88,6 +95,21 @@ export class DolmenwoodSheet extends BaseSheet {
       });
 
     await this.updateChain;
+  }
+
+  private async flushActiveFieldBeforeClose(): Promise<void> {
+    const form = this.form;
+
+    if (!(form instanceof HTMLFormElement)) return;
+
+    const activeElement = form.ownerDocument?.activeElement;
+
+    if (!(activeElement instanceof HTMLElement) || !form.contains(activeElement)) return;
+
+    activeElement.blur();
+
+    await Promise.resolve();
+    await this.updateChain.catch(() => {});
   }
 
   private readonly localize = (key: string): string => game.i18n?.localize(key) ?? key;

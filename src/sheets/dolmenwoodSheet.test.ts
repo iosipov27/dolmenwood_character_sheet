@@ -8,6 +8,7 @@ const registerSheetListenersMock = vi.fn();
 const buildDwFlagsFromActorMock = vi.fn();
 const buildFieldUpdatePayloadMock = vi.fn();
 const buildDwUpdatePayloadMock = vi.fn();
+let baseCloseMock: ReturnType<typeof vi.fn>;
 
 vi.mock("../listeners/registerFormChangeListener.js", () => ({
   registerFormChangeListener: registerFormChangeListenerMock
@@ -36,6 +37,7 @@ describe("DolmenwoodSheet", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.resetModules();
+    baseCloseMock = vi.fn(async () => {});
 
     class MockActorSheet {
       actor: Actor;
@@ -53,6 +55,10 @@ describe("DolmenwoodSheet", () => {
       }
 
       activateListeners(): void {}
+
+      async close(): Promise<void> {
+        await baseCloseMock();
+      }
 
       protected async _onDropItem(): Promise<null> {
         return null;
@@ -193,5 +199,54 @@ describe("DolmenwoodSheet", () => {
 
     expect(actor.update).toHaveBeenCalledTimes(2);
     expect(actor.update).toHaveBeenNthCalledWith(2, { name: "Second" });
+  });
+
+  it("flushes the active field before closing and waits for queued updates", async () => {
+    let resolveUpdate: (() => void) | null = null;
+    const pendingUpdate = new Promise<void>((resolve) => {
+      resolveUpdate = resolve;
+    });
+    const actor = {
+      update: vi.fn(async () => {
+        await pendingUpdate;
+      })
+    } as unknown as Actor;
+
+    buildFieldUpdatePayloadMock.mockReturnValue({ name: "Rook" });
+
+    document.body.innerHTML = `<form><input name="name" value="Rook" /></form>`;
+
+    const form = document.querySelector("form") as HTMLFormElement;
+    const input = form.querySelector("input") as HTMLInputElement;
+    const html = $(form) as HtmlRoot;
+    const blurSpy = vi.spyOn(input, "blur");
+
+    const DolmenwoodSheet = await loadSheet();
+    const sheet = new DolmenwoodSheet(actor);
+
+    Object.defineProperty(sheet, "form", {
+      configurable: true,
+      value: form
+    });
+
+    sheet.activateListeners(html);
+    input.focus();
+
+    const [{ onFieldChange }] = registerFormChangeListenerMock.mock.calls.map((call) => call[1]);
+
+    const updatePromise = onFieldChange("name", "Rook");
+    await flushPromises();
+
+    const closePromise = sheet.close();
+    await flushPromises();
+
+    expect(blurSpy).toHaveBeenCalledTimes(1);
+    expect(baseCloseMock).not.toHaveBeenCalled();
+
+    resolveUpdate?.();
+    await updatePromise;
+    await closePromise;
+
+    expect(baseCloseMock).toHaveBeenCalledTimes(1);
   });
 });
