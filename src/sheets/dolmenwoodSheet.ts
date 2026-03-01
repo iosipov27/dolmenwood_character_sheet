@@ -2,7 +2,6 @@ import { MODULE_ID } from "../constants/moduleId.js";
 import { OseCharacterSheetAdapter } from "../adapters/oseCharacterSheetAdapter.js";
 import { registerSheetListeners } from "../listeners/registerSheetListeners.js";
 import { registerFormChangeListener } from "../listeners/registerFormChangeListener.js";
-import { registerTabNavigationListener } from "../listeners/registerTabNavigationListener.js";
 import { cleanDwFlagsWithSchema } from "../models/dwSchema.js";
 import { buildDwFlagsFromActor } from "../models/buildDwFlagsFromActor.js";
 import { DolmenwoodSheetData } from "../models/dolmenwoodSheetData.js";
@@ -25,6 +24,13 @@ export class DolmenwoodSheet extends BaseSheet {
       closeOnSubmit: false,
       submitOnClose: false,
       submitOnChange: false,
+      tabs: [
+        {
+          navSelector: ".dolmenwood-sheet__tabs",
+          contentSelector: ".dolmenwood-sheet__content",
+          initial: "main"
+        }
+      ],
       resizable: true
     });
   }
@@ -37,11 +43,6 @@ export class DolmenwoodSheet extends BaseSheet {
 
   activateListeners(html: HtmlRoot): void {
     super.activateListeners(html);
-
-    registerTabNavigationListener(html, {
-      getActiveTab: () => "main",
-      setActiveTab: () => {}
-    });
 
     registerFormChangeListener(html, {
       onFieldChange: async (name, value) => {
@@ -144,7 +145,7 @@ export class DolmenwoodSheet extends BaseSheet {
 
     if (!targetElement) return false;
 
-    return Boolean(targetElement.closest("[data-tab-panel='spells-abilities']"));
+    return Boolean(targetElement.closest(".tab[data-tab='spells-abilities']"));
   }
 
   private getDropKindFromEvent(event: DragEvent): "spell" | "ability" | null {

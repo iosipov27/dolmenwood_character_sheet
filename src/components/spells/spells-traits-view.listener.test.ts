@@ -14,7 +14,7 @@ function buildDw(mode: DwSpellsTraitsView = "both"): DwFlags {
 describe("registerSpellsTraitsViewListener", () => {
   it("defaults to both mode when saved value is invalid", () => {
     document.body.innerHTML = `
-      <div data-tab-panel="spells-abilities">
+      <div class="tab" data-tab="spells-abilities">
         <section class="dw-spells-abilities dw-spells-abilities--view-cards">
           <button data-action="dw-set-spells-traits-view" data-view="cards"></button>
           <button data-action="dw-set-spells-traits-view" data-view="text"></button>
@@ -42,7 +42,7 @@ describe("registerSpellsTraitsViewListener", () => {
 
   it("applies saved mode on init", () => {
     document.body.innerHTML = `
-      <div data-tab-panel="spells-abilities">
+      <div class="tab" data-tab="spells-abilities">
         <section class="dw-spells-abilities dw-spells-abilities--view-both">
           <button data-action="dw-set-spells-traits-view" data-view="cards"></button>
           <button data-action="dw-set-spells-traits-view" data-view="text"></button>
@@ -66,7 +66,7 @@ describe("registerSpellsTraitsViewListener", () => {
 
   it("switches from both to text and saves selected value", async () => {
     document.body.innerHTML = `
-      <div data-tab-panel="spells-abilities">
+      <div class="tab" data-tab="spells-abilities">
         <section class="dw-spells-abilities dw-spells-abilities--view-both">
           <button class="is-active" data-action="dw-set-spells-traits-view" data-view="cards"></button>
           <button class="is-active" data-action="dw-set-spells-traits-view" data-view="text"></button>
@@ -96,7 +96,7 @@ describe("registerSpellsTraitsViewListener", () => {
 
   it("switches from text to both when second toggle is enabled", async () => {
     document.body.innerHTML = `
-      <div data-tab-panel="spells-abilities">
+      <div class="tab" data-tab="spells-abilities">
         <section class="dw-spells-abilities dw-spells-abilities--view-text">
           <button data-action="dw-set-spells-traits-view" data-view="cards"></button>
           <button class="is-active" data-action="dw-set-spells-traits-view" data-view="text"></button>
@@ -126,7 +126,7 @@ describe("registerSpellsTraitsViewListener", () => {
 
   it("does not allow disabling the last active toggle", async () => {
     document.body.innerHTML = `
-      <div data-tab-panel="spells-abilities">
+      <div class="tab" data-tab="spells-abilities">
         <section class="dw-spells-abilities dw-spells-abilities--view-cards">
           <button class="is-active" data-action="dw-set-spells-traits-view" data-view="cards"></button>
           <button data-action="dw-set-spells-traits-view" data-view="text"></button>
@@ -154,7 +154,7 @@ describe("registerSpellsTraitsViewListener", () => {
 
   it("ignores invalid mode value", async () => {
     document.body.innerHTML = `
-      <div data-tab-panel="spells-abilities">
+      <div class="tab" data-tab="spells-abilities">
         <section class="dw-spells-abilities dw-spells-abilities--view-both">
           <button class="is-active" data-action="dw-set-spells-traits-view" data-view="cards"></button>
           <button class="is-active" data-action="dw-set-spells-traits-view" data-view="text"></button>

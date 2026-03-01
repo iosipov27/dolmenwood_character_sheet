@@ -3,70 +3,62 @@
         <div class="dolmenwood-sheet__content">
             <div
                 class="dolmenwood-sheet__tab-panel dolmenwood-sheet__main-tab tab active"
-                data-tab-panel="main"
                 data-tab="main"
-                data-group="dolmenwood-sheet-tabs"
+                data-group="primary"
             >
                 {{~> dolmenwood-main-tab ctx=this~}}
             </div>
 
             <div
                 class="dolmenwood-sheet__tab-panel dolmenwood-sheet__equipment-tab tab"
-                data-tab-panel="equipment"
                 data-tab="equipment"
-                data-group="dolmenwood-sheet-tabs"
+                data-group="primary"
             >
                 {{~> dolmenwood-equipment-tab ctx=this~}}
             </div>
 
             <div
                 class="dolmenwood-sheet__tab-panel dolmenwood-sheet__spells-abilities-tab tab"
-                data-tab-panel="spells-abilities"
                 data-tab="spells-abilities"
-                data-group="dolmenwood-sheet-tabs"
+                data-group="primary"
             >
                 {{~> dolmenwood-spells-abilities-tab ctx=this~}}
             </div>
 
             <div
                 class="dolmenwood-sheet__tab-panel dolmenwood-sheet__details-tab tab"
-                data-tab-panel="details"
                 data-tab="details"
-                data-group="dolmenwood-sheet-tabs"
+                data-group="primary"
             >
                 {{~> dolmenwood-details-tab ctx=this~}}
             </div>
 
         </div>
 
-        <div class="dolmenwood-sheet__tabs" data-group="dolmenwood-sheet-tabs">
+        <div class="dolmenwood-sheet__tabs tabs" data-group="primary">
             <button
                 type="button"
                 class="dolmenwood-sheet__tab item active"
-                data-tab-target="main"
                 data-tab="main"
-                data-group="dolmenwood-sheet-tabs"
+                data-group="primary"
             >{{localize "DOLMENWOOD.UI.Main"}}</button>
             <button
                 type="button"
                 class="dolmenwood-sheet__tab item"
-                data-tab-target="equipment"
                 data-tab="equipment"
-                data-group="dolmenwood-sheet-tabs"
+                data-group="primary"
             >{{localize "DOLMENWOOD.UI.Equipment"}}</button>
             <button
                 type="button"
                 class="dolmenwood-sheet__tab item"
-                data-tab-target="spells-abilities"
                 data-tab="spells-abilities"
-                data-group="dolmenwood-sheet-tabs"
+                data-group="primary"
             >{{localize "DOLMENWOOD.UI.SpellsAbilities"}}</button>
             <button
                 type="button"
                 class="dolmenwood-sheet__tab item"
-                data-tab-target="details"
                 data-tab="details"
-                data-group="dolmenwood-sheet-tabs"
+                data-group="primary"
             >{{localize "DOLMENWOOD.UI.Details"}}</button>
         </div>
     </div>

@@ -6,7 +6,7 @@ import type { DwFlags } from "../../types.js";
 describe("registerSpellsListener", () => {
   it("applies saved collapsed states on init", () => {
     document.body.innerHTML = `
-      <div data-tab-panel="spells-abilities">
+      <div class="tab" data-tab="spells-abilities">
         <section class="dw-spells-abilities">
           <div class="dw-spells-abilities__section dw-spells-abilities__section--spells">
             <div class="dw-spells">
@@ -44,7 +44,7 @@ describe("registerSpellsListener", () => {
 
   it("toggles collapse state for spells section", async () => {
     document.body.innerHTML = `
-      <div data-tab-panel="spells-abilities">
+      <div class="tab" data-tab="spells-abilities">
       <section class="dw-spells-abilities">
         <div class="dw-spells-abilities__section dw-spells-abilities__section--spells">
           <div class="dw-spells">
@@ -90,7 +90,7 @@ describe("registerSpellsListener", () => {
 
   it("toggles collapse state for traits section", async () => {
     document.body.innerHTML = `
-      <div data-tab-panel="spells-abilities">
+      <div class="tab" data-tab="spells-abilities">
       <section class="dw-spells-abilities">
         <div class="dw-spells-abilities__section dw-spells-abilities__section--traits">
           <div class="dw-ability-items">

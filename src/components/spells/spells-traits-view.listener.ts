@@ -34,7 +34,7 @@ export function registerSpellsTraitsViewListener(
   html: HtmlRoot,
   { getDwFlags, setDwFlags }: { getDwFlags: GetDwFlags; setDwFlags: SetDwFlags }
 ): void {
-  const panel = html.find("[data-tab-panel='spells-abilities']").first();
+  const panel = html.find(".tab[data-tab='spells-abilities']").first();
   const container = panel.find(".dw-spells-abilities").first();
   const buttons = panel.find(`[data-action='${DW_SET_SPELLS_TRAITS_VIEW}']`);
   const cardsButton = buttons.filter("[data-view='cards']");

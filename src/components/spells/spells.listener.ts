@@ -90,7 +90,7 @@ export function registerSpellsListener(
     setDwFlags: SetDwFlags;
   }
 ): void {
-  const panel = html.find("[data-tab-panel='spells-abilities']").first();
+  const panel = html.find(".tab[data-tab='spells-abilities']").first();
   const spellsRoot = panel.find(".dw-spells").first().get(0);
   const traitsRoot = panel.find(".dw-ability-items").first().get(0);
   const dw = getDwFlags();
