@@ -53,4 +53,31 @@ describe("registerActions", () => {
 
     expect(handler).not.toHaveBeenCalled();
   });
+
+  it("merges handlers registered in separate calls on the same root", async () => {
+    document.body.innerHTML = `
+      <div class="root">
+        <button data-action="dw-first"><span class="first-inner">First</span></button>
+        <button data-action="dw-second"><span class="second-inner">Second</span></button>
+      </div>
+    `;
+
+    const html = $(".root");
+    const firstHandler = vi.fn();
+    const secondHandler = vi.fn();
+
+    registerActions(html, {
+      "dw-first": firstHandler
+    });
+    registerActions(html, {
+      "dw-second": secondHandler
+    });
+
+    html.find(".first-inner").trigger("click");
+    html.find(".second-inner").trigger("click");
+    await flushPromises();
+
+    expect(firstHandler).toHaveBeenCalledTimes(1);
+    expect(secondHandler).toHaveBeenCalledTimes(1);
+  });
 });

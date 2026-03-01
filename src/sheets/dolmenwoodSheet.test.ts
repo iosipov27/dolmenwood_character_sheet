@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { DwFlags, HtmlRoot } from "../types.js";
 import { MODULE_ID } from "../constants/moduleId.js";
+import { flushPromises } from "../test/flushPromises.js";
 
 const registerFormChangeListenerMock = vi.fn();
 const registerSheetListenersMock = vi.fn();
@@ -100,7 +101,7 @@ describe("DolmenwoodSheet", () => {
     expect(actor.update).toHaveBeenCalledWith(updatePayload);
   });
 
-  it("sends dw listener patches through the shared update flow", async () => {
+  it("sends dw patches through the shared update flow", async () => {
     const actor = {
       update: vi.fn(async () => {})
     } as unknown as Actor;
@@ -121,9 +122,9 @@ describe("DolmenwoodSheet", () => {
 
     sheet.activateListeners(html);
 
-    const [{ setDwFlags }] = registerSheetListenersMock.mock.calls.map((call) => call[1]);
+    const [{ applyDwPatch }] = registerSheetListenersMock.mock.calls.map((call) => call[1]);
 
-    await setDwFlags(nextDw);
+    await applyDwPatch(nextDw);
 
     expect(buildDwUpdatePayloadMock).toHaveBeenCalledWith(actor, nextDw);
     expect(actor.update).toHaveBeenCalledWith(updatePayload);
@@ -147,5 +148,50 @@ describe("DolmenwoodSheet", () => {
     await onFieldChange(`flags.${MODULE_ID}.dw.meta.otherNotes`, "<p>ignored</p>");
 
     expect(actor.update).not.toHaveBeenCalled();
+  });
+
+  it("queues actor updates so later changes wait for earlier writes", async () => {
+    let resolveFirstUpdate: (() => void) | null = null;
+    const firstUpdate = new Promise<void>((resolve) => {
+      resolveFirstUpdate = resolve;
+    });
+    const actor = {
+      update: vi
+        .fn<(...args: unknown[]) => Promise<void>>()
+        .mockImplementationOnce(async () => {
+          await firstUpdate;
+        })
+        .mockResolvedValueOnce()
+    } as unknown as Actor;
+    const html = $(document.body) as HtmlRoot;
+
+    buildFieldUpdatePayloadMock
+      .mockReturnValueOnce({ name: "First" })
+      .mockReturnValueOnce({ name: "Second" });
+
+    const DolmenwoodSheet = await loadSheet();
+    const sheet = new DolmenwoodSheet(actor);
+
+    sheet.activateListeners(html);
+
+    const [{ onFieldChange }] = registerFormChangeListenerMock.mock.calls.map((call) => call[1]);
+
+    const firstCall = onFieldChange("name", "First");
+    await flushPromises();
+
+    expect(actor.update).toHaveBeenCalledTimes(1);
+    expect(actor.update).toHaveBeenNthCalledWith(1, { name: "First" });
+
+    const secondCall = onFieldChange("name", "Second");
+    await flushPromises();
+
+    expect(actor.update).toHaveBeenCalledTimes(1);
+
+    resolveFirstUpdate?.();
+    await firstCall;
+    await secondCall;
+
+    expect(actor.update).toHaveBeenCalledTimes(2);
+    expect(actor.update).toHaveBeenNthCalledWith(2, { name: "Second" });
   });
 });

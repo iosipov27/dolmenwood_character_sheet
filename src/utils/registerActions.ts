@@ -1,5 +1,8 @@
 import type { ActionEvent, ActionHandler, HtmlRoot } from "../types.js";
 
+const actionHandlersByRoot = new WeakMap<HTMLElement, Record<string, ActionHandler>>();
+const boundRoots = new WeakSet<HTMLElement>();
+
 function buildActionEvent(
   event: JQuery.TriggeredEvent,
   currentTarget: HTMLElement
@@ -17,24 +20,35 @@ export function registerActions(
   html: HtmlRoot,
   handlers: Record<string, ActionHandler>
 ): void {
-  const nodes = html.find("[data-action]");
+  const root = html.get(0);
 
-  nodes.on("click", async (event) => {
+  if (!(root instanceof HTMLElement)) return;
+
+  const nextHandlers = {
+    ...(actionHandlersByRoot.get(root) ?? {}),
+    ...handlers
+  };
+
+  actionHandlersByRoot.set(root, nextHandlers);
+
+  if (boundRoots.has(root)) return;
+
+  boundRoots.add(root);
+
+  html.on("click", async (event) => {
     const target = event.target as EventTarget | null;
-    const currentTarget = event.currentTarget;
     const targetElement =
       target instanceof Element ? target : target instanceof Node ? target.parentElement : null;
     const actionElement = targetElement?.closest<HTMLElement>("[data-action]") ?? null;
 
-    if (!actionElement) return;
-    if (!(currentTarget instanceof HTMLElement)) return;
-    if (actionElement !== currentTarget) return;
+    if (!actionElement || !root.contains(actionElement)) return;
 
     const actionId = actionElement.dataset.action;
 
     if (!actionId) return;
 
-    const handler = handlers[actionId];
+    const currentHandlers = actionHandlersByRoot.get(root);
+    const handler = currentHandlers?.[actionId];
 
     if (!handler) return;
 

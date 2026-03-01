@@ -1,17 +1,18 @@
 import { MODULE_ID } from "../constants/moduleId.js";
 import { SheetDropHandler } from "../handlers/sheetDropHandler.js";
 import { buildDwUpdatePayload, buildFieldUpdatePayload } from "../handlers/sheetUpdateBuilder.js";
-import { registerSheetListeners } from "../listeners/registerSheetListeners.js";
 import { registerFormChangeListener } from "../listeners/registerFormChangeListener.js";
+import { registerSheetListeners } from "../listeners/registerSheetListeners.js";
 import { buildDwFlagsFromActor } from "../models/buildDwFlagsFromActor.js";
 import { DolmenwoodSheetData } from "../models/dolmenwoodSheetData.js";
-import type { DwFlags, DwSheetData, HtmlRoot } from "../types.js";
+import type { DwSheetData, HtmlRoot } from "../types.js";
 import { getBaseOSECharacterSheetClass } from "../utils/getBaseOSECharacterSheetClass.js";
 
 const BaseSheet = getBaseOSECharacterSheetClass() as typeof foundry.appv1.sheets.ActorSheet;
 
 export class DolmenwoodSheet extends BaseSheet {
   private readonly dropHandler: SheetDropHandler;
+  private updateChain: Promise<void> = Promise.resolve();
 
   constructor(...args: ConstructorParameters<typeof BaseSheet>) {
     super(...args);
@@ -61,9 +62,9 @@ export class DolmenwoodSheet extends BaseSheet {
 
     registerSheetListeners(html, {
       actor: this.actor,
-      getDwFlags: () => this.getDwFlags(),
-      setDwFlags: async (dw) => {
-        await this.commitActorUpdate(buildDwUpdatePayload(this.actor, dw));
+      getDwFlags: () => buildDwFlagsFromActor(this.actor),
+      applyDwPatch: async (dwPatch) => {
+        await this.commitActorUpdate(buildDwUpdatePayload(this.actor, dwPatch));
       }
     });
   }
@@ -77,14 +78,16 @@ export class DolmenwoodSheet extends BaseSheet {
     });
   }
 
-  private getDwFlags(): DwFlags {
-    return buildDwFlagsFromActor(this.actor);
-  }
-
   private async commitActorUpdate(updatePayload: Record<string, unknown>): Promise<void> {
     if (Object.keys(updatePayload).length === 0) return;
 
-    await this.actor.update(updatePayload);
+    this.updateChain = this.updateChain
+      .catch(() => {})
+      .then(async () => {
+        await this.actor.update(updatePayload);
+      });
+
+    await this.updateChain;
   }
 
   private readonly localize = (key: string): string => game.i18n?.localize(key) ?? key;

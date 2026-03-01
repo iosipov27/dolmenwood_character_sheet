@@ -1,11 +1,11 @@
 ﻿import { registerActions } from "../../utils/registerActions.js";
 import { DW_REMOVE_SKILL } from "../../constants/templateAttributes.js";
 import { getDataset } from "../../utils/getDataset.js";
-import type { ActionEvent, DwExtraSkill, GetDwFlags, HtmlRoot, SetDwFlags } from "../../types.js";
+import type { ActionEvent, ApplyDwPatch, DwExtraSkill, GetDwFlags, HtmlRoot } from "../../types.js";
 
 export function registerRemoveSkillListener(
   html: HtmlRoot,
-  { getDwFlags, setDwFlags }: { getDwFlags: GetDwFlags; setDwFlags: SetDwFlags }
+  { getDwFlags, applyDwPatch }: { getDwFlags: GetDwFlags; applyDwPatch: ApplyDwPatch }
 ): void {
   registerActions(html, {
     [DW_REMOVE_SKILL]: async (ev: ActionEvent) => {
@@ -14,17 +14,17 @@ export function registerRemoveSkillListener(
 
       if (!Number.isFinite(skillIndex)) return;
 
-      const dw = getDwFlags();
+      const extraSkills = readExtraSkillsFromForm(html, getDwFlags().extraSkills);
 
-      dw.extraSkills = readExtraSkillsFromForm(html, dw.extraSkills);
-
-      if (skillIndex < 0 || skillIndex >= dw.extraSkills.length) return;
+      if (skillIndex < 0 || skillIndex >= extraSkills.length) return;
       const confirmed = await confirmRemoveSkill();
 
       if (!confirmed) return;
 
-      dw.extraSkills.splice(skillIndex, 1);
-      await setDwFlags(dw);
+      extraSkills.splice(skillIndex, 1);
+      await applyDwPatch({
+        extraSkills
+      });
     }
   });
 }

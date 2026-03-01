@@ -212,7 +212,8 @@ export interface RollModifierPart {
 }
 
 export type GetDwFlags = () => DwFlags;
-export type SetDwFlags = (dw: DwFlags) => Promise<void> | void;
+export type DwPatch = Record<string, unknown>;
+export type ApplyDwPatch = (dwPatch: DwPatch) => Promise<void> | void;
 export type RenderSheet = () => void;
 
 export type DwSkillEntry =

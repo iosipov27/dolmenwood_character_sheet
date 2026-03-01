@@ -38,19 +38,17 @@ describe("registerRemoveSkillListener", () => {
     `;
     const html = $(document.body);
     const getDwFlags = vi.fn(() => ({ extraSkills: [] }) as never);
-    const setDwFlags = vi.fn(async () => {});
+    const applyDwPatch = vi.fn(async () => {});
 
-    registerRemoveSkillListener(html, { getDwFlags, setDwFlags });
+    registerRemoveSkillListener(html, { getDwFlags, applyDwPatch });
 
     html.find("[data-action='dw-remove-skill']").trigger("click");
     await flushPromises(3);
 
     expect(confirm).toHaveBeenCalledTimes(1);
-    expect(setDwFlags).toHaveBeenCalledTimes(1);
-    expect(setDwFlags).toHaveBeenCalledWith(
-      expect.objectContaining({
-        extraSkills: [{ name: "Tracking", target: 9 }]
-      })
-    );
+    expect(applyDwPatch).toHaveBeenCalledTimes(1);
+    expect(applyDwPatch).toHaveBeenCalledWith({
+      extraSkills: [{ name: "Tracking", target: 9 }]
+    });
   });
 });

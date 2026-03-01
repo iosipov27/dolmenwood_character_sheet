@@ -1,5 +1,5 @@
 import { DW_SET_SPELLS_TRAITS_VIEW } from "../../constants/templateAttributes.js";
-import type { ActionEvent, GetDwFlags, HtmlRoot, SetDwFlags } from "../../types.js";
+import type { ActionEvent, ApplyDwPatch, GetDwFlags, HtmlRoot } from "../../types.js";
 import { getDataset } from "../../utils/getDataset.js";
 import { registerActions } from "../../utils/registerActions.js";
 
@@ -32,7 +32,7 @@ function viewModeFromStates({ cards, text }: { cards: boolean; text: boolean }):
 
 export function registerSpellsTraitsViewListener(
   html: HtmlRoot,
-  { getDwFlags, setDwFlags }: { getDwFlags: GetDwFlags; setDwFlags: SetDwFlags }
+  { getDwFlags, applyDwPatch }: { getDwFlags: GetDwFlags; applyDwPatch: ApplyDwPatch }
 ): void {
   const panel = html.find(".tab[data-tab='spells-abilities']").first();
   const container = panel.find(".dw-spells-abilities").first();
@@ -70,12 +70,13 @@ export function registerSpellsTraitsViewListener(
 
       applyViewMode(nextMode);
 
-      const dw = getDwFlags();
+      if (getDwFlags().meta.spellsTraitsView === nextMode) return;
 
-      if (dw.meta.spellsTraitsView === nextMode) return;
-
-      dw.meta.spellsTraitsView = nextMode;
-      await setDwFlags(dw);
+      await applyDwPatch({
+        meta: {
+          spellsTraitsView: nextMode
+        }
+      });
     }
   });
 }

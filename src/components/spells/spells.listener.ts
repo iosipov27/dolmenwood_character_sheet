@@ -3,7 +3,7 @@ import {
   DW_OPEN_ITEM,
   DW_TOGGLE_COLLAPSIBLE_SECTION
 } from "../../constants/templateAttributes.js";
-import type { ActionEvent, GetDwFlags, HtmlRoot, SetDwFlags } from "../../types.js";
+import type { ActionEvent, ApplyDwPatch, GetDwFlags, HtmlRoot } from "../../types.js";
 import { getDataset } from "../../utils/getDataset.js";
 import { registerActions } from "../../utils/registerActions.js";
 
@@ -83,11 +83,11 @@ export function registerSpellsListener(
   {
     actor,
     getDwFlags,
-    setDwFlags
+    applyDwPatch
   }: {
     actor: Actor;
     getDwFlags: GetDwFlags;
-    setDwFlags: SetDwFlags;
+    applyDwPatch: ApplyDwPatch;
   }
 ): void {
   const panel = html.find(".tab[data-tab='spells-abilities']").first();
@@ -150,13 +150,11 @@ export function registerSpellsListener(
 
       if (prevCollapsed === nextCollapsed) return;
 
-      if (kind === "spells") {
-        flags.meta.spellsCollapsed = nextCollapsed;
-      } else {
-        flags.meta.traitsCollapsed = nextCollapsed;
-      }
-
-      await setDwFlags(flags);
+      await applyDwPatch(
+        kind === "spells"
+          ? { meta: { spellsCollapsed: nextCollapsed } }
+          : { meta: { traitsCollapsed: nextCollapsed } }
+      );
     }
   });
 }
