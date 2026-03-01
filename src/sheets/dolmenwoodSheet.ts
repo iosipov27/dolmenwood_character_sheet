@@ -14,6 +14,7 @@ export class DolmenwoodSheet extends BaseSheet {
   private readonly dropHandler: SheetDropHandler;
   private updateChain: Promise<void> = Promise.resolve();
 
+  // Wire sheet-level collaborators once; runtime read/write flow uses these helpers afterwards.
   constructor(...args: ConstructorParameters<typeof BaseSheet>) {
     super(...args);
     this.dropHandler = new SheetDropHandler({
@@ -25,6 +26,7 @@ export class DolmenwoodSheet extends BaseSheet {
     });
   }
 
+  // Configure the Foundry shell around this sheet; persistence is handled by the custom listeners below.
   static get defaultOptions(): ActorSheet.Options {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["dolmenwood", "sheet", "actor"],
@@ -46,12 +48,14 @@ export class DolmenwoodSheet extends BaseSheet {
     });
   }
 
+  // Read path: assemble the full view model from the Actor source of truth before rendering.
   getData(options?: Partial<ActorSheet.Options>): DwSheetData {
     const data = super.getData(options) as DwSheetData;
 
     return DolmenwoodSheetData.populate(data, this.actor);
   }
 
+  // Connect DOM events to the shared write path: field changes and domain actions both end in actor.update.
   activateListeners(html: HtmlRoot): void {
     super.activateListeners(html);
 
@@ -70,12 +74,14 @@ export class DolmenwoodSheet extends BaseSheet {
     });
   }
 
+  // Emulate submit-on-close for the current change-driven architecture before delegating to Foundry.
   override async close(options?: Application.CloseOptions): Promise<void> {
     await this.flushActiveFieldBeforeClose();
 
     await super.close(options);
   }
 
+  // Guard item drops for the spells/abilities area, then forward valid drops to the base OSE sheet.
   protected override async _onDropItem(
     event: DragEvent,
     data: ActorSheet.DropData.Item
@@ -85,6 +91,7 @@ export class DolmenwoodSheet extends BaseSheet {
     });
   }
 
+  // Single write gateway: skip no-ops, serialize writes, and commit patches to the Actor store.
   private async commitActorUpdate(updatePayload: Record<string, unknown>): Promise<void> {
     if (Object.keys(updatePayload).length === 0) return;
 
@@ -97,6 +104,7 @@ export class DolmenwoodSheet extends BaseSheet {
     await this.updateChain;
   }
 
+  // Flush the active field into the existing change pipeline, then wait for queued writes to finish.
   private async flushActiveFieldBeforeClose(): Promise<void> {
     const form = this.form;
 
@@ -112,5 +120,6 @@ export class DolmenwoodSheet extends BaseSheet {
     await this.updateChain.catch(() => {});
   }
 
+  // Keep localization access injectable for drop handling and other small sheet services.
   private readonly localize = (key: string): string => game.i18n?.localize(key) ?? key;
 }
