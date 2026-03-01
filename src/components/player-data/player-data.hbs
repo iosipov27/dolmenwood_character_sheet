@@ -38,8 +38,8 @@
     />
 
   </div>
-  {{#if ctx.dw.player.affiliationVisible}}
-    <div class="dw-field dw-field--optional">
+  <div class="dw-field dw-field--optional {{#unless ctx.dw.player.affiliationVisible}}is-hidden{{/unless}}">
+    <div class="player-data__optional-field">
       <input
         id="dw-affiliation"
         placeholder="{{localize 'DOLMENWOOD.UI.Affiliation'}}"
@@ -54,12 +54,22 @@
         data-field="affiliation"
         aria-label="{{localize 'DOLMENWOOD.UI.Remove'}}"
       >
-        <i class="fas fa-trash"></i>
+        <i class="far fa-trash-alt"></i>
       </button>
     </div>
-  {{/if}}
-  {{#if ctx.dw.player.moonSignVisible}}
-    <div class="dw-field dw-field--optional">
+    <button
+      type="button"
+      class="player-data__show"
+      data-action="dw-show-optional-meta-field"
+      data-field="affiliation"
+      aria-label="Add Affiliation"
+    >
+      <span class="player-data__show-icon">+</span>
+      <span>Add Affiliation</span>
+    </button>
+  </div>
+  <div class="dw-field dw-field--optional {{#unless ctx.dw.player.moonSignVisible}}is-hidden{{/unless}}">
+    <div class="player-data__optional-field">
       <input
         id="dw-moon-sign"
         placeholder="{{localize 'DOLMENWOOD.UI.MoonSign'}}"
@@ -74,8 +84,18 @@
         data-field="moonSign"
         aria-label="{{localize 'DOLMENWOOD.UI.Remove'}}"
       >
-        <i class="fas fa-trash"></i>
+        <i class="far fa-trash-alt"></i>
       </button>
     </div>
-  {{/if}}
+    <button
+      type="button"
+      class="player-data__show"
+      data-action="dw-show-optional-meta-field"
+      data-field="moonSign"
+      aria-label="Add Moon Sign"
+    >
+      <span class="player-data__show-icon">+</span>
+      <span>Add Moon Sign</span>
+    </button>
+  </div>
 </div>

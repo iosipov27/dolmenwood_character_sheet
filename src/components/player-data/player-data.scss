@@ -20,8 +20,7 @@ $player-field-line-height: 1.2;
       padding-bottom: $player-field-padding-bottom;
       line-height: $player-field-line-height;
       min-height: calc(
-        (1em * $player-field-line-height) + $player-field-padding-top +
-          $player-field-padding-bottom
+        (1em * $player-field-line-height) + $player-field-padding-top + $player-field-padding-bottom
       );
     }
   }
@@ -36,6 +35,38 @@ $player-field-line-height: 1.2;
       opacity: 1;
       pointer-events: auto;
     }
+
+    &.is-hidden {
+      order: 1;
+      border-bottom: none;
+
+      .player-data__optional-field {
+        display: none;
+      }
+
+      .player-data__show {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition:
+          opacity 500ms ease 0s,
+          visibility 0s linear 500ms;
+      }
+    }
+
+    &:not(.is-hidden) {
+      .player-data__show {
+        display: none;
+      }
+    }
+  }
+
+  &:hover .dw-field--optional.is-hidden .player-data__show,
+  &:focus-within .dw-field--optional.is-hidden .player-data__show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition-delay: 500ms, 500ms;
   }
 
   &__name {
@@ -63,5 +94,37 @@ $player-field-line-height: 1.2;
     opacity: 0;
     pointer-events: none;
     transition: opacity 120ms ease;
+  }
+
+  &__optional-field {
+    width: 100%;
+    position: relative;
+  }
+
+  &__show {
+    display: inline-flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.45rem;
+    width: 100%;
+    padding-top: $player-field-padding-top;
+    padding-bottom: $player-field-padding-bottom;
+    padding-left: 0;
+    padding-right: 0;
+    border: 0;
+    background: transparent;
+    color: $color-text-dark-primary;
+    cursor: pointer;
+    text-align: left;
+    line-height: $player-field-line-height;
+  }
+
+  &__show-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1rem;
+    font-size: 1.05rem;
+    font-weight: 600;
   }
 }

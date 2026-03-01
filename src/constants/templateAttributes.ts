@@ -11,3 +11,4 @@ export const DW_DELETE_ITEM = "dw-delete-item";
 export const DW_SET_SPELLS_TRAITS_VIEW = "dw-set-spells-traits-view";
 export const DW_TOGGLE_COLLAPSIBLE_SECTION = "dw-toggle-collapsible-section";
 export const DW_HIDE_OPTIONAL_META_FIELD = "dw-hide-optional-meta-field";
+export const DW_SHOW_OPTIONAL_META_FIELD = "dw-show-optional-meta-field";
