@@ -1,8 +1,7 @@
 import { MODULE_ID } from "../constants/moduleId.js";
-import { OseCharacterSheetAdapter } from "../adapters/oseCharacterSheetAdapter.js";
+import { buildDwUpdatePayload, buildFieldUpdatePayload } from "../handlers/sheetUpdateBuilder.js";
 import { registerSheetListeners } from "../listeners/registerSheetListeners.js";
 import { registerFormChangeListener } from "../listeners/registerFormChangeListener.js";
-import { cleanDwFlagsWithSchema } from "../models/dwSchema.js";
 import { buildDwFlagsFromActor } from "../models/buildDwFlagsFromActor.js";
 import { DolmenwoodSheetData } from "../models/dolmenwoodSheetData.js";
 import type { DwFlags, DwSheetData, HtmlRoot } from "../types.js";
@@ -46,7 +45,7 @@ export class DolmenwoodSheet extends BaseSheet {
 
     registerFormChangeListener(html, {
       onFieldChange: async (name, value) => {
-        await this.handleFieldChange(name, value);
+        await this.commitActorUpdate(buildFieldUpdatePayload(this.actor, name, value));
       }
     });
 
@@ -54,7 +53,7 @@ export class DolmenwoodSheet extends BaseSheet {
       actor: this.actor,
       getDwFlags: () => this.getDwFlags(),
       setDwFlags: async (dw) => {
-        await this.updateDw(dw);
+        await this.commitActorUpdate(buildDwUpdatePayload(this.actor, dw));
       }
     });
   }
@@ -95,49 +94,10 @@ export class DolmenwoodSheet extends BaseSheet {
     return buildDwFlagsFromActor(this.actor);
   }
 
-  private async updateDw(dwPatch: object): Promise<void> {
-    const nextDw = foundry.utils.duplicate(this.getDwFlags()) as Record<string, unknown>;
-    const flattenedPatch = foundry.utils.flattenObject(
-      foundry.utils.duplicate(dwPatch) as Record<string, unknown>
-    ) as Record<string, unknown>;
+  private async commitActorUpdate(updatePayload: Record<string, unknown>): Promise<void> {
+    if (Object.keys(updatePayload).length === 0) return;
 
-    for (const [path, value] of Object.entries(flattenedPatch)) {
-      foundry.utils.setProperty(nextDw, path, value);
-    }
-
-    const cleanedDw = cleanDwFlagsWithSchema(nextDw);
-
-    if (!cleanedDw) return;
-
-    await this.actor.update({
-      [`flags.${MODULE_ID}.dw`]: cleanedDw
-    });
-  }
-
-  private async handleFieldChange(name: string, value: unknown): Promise<void> {
-    if (name.startsWith("dw.")) {
-      const dwPath = name.slice(3);
-      const dwPatch: Record<string, unknown> = {};
-
-      foundry.utils.setProperty(dwPatch, dwPath, value);
-
-      await this.updateDw(dwPatch);
-
-      return;
-    }
-
-    if (name === `flags.${MODULE_ID}.dw` || name.startsWith(`flags.${MODULE_ID}.dw.`)) {
-      return;
-    }
-
-    const actorUpdate =
-      name === "system.ac.value" || name === "system.aac.value"
-        ? OseCharacterSheetAdapter.remapDerivedArmorClassEdits({ [name]: value }, this.actor)
-        : { [name]: value };
-
-    if (Object.keys(actorUpdate).length === 0) return;
-
-    await this.actor.update(actorUpdate);
+    await this.actor.update(updatePayload);
   }
 
   private isDropInsideSpellsAbilitiesTab(event: DragEvent): boolean {
