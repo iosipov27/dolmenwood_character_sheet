@@ -1,4 +1,5 @@
 import { MODULE_ID } from "../constants/moduleId.js";
+import { flushActiveFieldBeforeClose } from "../handlers/sheetCloseHandler.js";
 import { SheetDropHandler } from "../handlers/sheetDropHandler.js";
 import { buildDwUpdatePayload, buildFieldUpdatePayload } from "../handlers/sheetUpdateBuilder.js";
 import { registerFormChangeListener } from "../listeners/registerFormChangeListener.js";
@@ -76,7 +77,12 @@ export class DolmenwoodSheet extends BaseSheet {
 
   // Emulate submit-on-close for the current change-driven architecture before delegating to Foundry.
   override async close(options?: Application.CloseOptions): Promise<void> {
-    await this.flushActiveFieldBeforeClose();
+    const form = this.form;
+
+    await flushActiveFieldBeforeClose({
+      form: form instanceof HTMLFormElement ? form : null,
+      getUpdateChain: () => this.updateChain
+    });
 
     await super.close(options);
   }
@@ -102,22 +108,6 @@ export class DolmenwoodSheet extends BaseSheet {
       });
 
     await this.updateChain;
-  }
-
-  // Flush the active field into the existing change pipeline, then wait for queued writes to finish.
-  private async flushActiveFieldBeforeClose(): Promise<void> {
-    const form = this.form;
-
-    if (!(form instanceof HTMLFormElement)) return;
-
-    const activeElement = form.ownerDocument?.activeElement;
-
-    if (!(activeElement instanceof HTMLElement) || !form.contains(activeElement)) return;
-
-    activeElement.blur();
-
-    await Promise.resolve();
-    await this.updateChain.catch(() => {});
   }
 
   // Keep localization access injectable for drop handling and other small sheet services.
