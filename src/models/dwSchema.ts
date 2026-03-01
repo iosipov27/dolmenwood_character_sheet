@@ -1,4 +1,4 @@
-import type { DwFlags, DwFormFields } from "../types.js";
+import type { DwFlags, DwFormFields } from "../types/index.js";
 
 type FieldsApi = typeof foundry.data.fields;
 type AnyField = foundry.data.fields.DataField.Any;

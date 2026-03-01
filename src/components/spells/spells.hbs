@@ -4,12 +4,12 @@
   </div>
 
   <div class="dw-spells__scroll">
-    {{#unless ctx.dwSpellItems.length}}
+    {{#unless ctx.view.items.spells.length}}
       <p class="dw-hint">{{localize "DOLMENWOOD.UI.SpellsDropHint"}}</p>
     {{/unless}}
-    {{#if ctx.dwSpellItems.length}}
+    {{#if ctx.view.items.spells.length}}
       <ul class="dw-spells__list">
-        {{#each ctx.dwSpellItems as |spell|}}
+        {{#each ctx.view.items.spells as |spell|}}
           <li class="dw-spells__item">
             <button
               type="button"

@@ -10,25 +10,22 @@ import {
   registerSpellsListener,
   registerSpellsTraitsViewListener
 } from "../components/index.js";
-import { registerAttackDamageRollChatListener } from "./registerAttackDamageRollChatListener.js";
 import { prettyKey } from "../utils/prettyKey.js";
 import { RollChecks } from "../sheets/rollChecks.js";
-import type { DwFlags, GetDwFlags, HtmlRoot, SetDwFlags } from "../types.js";
+import type { ApplyDwPatch, GetDwFlags, HtmlRoot } from "../types/index.js";
 
 export function registerSheetListeners(
   html: HtmlRoot,
   {
     actor,
     getDwFlags,
-    setDwFlags
+    applyDwPatch
   }: {
     actor: Actor;
     getDwFlags: GetDwFlags;
-    setDwFlags: SetDwFlags;
+    applyDwPatch: ApplyDwPatch;
   }
 ): void {
-  registerAttackDamageRollChatListener();
-
   registerSaveRollListener(html, {
     actor,
     getDwFlags,
@@ -55,12 +52,12 @@ export function registerSheetListeners(
 
   registerAddSkillListener(html, {
     getDwFlags,
-    setDwFlags: (dw: DwFlags) => setDwFlags(dw)
+    applyDwPatch: (dwPatch) => applyDwPatch(dwPatch)
   });
 
   registerRemoveSkillListener(html, {
     getDwFlags,
-    setDwFlags: (dw: DwFlags) => setDwFlags(dw)
+    applyDwPatch: (dwPatch) => applyDwPatch(dwPatch)
   });
 
   registerExtraSkillRollListener(html, {
@@ -71,11 +68,11 @@ export function registerSheetListeners(
   registerSpellsListener(html, {
     actor,
     getDwFlags,
-    setDwFlags: (dw: DwFlags) => setDwFlags(dw)
+    applyDwPatch: (dwPatch) => applyDwPatch(dwPatch)
   });
   registerSpellsTraitsViewListener(html, {
     getDwFlags,
-    setDwFlags: (dw: DwFlags) => setDwFlags(dw)
+    applyDwPatch: (dwPatch) => applyDwPatch(dwPatch)
   });
 
   registerEquipmentListener(html);

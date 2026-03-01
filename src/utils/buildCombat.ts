@@ -9,7 +9,7 @@
  * - detected values
  * - form field names (for editing where supported)
  */
-import type { DwCombatView } from "../types.js";
+import type { DwCombatView } from "../types/index.js";
 import { OseCharacterSheetAdapter } from "../adapters/oseCharacterSheetAdapter.js";
 
 export function buildCombat(systemData: Record<string, unknown>): DwCombatView {

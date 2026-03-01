@@ -4,7 +4,7 @@
   </div>
 
   <div class="dw-saves">
-    {{#each ctx.dwSavesList as |s|}}
+    {{#each ctx.view.lists.saves as |s|}}
       <div class="dw-save">
         {{#if s.rollable}}
           <button
@@ -13,7 +13,7 @@
             style="--mb: 0.3rem;"
             data-action="dw-roll-save"
             data-key="{{s.key}}"
-            data-tooltip="{{lookup ctx.dwUi.saveTooltips s.key}}"
+            data-tooltip="{{lookup ctx.view.ui.saveTooltips s.key}}"
           >{{uppercase s.label}}</button>
         {{else}}
           <div
@@ -29,7 +29,7 @@
             type="number"
             value="{{s.value}}"
             data-key="{{s.key}}"
-            data-tooltip="{{lookup ctx.dwUi.saveTooltips s.key}}"
+            data-tooltip="{{lookup ctx.view.ui.saveTooltips s.key}}"
           />
         {{else}}
           <input
@@ -37,7 +37,7 @@
             name="dw.saves.{{s.key}}"
             type="number"
             value="{{s.value}}"
-            data-tooltip="{{lookup ctx.dwUi.saveTooltips s.key}}"
+            data-tooltip="{{lookup ctx.view.ui.saveTooltips s.key}}"
           />
         {{/if}}
       </div>

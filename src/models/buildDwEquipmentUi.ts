@@ -1,8 +1,8 @@
-import type { DwEquipmentFieldEntry, DwMeta, DwSheetData } from "../types.js";
+import type { DwEquipmentFieldEntry, DwMeta, DwSheetView } from "../types/index.js";
 
 type DwEquipmentState = DwMeta["equipment"];
 
-export function buildDwEquipmentUi(equipment: DwEquipmentState): DwSheetData["dwUi"]["equipment"] {
+export function buildDwEquipmentUi(equipment: DwEquipmentState): DwSheetView["ui"]["equipment"] {
   const buildEquipmentField = (
     prefix: "equipped" | "stowed",
     index: number

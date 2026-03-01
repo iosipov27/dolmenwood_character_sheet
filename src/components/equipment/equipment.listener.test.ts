@@ -47,6 +47,31 @@ describe("registerEquipmentListener", () => {
     expect(total.text()).toBe("18");
   });
 
+  it("updates total weight for weight fields added after listener registration", () => {
+    document.body.innerHTML = `
+      <div class="dw-equipment">
+        <input name="dw.meta.equipment.equippedWeight1" value="10" />
+        <div data-total-weight>0</div>
+      </div>
+    `;
+
+    const html = $(document.body);
+
+    registerEquipmentListener(html);
+
+    html
+      .find(".dw-equipment")
+      .append(`<input name="dw.meta.equipment.stowedWeight1" value="5" />`);
+
+    const total = html.find("[data-total-weight]");
+    const input = html.find('input[name="dw.meta.equipment.stowedWeight1"]');
+
+    input.val("8");
+    input.trigger("input");
+
+    expect(total.text()).toBe("18");
+  });
+
   it("shows tooltip for stowed item input when text is truncated", () => {
     const activate = vi.fn();
     const deactivate = vi.fn();

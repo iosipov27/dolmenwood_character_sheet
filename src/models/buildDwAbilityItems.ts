@@ -1,4 +1,4 @@
-import type { DwActorItemEntry } from "../types.js";
+import type { DwActorItemEntry } from "../types/index.js";
 import { buildDwItemEntriesByType } from "./buildDwItemEntries.js";
 
 export function buildDwAbilityItems(actor: Actor): DwActorItemEntry[] {

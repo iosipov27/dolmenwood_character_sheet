@@ -1,4 +1,4 @@
-import type { DwFlags, DwFlagsInput, DwMeta, DwSaves, DwSpellsTraitsView } from "../types.js";
+import type { DwFlags, DwFlagsInput, DwMeta, DwSaves, DwSpellsTraitsView } from "../types/index.js";
 import { cleanDwFlagsWithSchema } from "../models/dwSchema.js";
 import { reportError } from "./reportError.js";
 

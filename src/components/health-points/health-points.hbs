@@ -1,18 +1,18 @@
 <div class="dw-hp">
   <div class="dw-hp__current">
     <label>{{localize "DOLMENWOOD.UI.HP"}}</label>
-    {{#if ctx.dwHp.hasCurrent}}
+    {{#if ctx.view.actor.hp.hasCurrent}}
       <input
         class="dw-number-input"
-        name="{{ctx.dwHp.nameCurrent}}"
+        name="{{ctx.view.actor.hp.nameCurrent}}"
         type="number"
-        value="{{ctx.dwHp.current}}"
+        value="{{ctx.view.actor.hp.current}}"
       />
     {{else}}
       <input
         class="dw-number-input"
         type="number"
-        value="{{ctx.dwHp.current}}"
+        value="{{ctx.view.actor.hp.current}}"
         disabled
         data-tooltip="{{localize 'DOLMENWOOD.UI.PathNotDetected.HPCurrent'}}"
       />
@@ -21,18 +21,18 @@
 
   <div class="dw-hp__max">
     <label>{{uppercase (localize "DOLMENWOOD.UI.MaxHP")}}</label>
-    {{#if ctx.dwHp.hasMax}}
+    {{#if ctx.view.actor.hp.hasMax}}
       <input
         class="dw-number-input"
-        name="{{ctx.dwHp.nameMax}}"
+        name="{{ctx.view.actor.hp.nameMax}}"
         type="number"
-        value="{{ctx.dwHp.max}}"
+        value="{{ctx.view.actor.hp.max}}"
       />
     {{else}}
       <input
         class="dw-number-input"
         type="number"
-        value="{{ctx.dwHp.max}}"
+        value="{{ctx.view.actor.hp.max}}"
         disabled
         data-tooltip="{{localize 'DOLMENWOOD.UI.PathNotDetected.HPMax'}}"
       />

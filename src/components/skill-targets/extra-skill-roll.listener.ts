@@ -1,21 +1,29 @@
 import { DW_ROLL_EXTRA_SKILL } from "../../constants/templateAttributes.js";
-import { getDataset } from "../../utils/getDataset.js";
-import type { ActionEvent, HtmlRoot, JQueryWithOn, RollSkillCheck } from "../../types.js";
+import type { HtmlRoot, RollSkillCheck } from "../../types/index.js";
 
 export function registerExtraSkillRollListener(
   html: HtmlRoot,
   { actor, rollSkillCheck }: { actor: Actor; rollSkillCheck: RollSkillCheck }
 ): void {
   const localize = (key: string): string => game.i18n?.localize(key) ?? key;
-  const nodes = html.find(
-    `[data-action='${DW_ROLL_EXTRA_SKILL}']`
-  ) as JQueryWithOn<HTMLButtonElement>;
+  const selector = `[data-action='${DW_ROLL_EXTRA_SKILL}']`;
 
-  nodes.on("mousedown", async (ev: ActionEvent<HTMLButtonElement>) => {
-    ev.preventDefault();
+  html.on("mousedown", selector, async (event: JQuery.TriggeredEvent) => {
+    const eventTarget = event.target as EventTarget | null;
+    const targetElement =
+      eventTarget instanceof Element
+        ? eventTarget
+        : eventTarget instanceof Node
+          ? eventTarget.parentElement
+          : null;
+    const button = targetElement?.closest<HTMLButtonElement>(selector);
 
-    const { name } = getDataset(ev);
-    const row = $(ev.currentTarget).closest(".dw-skill__extra");
+    if (!(button instanceof HTMLButtonElement)) return;
+
+    event.preventDefault();
+
+    const { name } = button.dataset;
+    const row = $(button).closest(".dw-skill__extra");
     const nameInput = row.find("input.dw-skill__name").get(0) as HTMLInputElement | undefined;
     const targetInput = row.find("input.dw-target").get(0) as HTMLInputElement | undefined;
     const skillName = String(nameInput?.value ?? name ?? "SKILL").trim() || "SKILL";

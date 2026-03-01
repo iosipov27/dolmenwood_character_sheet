@@ -1,6 +1,6 @@
 import { ABILITIES } from "../constants/abilities.js";
 import { formatSigned } from "./formatSigned.js";
-import type { DwAbilityView } from "../types.js";
+import type { DwAbilityView } from "../types/index.js";
 
 export function buildAbilities(systemData: Record<string, unknown>): DwAbilityView[] {
   const localize = (key: string): string => game.i18n?.localize(key) ?? key;

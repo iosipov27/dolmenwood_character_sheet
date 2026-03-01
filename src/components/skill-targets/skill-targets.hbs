@@ -10,7 +10,7 @@
         <button
           type="button"
           class="dw-roll"
-          data-tooltip="{{lookup ctx.dwUi.skillTooltips key}}"
+          data-tooltip="{{lookup ctx.view.ui.skillTooltips key}}"
           data-action="dw-roll-skill"
           data-key="{{key}}"
         >{{uppercase key}}</button>
@@ -20,9 +20,8 @@
           name="dw.skills.{{key}}"
           type="number"
           value="{{val}}"
-          data-dw-dblroll="skill"
           data-key="{{key}}"
-          data-tooltip="{{lookup ctx.dwUi.skillTooltips key}}"
+          data-tooltip="{{lookup ctx.view.ui.skillTooltips key}}"
         />
       </div>
     {{/each}}
@@ -59,7 +58,6 @@
           name="dw.extraSkills.{{idx}}.target"
           type="number"
           value="{{s.target}}"
-          data-dw-dblroll="extra-skill"
           data-index="{{idx}}"
           data-name="{{s.name}}"
         />

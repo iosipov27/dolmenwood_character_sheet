@@ -1,7 +1,7 @@
-import type { DwFlags, DwSheetData } from "../types.js";
+import type { DwFlags, DwSheetView } from "../types/index.js";
 import type { DwLocalize } from "./localize.js";
 
-export function buildDwSavesList(dw: DwFlags, localize: DwLocalize): DwSheetData["dwSavesList"] {
+export function buildDwSavesList(dw: DwFlags, localize: DwLocalize): DwSheetView["lists"]["saves"] {
   return [
     {
       key: "doom",

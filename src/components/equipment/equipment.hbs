@@ -20,7 +20,7 @@
               <span class="dw-equipment__weight-label">{{uppercase (localize "DOLMENWOOD.UI.Weight")}}</span>
             </div>
           </div>
-          {{#each ctx.dwUi.equipment.equippedFields as |field|}}
+          {{#each ctx.view.ui.equipment.equippedFields as |field|}}
             <div class="dw-equipment__row">
               <div class="dw-equipment__entry dw-equipment__entry--item">
                 <input
@@ -55,7 +55,7 @@
             <span class="dw-equipment__weight-label">{{uppercase (localize "DOLMENWOOD.UI.Weight")}}</span>
           </div>
         </div>
-        {{#each ctx.dwUi.equipment.stowedFields as |field|}}
+        {{#each ctx.view.ui.equipment.stowedFields as |field|}}
           <div class="dw-equipment__row">
             <div class="dw-equipment__entry dw-equipment__entry--item">
               <input
@@ -81,7 +81,7 @@
       </div>
       <div class="dw-equipment__total-weight">
         <label>{{localize "DOLMENWOOD.UI.TotalWeight"}}</label>
-        <div class="dw-equipment__total-weight-value" data-total-weight>{{ctx.dwUi.equipment.totalWeight}}</div>
+        <div class="dw-equipment__total-weight-value" data-total-weight>{{ctx.view.ui.equipment.totalWeight}}</div>
       </div>
     </div>
   </div>

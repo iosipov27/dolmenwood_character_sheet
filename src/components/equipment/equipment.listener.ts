@@ -1,13 +1,13 @@
-import type { HtmlRoot } from "../../types.js";
+import type { HtmlRoot } from "../../types/index.js";
 
 export function registerEquipmentListener(html: HtmlRoot): void {
-  const equipmentWeightFields = html.find(
-    ".dw-equipment input[name^='dw.meta.equipment.'][name*='Weight']"
-  );
-  const stowedItemFields = html.find(
-    ".dw-equipment input[name^='dw.meta.equipment.stowed']:not([name*='Weight'])"
-  );
-  const totalWeightValue = html.find(".dw-equipment [data-total-weight]");
+  const equipmentRoot = html.find(".dw-equipment");
+
+  if (!equipmentRoot.length) return;
+
+  const weightFieldSelector = "input[name^='dw.meta.equipment.'][name*='Weight']";
+  const stowedItemSelector = "input[name^='dw.meta.equipment.stowed']:not([name*='Weight'])";
+  const totalWeightValue = equipmentRoot.find("[data-total-weight]");
   const parseWeight = (value: string): number => {
     const parsed = Number.parseFloat(value);
 
@@ -41,7 +41,8 @@ export function registerEquipmentListener(html: HtmlRoot): void {
   const refreshTotalWeight = (): void => {
     if (!totalWeightValue.length) return;
 
-    const total = equipmentWeightFields
+    const total = equipmentRoot
+      .find(weightFieldSelector)
       .toArray()
       .map((field) => parseWeight(String($(field).val() ?? "")))
       .reduce((sum, weight) => sum + weight, 0);
@@ -49,27 +50,27 @@ export function registerEquipmentListener(html: HtmlRoot): void {
     totalWeightValue.text(formatTotalWeight(total));
   };
 
-  equipmentWeightFields.on("change", function () {
+  equipmentRoot.on("change", weightFieldSelector, function () {
     refreshTotalWeight();
   });
 
-  equipmentWeightFields.on("input", function () {
+  equipmentRoot.on("input", weightFieldSelector, function () {
     refreshTotalWeight();
   });
 
-  stowedItemFields.on("mouseenter", function () {
+  equipmentRoot.on("mouseenter", stowedItemSelector, function () {
     if (!(this instanceof HTMLInputElement)) return;
 
     refreshStowedItemTooltip(this);
   });
 
-  stowedItemFields.on("input", function () {
+  equipmentRoot.on("input", stowedItemSelector, function () {
     if (!(this instanceof HTMLInputElement)) return;
 
     game?.tooltip?.deactivate();
   });
 
-  stowedItemFields.on("mouseleave", function () {
+  equipmentRoot.on("mouseleave", stowedItemSelector, function () {
     game?.tooltip?.deactivate();
   });
 

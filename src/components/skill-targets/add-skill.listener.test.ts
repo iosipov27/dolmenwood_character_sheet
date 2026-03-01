@@ -13,22 +13,20 @@ describe("registerAddSkillListener", () => {
     `;
     const html = $(document.body);
     const getDwFlags = vi.fn(() => ({ extraSkills: [] }) as never);
-    const setDwFlags = vi.fn(async () => {});
+    const applyDwPatch = vi.fn(async () => {});
 
-    registerAddSkillListener(html, { getDwFlags, setDwFlags });
+    registerAddSkillListener(html, { getDwFlags, applyDwPatch });
 
     html.find("[data-action='dw-add-skill']").trigger("click");
     await flushPromises();
 
-    expect(setDwFlags).toHaveBeenCalledTimes(1);
-    expect(setDwFlags).toHaveBeenCalledWith(
-      expect.objectContaining({
-        extraSkills: [
-          { name: "Forage", target: 6 },
-          { name: "Tracking", target: 9 },
-          { name: "", target: 6 }
-        ]
-      })
-    );
+    expect(applyDwPatch).toHaveBeenCalledTimes(1);
+    expect(applyDwPatch).toHaveBeenCalledWith({
+      extraSkills: [
+        { name: "Forage", target: 6 },
+        { name: "Tracking", target: 9 },
+        { name: "", target: 6 }
+      ]
+    });
   });
 });

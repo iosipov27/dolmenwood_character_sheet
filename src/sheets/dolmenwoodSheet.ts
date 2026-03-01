@@ -1,27 +1,33 @@
 import { MODULE_ID } from "../constants/moduleId.js";
-import { TabController } from "../controllers/tabController.js";
-import { FormDataHandler } from "../handlers/formDataHandler.js";
+import { flushActiveFieldBeforeClose } from "../handlers/sheetCloseHandler.js";
+import { SheetDropHandler } from "../handlers/sheetDropHandler.js";
+import { buildDwUpdatePayload, buildFieldUpdatePayload } from "../handlers/sheetUpdateBuilder.js";
+import { registerFormChangeListener } from "../listeners/registerFormChangeListener.js";
 import { registerSheetListeners } from "../listeners/registerSheetListeners.js";
-import { registerTabNavigationListener } from "../listeners/registerTabNavigationListener.js";
+import { buildDwFlagsFromActor } from "../models/buildDwFlagsFromActor.js";
 import { DolmenwoodSheetData } from "../models/dolmenwoodSheetData.js";
-import { DwFlagsRepository } from "../repositories/dwFlagsRepository.js";
-import type { DwSheetData, HtmlRoot } from "../types.js";
+import type { DwSheetData, HtmlRoot } from "../types/index.js";
 import { getBaseOSECharacterSheetClass } from "../utils/getBaseOSECharacterSheetClass.js";
 
 const BaseSheet = getBaseOSECharacterSheetClass() as typeof foundry.appv1.sheets.ActorSheet;
 
 export class DolmenwoodSheet extends BaseSheet {
-  private readonly tabController: TabController;
-  private readonly flagsRepository: DwFlagsRepository;
-  private readonly formDataHandler: FormDataHandler;
+  private readonly dropHandler: SheetDropHandler;
+  private updateChain: Promise<void> = Promise.resolve();
 
+  // Wire sheet-level collaborators once; runtime read/write flow uses these helpers afterwards.
   constructor(...args: ConstructorParameters<typeof BaseSheet>) {
     super(...args);
-    this.tabController = new TabController();
-    this.flagsRepository = new DwFlagsRepository(this.actor);
-    this.formDataHandler = new FormDataHandler(this.flagsRepository, this.actor);
+    this.dropHandler = new SheetDropHandler({
+      fromDropData: async (data) => (await Item.fromDropData(data)) ?? null,
+      localize: this.localize,
+      warn: (message) => {
+        ui.notifications?.warn(message);
+      }
+    });
   }
 
+  // Configure the Foundry shell around this sheet; persistence is handled by the custom listeners below.
   static get defaultOptions(): ActorSheet.Options {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["dolmenwood", "sheet", "actor"],
@@ -29,94 +35,81 @@ export class DolmenwoodSheet extends BaseSheet {
       width: 640,
       height: 730,
       closeOnSubmit: false,
-      submitOnClose: true,
-      submitOnChange: true,
+      // Native submit-on-close is disabled; close() flushes the active field and waits for queued updates.
+      submitOnClose: false,
+      submitOnChange: false,
+      tabs: [
+        {
+          navSelector: ".dolmenwood-sheet__tabs",
+          contentSelector: ".dolmenwood-sheet__content",
+          initial: "main"
+        }
+      ],
       resizable: true
     });
   }
 
+  // Read path: assemble the full view model from the Actor source of truth before rendering.
   getData(options?: Partial<ActorSheet.Options>): DwSheetData {
     const data = super.getData(options) as DwSheetData;
 
     return DolmenwoodSheetData.populate(data, this.actor);
   }
 
+  // Connect DOM events to the shared write path: field changes and domain actions both end in actor.update.
   activateListeners(html: HtmlRoot): void {
     super.activateListeners(html);
 
-    registerTabNavigationListener(html, {
-      getActiveTab: () => this.tabController.getActiveTab(),
-      setActiveTab: (tab: string) => this.tabController.setActiveTab(tab)
+    registerFormChangeListener(html, {
+      onFieldChange: async (name, value) => {
+        await this.commitActorUpdate(buildFieldUpdatePayload(this.actor, name, value));
+      }
     });
 
     registerSheetListeners(html, {
       actor: this.actor,
-      getDwFlags: () => this.flagsRepository.get(),
-      setDwFlags: (dw) => this.flagsRepository.set(dw)
+      getDwFlags: () => buildDwFlagsFromActor(this.actor),
+      applyDwPatch: async (dwPatch) => {
+        await this.commitActorUpdate(buildDwUpdatePayload(this.actor, dwPatch));
+      }
     });
   }
 
+  // Emulate submit-on-close for the current change-driven architecture before delegating to Foundry.
+  override async close(options?: Application.CloseOptions): Promise<void> {
+    const form = this.form;
+
+    await flushActiveFieldBeforeClose({
+      form: form instanceof HTMLFormElement ? form : null,
+      getUpdateChain: () => this.updateChain
+    });
+
+    await super.close(options);
+  }
+
+  // Guard item drops for the spells/abilities area, then forward valid drops to the base OSE sheet.
   protected override async _onDropItem(
     event: DragEvent,
     data: ActorSheet.DropData.Item
   ): Promise<unknown> {
-    if (!this.isDropInsideSpellsAbilitiesTab(event)) {
-      return super._onDropItem(event, data);
-    }
-
-    const dropKind = this.getDropKindFromEvent(event);
-
-    if (!dropKind) return null;
-
-    const droppedItem = await Item.fromDropData(data);
-
-    if (!droppedItem) return null;
-
-    const itemType = String(droppedItem.type ?? "").toLowerCase();
-
-    if (itemType !== dropKind) {
-      const messageKey =
-        dropKind === "spell"
-          ? "DOLMENWOOD.UI.SpellsDropOnlySpells"
-          : "DOLMENWOOD.UI.SpellsDropOnlyAbilities";
-
-      ui.notifications?.warn(this.localize(messageKey));
-
-      return null;
-    }
-
-    return super._onDropItem(event, data);
+    return this.dropHandler.handleItemDrop(event, data, {
+      forwardDrop: () => super._onDropItem(event, data)
+    });
   }
 
-  async _updateObject(event: Event, formData: Record<string, unknown>): Promise<void> {
-    const processedData = await this.formDataHandler.handleFormData(formData);
+  // Single write gateway: skip no-ops, serialize writes, and commit patches to the Actor store.
+  private async commitActorUpdate(updatePayload: Record<string, unknown>): Promise<void> {
+    if (Object.keys(updatePayload).length === 0) return;
 
-    await super._updateObject(event, processedData);
+    this.updateChain = this.updateChain
+      .catch(() => {})
+      .then(async () => {
+        await this.actor.update(updatePayload);
+      });
+
+    await this.updateChain;
   }
 
-  private isDropInsideSpellsAbilitiesTab(event: DragEvent): boolean {
-    const targetElement = this.getDropTargetElement(event);
-
-    if (!targetElement) return false;
-
-    return Boolean(targetElement.closest("[data-tab-panel='spells-abilities']"));
-  }
-
-  private getDropKindFromEvent(event: DragEvent): "spell" | "ability" | null {
-    const targetElement = this.getDropTargetElement(event);
-
-    if (!targetElement) return null;
-
-    const rawKind = targetElement.closest("[data-dw-drop-kind]")?.getAttribute("data-dw-drop-kind");
-
-    return rawKind === "spell" || rawKind === "ability" ? rawKind : null;
-  }
-
-  private getDropTargetElement(event: DragEvent): Element | null {
-    const target = event.target;
-
-    return target instanceof Element ? target : target instanceof Node ? target.parentElement : null;
-  }
-
+  // Keep localization access injectable for drop handling and other small sheet services.
   private readonly localize = (key: string): string => game.i18n?.localize(key) ?? key;
 }
