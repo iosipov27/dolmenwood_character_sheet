@@ -5,8 +5,6 @@ export { registerSaveRollListener } from "./save-throws/save-roll.listener.js";
 export { registerSpellsListener } from "./spells/spells.listener.js";
 export { registerSpellsTraitsViewListener } from "./spells/spells-traits-view.listener.js";
 export { registerAddSkillListener } from "./skill-targets/add-skill.listener.js";
-export { registerExtraSkillDblRollListener } from "./skill-targets/extra-skill-dbl-roll.listener.js";
 export { registerExtraSkillRollListener } from "./skill-targets/extra-skill-roll.listener.js";
 export { registerRemoveSkillListener } from "./skill-targets/remove-skill.listener.js";
-export { registerSkillDblRollListener } from "./skill-targets/skill-dbl-roll.listener.js";
 export { registerSkillRollListener } from "./skill-targets/skill-roll.listener.js";
