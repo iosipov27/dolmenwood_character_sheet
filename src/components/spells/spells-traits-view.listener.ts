@@ -1,5 +1,5 @@
 import { DW_SET_SPELLS_TRAITS_VIEW } from "../../constants/templateAttributes.js";
-import type { ActionEvent, ApplyDwPatch, GetDwFlags, HtmlRoot } from "../../types.js";
+import type { ActionEvent, ApplyDwPatch, GetDwFlags, HtmlRoot } from "../../types/index.js";
 import { getDataset } from "../../utils/getDataset.js";
 import { registerActions } from "../../utils/registerActions.js";
 

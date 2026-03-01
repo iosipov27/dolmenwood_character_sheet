@@ -5,7 +5,7 @@ import { registerFormChangeListener } from "../listeners/registerFormChangeListe
 import { registerSheetListeners } from "../listeners/registerSheetListeners.js";
 import { buildDwFlagsFromActor } from "../models/buildDwFlagsFromActor.js";
 import { DolmenwoodSheetData } from "../models/dolmenwoodSheetData.js";
-import type { DwSheetData, HtmlRoot } from "../types.js";
+import type { DwSheetData, HtmlRoot } from "../types/index.js";
 import { getBaseOSECharacterSheetClass } from "../utils/getBaseOSECharacterSheetClass.js";
 
 const BaseSheet = getBaseOSECharacterSheetClass() as typeof foundry.appv1.sheets.ActorSheet;

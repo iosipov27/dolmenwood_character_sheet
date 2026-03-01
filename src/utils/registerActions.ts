@@ -1,4 +1,4 @@
-import type { ActionEvent, ActionHandler, HtmlRoot } from "../types.js";
+import type { ActionEvent, ActionHandler, HtmlRoot } from "../types/index.js";
 
 const actionHandlersByRoot = new WeakMap<HTMLElement, Record<string, ActionHandler>>();
 const boundRoots = new WeakSet<HTMLElement>();

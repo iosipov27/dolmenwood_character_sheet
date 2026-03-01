@@ -1,7 +1,7 @@
 import { OseCharacterSheetAdapter } from "../adapters/oseCharacterSheetAdapter.js";
 import { MODULE_ID } from "../constants/moduleId.js";
 import { cleanDwFlagsWithSchema } from "../models/dwSchema.js";
-import type { DwFlagsInput } from "../types.js";
+import type { DwFlagsInput } from "../types/index.js";
 
 function readCurrentDw(actor: Actor): Record<string, unknown> {
   const actorWithFlags = actor as Actor & {

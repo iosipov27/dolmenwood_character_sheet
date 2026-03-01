@@ -10,7 +10,7 @@
         <button
           type="button"
           class="dw-roll"
-          data-tooltip="{{lookup ctx.dwUi.skillTooltips key}}"
+          data-tooltip="{{lookup ctx.view.ui.skillTooltips key}}"
           data-action="dw-roll-skill"
           data-key="{{key}}"
         >{{uppercase key}}</button>
@@ -21,7 +21,7 @@
           type="number"
           value="{{val}}"
           data-key="{{key}}"
-          data-tooltip="{{lookup ctx.dwUi.skillTooltips key}}"
+          data-tooltip="{{lookup ctx.view.ui.skillTooltips key}}"
         />
       </div>
     {{/each}}

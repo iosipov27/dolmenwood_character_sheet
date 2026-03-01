@@ -1,6 +1,6 @@
 ﻿import { registerActions } from "../../utils/registerActions.js";
 import { DW_ADD_SKILL } from "../../constants/templateAttributes.js";
-import type { ApplyDwPatch, DwExtraSkill, GetDwFlags, HtmlRoot } from "../../types.js";
+import type { ApplyDwPatch, DwExtraSkill, GetDwFlags, HtmlRoot } from "../../types/index.js";
 
 export function registerAddSkillListener(
   html: HtmlRoot,

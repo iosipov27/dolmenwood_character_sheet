@@ -1,6 +1,6 @@
 import { DW_ROLL_ATTACK } from "../../constants/templateAttributes.js";
 import { MODULE_ID } from "../../constants/moduleId.js";
-import type { ActionEvent, HtmlRoot, RollAttackCheck } from "../../types.js";
+import type { ActionEvent, HtmlRoot, RollAttackCheck } from "../../types/index.js";
 import { getDataset } from "../../utils/getDataset.js";
 import { registerActions } from "../../utils/registerActions.js";
 import { buildAbilities } from "../../utils/buildAbilities.js";

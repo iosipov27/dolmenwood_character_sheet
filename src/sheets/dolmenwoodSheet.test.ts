@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { DwFlags, HtmlRoot } from "../types.js";
+import type { DwFlags, HtmlRoot } from "../types/index.js";
 import { MODULE_ID } from "../constants/moduleId.js";
 import { flushPromises } from "../test/flushPromises.js";
 

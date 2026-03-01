@@ -1,4 +1,4 @@
-import type { DwFlags } from "../types.js";
+import type { DwFlags } from "../types/index.js";
 import { getDwSchemaInitialData } from "./dwSchema.js";
 import { reportError } from "../utils/reportError.js";
 

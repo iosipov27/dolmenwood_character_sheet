@@ -1,4 +1,4 @@
-import type { HtmlRoot } from "../../types.js";
+import type { HtmlRoot } from "../../types/index.js";
 
 export function registerEquipmentListener(html: HtmlRoot): void {
   const equipmentRoot = html.find(".dw-equipment");

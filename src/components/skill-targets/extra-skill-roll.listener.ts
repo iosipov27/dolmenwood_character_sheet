@@ -1,5 +1,5 @@
 import { DW_ROLL_EXTRA_SKILL } from "../../constants/templateAttributes.js";
-import type { HtmlRoot, RollSkillCheck } from "../../types.js";
+import type { HtmlRoot, RollSkillCheck } from "../../types/index.js";
 
 export function registerExtraSkillRollListener(
   html: HtmlRoot,

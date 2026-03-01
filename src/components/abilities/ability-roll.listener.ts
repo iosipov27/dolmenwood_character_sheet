@@ -1,7 +1,7 @@
 ﻿import { registerActions } from "../../utils/registerActions.js";
 import { DW_ROLL_ABILITY } from "../../constants/templateAttributes.js";
 import { getDataset } from "../../utils/getDataset.js";
-import type { ActionEvent, HtmlRoot, RollAbilityCheck } from "../../types.js";
+import type { ActionEvent, HtmlRoot, RollAbilityCheck } from "../../types/index.js";
 
 export function registerAbilityRollListener(
   html: HtmlRoot,

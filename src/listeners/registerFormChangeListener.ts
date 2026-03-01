@@ -1,4 +1,4 @@
-import type { HtmlRoot } from "../types.js";
+import type { HtmlRoot } from "../types/index.js";
 
 function readFieldValue(target: HTMLElement): unknown {
   if (target instanceof HTMLInputElement) {

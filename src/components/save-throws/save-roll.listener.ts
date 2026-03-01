@@ -1,7 +1,7 @@
 ﻿import { registerActions } from "../../utils/registerActions.js";
 import { DW_ROLL_SAVE } from "../../constants/templateAttributes.js";
 import { getDataset } from "../../utils/getDataset.js";
-import type { ActionEvent, GetDwFlags, HtmlRoot, RollTargetCheck } from "../../types.js";
+import type { ActionEvent, GetDwFlags, HtmlRoot, RollTargetCheck } from "../../types/index.js";
 
 export function registerSaveRollListener(
   html: HtmlRoot,

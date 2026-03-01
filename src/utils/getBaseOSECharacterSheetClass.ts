@@ -1,4 +1,4 @@
-import type { ActorSheetConstructor, SheetClassConfigLike } from "../types.js";
+import type { ActorSheetConstructor, SheetClassConfigLike } from "../types/index.js";
 
 export function getBaseOSECharacterSheetClass(): ActorSheetConstructor {
   const sheetClasses = CONFIG?.Actor?.sheetClasses as unknown as

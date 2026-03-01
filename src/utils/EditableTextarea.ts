@@ -1,4 +1,4 @@
-import type { JQueryWithOn } from "../types.js";
+import type { JQueryWithOn } from "../types/index.js";
 import { reportError } from "./reportError.js";
 
 export interface EditableTextareaConfig {

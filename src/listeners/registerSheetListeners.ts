@@ -12,7 +12,7 @@ import {
 } from "../components/index.js";
 import { prettyKey } from "../utils/prettyKey.js";
 import { RollChecks } from "../sheets/rollChecks.js";
-import type { ApplyDwPatch, GetDwFlags, HtmlRoot } from "../types.js";
+import type { ApplyDwPatch, GetDwFlags, HtmlRoot } from "../types/index.js";
 
 export function registerSheetListeners(
   html: HtmlRoot,

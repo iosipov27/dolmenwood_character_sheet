@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { flushPromises } from "../../test/flushPromises.js";
 import { registerSpellsTraitsViewListener } from "./spells-traits-view.listener.js";
-import type { DwFlags, DwSpellsTraitsView } from "../../types.js";
+import type { DwFlags, DwSpellsTraitsView } from "../../types/index.js";
 
 function buildDw(mode: DwSpellsTraitsView = "both"): DwFlags {
   return {

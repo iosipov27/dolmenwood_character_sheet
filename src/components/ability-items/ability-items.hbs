@@ -9,12 +9,12 @@
   </div>
 
   <div class="dw-ability-items__scroll">
-    {{#unless ctx.dwAbilityItems.length}}
+    {{#unless ctx.view.items.abilities.length}}
       <p class="dw-hint">{{localize "DOLMENWOOD.UI.AbilitiesDropHint"}}</p>
     {{/unless}}
-    {{#if ctx.dwAbilityItems.length}}
+    {{#if ctx.view.items.abilities.length}}
       <ul class="dw-ability-items__list">
-        {{#each ctx.dwAbilityItems as |ability|}}
+        {{#each ctx.view.items.abilities as |ability|}}
           <li class="dw-ability-items__item">
             <button
               type="button"
