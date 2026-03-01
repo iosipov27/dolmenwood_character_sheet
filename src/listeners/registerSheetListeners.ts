@@ -10,7 +10,6 @@ import {
   registerSpellsListener,
   registerSpellsTraitsViewListener
 } from "../components/index.js";
-import { registerAttackDamageRollChatListener } from "./registerAttackDamageRollChatListener.js";
 import { prettyKey } from "../utils/prettyKey.js";
 import { RollChecks } from "../sheets/rollChecks.js";
 import type { ApplyDwPatch, GetDwFlags, HtmlRoot } from "../types.js";
@@ -27,8 +26,6 @@ export function registerSheetListeners(
     applyDwPatch: ApplyDwPatch;
   }
 ): void {
-  registerAttackDamageRollChatListener();
-
   registerSaveRollListener(html, {
     actor,
     getDwFlags,
