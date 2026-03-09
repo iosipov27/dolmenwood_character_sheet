@@ -6,15 +6,15 @@
 
   <div class="dw-other-notes__content">
     <div class="dw-other-notes__editor dw-editor">
-      {{formInput
-        ctx.view.form.fields.meta.otherNotes
-        name="dw.meta.otherNotes"
-        value=ctx.dw.meta.otherNotes
-        enriched=ctx.dw.meta.otherNotes
-        toggled=true
+      {{editor
+        ctx.dw.meta.otherNotes
+        target="flags.yakov-dolmenwood-sheet.dw.meta.otherNotes"
+        button=true
+        engine="prosemirror"
         collaborate=false
+        owner=ctx.owner
+        editable=ctx.editable
         classes="dw-other-notes__editor-input"
-        disabled=(not ctx.editable)
       }}
     </div>
 
@@ -31,7 +31,9 @@
             value="{{ctx.dw.meta.coins.copper}}"
             class="dw-other-notes__coin-input dw-number-input"
           />
-          <span class="dw-other-notes__coin-label">{{uppercase (localize "DOLMENWOOD.UI.Copper")}}</span>
+          <span class="dw-other-notes__coin-label">{{uppercase
+              (localize "DOLMENWOOD.UI.Copper")
+            }}</span>
         </label>
 
         <label class="dw-other-notes__coin">
@@ -43,7 +45,9 @@
             value="{{ctx.dw.meta.coins.silver}}"
             class="dw-other-notes__coin-input dw-number-input"
           />
-          <span class="dw-other-notes__coin-label">{{uppercase (localize "DOLMENWOOD.UI.Silver")}}</span>
+          <span class="dw-other-notes__coin-label">{{uppercase
+              (localize "DOLMENWOOD.UI.Silver")
+            }}</span>
         </label>
 
         <label class="dw-other-notes__coin">
@@ -55,7 +59,9 @@
             value="{{ctx.dw.meta.coins.gold}}"
             class="dw-other-notes__coin-input dw-number-input"
           />
-          <span class="dw-other-notes__coin-label">{{uppercase (localize "DOLMENWOOD.UI.Gold")}}</span>
+          <span class="dw-other-notes__coin-label">{{uppercase
+              (localize "DOLMENWOOD.UI.Gold")
+            }}</span>
         </label>
 
         <label class="dw-other-notes__coin">
@@ -67,7 +73,9 @@
             value="{{ctx.dw.meta.coins.pellucidium}}"
             class="dw-other-notes__coin-input dw-number-input"
           />
-          <span class="dw-other-notes__coin-label">{{uppercase (localize "DOLMENWOOD.UI.Pellucidium")}}</span>
+          <span class="dw-other-notes__coin-label">{{uppercase
+              (localize "DOLMENWOOD.UI.Pellucidium")
+            }}</span>
         </label>
       </div>
     </aside>

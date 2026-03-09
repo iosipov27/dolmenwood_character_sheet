@@ -7,7 +7,6 @@ import { buildDwAbilityItems } from "./buildDwAbilityItems.js";
 import { buildDwSavesList } from "./buildDwSavesList.js";
 import { buildDwSpellItems } from "./buildDwSpellItems.js";
 import { buildDwUi } from "./buildDwUi.js";
-import { getDwFormFields } from "./dwSchema.js";
 import { buildDwLocalize } from "./localize.js";
 
 export class DolmenwoodSheetData {
@@ -19,9 +18,6 @@ export class DolmenwoodSheetData {
     data.system = actorSystem;
     data.dw = buildDwData(actor);
     data.view = {
-      form: {
-        fields: getDwFormFields()
-      },
       actor: {
         abilities: buildAbilities(actorSystem),
         combat: buildCombat(actorSystem),

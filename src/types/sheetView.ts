@@ -51,17 +51,7 @@ export interface DwActorItemEntry {
   img: string;
 }
 
-export interface DwFormFields {
-  meta: {
-    kindredClassTraits: foundry.data.fields.DataField.Any;
-    otherNotes: foundry.data.fields.DataField.Any;
-  };
-}
-
 export interface DwSheetView {
-  form: {
-    fields: DwFormFields | null;
-  };
   actor: {
     abilities: DwAbilityView[];
     combat: DwCombatView;

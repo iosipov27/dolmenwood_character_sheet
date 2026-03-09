@@ -1,12 +1,11 @@
 import { MODULE_ID } from "../constants/moduleId.js";
-import { flushActiveFieldBeforeClose } from "../handlers/sheetCloseHandler.js";
 import { SheetDropHandler } from "../handlers/sheetDropHandler.js";
-import { buildDwUpdatePayload, buildFieldUpdatePayload } from "../handlers/sheetUpdateBuilder.js";
-import { registerFormChangeListener } from "../listeners/registerFormChangeListener.js";
+import { buildDwUpdatePayload } from "../handlers/sheetUpdateBuilder.js";
 import { registerSheetListeners } from "../listeners/registerSheetListeners.js";
 import { buildDwFlagsFromActor } from "../models/buildDwFlagsFromActor.js";
 import { DolmenwoodSheetData } from "../models/dolmenwoodSheetData.js";
 import type { DwSheetData, HtmlRoot } from "../types/index.js";
+import { OseCharacterSheetAdapter } from "../adapters/oseCharacterSheetAdapter.js";
 import { getBaseOSECharacterSheetClass } from "../utils/getBaseOSECharacterSheetClass.js";
 
 const BaseSheet = getBaseOSECharacterSheetClass() as typeof foundry.appv1.sheets.ActorSheet;
@@ -27,7 +26,7 @@ export class DolmenwoodSheet extends BaseSheet {
     });
   }
 
-  // Configure the Foundry shell around this sheet; persistence is handled by the custom listeners below.
+  // Configure the Foundry shell around this sheet; form fields submit through ActorSheet's native pipeline.
   static get defaultOptions(): ActorSheet.Options {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["dolmenwood", "sheet", "actor"],
@@ -35,9 +34,8 @@ export class DolmenwoodSheet extends BaseSheet {
       width: 640,
       height: 730,
       closeOnSubmit: false,
-      // Native submit-on-close is disabled; close() flushes the active field and waits for queued updates.
-      submitOnClose: false,
-      submitOnChange: false,
+      submitOnClose: true,
+      submitOnChange: true,
       tabs: [
         {
           navSelector: ".dolmenwood-sheet__tabs",
@@ -56,17 +54,11 @@ export class DolmenwoodSheet extends BaseSheet {
     return DolmenwoodSheetData.populate(data, this.actor);
   }
 
-  // Connect DOM events to the shared write path: field changes and domain actions both end in actor.update.
+  // Connect domain actions that do not flow through the form submission lifecycle.
   activateListeners(html: HtmlRoot): void {
     super.activateListeners(html);
 
     this.registerAvatarEditHandler(html);
-
-    registerFormChangeListener(html, {
-      onFieldChange: async (name, value) => {
-        await this.commitActorUpdate(buildFieldUpdatePayload(this.actor, name, value));
-      }
-    });
 
     registerSheetListeners(html, {
       actor: this.actor,
@@ -75,6 +67,12 @@ export class DolmenwoodSheet extends BaseSheet {
         await this.commitActorUpdate(buildDwUpdatePayload(this.actor, dwPatch));
       }
     });
+  }
+
+  override async _updateObject(event: Event, formData: Record<string, unknown>): Promise<void> {
+    const updatePayload = this.buildSubmitUpdatePayload(formData);
+
+    await this.commitActorUpdate(updatePayload);
   }
 
   private registerAvatarEditHandler(html: HtmlRoot): void {
@@ -104,18 +102,6 @@ export class DolmenwoodSheet extends BaseSheet {
     });
   }
 
-  // Emulate submit-on-close for the current change-driven architecture before delegating to Foundry.
-  override async close(options?: Application.CloseOptions): Promise<void> {
-    const form = this.form;
-
-    await flushActiveFieldBeforeClose({
-      form: form instanceof HTMLFormElement ? form : null,
-      getUpdateChain: () => this.updateChain
-    });
-
-    await super.close(options);
-  }
-
   // Guard item drops for the spells/abilities area, then forward valid drops to the base OSE sheet.
   protected override async _onDropItem(
     event: DragEvent,
@@ -137,6 +123,88 @@ export class DolmenwoodSheet extends BaseSheet {
       });
 
     await this.updateChain;
+  }
+
+  private buildSubmitUpdatePayload(formData: Record<string, unknown>): Record<string, unknown> {
+    const remappedFormData = OseCharacterSheetAdapter.remapDerivedArmorClassEdits(
+      { ...formData },
+      this.actor
+    );
+    const expanded = foundry.utils.expandObject(remappedFormData) as Record<string, unknown> & {
+      dw?: unknown;
+      flags?: unknown;
+    };
+    const dwPatch = this.extractDwPatch(expanded);
+
+    this.stripDwPayload(expanded);
+
+    const actorUpdatePayload = foundry.utils.flattenObject(expanded) as Record<string, unknown>;
+
+    if (!dwPatch) return actorUpdatePayload;
+
+    return {
+      ...actorUpdatePayload,
+      ...buildDwUpdatePayload(this.actor, dwPatch)
+    };
+  }
+
+  private extractDwPatch(
+    expanded: Record<string, unknown> & { dw?: unknown; flags?: unknown }
+  ): Record<string, unknown> | null {
+    const fromDw = expanded.dw;
+    const fromFlags = this.getModuleDwFromFlags(expanded.flags);
+    let patch: Record<string, unknown> | null = null;
+
+    if (fromDw && typeof fromDw === "object") {
+      patch = foundry.utils.duplicate(fromDw) as Record<string, unknown>;
+    }
+
+    if (fromFlags && typeof fromFlags === "object") {
+      patch ??= {};
+
+      const flattenedFlags = foundry.utils.flattenObject(
+        foundry.utils.duplicate(fromFlags) as Record<string, unknown>
+      ) as Record<string, unknown>;
+
+      for (const [path, value] of Object.entries(flattenedFlags)) {
+        foundry.utils.setProperty(patch, path, value);
+      }
+    }
+
+    return patch;
+  }
+
+  private getModuleDwFromFlags(flags: unknown): unknown {
+    if (!flags || typeof flags !== "object") return undefined;
+
+    const moduleFlags = (flags as Record<string, unknown>)[MODULE_ID];
+
+    if (!moduleFlags || typeof moduleFlags !== "object") return undefined;
+
+    return (moduleFlags as Record<string, unknown>).dw;
+  }
+
+  private stripDwPayload(expanded: Record<string, unknown> & { flags?: unknown }): void {
+    delete expanded.dw;
+
+    if (!expanded.flags || typeof expanded.flags !== "object") return;
+
+    const flagsRoot = expanded.flags as Record<string, unknown>;
+    const moduleFlags = flagsRoot[MODULE_ID];
+
+    if (!moduleFlags || typeof moduleFlags !== "object") return;
+
+    const moduleFlagsRecord = moduleFlags as Record<string, unknown>;
+
+    delete moduleFlagsRecord.dw;
+
+    if (Object.keys(moduleFlagsRecord).length === 0) {
+      delete flagsRoot[MODULE_ID];
+    }
+
+    if (Object.keys(flagsRoot).length === 0) {
+      delete expanded.flags;
+    }
   }
 
   // Keep localization access injectable for drop handling and other small sheet services.

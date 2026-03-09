@@ -3,7 +3,6 @@ export type {
   DwAbilityView,
   DwActorItemEntry,
   DwEquipmentFieldEntry,
-  DwFormFields,
   DwHpView,
   DwSaveEntry,
   DwSheetView
