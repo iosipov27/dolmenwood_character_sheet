@@ -60,6 +60,8 @@ export class DolmenwoodSheet extends BaseSheet {
   activateListeners(html: HtmlRoot): void {
     super.activateListeners(html);
 
+    this.registerAvatarEditHandler(html);
+
     registerFormChangeListener(html, {
       onFieldChange: async (name, value) => {
         await this.commitActorUpdate(buildFieldUpdatePayload(this.actor, name, value));
@@ -72,6 +74,33 @@ export class DolmenwoodSheet extends BaseSheet {
       applyDwPatch: async (dwPatch) => {
         await this.commitActorUpdate(buildDwUpdatePayload(this.actor, dwPatch));
       }
+    });
+  }
+
+  private registerAvatarEditHandler(html: HtmlRoot): void {
+    html.on("click", "img[data-edit='img']", async (event) => {
+      if (!this.isEditable) return;
+
+      const image = event.currentTarget as HTMLImageElement | null;
+      if (!(image instanceof HTMLImageElement)) return;
+
+      event.preventDefault();
+
+      const PickerConstructor =
+        foundry.applications?.apps?.FilePicker.implementation ??
+        foundry.applications?.apps?.FilePicker;
+
+      if (!PickerConstructor) return;
+
+      const picker = new PickerConstructor({
+        type: "image",
+        current: image.getAttribute("src") ?? "",
+        callback: (path: string) => {
+          void this.commitActorUpdate({ img: path });
+        }
+      });
+
+      await picker.render(true);
     });
   }
 
