@@ -30,7 +30,8 @@ export function buildDwEquipmentUi(
     const compendiumItem = equipment[compendiumKey];
     const isCompendiumItem = hasDwEquipmentCompendiumItem(compendiumItem);
     const valueSource = isCompendiumItem ? compendiumItem.name : equipment[key];
-    const weightSource = isCompendiumItem ? compendiumItem.weight : equipment[weightKey];
+    const weightSource =
+      equipment[weightKey] || (isCompendiumItem ? compendiumItem.weight : equipment[weightKey]);
     const value = String(valueSource ?? "");
     const weightValue = String(weightSource ?? "");
 

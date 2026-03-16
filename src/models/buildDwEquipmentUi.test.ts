@@ -41,25 +41,57 @@ describe("buildDwEquipmentUi", () => {
     expect(ui.stowedFields[0]).toMatchObject({
       slotKey: "stowed1",
       value: "Torch",
-      weightValue: "2",
+      weightValue: "99",
       isCompendiumItem: true,
       compendiumItem: {
         uuid: "Compendium.ose.items.Item.torch",
         name: "Torch",
-        weight: "2"
+        weight: "99"
       }
     });
-    expect(ui.totalWeight).toBe("7");
+    expect(ui.totalWeight).toBe("104");
     expect(ui.encumbrance).toMatchObject({
-      current: "20",
+      current: "117",
       max: "1600",
-      label: "20 / 1600",
-      fillPercent: "1.25%"
+      label: "117 / 1600",
+      fillPercent: "7.31%"
     });
     expect(ui.encumbrance.breakpoints).toEqual([
       { value: "400", leftPercent: "25%" },
       { value: "600", leftPercent: "37.5%" },
       { value: "800", leftPercent: "50%" }
     ]);
+  });
+
+  it("prefers editable slot weight over compendium metadata weight", () => {
+    const equipment = buildEmptyDwEquipment();
+    const coins = {
+      copper: 0,
+      silver: 0,
+      gold: 0,
+      pellucidium: 0
+    };
+
+    equipment.stowedCompendium1 = {
+      uuid: "Compendium.ose.items.Item.torch",
+      name: "Torch",
+      type: "item",
+      weight: "2"
+    };
+    equipment.stowedWeight1 = "7";
+
+    const ui = buildDwEquipmentUi(equipment, coins);
+
+    expect(ui.stowedFields[0]).toMatchObject({
+      isCompendiumItem: true,
+      value: "Torch",
+      weightValue: "7",
+      compendiumItem: {
+        uuid: "Compendium.ose.items.Item.torch",
+        name: "Torch",
+        weight: "7"
+      }
+    });
+    expect(ui.totalWeight).toBe("7");
   });
 });
