@@ -12,6 +12,7 @@ import {
 } from "../../utils/encumbrance.js";
 
 type EquipmentDropData = ActorSheet.DropData.Item & Record<string, unknown>;
+const DISALLOWED_EQUIPMENT_ITEM_TYPES = new Set(["spell", "ability"]);
 
 interface EquipmentListenerDependencies {
   applyDwPatch: ApplyDwPatch;
@@ -155,8 +156,8 @@ export function registerEquipmentListener(
       .trim()
       .toLowerCase();
 
-    if (itemType !== "item") {
-      warn(localize("DOLMENWOOD.UI.EquipmentDropOnlyItems"));
+    if (DISALLOWED_EQUIPMENT_ITEM_TYPES.has(itemType)) {
+      warn(localize("DOLMENWOOD.UI.EquipmentDropNoSpellsOrAbilities"));
 
       return;
     }

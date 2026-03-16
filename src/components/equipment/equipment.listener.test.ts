@@ -287,14 +287,17 @@ describe("registerEquipmentListener", () => {
     expect(dependencies.warn).not.toHaveBeenCalled();
   });
 
-  it("rejects dropped entries that are not item type", async () => {
+  it("accepts dropped compendium entries with non-spell, non-ability item types", async () => {
     const dependencies = createDependencies();
 
     dependencies.fromDropData.mockResolvedValue({
       type: "weapon",
       pack: "ose.items",
       uuid: "Compendium.ose.items.Item.axe",
-      name: "Axe"
+      name: "Axe",
+      system: {
+        weight: 1
+      }
     } as unknown as Item);
 
     document.body.innerHTML = `
@@ -316,8 +319,56 @@ describe("registerEquipmentListener", () => {
     html.find('[data-dw-equipment-slot="stowed1"]').trigger(event);
     await flushPromises();
 
+    expect(dependencies.applyDwPatch).toHaveBeenCalledWith({
+      meta: {
+        equipment: {
+          stowed1: "Axe",
+          stowedWeight1: "1",
+          stowedCompendium1: {
+            uuid: "Compendium.ose.items.Item.axe",
+            name: "Axe",
+            type: "weapon",
+            weight: "1"
+          }
+        }
+      }
+    });
+    expect(dependencies.warn).not.toHaveBeenCalled();
+  });
+
+  it("rejects dropped spells and abilities", async () => {
+    const dependencies = createDependencies();
+
+    dependencies.fromDropData.mockResolvedValue({
+      type: "spell",
+      pack: "ose.items",
+      uuid: "Compendium.ose.items.Item.magic-missile",
+      name: "Magic Missile"
+    } as unknown as Item);
+
+    document.body.innerHTML = `
+      <div class="dw-equipment">
+        <div data-dw-equipment-slot="stowed1"></div>
+        <div data-total-weight>0</div>
+      </div>
+    `;
+
+    const html = $(document.body);
+
+    registerEquipmentListener(html, dependencies);
+
+    const { event } = createDropEvent({
+      type: "Item",
+      uuid: "Compendium.ose.items.Item.magic-missile"
+    });
+
+    html.find('[data-dw-equipment-slot="stowed1"]').trigger(event);
+    await flushPromises();
+
     expect(dependencies.applyDwPatch).not.toHaveBeenCalled();
-    expect(dependencies.warn).toHaveBeenCalledWith("loc:DOLMENWOOD.UI.EquipmentDropOnlyItems");
+    expect(dependencies.warn).toHaveBeenCalledWith(
+      "loc:DOLMENWOOD.UI.EquipmentDropNoSpellsOrAbilities"
+    );
   });
 
   it("rejects dropped world items when the slot only accepts compendium items", async () => {

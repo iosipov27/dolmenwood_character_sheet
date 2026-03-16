@@ -36,7 +36,7 @@
       "TinyItems": "Tiny Items",
       "EquippedItems": "Equipped Items",
       "StowedItems": "Stowed Items",
-      "EquipmentDropOnlyItems": "Only items with type Item can be dropped here.",
+      "EquipmentDropNoSpellsOrAbilities": "Spells and abilities cannot be dropped here.",
       "EquipmentDropOnlyCompendiumItems": "Only compendium items can be dropped here.",
       "Weight": "Weight",
       "TotalWeight": "Total Weight:",
