@@ -169,4 +169,32 @@
       </div>
     </div>
   </div>
+  <section class="dw-equipment__encumbrance">
+    <div class="dw-equipment__encumbrance-header">
+      <label>{{localize "DOLMENWOOD.UI.Encumbrance"}}</label>
+      <span
+        class="dw-equipment__encumbrance-label"
+        data-encumbrance-label
+      >{{ctx.view.ui.equipment.encumbrance.label}}</span>
+    </div>
+    <div class="dw-equipment__encumbrance-track">
+      <span
+        class="dw-equipment__encumbrance-bar"
+        data-encumbrance-bar
+        style="width: {{ctx.view.ui.equipment.encumbrance.fillPercent}}"
+      ></span>
+      {{#each ctx.view.ui.equipment.encumbrance.breakpoints as |breakpoint|}}
+        <i
+          class="dw-equipment__encumbrance-breakpoint dw-equipment__encumbrance-breakpoint--up"
+          style="left: {{breakpoint.leftPercent}}"
+          data-tooltip="{{breakpoint.value}} / {{../ctx.view.ui.equipment.encumbrance.max}}"
+        ></i>
+        <i
+          class="dw-equipment__encumbrance-breakpoint dw-equipment__encumbrance-breakpoint--down"
+          style="left: {{breakpoint.leftPercent}}"
+          data-tooltip="{{breakpoint.value}} / {{../ctx.view.ui.equipment.encumbrance.max}}"
+        ></i>
+      {{/each}}
+    </div>
+  </section>
 </div>

@@ -8,6 +8,12 @@ import { buildDwEquipmentUi } from "./buildDwEquipmentUi.js";
 describe("buildDwEquipmentUi", () => {
   it("supports mixed plain and compendium-backed equipment slots", () => {
     const equipment = buildEmptyDwEquipment();
+    const coins = {
+      copper: 0,
+      silver: 0,
+      gold: 0,
+      pellucidium: 0
+    };
 
     equipment.equipped1 = "Backpack";
     equipment.equippedWeight1 = "5";
@@ -21,7 +27,9 @@ describe("buildDwEquipmentUi", () => {
     };
     equipment.equippedCompendium2 = createEmptyDwEquipmentCompendiumItem();
 
-    const ui = buildDwEquipmentUi(equipment);
+    coins.gold = 13;
+
+    const ui = buildDwEquipmentUi(equipment, coins);
 
     expect(ui.equippedFields[0]).toMatchObject({
       slotKey: "equipped1",
@@ -42,5 +50,16 @@ describe("buildDwEquipmentUi", () => {
       }
     });
     expect(ui.totalWeight).toBe("7");
+    expect(ui.encumbrance).toMatchObject({
+      current: "20",
+      max: "1600",
+      label: "20 / 1600",
+      fillPercent: "1.25%"
+    });
+    expect(ui.encumbrance.breakpoints).toEqual([
+      { value: "400", leftPercent: "25%" },
+      { value: "600", leftPercent: "37.5%" },
+      { value: "800", leftPercent: "50%" }
+    ]);
   });
 });

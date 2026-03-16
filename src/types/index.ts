@@ -2,6 +2,8 @@ export type {
   DwCombatView,
   DwAbilityView,
   DwActorItemEntry,
+  DwEquipmentEncumbranceBreakpointView,
+  DwEquipmentEncumbranceView,
   DwEquipmentFieldEntry,
   DwHpView,
   DwSaveEntry,

@@ -52,6 +52,19 @@ export interface DwEquipmentFieldEntry {
   weightValue: string;
 }
 
+export interface DwEquipmentEncumbranceBreakpointView {
+  value: string;
+  leftPercent: string;
+}
+
+export interface DwEquipmentEncumbranceView {
+  current: string;
+  max: string;
+  label: string;
+  fillPercent: string;
+  breakpoints: DwEquipmentEncumbranceBreakpointView[];
+}
+
 export interface DwActorItemEntry {
   id: string;
   name: string;
@@ -79,6 +92,7 @@ export interface DwSheetView {
       equippedFields: DwEquipmentFieldEntry[];
       stowedFields: DwEquipmentFieldEntry[];
       totalWeight: string;
+      encumbrance: DwEquipmentEncumbranceView;
     };
   };
 }

@@ -7,10 +7,19 @@ import {
   getDwEquipmentWeightKey,
   hasDwEquipmentCompendiumItem
 } from "../utils/equipmentSlots.js";
+import {
+  buildDwEncumbranceSummary,
+  formatDwLoad,
+  sumDwLoadValues
+} from "../utils/encumbrance.js";
 
 type DwEquipmentState = DwMeta["equipment"];
+type DwCoinsState = DwMeta["coins"];
 
-export function buildDwEquipmentUi(equipment: DwEquipmentState): DwSheetView["ui"]["equipment"] {
+export function buildDwEquipmentUi(
+  equipment: DwEquipmentState,
+  coins: DwCoinsState
+): DwSheetView["ui"]["equipment"] {
   const buildEquipmentField = (
     prefix: "equipped" | "stowed",
     index: number
@@ -52,17 +61,23 @@ export function buildDwEquipmentUi(equipment: DwEquipmentState): DwSheetView["ui
     buildEquipmentField("stowed", i + 1)
   );
   const allWeightFields = [...equippedFields, ...stowedFields];
-  const totalWeight = allWeightFields
-    .map((field) => Number.parseFloat(field.weightValue))
-    .filter((weight) => Number.isFinite(weight))
-    .reduce((sum, weight) => sum + weight, 0);
-  const formattedTotalWeight = Number.isInteger(totalWeight)
-    ? String(totalWeight)
-    : String(Number(totalWeight.toFixed(2)));
+  const totalWeight = sumDwLoadValues(allWeightFields.map((field) => field.weightValue));
+  const totalCoinWeight = sumDwLoadValues(Object.values(coins));
+  const encumbrance = buildDwEncumbranceSummary(totalWeight + totalCoinWeight);
 
   return {
     equippedFields,
     stowedFields,
-    totalWeight: formattedTotalWeight
+    totalWeight: formatDwLoad(totalWeight),
+    encumbrance: {
+      current: encumbrance.currentLabel,
+      max: encumbrance.maxLabel,
+      label: encumbrance.label,
+      fillPercent: encumbrance.fillPercent,
+      breakpoints: encumbrance.breakpoints.map((breakpoint) => ({
+        value: String(breakpoint.value),
+        leftPercent: breakpoint.leftPercent
+      }))
+    }
   };
 }

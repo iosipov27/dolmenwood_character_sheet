@@ -97,6 +97,49 @@ describe("registerEquipmentListener", () => {
     expect(total.text()).toBe("18");
   });
 
+  it("calculates encumbrance from equipment weight and coins on init", () => {
+    document.body.innerHTML = `
+      <div class="dw-equipment">
+        <input name="dw.meta.equipment.equippedWeight1" value="10" />
+        <input name="dw.meta.equipment.stowedWeight1" value="5" />
+        <span data-encumbrance-label>0 / 1600</span>
+        <span data-encumbrance-bar style="width: 0%"></span>
+      </div>
+      <input name="dw.meta.coins.gold" value="30" />
+      <input name="dw.meta.coins.silver" value="10" />
+    `;
+
+    const html = $(document.body);
+
+    registerEquipmentListener(html, createDependencies());
+
+    expect(html.find("[data-encumbrance-label]").text()).toBe("55 / 1600");
+    expect(html.find("[data-encumbrance-bar]").attr("style")).toBe("width: 3.44%");
+  });
+
+  it("updates encumbrance when a coin field changes", () => {
+    document.body.innerHTML = `
+      <div class="dw-equipment">
+        <input name="dw.meta.equipment.equippedWeight1" value="10" />
+        <span data-encumbrance-label>0 / 1600</span>
+        <span data-encumbrance-bar style="width: 0%"></span>
+      </div>
+      <input name="dw.meta.coins.gold" value="30" />
+    `;
+
+    const html = $(document.body);
+
+    registerEquipmentListener(html, createDependencies());
+
+    const coinsInput = html.find('input[name="dw.meta.coins.gold"]');
+
+    coinsInput.val("90");
+    coinsInput.trigger("input");
+
+    expect(html.find("[data-encumbrance-label]").text()).toBe("100 / 1600");
+    expect(html.find("[data-encumbrance-bar]").attr("style")).toBe("width: 6.25%");
+  });
+
   it("shows tooltip for stowed item input when text is truncated", () => {
     const activate = vi.fn();
     const deactivate = vi.fn();

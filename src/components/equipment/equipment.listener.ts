@@ -5,6 +5,11 @@ import {
   getDwEquipmentWeightKey,
   parseDwEquipmentSlotKey
 } from "../../utils/equipmentSlots.js";
+import {
+  buildDwEncumbranceSummary,
+  formatDwLoad,
+  parseDwLoadValue
+} from "../../utils/encumbrance.js";
 
 type EquipmentDropData = ActorSheet.DropData.Item & Record<string, unknown>;
 
@@ -24,17 +29,13 @@ export function registerEquipmentListener(
   if (!equipmentRoot.length) return;
 
   const weightFieldSelector = "input[name^='dw.meta.equipment.'][name*='Weight']";
+  const coinFieldSelector = "input[name^='dw.meta.coins.']";
   const stowedItemSelector = "input[name^='dw.meta.equipment.stowed']:not([name*='Weight'])";
   const slotSelector = "[data-dw-equipment-slot]";
   const removeSelector = "[data-dw-equipment-remove]";
   const totalWeightValue = equipmentRoot.find("[data-total-weight]");
-  const parseWeight = (value: string): number => {
-    const parsed = Number.parseFloat(value);
-
-    return Number.isFinite(parsed) ? parsed : 0;
-  };
-  const formatTotalWeight = (value: number): string =>
-    Number.isInteger(value) ? String(value) : String(Number(value.toFixed(2)));
+  const encumbranceLabel = equipmentRoot.find("[data-encumbrance-label]");
+  const encumbranceBar = equipmentRoot.find("[data-encumbrance-bar]");
   const refreshStowedItemTooltip = (field: HTMLInputElement): void => {
     const tooltipManager = game?.tooltip;
     const value = String(field.value ?? "");
@@ -64,18 +65,47 @@ export function registerEquipmentListener(
     const total = equipmentRoot
       .find(weightFieldSelector)
       .toArray()
-      .map((field) => parseWeight(String($(field).val() ?? "")))
+      .map((field) => parseDwLoadValue($(field).val()))
       .reduce((sum, weight) => sum + weight, 0);
 
-    totalWeightValue.text(formatTotalWeight(total));
+    totalWeightValue.text(formatDwLoad(total));
+  };
+
+  const refreshEncumbrance = (): void => {
+    if (!encumbranceLabel.length || !encumbranceBar.length) return;
+
+    const equipmentWeight = equipmentRoot
+      .find(weightFieldSelector)
+      .toArray()
+      .map((field) => parseDwLoadValue($(field).val()))
+      .reduce((sum, weight) => sum + weight, 0);
+    const coinWeight = html
+      .find(coinFieldSelector)
+      .toArray()
+      .map((field) => parseDwLoadValue($(field).val()))
+      .reduce((sum, weight) => sum + weight, 0);
+    const encumbrance = buildDwEncumbranceSummary(equipmentWeight + coinWeight);
+
+    encumbranceLabel.text(encumbrance.label);
+    encumbranceBar.attr("style", `width: ${encumbrance.fillPercent}`);
   };
 
   equipmentRoot.on("change", weightFieldSelector, function () {
     refreshTotalWeight();
+    refreshEncumbrance();
   });
 
   equipmentRoot.on("input", weightFieldSelector, function () {
     refreshTotalWeight();
+    refreshEncumbrance();
+  });
+
+  html.on("change", coinFieldSelector, function () {
+    refreshEncumbrance();
+  });
+
+  html.on("input", coinFieldSelector, function () {
+    refreshEncumbrance();
   });
 
   equipmentRoot.on("mouseenter", stowedItemSelector, function () {
@@ -182,6 +212,7 @@ export function registerEquipmentListener(
   });
 
   refreshTotalWeight();
+  refreshEncumbrance();
 }
 
 function preventEvent(event: { preventDefault?: () => void; stopPropagation?: () => void }): void {
