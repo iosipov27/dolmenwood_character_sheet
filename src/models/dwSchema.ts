@@ -1,4 +1,11 @@
 import type { DwFlags } from "../types/index.js";
+import {
+  EQUIPPED_SLOT_COUNT,
+  STOWED_SLOT_COUNT,
+  getDwEquipmentCompendiumKey,
+  getDwEquipmentSlotKey,
+  getDwEquipmentWeightKey
+} from "../utils/equipmentSlots.js";
 
 type FieldsApi = typeof foundry.data.fields;
 type AnyField = foundry.data.fields.DataField.Any;
@@ -36,7 +43,10 @@ function spellsTraitsViewField(fields: FieldsApi): AnyField {
   });
 }
 
-function booleanField(fields: FieldsApi, { initial = false }: { initial?: boolean } = {}): AnyField {
+function booleanField(
+  fields: FieldsApi,
+  { initial = false }: { initial?: boolean } = {}
+): AnyField {
   return new fields.BooleanField({
     required: true,
     nullable: false,
@@ -69,14 +79,24 @@ function buildEquipmentSchema(fields: FieldsApi): AnyField {
     tinyItems: stringField(fields)
   };
 
-  for (let i = 1; i <= 10; i += 1) {
-    equipmentFields[`equipped${i}`] = stringField(fields);
-    equipmentFields[`equippedWeight${i}`] = stringField(fields);
+  const buildCompendiumItemField = (): AnyField =>
+    new SchemaField({
+      uuid: stringField(fields),
+      name: stringField(fields),
+      type: stringField(fields),
+      weight: stringField(fields)
+    });
+
+  for (let i = 1; i <= EQUIPPED_SLOT_COUNT; i += 1) {
+    equipmentFields[getDwEquipmentSlotKey("equipped", i)] = stringField(fields);
+    equipmentFields[getDwEquipmentWeightKey("equipped", i)] = stringField(fields);
+    equipmentFields[getDwEquipmentCompendiumKey("equipped", i)] = buildCompendiumItemField();
   }
 
-  for (let i = 1; i <= 16; i += 1) {
-    equipmentFields[`stowed${i}`] = stringField(fields);
-    equipmentFields[`stowedWeight${i}`] = stringField(fields);
+  for (let i = 1; i <= STOWED_SLOT_COUNT; i += 1) {
+    equipmentFields[getDwEquipmentSlotKey("stowed", i)] = stringField(fields);
+    equipmentFields[getDwEquipmentWeightKey("stowed", i)] = stringField(fields);
+    equipmentFields[getDwEquipmentCompendiumKey("stowed", i)] = buildCompendiumItemField();
   }
 
   return new SchemaField(equipmentFields);

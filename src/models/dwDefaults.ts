@@ -1,6 +1,7 @@
 import type { DwFlags } from "../types/index.js";
 import { getDwSchemaInitialData } from "./dwSchema.js";
 import { reportError } from "../utils/reportError.js";
+import { buildEmptyDwEquipment } from "../utils/equipmentSlots.js";
 
 const FALLBACK_DW_DEFAULTS: DwFlags = {
   saves: {
@@ -41,61 +42,7 @@ const FALLBACK_DW_DEFAULTS: DwFlags = {
     spellsTraitsView: "both",
     kindredClassTraits: "",
     languages: "",
-    equipment: {
-      tinyItems: "",
-      equipped1: "",
-      equipped2: "",
-      equipped3: "",
-      equipped4: "",
-      equipped5: "",
-      equipped6: "",
-      equipped7: "",
-      equipped8: "",
-      equipped9: "",
-      equipped10: "",
-      equippedWeight1: "",
-      equippedWeight2: "",
-      equippedWeight3: "",
-      equippedWeight4: "",
-      equippedWeight5: "",
-      equippedWeight6: "",
-      equippedWeight7: "",
-      equippedWeight8: "",
-      equippedWeight9: "",
-      equippedWeight10: "",
-      stowed1: "",
-      stowed2: "",
-      stowed3: "",
-      stowed4: "",
-      stowed5: "",
-      stowed6: "",
-      stowed7: "",
-      stowed8: "",
-      stowed9: "",
-      stowed10: "",
-      stowed11: "",
-      stowed12: "",
-      stowed13: "",
-      stowed14: "",
-      stowed15: "",
-      stowed16: "",
-      stowedWeight1: "",
-      stowedWeight2: "",
-      stowedWeight3: "",
-      stowedWeight4: "",
-      stowedWeight5: "",
-      stowedWeight6: "",
-      stowedWeight7: "",
-      stowedWeight8: "",
-      stowedWeight9: "",
-      stowedWeight10: "",
-      stowedWeight11: "",
-      stowedWeight12: "",
-      stowedWeight13: "",
-      stowedWeight14: "",
-      stowedWeight15: "",
-      stowedWeight16: ""
-    },
+    equipment: buildEmptyDwEquipment(),
     xp: 0,
     level: 1,
     nextLevel: 0,
@@ -124,7 +71,10 @@ export function dwDefaults(): DwFlags {
 
     if (schemaDefaults) return schemaDefaults;
   } catch (error) {
-    reportError("Failed to read defaults from DW field schema. Falling back to static defaults.", error);
+    reportError(
+      "Failed to read defaults from DW field schema. Falling back to static defaults.",
+      error
+    );
   }
 
   return cloneDefaults();

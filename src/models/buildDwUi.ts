@@ -14,7 +14,7 @@ export function buildDwUi(
     avatarTooltip: buildAvatarTooltip(dw, localize, actorName),
     saveTooltips: localizeRecord(SAVE_TOOLTIPS, localize),
     skillTooltips: localizeRecord(SKILL_TOOLTIPS, localize),
-    equipment: buildDwEquipmentUi(dw.meta.equipment)
+    equipment: buildDwEquipmentUi(dw.meta.equipment, dw.meta.coins)
   };
 }
 

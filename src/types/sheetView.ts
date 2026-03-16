@@ -40,9 +40,29 @@ export interface DwEquipmentFieldEntry {
   name: string;
   value: string;
   placeholder: string;
+  slotKey: string;
+  isCompendiumItem: boolean;
+  compendiumItem: {
+    uuid: string;
+    name: string;
+    weight: string;
+  } | null;
   weightId: string;
   weightName: string;
   weightValue: string;
+}
+
+export interface DwEquipmentEncumbranceBreakpointView {
+  value: string;
+  leftPercent: string;
+}
+
+export interface DwEquipmentEncumbranceView {
+  current: string;
+  max: string;
+  label: string;
+  fillPercent: string;
+  breakpoints: DwEquipmentEncumbranceBreakpointView[];
 }
 
 export interface DwActorItemEntry {
@@ -72,6 +92,7 @@ export interface DwSheetView {
       equippedFields: DwEquipmentFieldEntry[];
       stowedFields: DwEquipmentFieldEntry[];
       totalWeight: string;
+      encumbrance: DwEquipmentEncumbranceView;
     };
   };
 }

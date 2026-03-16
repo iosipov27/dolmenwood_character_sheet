@@ -80,5 +80,12 @@ export function registerSheetListeners(
     applyDwPatch: (dwPatch) => applyDwPatch(dwPatch)
   });
 
-  registerEquipmentListener(html);
+  registerEquipmentListener(html, {
+    applyDwPatch: (dwPatch) => applyDwPatch(dwPatch),
+    fromDropData: async (data) => (await Item.fromDropData(data)) ?? null,
+    localize: (key) => game.i18n?.localize(key) ?? key,
+    warn: (message) => {
+      ui.notifications?.warn(message);
+    }
+  });
 }

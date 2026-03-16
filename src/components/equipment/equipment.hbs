@@ -17,29 +17,70 @@
           <div class="dw-equipment__row dw-equipment__row--header">
             <div class="dw-equipment__entry dw-equipment__entry--item"></div>
             <div class="dw-equipment__entry dw-equipment__entry--weight">
-              <span class="dw-equipment__weight-label">{{uppercase (localize "DOLMENWOOD.UI.Weight")}}</span>
+              <span class="dw-equipment__weight-label">{{uppercase
+                  (localize "DOLMENWOOD.UI.Weight")
+                }}</span>
             </div>
           </div>
           {{#each ctx.view.ui.equipment.equippedFields as |field|}}
             <div class="dw-equipment__row">
               <div class="dw-equipment__entry dw-equipment__entry--item">
-                <input
-                  id="{{field.id}}"
-                  class="dw-equipment__item-input"
-                  name="{{field.name}}"
-                  value="{{field.value}}"
-                />
+                {{#if field.isCompendiumItem}}
+                  <div
+                    class="dw-equipment__slot dw-equipment__slot--compendium"
+                    data-dw-equipment-slot="{{field.slotKey}}"
+                  >
+                    <div
+                      class="dw-equipment__compendium-item"
+                      title="{{field.compendiumItem.name}}"
+                    >
+                      <span
+                        class="dw-equipment__compendium-item-title"
+                      >{{field.compendiumItem.name}}</span>
+                      <button
+                        type="button"
+                        class="dw-x"
+                        data-dw-equipment-remove="{{field.slotKey}}"
+                        aria-label="{{localize 'DOLMENWOOD.UI.Remove'}}"
+                        data-tooltip="{{localize 'DOLMENWOOD.UI.Remove'}}"
+                      >
+                        &times;
+                      </button>
+                    </div>
+                  </div>
+                {{else}}
+                  <div class="dw-equipment__slot" data-dw-equipment-slot="{{field.slotKey}}">
+                    <input
+                      id="{{field.id}}"
+                      class="dw-equipment__item-input"
+                      name="{{field.name}}"
+                      value="{{field.value}}"
+                    />
+                  </div>
+                {{/if}}
               </div>
               <div class="dw-equipment__entry dw-equipment__entry--weight">
-                <input
-                  id="{{field.weightId}}"
-                  type="number"
-                  min="0"
-                  step="1"
-                  class="input--md dw-equipment__weight-input dw-number-input"
-                  name="{{field.weightName}}"
-                  value="{{field.weightValue}}"
-                />
+                {{#if field.isCompendiumItem}}
+                  <input
+                    id="{{field.weightId}}"
+                    type="number"
+                    min="0"
+                    step="1"
+                    class="input--md dw-equipment__weight-input dw-number-input"
+                    name="{{field.weightName}}"
+                    value="{{field.weightValue}}"
+                  />
+                {{else}}
+                  <input
+                    id="{{field.weightId}}"
+                    type="number"
+                    min="0"
+                    step="1"
+                    class="input--md dw-equipment__weight-input dw-number-input"
+                    name="{{field.weightName}}"
+                    value="{{field.weightValue}}"
+                  />
+                {{/if}}
               </div>
             </div>
           {{/each}}
@@ -52,37 +93,106 @@
         <div class="dw-equipment__row dw-equipment__row--header">
           <div class="dw-equipment__entry dw-equipment__entry--item"></div>
           <div class="dw-equipment__entry dw-equipment__entry--weight">
-            <span class="dw-equipment__weight-label">{{uppercase (localize "DOLMENWOOD.UI.Weight")}}</span>
+            <span class="dw-equipment__weight-label">{{uppercase
+                (localize "DOLMENWOOD.UI.Weight")
+              }}</span>
           </div>
         </div>
         {{#each ctx.view.ui.equipment.stowedFields as |field|}}
           <div class="dw-equipment__row">
             <div class="dw-equipment__entry dw-equipment__entry--item">
-              <input
-                id="{{field.id}}"
-                class="dw-equipment__item-input"
-                name="{{field.name}}"
-                value="{{field.value}}"
-              />
+              {{#if field.isCompendiumItem}}
+                <div
+                  class="dw-equipment__slot dw-equipment__slot--compendium"
+                  data-dw-equipment-slot="{{field.slotKey}}"
+                >
+                  <div class="dw-equipment__compendium-item" title="{{field.compendiumItem.name}}">
+                    <span
+                      class="dw-equipment__compendium-item-title"
+                    >{{field.compendiumItem.name}}</span>
+                    <button
+                      type="button"
+                      class="dw-x"
+                      data-dw-equipment-remove="{{field.slotKey}}"
+                      aria-label="{{localize 'DOLMENWOOD.UI.Remove'}}"
+                      data-tooltip="{{localize 'DOLMENWOOD.UI.Remove'}}"
+                    >
+                      &times;
+                    </button>
+                  </div>
+                </div>
+              {{else}}
+                <div class="dw-equipment__slot" data-dw-equipment-slot="{{field.slotKey}}">
+                  <input
+                    id="{{field.id}}"
+                    class="dw-equipment__item-input"
+                    name="{{field.name}}"
+                    value="{{field.value}}"
+                  />
+                </div>
+              {{/if}}
             </div>
             <div class="dw-equipment__entry dw-equipment__entry--weight">
-              <input
-                id="{{field.weightId}}"
-                type="number"
-                min="0"
-                step="1"
-                class="input--md dw-equipment__weight-input dw-number-input"
-                name="{{field.weightName}}"
-                value="{{field.weightValue}}"
-              />
+              {{#if field.isCompendiumItem}}
+                <input
+                  id="{{field.weightId}}"
+                  type="number"
+                  min="0"
+                  step="1"
+                  class="input--md dw-equipment__weight-input dw-number-input"
+                  name="{{field.weightName}}"
+                  value="{{field.weightValue}}"
+                />
+              {{else}}
+                <input
+                  id="{{field.weightId}}"
+                  type="number"
+                  min="0"
+                  step="1"
+                  class="input--md dw-equipment__weight-input dw-number-input"
+                  name="{{field.weightName}}"
+                  value="{{field.weightValue}}"
+                />
+              {{/if}}
             </div>
           </div>
         {{/each}}
       </div>
       <div class="dw-equipment__total-weight">
         <label>{{localize "DOLMENWOOD.UI.TotalWeight"}}</label>
-        <div class="dw-equipment__total-weight-value" data-total-weight>{{ctx.view.ui.equipment.totalWeight}}</div>
+        <div
+          class="dw-equipment__total-weight-value"
+          data-total-weight
+        >{{ctx.view.ui.equipment.totalWeight}}</div>
       </div>
     </div>
   </div>
+  <section class="dw-equipment__encumbrance">
+    <div class="dw-equipment__encumbrance-header">
+      <label>{{localize "DOLMENWOOD.UI.Encumbrance"}}</label>
+      <span
+        class="dw-equipment__encumbrance-label"
+        data-encumbrance-label
+      >{{ctx.view.ui.equipment.encumbrance.label}}</span>
+    </div>
+    <div class="dw-equipment__encumbrance-track">
+      <span
+        class="dw-equipment__encumbrance-bar"
+        data-encumbrance-bar
+        style="width: {{ctx.view.ui.equipment.encumbrance.fillPercent}}"
+      ></span>
+      {{#each ctx.view.ui.equipment.encumbrance.breakpoints as |breakpoint|}}
+        <i
+          class="dw-equipment__encumbrance-breakpoint dw-equipment__encumbrance-breakpoint--up"
+          style="left: {{breakpoint.leftPercent}}"
+          data-tooltip="{{breakpoint.value}} / {{../ctx.view.ui.equipment.encumbrance.max}}"
+        ></i>
+        <i
+          class="dw-equipment__encumbrance-breakpoint dw-equipment__encumbrance-breakpoint--down"
+          style="left: {{breakpoint.leftPercent}}"
+          data-tooltip="{{breakpoint.value}} / {{../ctx.view.ui.equipment.encumbrance.max}}"
+        ></i>
+      {{/each}}
+    </div>
+  </section>
 </div>

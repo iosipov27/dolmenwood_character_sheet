@@ -2,6 +2,8 @@ export type {
   DwCombatView,
   DwAbilityView,
   DwActorItemEntry,
+  DwEquipmentEncumbranceBreakpointView,
+  DwEquipmentEncumbranceView,
   DwEquipmentFieldEntry,
   DwHpView,
   DwSaveEntry,
@@ -9,6 +11,8 @@ export type {
 } from "./sheetView.js";
 
 export type {
+  DwEquipment,
+  DwEquipmentCompendiumItem,
   DwCombat,
   DwExtraSkill,
   DwFlags,
