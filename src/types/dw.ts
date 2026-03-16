@@ -40,6 +40,29 @@ export interface DwPlayer {
   moonSignVisible: boolean;
 }
 
+export interface DwEquipmentCompendiumItem {
+  uuid: string;
+  name: string;
+  type: string;
+  weight: string;
+}
+
+type DwEquippedSlotIndex = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+type DwStowedSlotIndex = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16;
+type DwEquipmentTextFieldKey =
+  | `equipped${DwEquippedSlotIndex}`
+  | `equippedWeight${DwEquippedSlotIndex}`
+  | `stowed${DwStowedSlotIndex}`
+  | `stowedWeight${DwStowedSlotIndex}`;
+type DwEquipmentCompendiumFieldKey =
+  | `equippedCompendium${DwEquippedSlotIndex}`
+  | `stowedCompendium${DwStowedSlotIndex}`;
+
+export type DwEquipment = {
+  tinyItems: string;
+} & Record<DwEquipmentTextFieldKey, string> &
+  Record<DwEquipmentCompendiumFieldKey, DwEquipmentCompendiumItem>;
+
 export interface DwMeta {
   spellsCollapsed: boolean;
   traitsCollapsed: boolean;
@@ -51,61 +74,7 @@ export interface DwMeta {
   spellsTraitsView: DwSpellsTraitsView;
   kindredClassTraits: string;
   languages: string;
-  equipment: {
-    tinyItems: string;
-    equipped1: string;
-    equipped2: string;
-    equipped3: string;
-    equipped4: string;
-    equipped5: string;
-    equipped6: string;
-    equipped7: string;
-    equipped8: string;
-    equipped9: string;
-    equipped10: string;
-    equippedWeight1: string;
-    equippedWeight2: string;
-    equippedWeight3: string;
-    equippedWeight4: string;
-    equippedWeight5: string;
-    equippedWeight6: string;
-    equippedWeight7: string;
-    equippedWeight8: string;
-    equippedWeight9: string;
-    equippedWeight10: string;
-    stowed1: string;
-    stowed2: string;
-    stowed3: string;
-    stowed4: string;
-    stowed5: string;
-    stowed6: string;
-    stowed7: string;
-    stowed8: string;
-    stowed9: string;
-    stowed10: string;
-    stowed11: string;
-    stowed12: string;
-    stowed13: string;
-    stowed14: string;
-    stowed15: string;
-    stowed16: string;
-    stowedWeight1: string;
-    stowedWeight2: string;
-    stowedWeight3: string;
-    stowedWeight4: string;
-    stowedWeight5: string;
-    stowedWeight6: string;
-    stowedWeight7: string;
-    stowedWeight8: string;
-    stowedWeight9: string;
-    stowedWeight10: string;
-    stowedWeight11: string;
-    stowedWeight12: string;
-    stowedWeight13: string;
-    stowedWeight14: string;
-    stowedWeight15: string;
-    stowedWeight16: string;
-  };
+  equipment: DwEquipment;
   xp: number;
   level: number;
   nextLevel: number;

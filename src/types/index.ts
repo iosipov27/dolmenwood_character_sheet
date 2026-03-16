@@ -9,6 +9,8 @@ export type {
 } from "./sheetView.js";
 
 export type {
+  DwEquipment,
+  DwEquipmentCompendiumItem,
   DwCombat,
   DwExtraSkill,
   DwFlags,

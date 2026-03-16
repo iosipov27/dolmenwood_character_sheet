@@ -40,6 +40,13 @@ export interface DwEquipmentFieldEntry {
   name: string;
   value: string;
   placeholder: string;
+  slotKey: string;
+  isCompendiumItem: boolean;
+  compendiumItem: {
+    uuid: string;
+    name: string;
+    weight: string;
+  } | null;
   weightId: string;
   weightName: string;
   weightValue: string;

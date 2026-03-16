@@ -33,9 +33,9 @@ export function buildAbilities(systemData: Record<string, unknown>): DwAbilityVi
 
     for (const mk of candidates) {
       const p = mk(a.key);
-      const v = foundry.utils.getProperty(wrapper, p);
+      const v = toFiniteNumber(foundry.utils.getProperty(wrapper, p));
 
-      if (typeof v === "number") {
+      if (v !== null) {
         foundPath = p;
         value = v;
         break;
@@ -48,9 +48,9 @@ export function buildAbilities(systemData: Record<string, unknown>): DwAbilityVi
     if (foundPath && String(foundPath).endsWith(".value")) {
       for (const mm of modCandidates) {
         const mp = mm(foundPath);
-        const mv = foundry.utils.getProperty(wrapper, mp);
+        const mv = toFiniteNumber(foundry.utils.getProperty(wrapper, mp));
 
-        if (typeof mv === "number") {
+        if (mv !== null) {
           mod = mv;
           hasMod = true;
           break;
@@ -72,4 +72,18 @@ export function buildAbilities(systemData: Record<string, unknown>): DwAbilityVi
   }
 
   return out;
+}
+
+function toFiniteNumber(value: unknown): number | null {
+  if (typeof value === "number") {
+    return Number.isFinite(value) ? value : null;
+  }
+
+  if (typeof value === "string") {
+    const parsed = Number(value.trim());
+
+    return Number.isFinite(parsed) ? parsed : null;
+  }
+
+  return null;
 }
