@@ -99,6 +99,11 @@
     border: 1px solid $color-border-main;
     border-radius: 4px;
     background: rgba(255, 255, 255, 0.4);
+
+    .dw-x {
+      margin-left: auto;
+      flex: 0 0 auto;
+    }
   }
 
   &__compendium-item-title {
@@ -107,22 +112,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
-
-  &__compendium-item-remove {
-    flex: 0 0 auto;
-    width: 1.35rem;
-    height: 1.35rem;
-    padding: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid $color-border-main;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.7);
-    font-size: 0.8rem;
-    line-height: 1;
-    cursor: pointer;
   }
 
   &__weight-label {
