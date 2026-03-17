@@ -17,13 +17,14 @@ const DISALLOWED_EQUIPMENT_ITEM_TYPES = new Set(["spell", "ability"]);
 interface EquipmentListenerDependencies {
   applyDwPatch: ApplyDwPatch;
   fromDropData: (data: ActorSheet.DropData.Item) => Promise<Item | null>;
+  fromUuid: (uuid: string) => Promise<Item | null>;
   localize: (key: string) => string;
   warn: (message: string) => void;
 }
 
 export function registerEquipmentListener(
   html: HtmlRoot,
-  { applyDwPatch, fromDropData, localize, warn }: EquipmentListenerDependencies
+  { applyDwPatch, fromDropData, fromUuid, localize, warn }: EquipmentListenerDependencies
 ): void {
   const equipmentRoot = html.find(".dw-equipment");
 
@@ -33,6 +34,7 @@ export function registerEquipmentListener(
   const coinFieldSelector = "input[name^='dw.meta.coins.']";
   const stowedItemSelector = "input[name^='dw.meta.equipment.stowed']:not([name*='Weight'])";
   const slotSelector = "[data-dw-equipment-slot]";
+  const openSelector = "[data-dw-equipment-open]";
   const removeSelector = "[data-dw-equipment-remove]";
   const totalWeightValue = equipmentRoot.find("[data-total-weight]");
   const encumbranceLabel = equipmentRoot.find("[data-encumbrance-label]");
@@ -187,6 +189,21 @@ export function registerEquipmentListener(
         }
       }
     });
+  });
+
+  equipmentRoot.on("click", openSelector, async function (event) {
+    preventEvent(event);
+
+    const openButton = this instanceof HTMLElement ? this : null;
+    const uuid = String(openButton?.dataset.dwEquipmentOpen ?? "").trim();
+
+    if (!uuid) return;
+
+    const item = await fromUuid(uuid);
+
+    if (!item) return;
+
+    void item.sheet?.render(true);
   });
 
   equipmentRoot.on("click", removeSelector, async function (event) {

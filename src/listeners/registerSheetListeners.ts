@@ -83,9 +83,22 @@ export function registerSheetListeners(
   registerEquipmentListener(html, {
     applyDwPatch: (dwPatch) => applyDwPatch(dwPatch),
     fromDropData: async (data) => (await Item.fromDropData(data)) ?? null,
+    fromUuid: async (uuid) => {
+      const resolver = globalThis.fromUuid as ((value: string) => Promise<unknown>) | undefined;
+
+      if (typeof resolver !== "function") return null;
+
+      const document = await resolver(uuid);
+
+      return isItemDocumentLike(document) ? (document as Item) : null;
+    },
     localize: (key) => game.i18n?.localize(key) ?? key,
     warn: (message) => {
       ui.notifications?.warn(message);
     }
   });
+}
+
+function isItemDocumentLike(value: unknown): value is Item {
+  return Boolean(value && typeof value === "object" && "sheet" in value);
 }

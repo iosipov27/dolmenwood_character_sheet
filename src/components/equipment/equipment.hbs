@@ -34,9 +34,16 @@
                       class="dw-equipment__compendium-item"
                       title="{{field.compendiumItem.name}}"
                     >
-                      <span
-                        class="dw-equipment__compendium-item-title"
-                      >{{field.compendiumItem.name}}</span>
+                      <button
+                        type="button"
+                        class="dw-equipment__compendium-open"
+                        data-dw-equipment-open="{{field.compendiumItem.uuid}}"
+                        aria-label="{{field.compendiumItem.name}}"
+                      >
+                        <span
+                          class="dw-equipment__compendium-item-title"
+                        >{{field.compendiumItem.name}}</span>
+                      </button>
                       <button
                         type="button"
                         class="dw-x"
@@ -107,9 +114,16 @@
                   data-dw-equipment-slot="{{field.slotKey}}"
                 >
                   <div class="dw-equipment__compendium-item" title="{{field.compendiumItem.name}}">
-                    <span
-                      class="dw-equipment__compendium-item-title"
-                    >{{field.compendiumItem.name}}</span>
+                    <button
+                      type="button"
+                      class="dw-equipment__compendium-open"
+                      data-dw-equipment-open="{{field.compendiumItem.uuid}}"
+                      aria-label="{{field.compendiumItem.name}}"
+                    >
+                      <span
+                        class="dw-equipment__compendium-item-title"
+                      >{{field.compendiumItem.name}}</span>
+                    </button>
                     <button
                       type="button"
                       class="dw-x"

@@ -6,6 +6,7 @@ function createDependencies() {
   return {
     applyDwPatch: vi.fn(async () => {}),
     fromDropData: vi.fn(async () => null),
+    fromUuid: vi.fn(async () => null),
     localize: vi.fn((key: string) => `loc:${key}`),
     warn: vi.fn()
   };
@@ -285,6 +286,36 @@ describe("registerEquipmentListener", () => {
       }
     });
     expect(dependencies.warn).not.toHaveBeenCalled();
+  });
+
+  it("opens the compendium item sheet when clicking an equipment item", async () => {
+    const dependencies = createDependencies();
+    const render = vi.fn();
+
+    dependencies.fromUuid.mockResolvedValue({
+      sheet: {
+        render
+      }
+    } as unknown as Item);
+
+    document.body.innerHTML = `
+      <div class="dw-equipment">
+        <button
+          type="button"
+          data-dw-equipment-open="Compendium.ose.items.Item.sword"
+        >Longsword</button>
+      </div>
+    `;
+
+    const html = $(document.body);
+
+    registerEquipmentListener(html, dependencies);
+
+    html.find('[data-dw-equipment-open="Compendium.ose.items.Item.sword"]').trigger("click");
+    await flushPromises();
+
+    expect(dependencies.fromUuid).toHaveBeenCalledWith("Compendium.ose.items.Item.sword");
+    expect(render).toHaveBeenCalledWith(true);
   });
 
   it("accepts dropped compendium entries with non-spell, non-ability item types", async () => {

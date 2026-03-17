@@ -114,6 +114,22 @@
     white-space: nowrap;
   }
 
+  &__compendium-open {
+    min-width: 0;
+    flex: 1 1 auto;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+
+    &:hover .dw-equipment__compendium-item-title,
+    &:focus-visible .dw-equipment__compendium-item-title {
+      text-decoration: underline;
+    }
+  }
+
   &__weight-label {
     display: block;
     min-width: 3.2rem;
